@@ -1,7 +1,8 @@
 # CLIP-RN50 양자화 실험 코드 (정리본)
 
 2026 모바일공학 공모전 트랙 2(자유주제). CLIP-RN50을 Raspberry Pi 5 + Hailo-10H에 올리기 위한 예선용 데스크톱 실험 코드예요.
-모든 파일 맨 위에 **목적과 설명**을 주석으로 달았어요. 코드 검토 결과는 `CODE_REVIEW.md`에 있어요.
+모든 파일 맨 위에 **목적과 설명**을 주석으로 달았어요. 현재 실험 계획은 저장소 루트의 `PRD.md`, 코드 검토 기록은 `docs/CODE_REVIEW.md`에 있어요.
+이전 실험 전용 스크립트(night_run, make_stem_combos, clip_weights)는 `archive/2026-10-07_night/code/`로 옮겼어요.
 
 ## 파일 구성
 
@@ -11,13 +12,10 @@
 | `baseline_rn50.py` | PyTorch 원본 FP32 베이스라인 (CIFAR-100 test 정확도, 크기, 지연, 메모리) |
 | `export_onnx.py` | PyTorch → ONNX 변환. `--attnpool-q1`로 AttnPool 최적화본 생성, `--verify`로 동일성 확인 |
 | `quantize_onnx.py` | ONNX Runtime 정적 INT8 양자화. 노드 선택(`--exclude/--only`), 보정 데이터 선택(`--calib-source`) |
-| `make_stem_combos.py` | stem 내부 조합 15개 모델 생성 (실험 2-2) |
 | `datasets.py` | dev(설정 선택용, train 분할) 캐시·보정 후보 생성 / test 전체 최종 평가 |
 | `evaluate.py` | 여러 모델 × 여러 데이터셋의 top-1/top-5/원본과의 유사도 |
 | `bench_speed.py` | 속도 반복 측정 (번갈아 측정, 평균·흔들림) |
 | `summarize.py` | evaluate.jsonl → 모델별 dev 정확도·FP32 대비 변화·유사도 표 |
-| `clip_weights.py` | 4비트용 채널별 MSE 최적 가중치 잘라내기 (R6b) |
-| `night_run.py` | 10/7 야간 실험(PRD R1~R8, X0~X8) 자동 실행기. 이어하기 지원 |
 | `prompts/cifar100_templates.json` | CIFAR-100 프롬프트 18개 (CLIP 논문) |
 
 ## 환경
@@ -67,14 +65,15 @@ python evaluate.py --data cifar_A pets_dev flowers_dev cars_dev food_dev caltech
 # 6) 속도 비교 (다른 작업과 동시에 돌리지 말 것)
 python bench_speed.py --models fp32=rn50_image_fp32_q1.onnx c4=rn50_image_int8_q1_minmax_highres256_s0_c4.onnx
 
-# 7) 최종 보고 (설정이 모두 정해진 뒤 1회): 테스트 전체, fake-quant 실행
+# 7) 최종 보고 (설정이 모두 정해진 뒤 1회): 테스트 전체
+#    ※ PRD E0에서 기본 실행을 정수 커널로 바꿀 예정. 보고 수치는 정수 커널만 사용
 for d in cifar_test imagenetv2 pets flowers cars food caltech; do
   python datasets.py test $d --models fp32 rn50_image_int8_q1_minmax_highres256_s0_c4.onnx; done
 ```
 
-> 2026-10-07: 예전 `rn50_quant/` 코드는 보정 버그(256장 중 16장만 사용)가 있어 쓰지 않는다. 자세한 내용은 `CODE_REVIEW.md` 2차 검토.
+> 2026-10-07: 예전 `rn50_quant/` 코드는 보정 버그(256장 중 16장만 사용)가 있어 쓰지 않는다. 자세한 내용은 `docs/CODE_REVIEW.md` 2차 검토.
 
-## 지금까지 실험의 양자화 명령 모음
+## 양자화 명령 모음 (이전 실험에서 쓰던 구성, 참고)
 
 | 실험 | `quantize_onnx.py --enc image --variant _q1` 뒤에 붙일 옵션 |
 |---|---|
@@ -83,6 +82,5 @@ for d in cifar_test imagenetv2 pets flowers cars food caltech; do
 | 단계 하나만 INT8 | `--only /layer3 --tag only-layer3_q1` (stem은 `--only /conv1,/conv2,/conv3,/act1,/act2,/act3,/avgpool`) |
 | stem + 단계 하나 | `--only /conv1,/conv2,/conv3,/act1,/act2,/act3,/avgpool,/layer3 --tag stem+layer3_q1` |
 | 누적 ②~⑤ | `--only /layer4 --only-exact $AP` → `/layer3,/layer4` → `/layer2,...` → `/layer1,...` |
-| stem 내부 15조합 | stem만 INT8 모델을 만든 뒤 `python make_stem_combos.py` |
 
 `--variant` 없이 실행하면 AttnPool 최적화 전 그래프를 써요(초기 실험 A~D).
