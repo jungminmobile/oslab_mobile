@@ -1,0 +1,11 @@
+# Python 3.11, CPU 전용. 설치: pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.14.0
+torchvision==0.29.0
+open_clip_torch==3.3.0
+numpy==2.4.4
+onnx==1.23.1
+onnxruntime==1.25.0
+pillow==12.2.0
+pyarrow==25.0.1
+psutil==7.2.2
+fvcore==0.1.5.post20221221

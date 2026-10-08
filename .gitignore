@@ -1,0 +1,36 @@
+# ---- 용량이 큰 파일: GitHub에 올리지 않음 (README의 "데이터·가중치 받기"로 재생성) ----
+# 데이터셋 원본·캐시
+**/data/
+**/extra_data/
+**/cache/
+**/cache_x4/
+*.npy
+*.npz
+*.parquet
+*.tar
+*.tar.gz
+
+# 모델 가중치·변환 결과
+**/weights/
+**/onnx/
+*.pt
+*.pth
+*.onnx
+*.onnx.data
+*.hef
+*.har
+
+# 스크립트 실행 시 생기는 결과 폴더 (정리된 결과는 /results 아래에 날짜별로 커밋)
+rn50/results/
+rn50/results_x4/
+
+# ---- 파이썬·편집기 ----
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

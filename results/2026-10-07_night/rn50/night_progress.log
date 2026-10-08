@@ -1,0 +1,55 @@
+10-07 02:36 START R1+R2 (RN50 단계별·누적) (예상 40분, 남은 10080분)
+10-07 03:26 DONE R1+R2
+10-07 03:26 START R3 (stem+단계) (예상 20분, 남은 10030분)
+10-07 03:54 DONE R3
+10-07 03:54 START R4 (보정 출처 cifar·mix) (예상 40분, 남은 10002분)
+10-07 04:43 DONE R4
+10-07 04:43 START X0 (RN50x4 준비) (예상 60분, 남은 9954분)
+10-07 04:45   [verify] max|diff| of normalized emb = 1.79e-07, min cos = 0.9999998
+10-07 05:25 DONE X0
+10-07 05:25 START X1+X2 (RN50x4 단계별·누적) (예상 100분, 남은 9912분)
+10-07 05:25   ERROR quantize_onnx.py --enc image...: -9
+10-07 05:25   ERROR quantize_onnx.py --enc image...: -9
+10-07 05:26   ERROR quantize_onnx.py --enc image...: -9
+10-07 05:26   ERROR quantize_onnx.py --enc image...: -9
+10-07 05:26   ERROR quantize_onnx.py --enc image...: -9
+10-07 05:26   ERROR quantize_onnx.py --enc image...: -9
+10-07 05:27   ERROR quantize_onnx.py --enc image...: -9
+10-07 05:27   ERROR quantize_onnx.py --enc image...: -9
+10-07 05:27   ERROR quantize_onnx.py --enc image...: -9
+10-07 05:27   ERROR quantize_onnx.py --enc image...: -9
+10-07 05:28   ERROR quantize_onnx.py --enc image...: -9
+10-07 05:28   ERROR evaluate.py --exec int...: onnxruntime.capi.onnxruntime_pybind11_state.NoSuchFile: [ONNXRuntimeError] : 3 : NO_SUCHFILE : Load model from /home/claude/rn50_quant/onnx/rn50x4_image_int8_q1_minmax_highres256_s0_only-stem.onnx failed:Load model /home/claude/rn50_quant/onnx/rn50x4_image_int8_q1_minmax_highres256_s0_only-stem.onnx failed. File doesn't exist
+10-07 05:28   ERROR evaluate.py --exec int...: onnxruntime.capi.onnxruntime_pybind11_state.NoSuchFile: [ONNXRuntimeError] : 3 : NO_SUCHFILE : Load model from /home/claude/rn50_quant/onnx/rn50x4_image_int8_q1_minmax_highres256_s0_only-stem.onnx failed:Load model /home/claude/rn50_quant/onnx/rn50x4_image_int8_q1_minmax_highres256_s0_only-stem.onnx failed. File doesn't exist
+10-07 05:28   ERROR evaluate.py --exec int...: onnxruntime.capi.onnxruntime_pybind11_state.NoSuchFile: [ONNXRuntimeError] : 3 : NO_SUCHFILE : Load model from /home/claude/rn50_quant/onnx/rn50x4_image_int8_q1_minmax_highres256_s0_only-stem.onnx failed:Load model /home/claude/rn50_quant/onnx/rn50x4_image_int8_q1_minmax_highres256_s0_only-stem.onnx failed. File doesn't exist
+10-07 05:28   ERROR evaluate.py --exec int...: onnxruntime.capi.onnxruntime_pybind11_state.NoSuchFile: [ONNXRuntimeError] : 3 : NO_SUCHFILE : Load model from /home/claude/rn50_quant/onnx/rn50x4_image_int8_q1_minmax_highres256_s0_only-stem.onnx failed:Load model /home/claude/rn50_quant/onnx/rn50x4_image_int8_q1_minmax_highres256_s0_only-stem.onnx failed. File doesn't exist
+10-07 05:28   ERROR evaluate.py --exec int...: onnxruntime.capi.onnxruntime_pybind11_state.NoSuchFile: [ONNXRuntimeError] : 3 : NO_SUCHFILE : Load model from /home/claude/rn50_quant/onnx/rn50x4_image_int8_q1_minmax_highres256_s0_only-stem.onnx failed:Load model /home/claude/rn50_quant/onnx/rn50x4_image_int8_q1_minmax_highres256_s0_only-stem.onnx failed. File doesn't exist
+10-07 05:28   ERROR evaluate.py --exec int...: onnxruntime.capi.onnxruntime_pybind11_state.NoSuchFile: [ONNXRuntimeError] : 3 : NO_SUCHFILE : Load model from /home/claude/rn50_quant/onnx/rn50x4_image_int8_q1_minmax_highres256_s0_only-stem.onnx failed:Load model /home/claude/rn50_quant/onnx/rn50x4_image_int8_q1_minmax_highres256_s0_only-stem.onnx failed. File doesn't exist
+10-07 05:28 DONE X1+X2
+10-07 05:28 START R6 (RN50 4비트) (예상 20분, 남은 9909분)
+10-07 05:44 DONE R6
+10-07 05:44 START R7+X7 (속도) (예상 50분, 남은 9892분)
+10-07 05:47 START X1+X2 (RN50x4 단계별·누적) (예상 100분, 남은 10080분)
+10-07 08:28 DONE X1+X2
+10-07 08:28 START R7 (RN50 속도) (예상 20분, 남은 9919분)
+10-07 08:36 DONE R7
+10-07 08:36 START R8 (RN50 fake-quant 상위 후보) (예상 55분, 남은 9910분)
+10-07 09:21 START R8 (RN50 fake-quant 상위 후보) (예상 55분, 남은 10080분)
+10-07 09:22 세션 재시작으로 실험 프로세스가 꺼져 R8부터 다시 실행(이어하기)
+10-07 09:29 DONE R8
+10-07 09:29 START X4 (RN50x4 보정 출처) (예상 150분, 남은 10072분)
+10-07 09:48 START R8 (RN50 fake-quant 상위 후보) (예상 55분, 남은 10080분)
+10-07 09:48 DONE R8
+10-07 09:48 START X4 (RN50x4 보정 출처) (예상 150분, 남은 10080분)
+10-07 09:48 세션 재시작(2번째)으로 꺼짐 → X4부터 이어하기
+10-07 11:12 DONE X4
+10-07 11:12 START X6 (RN50x4 4비트) (예상 60분, 남은 9996분)
+10-07 11:57 DONE X6
+10-07 11:57 START X8 (RN50x4 fake-quant) (예상 90분, 남은 9951분)
+10-07 12:54 DONE X8
+10-07 12:54 START X7 (RN50x4 속도) (예상 30분, 남은 9894분)
+10-07 13:13 DONE X7
+10-07 13:13 START R5 (stem 내부 15조합) (예상 50분, 남은 9875분)
+10-07 14:28 DONE R5
+10-07 14:28 ALL DONE (4.7h)
+10-07 14:37 DONE R6b

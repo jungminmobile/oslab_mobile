@@ -1,0 +1,7 @@
+{"date": "2026-10-07T01:47:28", "data": "cifar_A", "model": "fp32", "n": 1000, "classes_present": 100, "top1": 40.7, "top5": 73.1, "sec": 160}
+{"date": "2026-10-07T02:18:55", "data": "cifar_B", "model": "fp32", "n": 1000, "classes_present": 100, "top1": 41.6, "top5": 73.7, "sec": 178}
+{"date": "2026-10-07T02:21:40", "data": "pets_dev", "model": "fp32", "n": 990, "classes_present": 37, "top1": 84.34, "top5": 99.39, "sec": 164}
+{"date": "2026-10-07T02:24:32", "data": "flowers_dev", "model": "fp32", "n": 957, "classes_present": 102, "top1": 63.85, "top5": 84.01, "sec": 171}
+{"date": "2026-10-07T02:28:43", "data": "caltech_dev", "model": "fp32", "n": 1024, "classes_present": 102, "top1": 81.64, "top5": 97.27, "sec": 249}
+{"date": "2026-10-07T02:32:30", "data": "cars_dev", "model": "fp32", "n": 967, "classes_present": 195, "top1": 54.4, "top5": 88.52, "sec": 226}
+{"date": "2026-10-07T02:36:34", "data": "food_dev", "model": "fp32", "n": 985, "classes_present": 101, "top1": 73.3, "top5": 93.81, "sec": 243}
