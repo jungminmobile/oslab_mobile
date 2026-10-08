@@ -14,7 +14,7 @@
 | 보고 수치 실행 방식 | 비교는 정수 커널, **최종 보고는 fake-quant 예정** | **정수 커널만** |
 | 보정 방법 | MinMax만 | MinMax·Percentile·Entropy 비교 (E2) |
 | 정밀도 선택 단위 | 단계(stage) 단위 | 블록 단위 (E4) |
-| 4비트 | ORT QDQ 4비트 (실행 시 소수로 풀림, CPU에서 더 느림) | 예선 제외 → Hailo 단계 후보 |
+| 4비트 | ORT QDQ 4비트 (실행 시 소수로 풀림, CPU에서 더 느림) | 8비트 실험 후 시간이 남을 때만 (E9: AttnPool 4비트, Hailo a8_w4) |
 | Hailo 이식 확인 | 없음 | DFC 컴파일 관문(E1)·에뮬레이터 검증(E8) |
 | 10/4~10/6 결과 | 보정 버그(256장 중 16장만 사용)로 **무효** | — |
 
@@ -27,6 +27,6 @@
 | `results_rn50/`, `results_rn50x4/` | evaluate·baselines·speed 원본, 실험별 표 |
 | `code/night_run.py` | 당시 실험 자동 실행기 |
 | `code/make_stem_combos.py` | stem 내부 조합 모델 생성 (R5) |
-| `code/clip_weights.py` | 4비트용 MSE 가중치 잘라내기 (R6b). Hailo 4비트(H2)에서 재사용 가능 |
+| `code/clip_weights.py` | 4비트용 MSE 가중치 잘라내기 (R6b). 4비트 실험(E9)에서 재사용 가능 |
 
 `code/` 스크립트는 `rn50/common.py`를 불러온다. 다시 실행하려면 `rn50/` 폴더로 복사해서 실행한다.

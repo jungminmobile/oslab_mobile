@@ -4,7 +4,7 @@
 
 ```
 results/
-├── E0_measure/       U8S8 vs S8S8, 측정 환경 기록
+├── E0_measure/       S8S8·reduce_range·U8U8, 측정 환경 기록
 ├── E1_dfc_gate/      DFC parse·optimize·compile 로그, 노드↔층 매핑표
 ├── E2_calib_method/  MinMax·Percentile·Entropy
 ├── E3_calib_data/    보정 출처·장수·시드
@@ -13,7 +13,8 @@ results/
 ├── E6_select/        최종 후보 선택 근거
 ├── E7_test/          최종 test (1회, 두 PC)
 ├── E8a_hailo_candidates/  후보 .hef 컴파일, 에뮬레이터 정확도
-└── E8b_hailo_final/       최종 .hef 패키지
+├── E8b_hailo_final/       최종 .hef 패키지
+└── E9_4bit/              (여유 시) ORT AttnPool 4비트, Hailo a8_w4
 ```
 
 ## 기록 규칙
