@@ -1,0 +1,5 @@
+# E1 2단계 기본 설정: 전부 8비트(DFC 기본 a8_w8), 정규화 층은 NPU 안에서 처리
+# 입력: 0~255 원본 픽셀(NHWC). CLIP 평균·표준편차 × 255 (Hailo 공식 RN50 설정과 같은 값)
+normalization1 = normalization([122.7709383, 116.7460125, 104.09373615], [68.5005327, 66.6321579, 70.32316305])
+model_optimization_flavor(optimization_level=0, compression_level=0)
+model_optimization_config(calibration, batch_size=8, calibset_size=64)

@@ -1,0 +1,64 @@
+[info] Current Time: 19:48:16, 10/12/26
+[info] CPU: Architecture: x86_64, Model: Intel(R) Core(TM) Ultra 7 258V, Number Of Cores: 8, Utilization: 0.0%
+[info] Memory: Total: 23GB, Available: 22GB
+[info] System info: OS: Linux, Kernel: 5.15.167.4-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo optimize /home/sset0/hailo10_work/parse/rn50.har --hw-arch hailo10h --calib-set-path /home/sset0/hailo10_work/calib/calib_rn50_highres64_s0_nhwc_u8.npy --model-script /home/sset0/e1_base.alls`
+[info] No GPU chosen and no suitable GPU found, falling back to CPU.
+[info] Hailo HW architecture: hailo10h
+[info] Loading model script commands to rn50_image_fp32_q1 from /home/sset0/e1_base.alls
+[info] Starting Model Optimization
+[warning] Running model optimization with zero level of optimization is not recommended for production use and might lead to suboptimal accuracy results
+[info] Model received quantization params from the hn
+[info] Notice: For optimal performance, if your model has more than 10M parameters, it is recommended to set the compression level to 4. (Current model has 38.30M parameters.)
+[info] Notice: For optimal accuracy with compressed models, it is recommended to set the optimization level to 4.
+[info] MatmulDecompose skipped
+[info] Starting Mixed Precision
+[info] Model Optimization Algorithm Mixed Precision is done (completion time is 00:00:00.51)
+[info] LayerNorm Decomposition skipped
+[info] Starting Statistics Collector
+[info] Using dataset with 64 entries for calibration
+Calibration:   0%|          | 0/64 [00:00<?, ?entries/s]Calibration:  12%|█▎        | 8/64 [00:10<01:14,  1.33s/entries]Calibration:  25%|██▌       | 16/64 [00:11<00:27,  1.72entries/s]Calibration:  38%|███▊      | 24/64 [00:11<00:13,  2.89entries/s]Calibration:  50%|█████     | 32/64 [00:12<00:07,  4.28entries/s]Calibration:  62%|██████▎   | 40/64 [00:12<00:04,  5.85entries/s]Calibration:  75%|███████▌  | 48/64 [00:13<00:02,  7.43entries/s]Calibration:  88%|████████▊ | 56/64 [00:13<00:00,  9.00entries/s]Calibration: 100%|██████████| 64/64 [00:14<00:00, 10.43entries/s]Calibration: 100%|██████████| 64/64 [00:14<00:00, 10.43entries/s]Calibration: 100%|██████████| 64/64 [00:14<00:00,  4.54entries/s]
+[info] Model Optimization Algorithm Statistics Collector is done (completion time is 00:00:14.77)
+[info] Using dataset with 64 entries for calibration
+Calibration:   0%|          | 0/64 [00:00<?, ?entries/s]Calibration:  12%|█▎        | 8/64 [00:10<01:14,  1.33s/entries]Calibration:  25%|██▌       | 16/64 [00:11<00:28,  1.71entries/s]Calibration:  38%|███▊      | 24/64 [00:11<00:13,  2.89entries/s]Calibration:  50%|█████     | 32/64 [00:12<00:07,  4.28entries/s]Calibration:  62%|██████▎   | 40/64 [00:12<00:04,  5.82entries/s]Calibration:  75%|███████▌  | 48/64 [00:13<00:02,  7.36entries/s]Calibration:  88%|████████▊ | 56/64 [00:13<00:00,  8.81entries/s]Calibration: 100%|██████████| 64/64 [00:14<00:00, 10.32entries/s]Calibration: 100%|██████████| 64/64 [00:14<00:00, 10.32entries/s]Calibration: 100%|██████████| 64/64 [00:14<00:00,  4.51entries/s]
+[info] Starting Fix zp_comp Encoding
+[info] Model Optimization Algorithm Fix zp_comp Encoding is done (completion time is 00:00:00.00)
+[info] Starting Matmul Equalization
+[info] Model Optimization Algorithm Matmul Equalization is done (completion time is 00:00:00.01)
+[info] Starting MatmulDecomposeFix
+[info] Model Optimization Algorithm MatmulDecomposeFix is done (completion time is 00:00:00.00)
+[info] Starting Translate Parameters
+Create HW Params:   0%|          | 0/75 [00:00<?, ?Components/s]Create HW Params:  11%|█         | 8/75 [00:00<00:00, 79.46Components/s]Create HW Params:  21%|██▏       | 16/75 [00:00<00:01, 54.74Components/s]Create HW Params:  29%|██▉       | 22/75 [00:00<00:01, 52.59Components/s]Create HW Params:  37%|███▋      | 28/75 [00:00<00:00, 48.47Components/s]Create HW Params:  44%|████▍     | 33/75 [00:00<00:00, 44.47Components/s]Create HW Params:  51%|█████     | 38/75 [00:00<00:00, 44.78Components/s]Create HW Params:  57%|█████▋    | 43/75 [00:00<00:00, 39.49Components/s]Create HW Params:  64%|██████▍   | 48/75 [00:01<00:00, 36.29Components/s]Create HW Params:  69%|██████▉   | 52/75 [00:01<00:00, 35.17Components/s]Create HW Params:  75%|███████▍  | 56/75 [00:01<00:00, 35.53Components/s]Create HW Params:  80%|████████  | 60/75 [00:01<00:00, 32.84Components/s]Create HW Params:  85%|████████▌ | 64/75 [00:01<00:00, 29.95Components/s]Create HW Params:  91%|█████████ | 68/75 [00:01<00:00, 26.41Components/s]Create HW Params:  95%|█████████▍| 71/75 [00:02<00:00, 24.37Components/s]Create HW Params: 100%|██████████| 75/75 [00:02<00:00, 24.37Components/s]                                                                         [info] Model Optimization Algorithm Translate Parameters is done (completion time is 00:00:02.14)
+[info] Finetune encoding skipped
+[info] Bias Correction skipped
+[info] Adaround skipped
+[info] Quantization-Aware Fine-Tuning skipped
+[info] Layer Noise Analysis skipped
+[info] Model Optimization is done
+[info] Saved HAR to: /home/sset0/hailo10_work/opt/rn50_image_fp32_q1_optimized.har
+	Command being timed: "hailo optimize /home/sset0/hailo10_work/parse/rn50.har --hw-arch hailo10h --calib-set-path /home/sset0/hailo10_work/calib/calib_rn50_highres64_s0_nhwc_u8.npy --model-script /home/sset0/e1_base.alls"
+	User time (seconds): 104.84
+	System time (seconds): 10.27
+	Percent of CPU this job got: 160%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:11.90
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4027468
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 11746
+	Minor (reclaiming a frame) page faults: 849072
+	Voluntary context switches: 144770
+	Involuntary context switches: 23973
+	Swaps: 0
+	File system inputs: 2616456
+	File system outputs: 1518392
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
