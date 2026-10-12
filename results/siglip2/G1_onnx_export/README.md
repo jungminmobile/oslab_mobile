@@ -16,11 +16,13 @@ OPENBLAS_NUM_THREADS=1 "$SIGLIP2_PYTHON" s2_export_onnx.py --verify 64 --ops --t
 
 sha256 전체 값은 `export.jsonl`. 같은 코드로 다시 내보내면 sha256이 **완전히 같다** (결정적 export, 아래 3중 확인).
 
-## 결과: PyTorch vs ONNX (CIFAR-100 dev A 앞 64장, ORT 1.25.0 `ORT_ENABLE_ALL`, `export.jsonl` 마지막 줄, 커밋 `05524c5`)
+## 결과: PyTorch vs ONNX (CIFAR-100 dev A 앞 64장, ORT 1.25.0 `ORT_ENABLE_ALL`, `export.jsonl` 마지막 줄, 커밋 `ab52093`, dirty=false)
 | 파일 | 코사인 최소 | 최대 절대 오차 (정규화 전) | 최대 절대 오차 (정규화 후) | 기준 ≥ 0.9999 |
 |---|---|---|---|---|
 | 배치 가변 | 0.99999988 | 2.10e-05 | 1.85e-06 | 통과 |
 | 배치 1 고정 | 0.99999976 | 2.38e-05 | 1.48e-06 | 통과 |
+
+PyTorch fused attention vs unfused(내보낸 형태): 코사인 최소 0.99999982, 최대 절대 오차(정규화 후) 8.1e-07 → D-019(끄고 내보내기)는 계산을 바꾸지 않는다.
 
 ## 연산 목록 (배치 1 고정 파일, 노드 543개, `onnx_ops.json`)
 | 구분 | 내용 |
@@ -31,12 +33,12 @@ sha256 전체 값은 `export.jsonl`. 같은 코드로 다시 내보내면 sha256
 | MLP GELU | **정확한 GELU (`Erf`)** 13개, tanh 근사 아님 |
 | Pooling head | MAP(AttentionPoolLatent): 학습된 latent query 1개 → q/kv `MatMul` → `Softmax` → proj → `LayerNormalization` → MLP(`Erf` GELU) → 768차원. 노드 50개 |
 | 남은 동적 연산 | `Shape`·`ConstantOfShape`·`Equal`·`Where`·`Expand`·`Gather` 각 1개 — pooling head의 latent를 배치 크기로 `expand`하는 부분. DFC 파싱에서 문제가 되면 상수 접기(onnx-simplifier 등)로 처리 |
-| fused attention | 끄고 내보냄 (D-019). 켜면 노드 686개, `Sqrt` 39·`Cast` 26 등 동적 연산이 더 남음 |
+| fused attention | 끄고 내보냄 (D-019). 켜고 내보낸 변형(`fused_variant/onnx_ops.json`)은 배치 1 고정 파일이 노드 686개, `Sqrt` 39·`Cast` 26·`Shape` 14 |
 
 ## 3중 확인
-1. 자기 검증: 코사인 ≥ 0.9999 assert 통과. 같은 명령을 커밋 전(dirty)·후(`05524c5`) 두 번 실행 → 수치 같음
-2. 독립 재계산: 같은 코드로 다른 폴더에 다시 export → 두 파일 모두 sha256 일치 (export가 결정적이고, 저장된 ONNX가 커밋된 코드의 산출물임을 확인)
-3. 독립 검토: PR에서 서브에이전트 검토 예정
+1. 자기 검증: 코사인 ≥ 0.9999 assert 통과. 같은 명령을 여러 번 실행(`05524c5`, `615d992`, `ab52093`) → 수치 같음
+2. 독립 재계산: 같은 코드로 다른 폴더에 다시 export → 두 파일 모두 sha256 일치 (`reexport_sha256.txt`, `scripts/g1_pipeline.sh` [3/5]). export가 결정적이고, 저장된 ONNX가 커밋된 코드의 산출물임을 확인
+3. 독립 검토: 코드 검토 서브에이전트 1회 — "fused vs unfused를 검증하지 않음", "686·sha256 주장에 원본 기록 없음" 지적 → 위 비교와 `fused_variant/`, `reexport_sha256.txt`로 기록 (커밋 `add8dc1`, `84045ff`)
 
 ## 결론
 SigLIP2 이미지 인코더 float ONNX는 PyTorch와 같다(코사인 0.9999998). DFC parse·optimize·compile은 DFC 5.4.0 설치 후 (휠 대기, D-011).
