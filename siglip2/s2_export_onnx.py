@@ -175,7 +175,7 @@ def main():
         f.write(json.dumps({k: v for k, v in row.items() if k != "ops"}, ensure_ascii=False) + "\n")
     print(json.dumps({k: v for k, v in row.items() if k != "ops"}, ensure_ascii=False, indent=1))
     if a.verify:
-        assert all(v["pass_cos_ge_0.9999"] for v in row["verify"].values()), "PyTorch vs ONNX 코사인 < 0.9999"
+        assert all(row["verify"][p.name]["pass_cos_ge_0.9999"] for p in paths), "PyTorch vs ONNX 코사인 < 0.9999"
 
 
 def _sha256(p):
