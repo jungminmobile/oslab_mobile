@@ -1,0 +1,7 @@
+[20:58:57] ===== rn50 c4eq 양자화 시작
+[20:59:58] ===== rn50 c4eq 양자화 완료 ✅
+{"date": "2026-10-12T21:00:15", "tag": "smoke_c4eq", "har": "rn50_image_fp32_q1_optimized.har", "ctx": "quantized", "data": "pets_dev", "n": 16, "top1": 0.0, "top5": 0.0, "fp32_ort_top1_same_imgs": 81.25, "cos_mean": 0.4132, "cos_p1": 0.3274, "sec": 9.6, "sec_per_img": 0.603}
+[21:00:17] ===== rn50 c4cp16 양자화 시작
+[21:01:14] ===== rn50 c4cp16 양자화 완료 ✅
+{"date": "2026-10-12T21:01:32", "tag": "smoke_c4cp16", "har": "rn50_image_fp32_q1_optimized.har", "ctx": "quantized", "data": "pets_dev", "n": 16, "top1": 0.0, "top5": 0.0, "fp32_ort_top1_same_imgs": 81.25, "cos_mean": 0.4135, "cos_p1": 0.329, "sec": 9.6, "sec_per_img": 0.603}
+DIAG_DONE

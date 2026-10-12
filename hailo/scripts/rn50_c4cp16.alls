@@ -1,0 +1,22 @@
+# E1 4단계: RN50 c4 형태 (예선 ORT c4와 같은 층별 정밀도)
+#   16비트(a16_w16) = ORT에서 FP32로 남긴 부분: stem, layer1, AttnPool의 투영 이외 연산(attention 계산 등)
+#   8비트(a8_w8, 기본) = layer2~4, AttnPool q·k·v·c_proj 투영(conv56~59)
+# 층 이름 근거: hailo/layer_map_rn50.csv
+normalization1 = normalization([122.7709383, 116.7460125, 104.09373615], [68.5005327, 66.6321579, 70.32316305])
+model_optimization_flavor(optimization_level=0, compression_level=0)
+model_optimization_config(calibration, batch_size=8, calibset_size=64)
+# stem
+quantization_param([conv1, conv2, conv3, avgpool1], precision_mode=a16_w16)
+# layer1
+quantization_param([conv4, conv5, conv6, conv7, conv8, conv9, conv10, conv11, conv12, conv13, ew_add1, ew_add2, ew_add3], precision_mode=a16_w16)
+# AttnPool: 투영 이외 연산 (평균, 위치 임베딩 더하기, 모양 바꾸기, 잘라내기, 스케일, attention 점수·softmax·가중합)
+# (softmax1은 DFC가 reduce_max/ew_sub/reduce_sum/ew_mult로 나누고, mul_and_add1·2(스케일)는 앞 conv에 합쳐서 이름이 사라짐)
+quantization_param([format_conversion1, avgpool8, concat1, ew_add17, slice1, reduce_max_softmax1, ew_sub_softmax1, reduce_sum_softmax1, ew_mult_softmax1], precision_mode=a16_w16)
+# 데이터×데이터 matmul(attention 점수, 가중합)은 DFC 5.4.0에서 입력 16비트를 지원하지 않음(a8_w8, a8_w8_a8, a8_w8_a16만 가능)
+# → 점수 matmul1은 입력 8비트·출력 16비트(뒤의 softmax가 16비트), 가중합 matmul2는 뒤 conv59(8비트)와 맞추려고 a8_w8.
+#   ORT의 "attention 계산 FP32"와 완전히 같게는 못 옮김(E1 결과로 기록)
+quantization_param([matmul1], precision_mode=a8_w8_a16)
+quantization_param([matmul2], precision_mode=a8_w8_a16)
+
+# 진단: c_proj(conv59)만 16비트
+quantization_param([conv59], precision_mode=a16_w16)

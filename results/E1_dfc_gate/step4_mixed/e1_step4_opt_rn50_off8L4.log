@@ -1,0 +1,64 @@
+[21:05:30] ===== rn50 off8L4 양자화 시작
+[info] Current Time: 21:05:31, 10/12/26
+[info] CPU: Architecture: x86_64, Model: Intel(R) Core(TM) Ultra 7 258V, Number Of Cores: 8, Utilization: 1.3%
+[info] Memory: Total: 23GB, Available: 22GB
+[info] System info: OS: Linux, Kernel: 5.15.167.4-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo optimize /home/sset0/hailo10_work/parse/rn50.har --hw-arch hailo10h --calib-set-path /home/sset0/hailo10_work/calib/calib_rn50_highres64_s0_nhwc_u8.npy --model-script /home/sset0/rn50_off8L4.alls`
+[info] No GPU chosen and no suitable GPU found, falling back to CPU.
+[info] Hailo HW architecture: hailo10h
+[info] Loading model script commands to rn50_image_fp32_q1 from /home/sset0/rn50_off8L4.alls
+[info] Starting Model Optimization
+[warning] Running model optimization with zero level of optimization is not recommended for production use and might lead to suboptimal accuracy results
+[info] Model received quantization params from the hn
+[info] Notice: For optimal performance, if your model has more than 10M parameters, it is recommended to set the compression level to 4. (Current model has 38.30M parameters.)
+[info] Notice: For optimal accuracy with compressed models, it is recommended to set the optimization level to 4.
+[info] MatmulDecompose skipped
+[info] Starting Mixed Precision
+[info] Model Optimization Algorithm Mixed Precision is done (completion time is 00:00:00.54)
+[info] LayerNorm Decomposition skipped
+[info] Starting Statistics Collector
+[info] Using dataset with 64 entries for calibration
+[info] Model Optimization Algorithm Statistics Collector is done (completion time is 00:00:14.51)
+[info] Using dataset with 64 entries for calibration
+[info] Starting Fix zp_comp Encoding
+[info] Model Optimization Algorithm Fix zp_comp Encoding is done (completion time is 00:00:00.00)
+[info] Starting Matmul Equalization
+[info] Model Optimization Algorithm Matmul Equalization is done (completion time is 00:00:00.01)
+[info] Starting MatmulDecomposeFix
+[info] Model Optimization Algorithm MatmulDecomposeFix is done (completion time is 00:00:00.00)
+[info] Starting Translate Parameters
+[info] Model Optimization Algorithm Translate Parameters is done (completion time is 00:00:02.61)
+[info] Finetune encoding skipped
+[info] Bias Correction skipped
+[info] Adaround skipped
+[info] Quantization-Aware Fine-Tuning skipped
+[info] Layer Noise Analysis skipped
+[info] Model Optimization is done
+[info] Saved HAR to: /home/sset0/hailo10_work/opt_off8L4/rn50_image_fp32_q1_optimized.har
+	Command being timed: "hailo optimize /home/sset0/hailo10_work/parse/rn50.har --hw-arch hailo10h --calib-set-path /home/sset0/hailo10_work/calib/calib_rn50_highres64_s0_nhwc_u8.npy --model-script /home/sset0/rn50_off8L4.alls"
+	User time (seconds): 101.97
+	System time (seconds): 7.48
+	Percent of CPU this job got: 174%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:02.67
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4420100
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 887486
+	Voluntary context switches: 134953
+	Involuntary context switches: 26019
+	Swaps: 0
+	File system inputs: 248
+	File system outputs: 1541440
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+[21:06:32] ===== rn50 off8L4 양자화 완료 ✅

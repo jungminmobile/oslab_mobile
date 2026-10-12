@@ -9,7 +9,7 @@
 | 1 | 파싱 (`hailo parser onnx --hw-arch hailo10h`) | ✅ 10/12 |
 | 2 | 양자화 (optimize, 기본 8비트, 64장, 정규화 층 포함) | ✅ RN50·RN50x4 10/12 |
 | 3 | 컴파일 (`.hef`) | ✅ RN50·RN50x4 10/12 |
-| 4 | 섞인 구성(c4 형태) `.alls` 컴파일 + 에뮬레이터 Pets dev 정확도 | ⏳ |
+| 4 | 섞인 구성(c4 형태) `.alls` 컴파일 + 에뮬레이터 Pets dev 정확도 | ⚠️ RN50 진행 중: c4가 Hailo(수준 0)에서 정확도 붕괴, 원인 layer4 |
 
 ## 0단계 (step0_smoke/)
 
@@ -77,3 +77,27 @@
 
 - **두 모델 모두 Hailo-10H용 `.hef` 생성 성공 → E1 관문(전부 8비트 기준) 통과.** 남은 것은 4단계(섞인 구성 + 에뮬레이터 정확도).
 - RN50x4는 컨텍스트가 2배 이상 많아(11개) Pi에서 컨텍스트 전환 비용이 클 것으로 예상된다. Hailo 공식 수치도 RN50 142 FPS vs RN50x4 62.6 FPS로 차이가 크다. E6에서 모델을 고를 때 반영한다.
+
+## 4단계 (step4_mixed/) — RN50 c4: **Hailo에서 정확도 붕괴 발견** (진행 중)
+
+에뮬레이터: DFC `InferenceContext` (FP = `SDK_FP_OPTIMIZED`, 양자화 = `SDK_QUANTIZED`), Pets dev 앞 16장, 노트북 CPU. 스크립트 `hailo/scripts/emu_eval.py`.
+기준: 같은 16장의 ORT FP32 정답률 81.25%. cos = ORT FP32 임베딩과의 유사도.
+
+| 설정 (`hailo/scripts/`) | 8비트로 둔 부분 | top-1 (16장) | cos |
+|---|---|---|---|
+| FP 에뮬레이션 (정규화 층 확인) | — | 81.25 | **1.000** |
+| `e1_base.alls` | 전부 | 0.0 | 0.349 |
+| `rn50_c4.alls` (예선 c4와 같게) | layer2~4, AttnPool 투영 | 0.0 | 0.413 |
+| c4 + equalization 강제 (`rn50_c4eq`) | 같음 | 0.0 | 0.413 (변화 없음) |
+| c4 + c_proj 16비트 (`rn50_c4cp16`) | layer2~4, q·k·v | 0.0 | 0.414 (변화 없음) |
+| Hailo 공식 설정 (`rn50_official`) | q·k·v만 | 75.0 | **0.939** |
+| 공식 + layer2만 8비트 (`rn50_off8L2`) | layer2, q·k·v | 81.25 | 0.849 |
+| 공식 + layer3만 8비트 (`rn50_off8L3`) | layer3, q·k·v | 56.25 | 0.892 |
+| 공식 + **layer4만 8비트** (`rn50_off8L4`) | layer4, q·k·v | 6.25 | **0.395** |
+
+- **원인은 layer4를 8비트로 바꾸는 것**이다. ORT에서는 layer4만 INT8이어도 cos 0.990으로 멀쩡했다(archive R1). 그러나 Hailo(최적화 수준 0, GPU 없음)에서는 layer4 8비트만으로 붕괴한다. → **"예선 구성 = 본선 구성" 가정이 지금 조건에서는 깨진다** (PRD 4-2 함정 2가 실제로 확인됨).
+- equalization을 모델 스크립트로 강제로 켜도 결과가 같았다. 수준 0에서는 적용되지 않는 것으로 보인다.
+- **DFC 5.4.0 제약**: 데이터×데이터 matmul(attention 점수·가중합)은 입력 16비트를 지원하지 않는다(`a8_w8`, `a8_w8_a8`, `a8_w8_a16`만). softmax는 DFC가 reduce_max·ew_sub·reduce_sum·ew_mult로 나누고, 스케일(mul_and_add)은 앞 conv에 합친다. → ORT의 "attention 계산 FP32"는 그대로 옮길 수 없다.
+- `hailo analyze-noise`(층별 노이즈 분석)는 conv56(zp_comp 채널 2048 vs 2080)에서 오류로 멈췄다(`analyze_noise_crash.log`).
+- 16장 표본이라 정답률은 흔들림이 크다. 판단은 cos 위주로 했다.
+- c4 `.hef` 컴파일은 정확도 문제가 정리될 때까지 보류.

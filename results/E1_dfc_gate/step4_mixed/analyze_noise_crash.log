@@ -1,0 +1,15 @@
+    self.noise_energy.assign_add(tf.reduce_mean((native - numeric) ** 2))
+ValueError: in user code:
+    File "/home/sset0/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/hailo_layer_noise_analysis.py", line 257, in predict_function  *
+        return lat_model(data, training=False)
+    File "/home/sset0/hailo10_venv/lib/python3.10/site-packages/keras/src/utils/traceback_utils.py", line 122, in error_handler  **
+        raise e.with_traceback(filtered_tb) from None
+    File "/home/sset0/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/lat_utils/lat_model.py", line 423, in call
+        metric.update_state(native, numeric, partial_numeric=partial_numeric)
+    File "/home/sset0/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/lat_utils/lat_model.py", line 23, in update_state
+        self.noise_energy.assign_add(tf.reduce_mean((native - numeric) ** 2))
+    ValueError: Exception encountered when calling LATModel.call().
+    [1mDimensions must be equal, but are 2048 and 2080 for '{{node lat_model_1/sub_265}} = Sub[T=DT_FLOAT](lat_model_1/conv56_1/act_op_1/Identity, lat_model_1/conv56_3/output_op_1/mul)' with input shapes: [8,1,50,2048], [8,1,50,2080].[0m
+    Arguments received by LATModel.call():
+      • inputs=tf.Tensor(shape=(8, 224, 224, 3), dtype=float32)
+Full Quant Analysis:   0%|          | 0/2 [00:12<?, ?iterations/s]

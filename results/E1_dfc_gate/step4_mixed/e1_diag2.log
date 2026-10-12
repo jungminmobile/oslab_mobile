@@ -1,0 +1,10 @@
+[21:02:43] ===== rn50 off8L2 양자화 시작
+[21:03:42] ===== rn50 off8L2 양자화 완료 ✅
+{"date": "2026-10-12T21:04:02", "tag": "smoke_off8L2", "har": "rn50_image_fp32_q1_optimized.har", "ctx": "quantized", "data": "pets_dev", "n": 16, "top1": 81.25, "top5": 100.0, "fp32_ort_top1_same_imgs": 81.25, "cos_mean": 0.8491, "cos_p1": 0.7457, "sec": 11.0, "sec_per_img": 0.69}
+[21:04:03] ===== rn50 off8L3 양자화 시작
+[21:05:08] ===== rn50 off8L3 양자화 완료 ✅
+{"date": "2026-10-12T21:05:28", "tag": "smoke_off8L3", "har": "rn50_image_fp32_q1_optimized.har", "ctx": "quantized", "data": "pets_dev", "n": 16, "top1": 56.25, "top5": 100.0, "fp32_ort_top1_same_imgs": 81.25, "cos_mean": 0.8918, "cos_p1": 0.8399, "sec": 12.1, "sec_per_img": 0.759}
+[21:05:30] ===== rn50 off8L4 양자화 시작
+[21:06:32] ===== rn50 off8L4 양자화 완료 ✅
+{"date": "2026-10-12T21:06:52", "tag": "smoke_off8L4", "har": "rn50_image_fp32_q1_optimized.har", "ctx": "quantized", "data": "pets_dev", "n": 16, "top1": 6.25, "top5": 37.5, "fp32_ort_top1_same_imgs": 81.25, "cos_mean": 0.3952, "cos_p1": 0.2738, "sec": 11.4, "sec_per_img": 0.713}
+DIAG_DONE

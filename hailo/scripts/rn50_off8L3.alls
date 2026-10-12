@@ -1,0 +1,10 @@
+# 진단용: Hailo Model Zoo 공식 RN50 이미지 인코더 설정(v5.4) 그대로
+normalization1 = normalization([122.7709383, 116.7460125, 104.09373615], [68.5005327, 66.6321579, 70.32316305])
+model_optimization_flavor(optimization_level=0, compression_level=0)
+model_optimization_config(calibration, batch_size=8, calibset_size=64)
+quantization_param({ew_add*}, precision_mode=a16_w16)
+quantization_param({conv*}, precision_mode=a16_w16)
+quantization_param([format_conversion1], precision_mode=a16_w16)
+quantization_param([conv56, conv57, conv58], precision_mode=a8_w8)
+# 진단: 공식 설정에서 L3만 8비트
+quantization_param([conv27, conv28, conv29, conv30, conv31, conv32, conv33, conv34, conv35, conv36, conv37, conv38, conv39, conv40, conv41, conv42, conv43, conv44, conv45, ew_add8, ew_add9, ew_add10, ew_add11, ew_add12, ew_add13], precision_mode=a8_w8)
