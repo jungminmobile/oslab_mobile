@@ -1,0 +1,55 @@
+===== PARSE rn50  16:31:33
+exit=0
+[info] Start nodes mapped from original model: 'image': 'rn50_image_fp32_q1/input_layer1'.
+[info] End nodes mapped from original model: '/attnpool/Gather_11'.
+[info] Translation completed on ONNX model rn50_image_fp32_q1 (completion time: 00:00:07.24)
+[info] Saved HAR to: /home/sset0/hailo10_work/parse/rn50.har
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:20.71
+	Maximum resident set size (kbytes): 2836764
+===== PARSE rn50x4  16:31:54
+exit=0
+[info] Start nodes mapped from original model: 'image': 'rn50x4_image_fp32_q1/input_layer1'.
+[info] End nodes mapped from original model: '/attnpool/Gather_11'.
+[info] Translation completed on ONNX model rn50x4_image_fp32_q1 (completion time: 00:00:15.31)
+[info] Saved HAR to: /home/sset0/hailo10_work/parse/rn50x4.har
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:26.25
+	Maximum resident set size (kbytes): 4736580
+===== LAYER MAP  16:32:20
+[info] No GPU chosen and no suitable GPU found, falling back to CPU.
+[info] Hailo HW architecture: hailo10h
+rn50 layers 95 {'const_input': 1, 'input_layer': 1, 'conv': 59, 'avgpool': 8, 'ew_add': 17, 'format_conversion': 1, 'concat': 1, 'normalization': 2, 'slice': 1, 'matmul': 2, 'softmax': 1, 'output_layer': 1}
+rn50 attnpool layers 15
+   rn50_image_fp32_q1/const_input1 const_input /attnpool/Add_input
+   rn50_image_fp32_q1/format_conversion1 format_conversion /attnpool/Reshape;/attnpool/Transpose
+   rn50_image_fp32_q1/avgpool8 avgpool /attnpool/ReduceMean
+   rn50_image_fp32_q1/concat1 concat /attnpool/Concat_1
+   rn50_image_fp32_q1/ew_add17 ew_add /attnpool/Add
+   rn50_image_fp32_q1/conv56 conv /attnpool/MatMul_1;/attnpool/Add_2;/attnpool/Reshape_2;/attnpool/Transpose_2;/attnpool/Reshape_5;/attnpool/Transpose_4
+   rn50_image_fp32_q1/conv57 conv /attnpool/MatMul_2;/attnpool/Add_3;/attnpool/Reshape_3;/attnpool/Transpose_3;/attnpool/Reshape_6
+   rn50_image_fp32_q1/mul_and_add1 normalization /attnpool/Mul_3
+   rn50_image_fp32_q1/slice1 slice /attnpool/Slice
+   rn50_image_fp32_q1/conv58 conv /attnpool/MatMul;/attnpool/Add_1;/attnpool/Reshape_1;/attnpool/Transpose_1;/attnpool/Reshape_4
+   rn50_image_fp32_q1/mul_and_add2 normalization /attnpool/Mul_2
+   rn50_image_fp32_q1/matmul1 matmul /attnpool/MatMul_3
+   rn50_image_fp32_q1/softmax1 softmax /attnpool/Softmax
+   rn50_image_fp32_q1/matmul2 matmul /attnpool/MatMul_4;/attnpool/Transpose_5;/attnpool/Reshape_7
+   rn50_image_fp32_q1/conv59 conv /attnpool/Gemm;/attnpool/Reshape_8;/attnpool/Gather_11
+[info] Hailo HW architecture: hailo10h
+rn50x4 layers 135 {'const_input': 1, 'input_layer': 1, 'conv': 89, 'avgpool': 8, 'ew_add': 27, 'format_conversion': 1, 'concat': 1, 'normalization': 2, 'slice': 1, 'matmul': 2, 'softmax': 1, 'output_layer': 1}
+rn50x4 attnpool layers 15
+   rn50x4_image_fp32_q1/const_input1 const_input /attnpool/Add_input
+   rn50x4_image_fp32_q1/format_conversion1 format_conversion /attnpool/Reshape;/attnpool/Transpose
+   rn50x4_image_fp32_q1/avgpool8 avgpool /attnpool/ReduceMean
+   rn50x4_image_fp32_q1/concat1 concat /attnpool/Concat_1
+   rn50x4_image_fp32_q1/ew_add27 ew_add /attnpool/Add
+   rn50x4_image_fp32_q1/conv86 conv /attnpool/MatMul_1;/attnpool/Reshape_2;/attnpool/Transpose_2;/attnpool/Reshape_5;/attnpool/Transpose_4
+   rn50x4_image_fp32_q1/conv87 conv /attnpool/MatMul_2;/attnpool/Add_3;/attnpool/Reshape_3;/attnpool/Transpose_3;/attnpool/Reshape_6
+   rn50x4_image_fp32_q1/mul_and_add1 normalization /attnpool/Mul_3
+   rn50x4_image_fp32_q1/slice1 slice /attnpool/Slice
+   rn50x4_image_fp32_q1/conv88 conv /attnpool/MatMul;/attnpool/Add_1;/attnpool/Reshape_1;/attnpool/Transpose_1;/attnpool/Reshape_4
+   rn50x4_image_fp32_q1/mul_and_add2 normalization /attnpool/Mul_2
+   rn50x4_image_fp32_q1/matmul1 matmul /attnpool/MatMul_3
+   rn50x4_image_fp32_q1/softmax1 softmax /attnpool/Softmax
+   rn50x4_image_fp32_q1/matmul2 matmul /attnpool/MatMul_4;/attnpool/Transpose_5;/attnpool/Reshape_7
+   rn50x4_image_fp32_q1/conv89 conv /attnpool/Gemm;/attnpool/Reshape_8;/attnpool/Gather_11
+===== STEP1 DONE 16:32:30

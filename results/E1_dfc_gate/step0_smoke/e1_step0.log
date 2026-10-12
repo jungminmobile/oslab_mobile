@@ -1,0 +1,92 @@
+/home/sset0/hailo10_work/calib:
+total 24976
+drwxr-xr-x 2 sset0 sset0     4096 Oct 12 16:25 .
+drwxr-xr-x 6 sset0 sset0     4096 Oct 12 16:25 ..
+-rwxr-xr-x 1 sset0 sset0  9633920 Oct 12 16:25 calib_rn50_highres64_s0_nhwc_u8.npy
+-rwxr-xr-x 1 sset0 sset0 15925376 Oct 12 16:25 calib_rn50x4_highres64_s0_nhwc_u8.npy
+
+/home/sset0/hailo10_work/onnx:
+total 149624
+drwxr-xr-x 2 sset0 sset0      4096 Oct 12 16:25 .
+drwxr-xr-x 6 sset0 sset0      4096 Oct 12 16:25 ..
+-rwxr-xr-x 1 sset0 sset0 153204287 Oct 12 16:25 rn50_image_fp32_q1.onnx
+tiny.onnx ok
+== hailo version
+Hailo Dataflow Compiler v5.4.0
+== optimize help (calib flags)
+                      [--hw-arch {hailo15h,hailo15m,hailo15l,hailo10h,hailo10p}]
+                      (--calib-set-path CALIBRATION_SET_PATH | --use-random-calib-set)
+                      [--calib-random-max CALIB_RANDOM_MAX]
+                      [--use-random-weights] [--work-dir WORK_DIR]
+                      [--model-script MODEL_SCRIPT]
+Optimize the network model and parameters using a pre-processed calibration set.
+  --hw-arch {hailo15h,hailo15m,hailo15l,hailo10h,hailo10p}
+  --calib-set-path CALIBRATION_SET_PATH
+                        Path to the calibration set .npy file containing a
+                        (calib_size, h, w, c)
+== parse
+[info] Start nodes mapped from original model: 'x': 'tiny/input_layer1'.
+[info] End nodes mapped from original model: 'z'.
+[info] Translation completed on ONNX model tiny (completion time: 00:00:00.07)
+[info] Hailo HW architecture: hailo10h
+[info] Saved HAR to: /home/sset0/hailo10_work/smoke/tiny.har
+== optimize
+[info] Quantization-Aware Fine-Tuning skipped
+[info] Layer Noise Analysis skipped
+[info] The calibration set seems to not be normalized, because the values range is [(7.938862e-05, 0.9999968), (3.2575368e-05, 0.9997411), (0.0002863087, 0.9997738)].
+Since the neural core works in 8-bit (between 0 to 255), a quantization will occur on the CPU of the runtime platform.
+Add a normalization layer to the model to offload the normalization to the neural core.
+Refer to the user guide Hailo Dataflow Compiler user guide / Model Optimization / Optimization Related Model Script Commands / model_modification_commands / normalization for details.
+[info] Model Optimization is done
+[info] Saved HAR to: /home/sset0/hailo10_work/smoke/tiny_optimized.har
+== compile
+[info] tiny Successful Partition and Allocation (duration: 0s)
+[info] Compiling kernels of tiny_context_0...
+[info] tiny Successful Kernel Compilation (duration: 0s)
+[info] Building HEF...
+[info] tiny Successful Compilation (duration: 0s)
+[info] Compilation complete
+[info] Saved HEF to: /home/sset0/hailo10_work/smoke/tiny.hef
+[info] Saved HAR to: /home/sset0/hailo10_work/smoke/tiny_compiled.har
+total 552
+drwxr-xr-x 2 sset0 sset0   4096 Oct 12 16:26 .
+drwxr-xr-x 6 sset0 sset0   4096 Oct 12 16:25 ..
+-rw-r--r-- 1 sset0 sset0    448 Oct 12 16:26 acceleras.log
+-rw-r--r-- 1 sset0 sset0      0 Oct 12 16:26 allocator.log
+-rw-r--r-- 1 sset0 sset0  98432 Oct 12 16:25 calib_tiny.npy
+-rw-r--r-- 1 sset0 sset0   8094 Oct 12 16:26 hailo_sdk.client.log
+-rw-r--r-- 1 sset0 sset0  32951 Oct 12 16:26 hailo_sdk.core.log
+-rw-r--r-- 1 sset0 sset0  20480 Oct 12 16:25 tiny.har
+-rw-r--r-- 1 sset0 sset0  49152 Oct 12 16:26 tiny.hef
+-rw-r--r-- 1 sset0 sset0   1008 Oct 12 16:25 tiny.onnx
+-rw-r--r-- 1 sset0 sset0 215040 Oct 12 16:26 tiny_compiled.har
+-rw-r--r-- 1 sset0 sset0 112640 Oct 12 16:26 tiny_optimized.har
+== subcommands
+usage: hailo [-h] [--version]
+             {analyze-noise,compiler,params-csv,parser,profiler,optimize,visualizer,tutorial,har,join,har-onnx-rt,runtime-profiler,help}
+             ...
+
+Hailo Command Line Utility
+
+positional arguments:
+  {analyze-noise,compiler,params-csv,parser,profiler,optimize,visualizer,tutorial,har,join,har-onnx-rt,runtime-profiler,help}
+                        Hailo utilities aimed to help with everything you need
+    analyze-noise       Analyze network quantization noise
+    compiler            Compile Hailo model to HEF binary files
+    params-csv          Convert translated params to csv
+    parser              Translate network to Hailo network
+    profiler            Hailo models Profiler
+    optimize            Optimize model
+    visualizer          HAR visualization tool
+    tutorial            Runs the tutorials in jupyter notebook
+    har                 Query and extract information from Hailo Archive file
+    join                Join two Hailo models to a single model
+    har-onnx-rt         Generates ONNX-Runtime model including pre/post
+                        processing
+    runtime-profiler    Hailo Runtime Profiler
+    help                Show the list of commands
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+== STEP0 SMOKE DONE
