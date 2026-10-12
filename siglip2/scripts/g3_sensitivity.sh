@@ -3,6 +3,8 @@
 # 사용 (siglip2 폴더에서): bash scripts/g3_sensitivity.sh [block|optype|all]
 # 양자화: s2_quantize.py 기본(MinMax, highres 256 s0, S8S8). 스크리닝: s2_screen.py (dev 6종 각 앞 200장, 정수 커널, D-024)
 set -euo pipefail
+# Windows Git Bash(MSYS)는 '/'로 시작하는 인자(/trunk/...)를 Windows 경로로 바꾼다 → 노드 이름이 망가지므로 끈다
+export MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL='*'
 export HF_HUB_DISABLE_SYMLINKS_WARNING=1 OPENBLAS_NUM_THREADS=1
 PY="$SIGLIP2_PYTHON"
 R=../results/siglip2/G3_sensitivity
@@ -13,6 +15,8 @@ q() {  # q <tag> <s2_quantize 노드 선택 인자...>
   if [ ! -f "$SIGLIP2_ARTIFACTS/onnx/$f" ]; then
     RN50_RESULTS=$R "$PY" -u s2_quantize.py --calib-source highres --calib-n 256 --tag "$tag" "$@" >&2
   fi
+  # $( ) 안의 실패는 set -e로 멈추지 않으므로 결과 파일로 확인하고, 없으면 스크립트 전체를 멈춘다
+  [ -f "$SIGLIP2_ARTIFACTS/onnx/$f" ] || { echo "QUANT FAILED $tag" >&2; kill -TERM $$; exit 1; }
   echo "$f"
 }
 exact() {  # exact <블록 안 노드 접미사> → 블록 0~11의 정확한 노드 이름 쉼표 목록
