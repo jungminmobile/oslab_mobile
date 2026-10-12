@@ -63,7 +63,8 @@ python quantize_onnx.py --enc image --variant _q1 --calib-source highres --only 
 python evaluate.py --data cifar_A pets_dev flowers_dev cars_dev food_dev caltech_dev --models fp32 rn50_image_int8_q1_minmax_highres256_s0_c4.onnx
 
 # 6) 속도 비교 (다른 작업과 동시에 돌리지 말 것)
-python bench_speed.py --models fp32=rn50_image_fp32_q1.onnx c4=rn50_image_int8_q1_minmax_highres256_s0_c4.onnx
+# 감소율 기준(Baseline)은 q1 적용 전 원본 fp32다. q1은 따로 한 줄로 보고한다 (PRD 5절)
+python bench_speed.py --models fp32=rn50_image_fp32.onnx fp32_q1=rn50_image_fp32_q1.onnx c4=rn50_image_int8_q1_minmax_highres256_s0_c4.onnx
 
 # 7) 최종 보고 (설정이 모두 정해진 뒤 1회): 테스트 전체
 #    ※ PRD E0에서 기본 실행을 정수 커널로 바꿀 예정. 보고 수치는 정수 커널만 사용

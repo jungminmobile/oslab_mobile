@@ -1,0 +1,8 @@
+{"date": "2026-10-12T15:41:33", "data": "cifar_A", "n": 1000, "model": "fp32", "MiB": null, "exec": "int", "top1": 40.7, "top5": 73.1, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-12T15:42:31", "data": "cifar_A", "n": 1000, "model": "rn50_image_fp32.onnx", "MiB": 146.1, "exec": "int", "top1": 40.7, "top5": 73.1, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 58}
+{"date": "2026-10-12T15:43:23", "data": "cifar_A", "n": 1000, "model": "rn50_image_fp32_q1.onnx", "MiB": 146.1, "exec": "int", "top1": 40.7, "top5": 73.1, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 53}
+{"date": "2026-10-12T15:43:57", "data": "cifar_A", "n": 1000, "model": "rn50_image_int8_q1_minmax_highres256_s0_c3.onnx", "MiB": 41.5, "exec": "int", "top1": 37.7, "top5": 70.8, "cos_mean": 0.9649, "cos_p1": 0.946, "eval_sec": 33}
+{"date": "2026-10-12T15:43:57", "data": "pets_dev", "n": 990, "model": "fp32", "MiB": null, "exec": "int", "top1": 84.34, "top5": 99.39, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-12T15:44:56", "data": "pets_dev", "n": 990, "model": "rn50_image_fp32.onnx", "MiB": 146.1, "exec": "int", "top1": 84.34, "top5": 99.39, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 60}
+{"date": "2026-10-12T15:45:49", "data": "pets_dev", "n": 990, "model": "rn50_image_fp32_q1.onnx", "MiB": 146.1, "exec": "int", "top1": 84.34, "top5": 99.39, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 53}
+{"date": "2026-10-12T15:46:21", "data": "pets_dev", "n": 990, "model": "rn50_image_int8_q1_minmax_highres256_s0_c3.onnx", "MiB": 41.5, "exec": "int", "top1": 82.93, "top5": 98.99, "cos_mean": 0.9568, "cos_p1": 0.9267, "eval_sec": 32}
