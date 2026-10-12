@@ -1,0 +1,49 @@
+{
+ "date": "2026-10-12T15:53:00",
+ "env": {
+  "python": "3.11.15",
+  "onnxruntime": "1.25.0",
+  "cpu": "x86_64",
+  "threads": 2
+ },
+ "cond": {
+  "models": [
+   "fp32=rn50_image_fp32.onnx",
+   "fp32q1=rn50_image_fp32_q1.onnx",
+   "c3=rn50_image_int8_q1_minmax_highres256_s0_c3.onnx"
+  ],
+  "n": 200,
+  "repeats": 3,
+  "warmup": 10,
+  "threads": 2
+ },
+ "results": {
+  "fp32": {
+   "file": "rn50_image_fp32.onnx",
+   "MiB": 146.1,
+   "ms_per_img_mean": 64.95,
+   "ms_per_img_std": 2.39,
+   "ms_per_img_min": 62.28,
+   "lat_p50": 63.54,
+   "lat_p95": 81.8
+  },
+  "fp32q1": {
+   "file": "rn50_image_fp32_q1.onnx",
+   "MiB": 146.1,
+   "ms_per_img_mean": 62.26,
+   "ms_per_img_std": 1.62,
+   "ms_per_img_min": 60.94,
+   "lat_p50": 59.74,
+   "lat_p95": 79.87
+  },
+  "c3": {
+   "file": "rn50_image_int8_q1_minmax_highres256_s0_c3.onnx",
+   "MiB": 41.5,
+   "ms_per_img_mean": 39.81,
+   "ms_per_img_std": 1.81,
+   "ms_per_img_min": 38.41,
+   "lat_p50": 38.55,
+   "lat_p95": 50.72
+  }
+ }
+}

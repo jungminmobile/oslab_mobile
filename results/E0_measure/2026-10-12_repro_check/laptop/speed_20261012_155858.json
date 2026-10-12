@@ -1,0 +1,49 @@
+{
+ "date": "2026-10-12T15:58:57",
+ "env": {
+  "python": "3.11.9",
+  "onnxruntime": "1.25.0",
+  "cpu": "Intel64 Family 6 Model 189 Stepping 1, GenuineIntel",
+  "threads": 1
+ },
+ "cond": {
+  "models": [
+   "fp32=rn50_image_fp32.onnx",
+   "fp32q1=rn50_image_fp32_q1.onnx",
+   "c3=rn50_image_int8_q1_minmax_highres256_s0_c3.onnx"
+  ],
+  "n": 200,
+  "repeats": 3,
+  "warmup": 10,
+  "threads": 1
+ },
+ "results": {
+  "fp32": {
+   "file": "rn50_image_fp32.onnx",
+   "MiB": 146.1,
+   "ms_per_img_mean": 144.53,
+   "ms_per_img_std": 31.98,
+   "ms_per_img_min": 107.83,
+   "lat_p50": 156.61,
+   "lat_p95": 168.52
+  },
+  "fp32q1": {
+   "file": "rn50_image_fp32_q1.onnx",
+   "MiB": 146.1,
+   "ms_per_img_mean": 136.04,
+   "ms_per_img_std": 26.86,
+   "ms_per_img_min": 105.03,
+   "lat_p50": 148.55,
+   "lat_p95": 156.46
+  },
+  "c3": {
+   "file": "rn50_image_int8_q1_minmax_highres256_s0_c3.onnx",
+   "MiB": 41.5,
+   "ms_per_img_mean": 86.38,
+   "ms_per_img_std": 9.73,
+   "ms_per_img_min": 75.15,
+   "lat_p50": 90.05,
+   "lat_p95": 104.67
+  }
+ }
+}

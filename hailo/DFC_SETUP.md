@@ -2,6 +2,12 @@
 
 > 작성일 2026-10-12. "확인 필요"가 붙은 내용은 공식 문서에서 직접 확인하지 못한 것이니, 설치하면서 꼭 확인하세요.
 
+> **설치 현황 (2026-10-12, 정민 노트북)**
+> - DFC **v5.4.0** 설치 완료: WSL `Ubuntu-22.04`, 가상환경 `~/hailo10_venv`, Python 3.10.12. `--hw-arch` 선택지에 `hailo10h` 확인.
+> - WSL 메모리 23GB로 늘림(`C:\Users\sset0\.wslconfig`: memory=24GB, swap=16GB).
+> - 같은 배포판의 `~/hailo_venv`는 이전 프로젝트용 DFC **3.33.0**(Hailo-8/8L 전용, hailo10h 미지원)이다. 건드리지 않는다.
+> - 본선 Pi의 HailoRT 버전은 주최측 확인 중("최신 버전 예정"이라는 답변). 5.4.0이 아니면 DFC 버전을 맞춘다(8장).
+
 ## 1. 요약
 - **무엇을 설치하나**: Hailo Dataflow Compiler(DFC) **5.x**. ONNX 모델을 Hailo-10H용 `.hef` 파일로 바꾸는 프로그램입니다.
 - **어디에 설치하나**: 노트북의 **WSL2 `Ubuntu-22.04`** 안에 만든 Python 가상환경(venv). 기본 배포판(Ubuntu-20.04)은 쓰지 않습니다.
@@ -61,12 +67,12 @@ cp /mnt/c/Users/<윈도우사용자명>/Downloads/hailo_dataflow_compiler-5.*-py
 ```
 **⑤ 가상환경을 만들고 설치**
 ```bash
-python3 -m venv ~/hailo/dfc_venv
-source ~/hailo/dfc_venv/bin/activate
+python3 -m venv ~/hailo10_venv
+source ~/hailo10_venv/bin/activate
 pip install --upgrade pip wheel
 pip install ./hailo_dataflow_compiler-5.*-py3-none-linux_x86_64.whl
 ```
-새 터미널을 열 때마다 `source ~/hailo/dfc_venv/bin/activate`를 다시 실행해야 합니다.
+새 터미널을 열 때마다 `source ~/hailo10_venv/bin/activate`를 다시 실행해야 합니다.
 
 **⑥ (선택) Model Zoo 설치** (CLIP용 레퍼런스 설정을 볼 때 씁니다)
 ```bash
@@ -83,7 +89,7 @@ DFC 버전과 맞는 태그를 고르세요. 예를 들어 DFC 5.4.0이면 Model
 
 ## 6. 설치 확인 (스모크 테스트)
 ```bash
-source ~/hailo/dfc_venv/bin/activate
+source ~/hailo10_venv/bin/activate
 hailo --version                 # DFC 5.x.y가 나와야 정상
 pip show hailo_dataflow_compiler | head -3
 hailo parser onnx --help | grep -i hw-arch   # hailo10h가 선택지에 있는지 확인
@@ -140,7 +146,7 @@ apt-cache policy hailo-h10-all h10-hailort
 |---|---|
 | `pygraphviz` 빌드 실패 | `sudo apt install graphviz graphviz-dev libgraphviz-dev python3-dev` 후 다시 설치 |
 | `... is not a supported wheel on this platform` | Python 버전이나 CPU 종류가 맞지 않음. `python3 --version` 확인, x86_64용 wheel인지 확인 |
-| `hailo: command not found` | venv를 켜지 않은 상태. `source ~/hailo/dfc_venv/bin/activate` 실행 |
+| `hailo: command not found` | venv를 켜지 않은 상태. `source ~/hailo10_venv/bin/activate` 실행 |
 | 실수로 Ubuntu-20.04에서 설치함 | 20.04는 DFC 5.x 지원 목록에 없음. `wsl -d Ubuntu-22.04`로 들어가서 다시 설치 |
 | 컴파일 중 프로세스가 강제 종료됨 (Killed) | 메모리 부족. `.wslconfig`에서 memory/swap 늘리기 |
 | hash mismatch, 다운로드 오류 | 네트워크 문제. 다시 받기 |
