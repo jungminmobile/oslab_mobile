@@ -163,3 +163,10 @@
 - 상태: 확정(자동) / 2026-10-13
 - 결정: `transformers==5.19.0` 추가 (open_clip `HFTokenizer`가 `transformers.AutoTokenizer` 사용). `siglip2/requirements.txt`에 고정
 - 근거: 첫 G0 실행이 `ModuleNotFoundError: transformers`로 멈춤 (`artifacts/siglip2/logs/g0_smoke_run1.log`)
+
+## D-023 SigLIP2 양자화 기본 형식: S8S8 QDQ, highres 256장 시드 0
+- 상태: 확정(자동) / 2026-10-13
+- 결정: `s2_quantize.py` 기본값 = QDQ, 가중치 INT8 대칭 채널별, 활성값 **INT8(S8)** 비대칭 텐서별, MinMax, 보정 highres 256장 시드 0. `--act-type u8`로 RN50 현재 main(U8S8)과 같게 만들 수 있다
+- 대안: RN50 main 현재값 U8S8을 그대로
+- 근거: PRD 3절 — E0에서 기본값을 S8S8로 바꿀 계획이고, x86에서는 S8S8도 U8S8로 바뀌어 계산이 같다(정민 확인). PRD 5절 E3 전 기본 보정값
+- 틀렸다면 보일 신호: 이 PC에서 s8과 u8 모델의 출력이 다름 → G3 첫 실험에서 한 번 비교해 기록
