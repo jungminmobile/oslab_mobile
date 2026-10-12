@@ -1,0 +1,7 @@
+{"date": "2026-10-13T05:21:23", "data": "cifar_A", "n": 1000, "model": "fp32", "MiB": null, "exec": "int", "top1": 76.9, "top5": 94.4, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-13T05:21:23", "data": "cifar_B", "n": 1000, "model": "fp32", "MiB": null, "exec": "int", "top1": 77.4, "top5": 94.6, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-13T05:21:23", "data": "pets_dev", "n": 990, "model": "fp32", "MiB": null, "exec": "int", "top1": 93.33, "top5": 99.6, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-13T05:21:23", "data": "flowers_dev", "n": 957, "model": "fp32", "MiB": null, "exec": "int", "top1": 86.73, "top5": 95.19, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-13T05:21:23", "data": "cars_dev", "n": 967, "model": "fp32", "MiB": null, "exec": "int", "top1": 93.8, "top5": 99.9, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-13T05:21:23", "data": "food_dev", "n": 985, "model": "fp32", "MiB": null, "exec": "int", "top1": 89.44, "top5": 98.17, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-13T05:21:23", "data": "caltech_dev", "n": 1024, "model": "fp32", "MiB": null, "exec": "int", "top1": 95.02, "top5": 99.32, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}

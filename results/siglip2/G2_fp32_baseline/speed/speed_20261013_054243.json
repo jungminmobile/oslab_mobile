@@ -1,0 +1,39 @@
+{
+ "date": "2026-10-13T05:42:43",
+ "env": {
+  "python": "3.11.9",
+  "onnxruntime": "1.25.0",
+  "cpu": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+  "threads": 2
+ },
+ "cond": {
+  "models": [
+   "fp32=siglip2_image_fp32.onnx",
+   "int8_all=siglip2_image_int8_minmax_highres256_s0_s8_all.onnx"
+  ],
+  "n": 200,
+  "repeats": 3,
+  "warmup": 20,
+  "threads": 2
+ },
+ "results": {
+  "fp32": {
+   "file": "siglip2_image_fp32.onnx",
+   "MiB": 354.5,
+   "ms_per_img_mean": 348.14,
+   "ms_per_img_std": 10.53,
+   "ms_per_img_min": 338.88,
+   "lat_p50": 346.67,
+   "lat_p95": 413.42
+  },
+  "int8_all": {
+   "file": "siglip2_image_int8_minmax_highres256_s0_s8_all.onnx",
+   "MiB": 89.6,
+   "ms_per_img_mean": 298.72,
+   "ms_per_img_std": 3.18,
+   "ms_per_img_min": 295.75,
+   "lat_p50": 296.31,
+   "lat_p95": 359.38
+  }
+ }
+}

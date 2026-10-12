@@ -1,0 +1,1 @@
+{"date": "2026-10-13T05:27:08", "commit": "27ccbb4", "dirty": false, "data": "pets_dev", "model": "fp32", "onnx": "siglip2_image_fp32.onnx", "exec": "fp32_ort_enable_all", "n": 990, "classes": 37, "classes_present": 37, "n_templates": 1, "n_calib_candidates": 68, "top1": 93.33, "top5": 99.6, "threads": 4, "sec": 325}
