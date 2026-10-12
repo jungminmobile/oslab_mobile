@@ -44,6 +44,8 @@ def _setup_paths():
     art = Path(os.environ["SIGLIP2_ARTIFACTS"])
     defaults = {"RN50_DATA": data / "cifar100", "RN50_EXTRA": data / "extra", "RN50_CACHE": art / "cache",
                 "RN50_ONNX": art / "onnx", "RN50_RESULTS": art / "results_tmp"}
+    global RESULTS_EXPLICIT
+    RESULTS_EXPLICIT = "RN50_RESULTS" in os.environ   # 결과를 쓰는 스크립트는 이 값이 True여야 한다 (require_results_dir)
     for k, v in defaults.items():
         os.environ.setdefault(k, str(v))
     # RN50 폴더 안을 가리키면 RN50 캐시·결과를 덮어쓰므로 멈춘다
@@ -53,8 +55,13 @@ def _setup_paths():
     for k in ("RN50_CACHE", "RN50_ONNX"):
         p = Path(os.environ[k]).resolve()
         assert art.resolve() in (p, *p.parents), f"{k}={p} 는 SIGLIP2_ARTIFACTS 아래여야 함 (D-013)"
+    # RN50 결과는 rn50/ 밖의 results/E*에도 있다. SigLIP2 결과는 results/siglip2 또는 artifacts 아래에만 쓴다
+    p = Path(os.environ["RN50_RESULTS"]).resolve()
+    ok = [(REPO / "results" / "siglip2").resolve(), art.resolve()]
+    assert any(o in (p, *p.parents) for o in ok), f"RN50_RESULTS={p} 는 results/siglip2 또는 SIGLIP2_ARTIFACTS 아래여야 함"
 
 
+RESULTS_EXPLICIT = False
 _setup_paths()
 if str(RN50_DIR) not in sys.path:
     sys.path.insert(0, str(RN50_DIR))
@@ -64,6 +71,12 @@ import datasets as RD    # noqa: E402  RN50 데이터 규칙 (rn50/datasets.py)
 # 같은 이름의 다른 패키지(예: Hugging Face datasets)를 잘못 불러오지 않았는지 확인
 assert Path(RC.__file__).resolve().parent == RN50_DIR.resolve(), RC.__file__
 assert Path(RD.__file__).resolve().parent == RN50_DIR.resolve(), RD.__file__
+
+
+def require_results_dir():
+    """결과를 기록하는 스크립트용: RN50_RESULTS를 명시하지 않으면 멈춘다 (기본값 artifacts/results_tmp에 조용히 쌓이는 것 방지)."""
+    assert RESULTS_EXPLICIT, "RN50_RESULTS=../results/siglip2/<단계>_<주제> 를 지정해서 실행 (D-012)"
+    return RC.RESULTS_DIR
 
 
 def load_model(device="cpu"):

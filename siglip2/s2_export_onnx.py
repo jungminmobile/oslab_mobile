@@ -82,15 +82,29 @@ def op_table(path):
             "n_pool_nodes": sum("attn_pool" in n for n in names)}
 
 
-def verify(model, preprocess, paths, n, threads):
+def cifar_dev(preprocess, n):
     import torch
     from torchvision.datasets import CIFAR100
     ds = CIFAR100(str(RC.DATA_ROOT), train=True, download=False)
     s0 = RC.VAL_SPLITS["A"]
     x = torch.stack([preprocess(ds[i][0]) for i in range(s0, s0 + n)])
     assert x.shape == (n, 3, 224, 224)
+    return x
+
+
+def torch_embed(model, x):
+    import torch
     with torch.inference_mode():
-        ref_raw = torch.cat([model.visual(x[i:i + 16]) for i in range(0, n, 16)]).float().numpy()
+        return torch.cat([model.visual(x[i:i + 16]) for i in range(0, len(x), 16)]).float().numpy()
+
+
+def fused_reference(model, preprocess, n):
+    return RC.l2n(torch_embed(model, cifar_dev(preprocess, n)))
+
+
+def verify(model, preprocess, paths, n, threads):
+    x = cifar_dev(preprocess, n)
+    ref_raw = torch_embed(model, x)
     ref = RC.l2n(ref_raw)
     res = {}
     for p in paths:
@@ -125,19 +139,26 @@ def main():
     (out / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
     model, preprocess, _ = S.load_model()
+    fused_ref = fused_reference(model, preprocess, a.verify) if a.verify else None   # fused 상태 PyTorch 출력 (D-019 확인용)
     n_unfused = 0 if a.fused_attn else unfuse_attention(model)
     print(f"fused attention 끈 모듈 수: {n_unfused}")
     RC.ONNX_DIR.mkdir(parents=True, exist_ok=True)
     paths = [RC.ONNX_DIR / FP32_IMAGE, RC.ONNX_DIR / FP32_IMAGE_B1]
     t0 = time.time()
+    reused = []
     for p, dyn in zip(paths, (True, False)):
         if p.exists() and not a.overwrite:
-            print(f"{p.name} 이미 있음 — 재사용 (--overwrite로 다시 만들기)")
+            import onnx
+            file_opset = next(o.version for o in onnx.load(str(p), load_external_data=False).opset_import if o.domain in ("", "ai.onnx"))
+            assert file_opset == a.opset and not a.fused_attn, \
+                f"{p.name}(opset {file_opset})를 다른 설정으로 재사용할 수 없음 — --overwrite로 다시 만들기"
+            print(f"{p.name} 이미 있음 — 재사용 (opset {file_opset}, --overwrite로 다시 만들기)")
+            reused.append(p.name)
         else:
             export(model, p, dyn, a.opset)
     row = {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"],
            "dirty": env["git"]["dirty"], "options": vars(a), "model": S.MODEL_ID, "opset": a.opset,
-           "unfused_attention_modules": n_unfused,
+           "unfused_attention_modules": n_unfused, "reused_files": reused,
            "export_sec": round(time.time() - t0, 1),
            "files": {p.name: {"MiB": round(p.stat().st_size / 2**20, 2), "sha256": _sha256(p)} for p in paths}}
     if a.ops:
@@ -145,6 +166,11 @@ def main():
         (out / "onnx_ops.json").write_text(json.dumps(row["ops"], ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     if a.verify:
         row["verify"] = verify(model, preprocess, paths, a.verify, a.threads)
+        unf = RC.l2n(torch_embed(model, cifar_dev(preprocess, a.verify)))
+        c = (unf * fused_ref).sum(1)
+        row["verify"]["pytorch_fused_vs_unfused"] = {"n": a.verify, "cos_min": float(c.min()),
+                                                     "max_abs_err_normalized": float(np.abs(unf - fused_ref).max())}
+        print("pytorch fused vs unfused", json.dumps(row["verify"]["pytorch_fused_vs_unfused"]))
     with open(out / "export.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps({k: v for k, v in row.items() if k != "ops"}, ensure_ascii=False) + "\n")
     print(json.dumps({k: v for k, v in row.items() if k != "ops"}, ensure_ascii=False, indent=1))

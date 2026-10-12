@@ -90,10 +90,14 @@ def power():
 
 
 def git_state(repo):
+    """커밋 해시와 dirty 여부. dirty = 추적 파일 변경이 있거나, siglip2/ 아래에 커밋 안 된 코드 파일이 있음.
+    (results/ 아래 미추적 결과 파일은 실행 중 생기는 산출물이라 dirty로 보지 않는다.) git 실패는 예외로 멈춘다."""
     def run(*args):
-        return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True).stdout.strip()
+        return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, check=True).stdout.strip()
+    tracked = run("status", "--porcelain", "--untracked-files=no")
+    untracked_code = run("status", "--porcelain", "--untracked-files=all", "--", "siglip2")
     return {"commit": run("rev-parse", "--short", "HEAD"), "branch": run("rev-parse", "--abbrev-ref", "HEAD"),
-            "dirty": bool(run("status", "--porcelain", "--untracked-files=no"))}
+            "dirty": bool(tracked or untracked_code)}
 
 
 def collect(cross_check_wsl=False):

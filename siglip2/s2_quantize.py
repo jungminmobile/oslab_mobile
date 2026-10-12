@@ -12,7 +12,12 @@ s2_quantize.py — SigLIP2 이미지 인코더 ONNX Runtime 정적 INT8 양자�
   --calib-source cifar   : CIFAR-100 train[0:45000]에서 무작위 (SigLIP2 전처리)
   --calib-source mix     : 반씩
   기본값은 PRD의 E3 전 기본값: highres 256장, 시드 0. 시드 고정으로 섞은 뒤 배치로 나눈다.
-  **실제로 보정기가 가져간 사진 수를 세어 요청 장수와 같은지 assert** (RN50 "256장 중 16장" 버그 재발 방지).
+  보정 장수 확인 (RN50 "256장 중 16장" 버그 재발 방지):
+    ① 보정기가 reader에서 가져간 사진 수 = 요청 장수 (reader를 끝까지 읽었는지)
+    ② extra_options에 CalibMaxIntermediateOutputs가 없음 — 이 옵션이 있으면 ORT 1.25 MinMaxCalibrater가 reader는 끝까지 읽되
+       중간 결과를 버리므로 ①만으로는 버그를 못 잡는다. 그 버그를 실제로 막는 것은 ②다.
+  assert가 실패하면 모델 파일을 남기지 않는다 (임시 이름에 쓴 뒤 통과하면 이름을 바꾼다).
+  보정 후보 풀 크기(rn50 datasets.CAL_N에 따라 달라짐)를 로그에 남긴다.
 
 [활성값 형식]  --act-type s8(기본) / u8
   PRD 3절: x86에서는 S8S8도 U8S8로 바뀌어 계산이 같다. PRD E0의 기본값 계획(S8S8)을 따른다 (D-023).
@@ -43,6 +48,7 @@ import quantize_onnx as RQ                # noqa: E402  rn50/quantize_onnx.py
 assert Path(RQ.__file__).resolve().parent == S.RN50_DIR.resolve(), RQ.__file__
 
 RC = S.RC
+RS_CAL_N = lambda: int(S.RD.CAL_N)   # 보정 후보 풀 장수 규칙 (PRD E0 ⑦에서 64 → 256 예정)
 
 
 class CountingCalib(RQ.ImageCalib):
@@ -108,9 +114,12 @@ def dump_ops(path, threads):
     for ext in (".data",):
         if opt.with_suffix(opt.suffix + ext).exists():
             opt.with_suffix(opt.suffix + ext).unlink()
-    int_ops = {k: v for k, v in ops.items() if any(t in k for t in ("QLinear", "Integer", "DynamicQuantize", "QGemm",
-                                                                    "QAttention", "QuantizeLinear", "DequantizeLinear"))}
-    return {"ops": dict(sorted(ops.items(), key=lambda kv: -kv[1])), "int_or_qdq_ops": int_ops}
+    int_ops = {k: v for k, v in ops.items() if any(t in k for t in ("QLinear", "Integer", "QGemm", "QAttention"))}
+    qdq_ops = {k: v for k, v in ops.items() if k in ("QuantizeLinear", "DequantizeLinear", "DynamicQuantizeLinear")}
+    float_ops = {k: v for k, v in ops.items() if k in ("MatMul", "Conv", "Gemm", "Softmax", "LayerNormalization", "Erf")}
+    # int_kernel_ops: 정수로 계산하는 연산 / qdq_ops: 변환 노드(정수 계산 아님) / float_compute_ops: float으로 남은 계산 연산
+    return {"ops": dict(sorted(ops.items(), key=lambda kv: -kv[1])), "int_kernel_ops": int_ops, "qdq_ops": qdq_ops,
+            "float_compute_ops": float_ops}
 
 
 def main():
@@ -130,7 +139,7 @@ def main():
     ap.add_argument("--overwrite", action="store_true")
     ap.add_argument("--dump-ops", action="store_true")
     ap.add_argument("--threads", type=int, default=4)
-    ap.add_argument("--log", default=str(S.REPO / "results" / "siglip2" / "quantize_log.jsonl"))
+    ap.add_argument("--log", default="", help="기본: $RN50_RESULTS/quantize_log.jsonl (RN50_RESULTS 명시 필요)")
     a = ap.parse_args()
     from onnxruntime.quantization import QuantFormat, QuantType, quantize_static
     from onnxruntime.quantization.shape_inference import quant_pre_process
@@ -144,30 +153,38 @@ def main():
     if dst.exists() and not a.overwrite:
         raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
     excl = RQ.select_excluded(str(pre), a)
+    log_path = Path(a.log) if a.log else S.require_results_dir() / "quantize_log.jsonl"
 
     t0 = time.time()
     x = calib_images(a.calib_source, a.calib_n, a.seed)
+    pool_n = sum(len(np.load(f, mmap_mode="r")) for f in sorted(RC.CACHE_DIR.glob("calib_*_f32.npy")))
     reader = CountingCalib(x, a.calib_bs)
-    quantize_static(str(pre), str(dst), reader, quant_format=QuantFormat.QDQ,
+    extra = {"ActivationSymmetric": False, "WeightSymmetric": True}
+    assert "CalibMaxIntermediateOutputs" not in extra, "보정 결과를 버리는 옵션 금지 (RN50 16장 버그)"
+    tmp = dst.with_name(dst.stem + ".tmp.onnx")
+    quantize_static(str(pre), str(tmp), reader, quant_format=QuantFormat.QDQ,
                     activation_type=QuantType.QInt8 if a.act_type == "s8" else QuantType.QUInt8,
                     weight_type=QuantType.QInt8, per_channel=bool(a.per_channel),
-                    calibrate_method=RQ.METHODS[a.method], nodes_to_exclude=excl,
-                    extra_options={"ActivationSymmetric": False, "WeightSymmetric": True})
+                    calibrate_method=RQ.METHODS[a.method], nodes_to_exclude=excl, extra_options=extra)
     # 보정기가 데이터를 읽은 회차마다 가져간 사진 수. 모든 회차가 요청 장수와 같아야 한다
     seen = reader.counts()
+    if not (seen and all(c == a.calib_n for c in seen)):
+        tmp.unlink()
+        raise AssertionError(f"보정에 쓰인 사진 {seen} ≠ 요청 {a.calib_n}장 — 모델 파일을 지웠음")
+    tmp.replace(dst)
     print(f"saved {dst.name}  {dst.stat().st_size / 2**20:.1f} MiB  ({time.time() - t0:.0f}s), calib seen per pass={seen}")
-    assert seen and all(c == a.calib_n for c in seen), f"보정에 쓰인 사진 {seen} ≠ 요청 {a.calib_n}장"
 
     env = env_info.collect()
     row = {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"],
            "dirty": env["git"]["dirty"], "options": vars(a), "model": dst.name,
-           "MiB": round(dst.stat().st_size / 2**20, 2), "calib_seen": seen, "n_excluded_nodes": len(excl),
+           "MiB": round(dst.stat().st_size / 2**20, 2), "calib_seen": seen, "calib_pool_n": int(pool_n),
+           "rn50_CAL_N": RS_CAL_N(), "n_excluded_nodes": len(excl),
            "qtype": f"{a.act_type.upper()}S8", "sec": round(time.time() - t0)}
     if a.dump_ops:
         row["ort_optimized_graph"] = dump_ops(dst, a.threads)
         print(json.dumps(row["ort_optimized_graph"], ensure_ascii=False))
-    Path(a.log).parent.mkdir(parents=True, exist_ok=True)
-    with open(a.log, "a", encoding="utf-8") as f:
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(log_path, "a", encoding="utf-8") as f:
         f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
