@@ -1,0 +1,64 @@
+[info] Current Time: 20:07:21, 10/12/26
+[info] CPU: Architecture: x86_64, Model: Intel(R) Core(TM) Ultra 7 258V, Number Of Cores: 8, Utilization: 0.1%
+[info] Memory: Total: 23GB, Available: 22GB
+[info] System info: OS: Linux, Kernel: 5.15.167.4-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo optimize /home/sset0/hailo10_work/parse/rn50x4.har --hw-arch hailo10h --calib-set-path /home/sset0/hailo10_work/calib/calib_rn50x4_highres64_s0_nhwc_u8.npy --model-script /home/sset0/e1_base.alls`
+[info] No GPU chosen and no suitable GPU found, falling back to CPU.
+[info] Hailo HW architecture: hailo10h
+[info] Loading model script commands to rn50x4_image_fp32_q1 from /home/sset0/e1_base.alls
+[info] Starting Model Optimization
+[warning] Running model optimization with zero level of optimization is not recommended for production use and might lead to suboptimal accuracy results
+[info] Model received quantization params from the hn
+[info] Notice: For optimal performance, if your model has more than 10M parameters, it is recommended to set the compression level to 4. (Current model has 87.09M parameters.)
+[info] Notice: For optimal accuracy with compressed models, it is recommended to set the optimization level to 4.
+[info] MatmulDecompose skipped
+[info] Starting Mixed Precision
+[info] Model Optimization Algorithm Mixed Precision is done (completion time is 00:00:00.47)
+[info] LayerNorm Decomposition skipped
+[info] Starting Statistics Collector
+[info] Using dataset with 64 entries for calibration
+Calibration:   0%|          | 0/64 [00:00<?, ?entries/s]Calibration:  12%|█▎        | 8/64 [00:16<01:56,  2.07s/entries]Calibration:  25%|██▌       | 16/64 [00:18<00:46,  1.04entries/s]Calibration:  38%|███▊      | 24/64 [00:19<00:24,  1.66entries/s]Calibration:  50%|█████     | 32/64 [00:20<00:13,  2.30entries/s]Calibration:  62%|██████▎   | 40/64 [00:22<00:08,  2.90entries/s]Calibration:  75%|███████▌  | 48/64 [00:23<00:04,  3.48entries/s]Calibration:  88%|████████▊ | 56/64 [00:25<00:02,  3.91entries/s]Calibration: 100%|██████████| 64/64 [00:27<00:00,  3.89entries/s]Calibration: 100%|██████████| 64/64 [00:27<00:00,  3.89entries/s]Calibration: 100%|██████████| 64/64 [00:27<00:00,  2.34entries/s]
+[info] Model Optimization Algorithm Statistics Collector is done (completion time is 00:00:28.40)
+[info] Using dataset with 64 entries for calibration
+Calibration:   0%|          | 0/64 [00:00<?, ?entries/s]Calibration:  12%|█▎        | 8/64 [00:16<01:56,  2.08s/entries]Calibration:  25%|██▌       | 16/64 [00:18<00:46,  1.03entries/s]Calibration:  38%|███▊      | 24/64 [00:19<00:24,  1.63entries/s]Calibration:  50%|█████     | 32/64 [00:21<00:14,  2.18entries/s]Calibration:  62%|██████▎   | 40/64 [00:23<00:08,  2.68entries/s]Calibration:  75%|███████▌  | 48/64 [00:24<00:05,  3.14entries/s]Calibration:  88%|████████▊ | 56/64 [00:26<00:02,  3.59entries/s]Calibration: 100%|██████████| 64/64 [00:28<00:00,  3.92entries/s]Calibration: 100%|██████████| 64/64 [00:28<00:00,  3.92entries/s]Calibration: 100%|██████████| 64/64 [00:28<00:00,  2.27entries/s]
+[info] Starting Fix zp_comp Encoding
+[info] Model Optimization Algorithm Fix zp_comp Encoding is done (completion time is 00:00:00.00)
+[info] Starting Matmul Equalization
+[info] Model Optimization Algorithm Matmul Equalization is done (completion time is 00:00:00.02)
+[info] Starting MatmulDecomposeFix
+[info] Model Optimization Algorithm MatmulDecomposeFix is done (completion time is 00:00:00.00)
+[info] Starting Translate Parameters
+Create HW Params:   0%|          | 0/105 [00:00<?, ?Components/s]Create HW Params:   7%|▋         | 7/105 [00:00<00:01, 62.09Components/s]Create HW Params:  13%|█▎        | 14/105 [00:00<00:02, 41.14Components/s]Create HW Params:  18%|█▊        | 19/105 [00:00<00:02, 36.64Components/s]Create HW Params:  23%|██▎       | 24/105 [00:00<00:02, 37.71Components/s]Create HW Params:  28%|██▊       | 29/105 [00:00<00:01, 38.68Components/s]Create HW Params:  31%|███▏      | 33/105 [00:00<00:01, 37.04Components/s]Create HW Params:  35%|███▌      | 37/105 [00:00<00:01, 34.85Components/s]Create HW Params:  39%|███▉      | 41/105 [00:01<00:02, 29.22Components/s]Create HW Params:  43%|████▎     | 45/105 [00:01<00:01, 30.17Components/s]Create HW Params:  47%|████▋     | 49/105 [00:01<00:01, 30.77Components/s]Create HW Params:  50%|█████     | 53/105 [00:01<00:01, 28.79Components/s]Create HW Params:  53%|█████▎    | 56/105 [00:01<00:01, 26.45Components/s]Create HW Params:  56%|█████▌    | 59/105 [00:01<00:01, 24.92Components/s]Create HW Params:  59%|█████▉    | 62/105 [00:02<00:01, 23.37Components/s]Create HW Params:  62%|██████▏   | 65/105 [00:02<00:01, 22.39Components/s]Create HW Params:  65%|██████▍   | 68/105 [00:02<00:01, 23.00Components/s]Create HW Params:  68%|██████▊   | 71/105 [00:02<00:01, 19.08Components/s]Create HW Params:  70%|███████   | 74/105 [00:02<00:01, 19.69Components/s]Create HW Params:  73%|███████▎  | 77/105 [00:02<00:01, 17.59Components/s]Create HW Params:  75%|███████▌  | 79/105 [00:03<00:01, 14.85Components/s]Create HW Params:  77%|███████▋  | 81/105 [00:03<00:01, 13.88Components/s]Create HW Params:  79%|███████▉  | 83/105 [00:03<00:01, 11.82Components/s]Create HW Params:  81%|████████  | 85/105 [00:03<00:02,  9.95Components/s]Create HW Params:  83%|████████▎ | 87/105 [00:04<00:01,  9.11Components/s]Create HW Params:  85%|████████▍ | 89/105 [00:04<00:01, 10.00Components/s]Create HW Params:  87%|████████▋ | 91/105 [00:04<00:01, 10.25Components/s]Create HW Params:  89%|████████▊ | 93/105 [00:04<00:01, 10.32Components/s]Create HW Params:  90%|█████████ | 95/105 [00:04<00:00, 11.19Components/s]Create HW Params:  92%|█████████▏| 97/105 [00:04<00:00, 10.93Components/s]Create HW Params:  94%|█████████▍| 99/105 [00:05<00:00,  7.34Components/s]Create HW Params:  95%|█████████▌| 100/105 [00:05<00:00,  6.41Components/s]Create HW Params:  97%|█████████▋| 102/105 [00:05<00:00,  6.91Components/s]Create HW Params:  99%|█████████▉| 104/105 [00:06<00:00,  7.93Components/s]Create HW Params: 100%|██████████| 105/105 [00:06<00:00,  7.93Components/s]                                                                           [info] Model Optimization Algorithm Translate Parameters is done (completion time is 00:00:06.24)
+[info] Finetune encoding skipped
+[info] Bias Correction skipped
+[info] Adaround skipped
+[info] Quantization-Aware Fine-Tuning skipped
+[info] Layer Noise Analysis skipped
+[info] Model Optimization is done
+[info] Saved HAR to: /home/sset0/hailo10_work/opt/rn50x4_image_fp32_q1_optimized.har
+	Command being timed: "hailo optimize /home/sset0/hailo10_work/parse/rn50x4.har --hw-arch hailo10h --calib-set-path /home/sset0/hailo10_work/calib/calib_rn50x4_highres64_s0_nhwc_u8.npy --model-script /home/sset0/e1_base.alls"
+	User time (seconds): 255.51
+	System time (seconds): 23.71
+	Percent of CPU this job got: 226%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:03.48
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 7549172
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 125
+	Minor (reclaiming a frame) page faults: 1066082
+	Voluntary context switches: 200640
+	Involuntary context switches: 43887
+	Swaps: 0
+	File system inputs: 712576
+	File system outputs: 3386848
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
