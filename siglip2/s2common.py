@@ -33,6 +33,12 @@ RN50_DIR = REPO / "rn50"
 MODEL_ID = "hf-hub:timm/ViT-B-16-SigLIP2"
 
 
+# Windows 콘솔·리디렉션 기본 인코딩(cp949)은 '—', '▁' 같은 문자를 출력하지 못해 스크립트가 멈춘다 → UTF-8로 고정
+for _s in (sys.stdout, sys.stderr):
+    if hasattr(_s, "reconfigure"):
+        _s.reconfigure(encoding="utf-8", errors="replace")
+
+
 def _setup_paths():
     data = Path(os.environ["SIGLIP2_DATA"])          # 없으면 KeyError로 멈춤 (siglip2/CLAUDE.md 10절)
     art = Path(os.environ["SIGLIP2_ARTIFACTS"])
