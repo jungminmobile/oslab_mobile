@@ -140,7 +140,7 @@ oslab_mobile/
 3. `quantize_onnx.py`: 보정 사진 생성 함수를 모델별 전처리에 맞게 바꿀 수 있게 한다 (또는 SigLIP2는 `ImageCalib`·`select_excluded`만 import하고 보정 사진은 자체 생성).
 4. 공통 코드를 패키지로 만들거나 모듈 이름을 바꿔 이름 충돌을 막는다 (선택).
 
-E0 PR과 겹치므로 **정민과 순서를 먼저 정한다** (E0 병합 후 → 공통 코드 PR).
+→ 결정(D-009): 지금은 SigLIP2 쪽 어댑터로 시작하고, 공통 코드 PR은 정민의 E0 병합 뒤 연다.
 
 ## 5. requirements
 

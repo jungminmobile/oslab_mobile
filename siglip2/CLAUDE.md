@@ -18,37 +18,39 @@
 1. `git switch main && git pull` 후 `git status`가 깨끗한지 확인. 작업 브랜치로 이동.
 2. 이 파일, `ROADMAP.md`, `DECISIONS.md`, `PROGRESS.md`의 마지막 항목을 읽는다.
 3. `gh issue list --label siglip2 --state open` 으로 열린 작업 확인.
-4. RN50 트랙의 최근 변경 확인: `git log --oneline -10 -- <RN50 디렉터리>` (공통 조건이 바뀌었는지).
+4. RN50 트랙의 최근 변경 확인: `git log --oneline -10 -- rn50 PRD.md hailo results` (공통 조건이 바뀌었는지).
 5. 사람에게 3줄로 보고: 현재 단계 / 오늘 할 일 / 사람 결정이 필요한 것. 그 다음 시작.
 
 ## 3. 절대 규칙
 
-- 보고 정확도는 **정수 커널**(제출할 INT8 모델을 ONNX Runtime으로 실제 실행한 값)만 쓴다.
-  fake-quant는 선택 옵션이며 **많은 구성의 1차 스크리닝**에만 쓴다. 상위 후보(기본 5개)는 반드시 정수 커널로 재측정하고,
-  두 방식의 순위 상관(Spearman)을 같이 기록한다. (DECISIONS D-005)
+- 정확도는 **정수 커널**(INT8 모델을 ONNX Runtime 기본 설정 `ORT_ENABLE_ALL`로 실제 실행한 값)만 쓴다. 비교·선택·보고 모두 같다.
+  fake-quant는 **디버깅에만** 쓴다 (PRD R5와 같음, DECISIONS D-008. D-005는 폐기).
 - 정수 커널 정확도는 CPU 명령어 집합에 따라 달라질 수 있다. 모든 결과에 CPU 모델과 `avx2 / avx512f / avx512_vnni / avx_vnni` 플래그,
   ONNX Runtime 버전을 기록한다. 활성 UInt8 + 가중치 Int8(U8S8) 구성은 VNNI가 없는 x86에서 포화로 정확도가 떨어질 수 있으므로,
-  최종 후보는 G6에서 `reduce_range` 또는 S8S8 대안과 비교해 학술부 PC에서도 같은 값이 나오는 형식을 정한다.
+  x86에서는 S8S8도 실행 때 U8S8로 바뀌므로 대책이 아니다 (PRD 3절). 최종 후보는 G6에서 `reduce_range`·U8U8·`session.x64quantprecision=1`
+  대안과 비교해 학술부 PC에서도 같은 값이 나오는 형식을 정한다 (RN50 E0 ⑧ 결과를 먼저 확인).
 - test 분할은 최종 1회만 평가한다. 설정 비교와 선택은 dev 분할로만 한다.
 - 보정 사진은 train에서 dev와 겹치지 않게 뽑고, **실제로 보정에 쓰인 장수를 로그로 assert** 한다
   (RN50 트랙의 "256장 중 16장만 사용" 버그 재발 방지).
-- 속도는 1회 측정 결과를 쓰지 않는다. 예열 후 비교 모델을 번갈아 5회 반복한다 (RN50 트랙과 같은 스크립트).
+- 속도는 1회 측정 결과를 쓰지 않는다. RN50과 같은 `rn50/bench_speed.py`로, PRD 5절 조건(워밍업 20, 200장 × 3회 번갈아, 배치 1)으로 잰다.
 - 실행하지 않은 결과, 추정치, 기억에 의존한 수치를 결과처럼 적지 않는다. 모든 숫자는 raw 파일 경로와 커밋 해시를 함께 남긴다.
 - 결과를 본 뒤에 기준을 바꾸지 않는다. 바꿔야 하면 DECISIONS에 이유를 적고 사람 승인을 받는다.
 - 실패와 이상치도 숨기지 않고 PROGRESS에 기록한다.
 
 ## 4. RN50 트랙과 맞출 공통 조건
 
-공통 코드(데이터셋 로더, 분할, 프롬프트, 평가, 속도 측정)는 RN50 트랙의 것을 **import해서** 쓴다. 복사해서 고치지 않는다.
-공통 코드를 바꿔야 하면 별도 PR을 열고 팀원 리뷰를 받는다.
+공통 코드(데이터셋 로더, 분할, 프롬프트, 평가, 속도 측정)는 RN50 트랙의 것을 **import해서** 쓴다. **복사하지 않는다** (D-009).
+SigLIP2 쪽에는 모델에 따라 달라지는 부분(전처리, 토크나이저, 분류기 생성, ONNX export, 보정 사진 생성)만 어댑터로 둔다.
+공통 코드를 바꿔야 하면 정민의 E0 PR이 병합된 뒤 별도 PR을 열고 정민 리뷰를 받는다.
+RN50 코드의 경로는 `RN50_*` 환경변수로만 맞추고, `RN50_CACHE`·`RN50_RESULTS`가 SigLIP2 경로가 아니면 assert로 멈춘다 (D-013, RN50 파일 덮어쓰기 방지).
 
 | 항목 | 조건 |
 | --- | --- |
 | 범위 | 이미지 인코더만 양자화. 텍스트 분류기는 FP32로 한 번 계산해 캐시 |
-| 데이터셋 | CIFAR-100, Oxford Pets, Flowers-102, Stanford Cars, Food-101, Caltech-101, ImageNetV2 (RN50과 같은 소스·같은 분할·같은 seed) |
-| 지표 | top-1 (헤드라인 CIFAR-100, 설정 선택은 고화질 5종 dev 평균), FP32 대비 이미지 임베딩 코사인, 모델 크기, 지연, peak 메모리, 파라미터·GMACs |
+| 데이터셋 | dev 6종(CIFAR A + Pets·Flowers·Cars·Food·Caltech), test 7종(+ CIFAR-100 test, ImageNetV2). CIFAR B는 최종 후보 확인용. RN50과 같은 소스·같은 분할·같은 seed |
+| 지표 | top-1 (주 지표 = 고화질 5종 평균, CIFAR-100·ImageNetV2는 별도 표기. PRD 1·5절, D-017), FP32 대비 이미지 임베딩 코사인, 모델 크기, 지연, peak 메모리, 파라미터·GMACs |
 | Caltech | background·얼굴 클래스 처리를 RN50과 동일하게 |
-| 측정 PC | 팀 공식 측정 PC (미정이면 사람에게 확인하고, 그 전 수치는 "비공식"으로 표시) |
+| 측정 PC | 지금은 이 PC(i7-1165G7)에서 재고 **"비공식"**으로 표시. RN50과 공식 비교가 필요하면 쭈리가 정민에게 요청해 정민 노트북 스레드 4로 잰다 (D-010) |
 
 SigLIP2만의 차이: 점수는 sigmoid(logit_scale × cos + logit_bias)지만 top-1 순위는 코사인 순위와 같다.
 프롬프트 템플릿은 CLIP 공식 템플릿과 SigLIP 계열 권장 템플릿을 dev에서 비교해 정한다 (DECISIONS에 기록).
@@ -73,9 +75,9 @@ SigLIP2만의 차이: 점수는 sigmoid(logit_scale × cos + logit_bias)지만 t
   라벨·마일스톤이 저장소에 없으면 만들기 전에 사람에게 확인한다 (공유 저장소 설정이므로).
 - `DECISIONS.md`: 결정마다 항목 추가. 상태는 제안 → 확정 / 폐기. 확정은 사람 승인 후에만.
 - `PROGRESS.md`: 세션이 끝날 때마다 항목 추가 (한 일, 결과, 막힌 것, 다음 할 일).
-- 결과 파일: `siglip2/results/<날짜>_<실험명>/` 에 raw(jsonl/csv), 요약 md, 실행 명령, 환경 정보(`env.json`), 커밋 해시.
+- 결과 파일: 루트 `results/siglip2/<단계>_<주제>/` 에 raw(jsonl/csv), 요약 md(`README.md`), 실행 명령, 환경 정보(`env.json`), 커밋 해시. jsonl 필드는 `results/README.md` 규칙을 따른다 (D-012).
 - 커밋하지 않는 것: 데이터셋, 가중치, ONNX, HEF 등 대용량 파일. `.gitignore`에 넣고 경로와 sha256만 기록한다.
-  최종 제출 모델의 공유 방법(Release, 드라이브 등)은 사람이 정한다.
+  제출할 ONNX는 GitHub Release + sha256, 중간 산출물은 공유 드라이브 (D-016).
 
 ## 7. 반드시 멈추고 사람에게 물을 것
 
@@ -84,8 +86,8 @@ SigLIP2만의 차이: 점수는 sigmoid(logit_scale × cos + logit_bias)지만 t
 - main 병합
 - 결과가 예상과 크게 다를 때 (원인 가설 2개 이상과 함께 보고)
 - 같은 문제로 2회 이상 실패했을 때 (세 번째 시도 전에 보고)
-- 실기기(Jetson Orin + Hailo-10H) 작업: 펌웨어·전력 모드·클럭 등 **기기 설정 변경 금지, sudo 금지**, 홈 디렉터리 안에서만 실행.
-  실기기 접근 방법은 사람에게 확인한다.
+- 실기기 작업은 예선 통과 후 지급되는 **Raspberry Pi 5 + Hailo-10H**에서 한다 (예선은 PC만, D-015). 펌웨어·전력 모드·클럭 등
+  **기기 설정 변경 금지, sudo 금지**, 홈 디렉터리 안에서만 실행. 실기기 접근 방법은 사람에게 확인한다.
 
 ## 8. 팀이 이미 겪은 함정
 
@@ -94,7 +96,7 @@ SigLIP2만의 차이: 점수는 sigmoid(logit_scale × cos + logit_bias)지만 t
 - 같은 모델끼리도 1회 속도 측정 차이가 크게 났다 → 반복 측정.
 - `hailortcli monitor`를 켜면 지연 꼬리가 오염된다 → 지연 측정 시 끈다.
 - 호스트 OpenBLAS 스레드 스핀 → `OPENBLAS_NUM_THREADS=1`.
-- 본선 Pi OS의 HailoRT(2026년 6월 기준 5.1.1)와 연구실(5.3.0) 버전이 다르면 HEF가 실행되지 않을 수 있다 → DFC 버전을 기록하고, Pi 버전용 컴파일 경로를 확보.
+- HEF는 DFC 버전과 실행 기기의 HailoRT 버전이 다르면 실행되지 않을 수 있다. 팀 DFC는 **5.4.0**(정민 노트북·이 PC 동일), 본선 Pi의 HailoRT는 주최측 확인 중(2026년 초 커뮤니티 기록 5.1.1) → DFC 버전을 기록하고, Pi 버전용 컴파일 경로를 확보 (`hailo/DFC_SETUP.md` 8장).
 
 ## 9. 참고 문서
 
@@ -125,6 +127,7 @@ SigLIP2만의 차이: 점수는 sigmoid(logit_scale × cos + logit_bias)지만 t
 - 모든 다운로드, 캐시, 산출물은 `D:\mokerton` 아래에만 쓴다. C 드라이브의 사용자 캐시 폴더에 쓰지 않는다.
 - 데이터 경로는 환경 변수에서 읽는다. 팀원 코드가 경로를 하드코딩하고 있으면 그 코드를 고치지 말고 인자·설정으로 넘기거나, 필요한 변경을 사람에게 보고한다.
 - 2GB 이상 받기 전에 D 드라이브 여유 공간을 확인하고 예상 용량을 사람에게 알린다.
-- Hailo DFC는 Linux에서만 동작한다. 이 PC에 WSL2 + DFC가 있으면 `wsl -e bash -lc "..."`로 호출하고 경로는 `/mnt/d/mokerton/...`을 쓴다.
-  DFC를 어느 머신에서 돌릴지는 사람에게 먼저 확인한다.
-- 이 PC에서 잰 속도는 팀이 공식 측정 PC로 정하기 전까지 "비공식"으로 표시한다.
+- Hailo DFC는 Linux에서만 동작한다. 이 PC의 WSL **`Ubuntu-22.04`(디스크 `D:\mokerton\wsl\`)** 에 DFC 5.4.0을 설치해 쓴다 (D-011).
+  `wsl -d Ubuntu-22.04 -e bash -lc "source ~/hailo10_venv/bin/activate && ..."`로 호출하고 경로는 `/mnt/d/mokerton/...`을 쓴다.
+  첫 컴파일 1회는 정민 노트북 결과와 교차 확인한다. 기존 `Ubuntu-24.04`·`Ubuntu-20.04`는 쓰지 않는다.
+- 이 PC에서 잰 속도는 "비공식"으로 표시한다 (D-010).
