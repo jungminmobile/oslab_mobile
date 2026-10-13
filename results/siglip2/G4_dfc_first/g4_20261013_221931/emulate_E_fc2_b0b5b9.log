@@ -1,0 +1,8 @@
+[info] No GPU chosen and no suitable GPU found, falling back to CPU.
+[info] Hailo HW architecture: hailo10h
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1791908734.616068     941 service.cc:152] XLA service 0x64a179955280 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1791908734.616604     941 service.cc:160]   StreamExecutor device (0): Host, Default Version
+I0000 00:00:1791908821.939763     941 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+quantized {"cos_mean": 0.93992, "cos_min": 0.84471, "top1": 95.31, "sec": 356}
+{"date": "2026-10-14T01:24:21", "har": "opt_E_fc2_b0b5b9.har", "data": "pets_dev", "k": 64, "onnx_fp32_top1": 95.31, "quantized": {"cos_mean": 0.93992, "cos_min": 0.84471, "top1": 95.31, "sec": 356}}
