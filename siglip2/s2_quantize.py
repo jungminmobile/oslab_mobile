@@ -11,6 +11,8 @@ s2_quantize.py — SigLIP2 이미지 인코더 ONNX Runtime 정적 INT8 양자�
   --calib-source highres : s2_build_dev.py가 만든 calib_<이름>_f32.npy (고화질 5종 train 중 dev와 겹치지 않는 사진)
   --calib-source cifar   : CIFAR-100 train[0:45000]에서 무작위 (SigLIP2 전처리)
   --calib-source mix     : 반씩
+  --method minmax | percentile(--percentile, 비대칭 범위) | entropy
+  --op-types MatMul       : 이 연산 유형만 양자화 (기본: ORT 기본 목록 전부). 파일 이름에 _ops-MatMul이 붙는다
   기본값은 PRD의 E3 전 기본값: highres 256장, 시드 0. 시드 고정으로 섞은 뒤 배치로 나눈다.
   보정 장수 확인 (RN50 "256장 중 16장" 버그 재발 방지):
     ① 보정기가 reader에서 가져간 사진 수 = 요청 장수 (reader를 끝까지 읽었는지)
@@ -129,6 +131,9 @@ def main():
     ap.add_argument("--calib-bs", type=int, default=8)
     ap.add_argument("--method", choices=list(RQ.METHODS), default="minmax")
     ap.add_argument("--act-type", choices=["s8", "u8"], default="s8")
+    ap.add_argument("--percentile", type=float, default=99.999,
+                    help="--method percentile 전용. 범위는 비대칭(CalibTensorRangeSymmetric=False, PRD 3절)")
+    ap.add_argument("--op-types", default="", help="양자화할 연산 유형(쉼표). 비우면 ORT 기본(전부). 예: MatMul")
     ap.add_argument("--per-channel", type=int, default=1)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--exclude", default="")
@@ -148,7 +153,9 @@ def main():
     pre = RC.ONNX_DIR / FP32_IMAGE.replace(".onnx", "_pre.onnx")
     if not pre.exists() or pre.stat().st_mtime < src.stat().st_mtime:
         quant_pre_process(str(src), str(pre))
-    cal = f"{a.method}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}"
+    meth = f"percentile{str(a.percentile).replace('.', '')}" if a.method == "percentile" else a.method
+    ops_tag = f"_ops-{a.op_types.replace(',', '-')}" if a.op_types else ""
+    cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
     dst = RC.ONNX_DIR / f"siglip2_image_int8_{cal}{'_' + a.tag if a.tag else ''}.onnx"
     if dst.exists() and not a.overwrite:
         raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
@@ -160,12 +167,16 @@ def main():
     pool_n = sum(len(np.load(f, mmap_mode="r")) for f in sorted(RC.CACHE_DIR.glob("calib_*_f32.npy")))
     reader = CountingCalib(x, a.calib_bs)
     extra = {"ActivationSymmetric": False, "WeightSymmetric": True}
+    if a.method == "percentile":
+        # ORT 1.25 Percentile 보정기 기본은 대칭 범위(−t~t)라 한쪽으로 치우친 활성값에서 눈금 절반을 버린다 → 비대칭으로 (PRD 3절)
+        extra.update({"CalibPercentile": a.percentile, "CalibTensorRangeSymmetric": False})
     assert "CalibMaxIntermediateOutputs" not in extra, "보정 결과를 버리는 옵션 금지 (RN50 16장 버그)"
     tmp = dst.with_name(dst.stem + ".tmp.onnx")
     quantize_static(str(pre), str(tmp), reader, quant_format=QuantFormat.QDQ,
                     activation_type=QuantType.QInt8 if a.act_type == "s8" else QuantType.QUInt8,
                     weight_type=QuantType.QInt8, per_channel=bool(a.per_channel),
-                    calibrate_method=RQ.METHODS[a.method], nodes_to_exclude=excl, extra_options=extra)
+                    calibrate_method=RQ.METHODS[a.method], nodes_to_exclude=excl, extra_options=extra,
+                    op_types_to_quantize=[o for o in a.op_types.split(",") if o] or None)
     # 보정기가 데이터를 읽은 회차마다 가져간 사진 수. 모든 회차가 요청 장수와 같아야 한다
     seen = reader.counts()
     if not (seen and all(c == a.calib_n for c in seen)):
