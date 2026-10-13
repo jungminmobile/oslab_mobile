@@ -95,7 +95,7 @@ def main():
     RC.CACHE_DIR.mkdir(parents=True, exist_ok=True)
     RC.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     env = env_info.collect()
-    (RC.RESULTS_DIR / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    env_info.write_env(RC.RESULTS_DIR, env)
     model, preprocess, tok = S.load_model()
     assert RC.onnx_path(FP32_IMAGE).exists(), "먼저 s2_export_onnx.py 실행"
     names = ["cifar_A", "cifar_B"] + list(RD.HIGHRES) if a.name == "all" else [a.name]

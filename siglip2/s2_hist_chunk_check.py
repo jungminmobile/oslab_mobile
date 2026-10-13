@@ -70,7 +70,7 @@ def main():
     out = S.require_results_dir()
     out.mkdir(parents=True, exist_ok=True)
     env = env_info.collect()
-    (out / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    env_info.write_env(out, env)
     rows = []
     for method in ("percentile", "entropy"):
         fa = quantize(method, a.n, 0, "hcchk", out)

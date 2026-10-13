@@ -47,7 +47,7 @@ def main():
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     env = env_info.collect()
-    (out / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    env_info.write_env(out, env)
 
     t0 = time.time()
     model, preprocess, tok = S.load_model()

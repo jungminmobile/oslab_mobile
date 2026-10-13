@@ -104,7 +104,7 @@ def main():
     out = S.require_results_dir()
     out.mkdir(parents=True, exist_ok=True)
     env = env_info.collect()
-    (out / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    env_info.write_env(out, env)
     model, _, _ = S.load_model()
     from s2_export_onnx import unfuse_attention
     unfuse_attention(model)   # fvcore는 fused SDPA를 세지 못하므로 ONNX와 같은 일반 연산 형태로 센다 (D-019)

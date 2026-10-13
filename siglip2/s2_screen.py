@@ -56,13 +56,14 @@ def main():
     out = S.require_results_dir()
     out.mkdir(parents=True, exist_ok=True)
     env = env_info.collect()
-    (out / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    env_info.write_env(out, env)
     for m in a.models:
         t0 = time.time()
         p = RC.onnx_path(m)
         r = {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"],
              "dirty": env["git"]["dirty"], "tag": a.tag, "model": p.name, "MiB": round(p.stat().st_size / 2**20, 2),
-             "k": a.k, "exec": "int", "threads": a.threads, **screen(m, a.k, a.threads), "sec": None}
+             "k": a.k, "exec": "int", "threads": a.threads, "options": vars(a), **env_info.flat(env),
+             **screen(m, a.k, a.threads), "sec": None}
         r["sec"] = round(time.time() - t0)
         print(json.dumps({k: r[k] for k in ("model", "MiB", "hr_cos", "hr_dtop1", "sec")}, ensure_ascii=False), flush=True)
         with open(out / "screen.jsonl", "a", encoding="utf-8") as f:
