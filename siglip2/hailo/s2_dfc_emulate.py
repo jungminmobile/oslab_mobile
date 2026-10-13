@@ -35,6 +35,7 @@ def main():
     ap.add_argument("--k", type=int, default=64)
     ap.add_argument("--bs", type=int, default=8)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--quantized-only", action="store_true", help="SDK_QUANTIZED만 (float 확인은 G1에서 끝남)")
     a = ap.parse_args()
     from hailo_sdk_client import ClientRunner, InferenceContext
     x = np.load(CACHE / f"{a.data}_x.npy", mmap_mode="r")[:a.k].astype(np.float32)
@@ -46,7 +47,8 @@ def main():
     row = {"date": datetime.now().isoformat(timespec="seconds"), "har": Path(a.har).name, "data": a.data, "k": a.k}
     fp_top1 = round(100 * float(np.mean(np.argmax(ref @ W, 1) == y)), 2)
     row["onnx_fp32_top1"] = fp_top1
-    for name, ctx_type in (("fp_optimized", InferenceContext.SDK_FP_OPTIMIZED), ("quantized", InferenceContext.SDK_QUANTIZED)):
+    ctxs = [("fp_optimized", InferenceContext.SDK_FP_OPTIMIZED), ("quantized", InferenceContext.SDK_QUANTIZED)]
+    for name, ctx_type in (ctxs[1:] if a.quantized_only else ctxs):
         t0 = time.time()
         with runner.infer_context(ctx_type) as ctx:
             out = np.concatenate([np.asarray(runner.infer(ctx, nhwc[i:i + a.bs])).reshape(len(nhwc[i:i + a.bs]), -1)

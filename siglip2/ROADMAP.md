@@ -38,7 +38,7 @@
 - [ ] `siglip2/scripts/env_info.py`: CPU 모델, 명령어 플래그(avx2, avx512f, avx512_vnni, avx_vnni), 코어 수, OS, 패키지 버전을 `env.json`으로 저장
 - [ ] Hailo Model Zoo의 Hailo-10H 문서에서 SigLIP 계열 공식 HEF가 있는지 확인하고 결과를 DECISIONS에 기록
 - [x] DFC가 설치된 머신과 버전 확인 → 이 PC WSL Ubuntu-22.04에 DFC 5.4.0 설치 (D-011). Pi OS hailo-h10-all 버전은 주최측 확인 중
-- [ ] DFC 5.4.0 설치 (`.wslconfig` 12GB/16GB, Ubuntu-22.04 on `D:\mokerton\wsl`, 휠은 쭈리가 Developer Zone에서 받음)
+- [x] DFC 5.4.0 설치 (`.wslconfig` 12GB/16GB, Ubuntu-22.04 on `D:\mokerton\wsl`, 휠은 쭈리가 Developer Zone에서 받음)
 - [x] 라벨 `siglip2`·`experiment`·`decision`·`verification`·`blocked` 생성 (10/13). 마일스톤은 만들지 않음
 
 완료 기준: SigLIP2를 불러와 이미지 한 장의 임베딩이 나오고, PyTorch 기준 FP32 zero-shot이 CIFAR-100 dev 100장에서 돈다.
@@ -47,14 +47,14 @@
 
 목적: 튜닝에 시간을 쓰기 전에 SigLIP2가 Hailo-10H에 올라가는지 판정.
 
-- [ ] 이미지 인코더만 ONNX export (opset 17, 입력 1×3×224×224 고정). PyTorch 대비 임베딩 코사인 ≥ 0.9999, 최대 절대 오차 기록
-- [ ] ONNX 연산 목록 표: patch embedding, LayerNorm, attention(QKV, QKᵀ, Softmax, AV, proj), MLP의 GELU 종류(tanh 근사/erf), pooling head 구조
-- [ ] DFC parse → optimize(기본, 보정 64장) → compile (Hailo-10H). 성공 여부, 미지원 연산, 컨텍스트 수, 호스트로 떨어진 구간, 컴파일 시간, DFC 버전 기록
+- [x] 이미지 인코더만 ONNX export (opset 17, 입력 1×3×224×224 고정). PyTorch 대비 임베딩 코사인 ≥ 0.9999, 최대 절대 오차 기록 → `results/siglip2/G1_onnx_export`
+- [x] ONNX 연산 목록 표: patch embedding, LayerNorm, attention(QKV, QKᵀ, Softmax, AV, proj), MLP의 GELU 종류(tanh 근사/erf), pooling head 구조
+- [x] DFC parse → optimize(기본, 보정 64장) → compile (Hailo-10H). → `results/siglip2/G1_dfc_gate` (전 구간 성공, 18 컨텍스트). 성공 여부, 미지원 연산, 컨텍스트 수, 호스트로 떨어진 구간, 컴파일 시간, DFC 버전 기록
 - [ ] FP32 빠른 확인: CIFAR-100 dev 1,000장 + 고화질 1종 dev, 공개 보고치와 대조
-- [ ] 손실 감 잡기: ONNX Runtime INT8 전부(MinMax), 정수 커널, dev 1,000장
-- [ ] DFC 교차 확인 1회: 같은 float ONNX·보정 사진·`.alls`를 정민 노트북에서도 컴파일해 에뮬레이터 출력 비교 (D-011)
+- [x] 손실 감 잡기: ONNX Runtime INT8 전부(MinMax), 정수 커널, dev 1,000장 → 붕괴, `results/siglip2/G1_int8_minmax_all`
+- [ ] DFC 교차 확인 1회: G4 최종 후보 `.alls`로 정민 노트북에서도 컴파일해 에뮬레이터 출력 비교 (D-011, 시점은 D-027)
 
-판정 (DFC 결과가 나오는 대로, 사람이 결정. D-014):
+판정 (DFC 결과가 나오는 대로, 사람이 결정. D-014) → **2026-10-13 쭈리: SigLIP2 계속 (D-026)**:
 
 | 결과 | 다음 |
 | --- | --- |
