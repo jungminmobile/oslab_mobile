@@ -78,12 +78,15 @@ def main():
         top1 = {d: round(100 * float(preds[m][d]["correct"].mean()), 2) for d in DATA}
         dlt = {d: round(top1[d] - 100 * float(preds["fp32"][d]["correct"].mean()), 2) for d in DATA}
         diff = {d: preds[m][d]["correct"].astype(float) - preds["fp32"][d]["correct"] for d in HR}
-        hr = round(float(np.mean([dlt[d] for d in HR])), 2)
+        # 기준선 분류는 반올림하지 않은 값으로 한다 (반올림 값으로 하면 −0.504가 "≤0.5%p"로 잘못 분류될 수 있음, 독립 검토 지적)
+        hr_raw = float(np.mean([100 * (preds[m][d]["correct"].mean() - preds["fp32"][d]["correct"].mean()) for d in HR]))
+        hr = round(hr_raw, 2)
         ci = boot_hr(diff, a.n_boot)
         r = {**base, "model": m, "top1": top1, "dtop1": dlt, "hr_dtop1": hr, "hr_dtop1_ci95": ci,
              "hr_cos": round(float(np.mean([preds[m][d]["cos"].mean() for d in HR])), 4),
              "significant": not (ci[0] <= 0 <= ci[1]),
-             "baseline_class": next((f"≤{t}%p" for t in (0.5, 1.0, 2.0) if -hr <= t), ">2.0%p")}
+             "hr_dtop1_raw": round(hr_raw, 4),
+             "baseline_class": next((f"≤{t}%p" for t in (0.5, 1.0, 2.0) if -hr_raw <= t), ">2.0%p")}
         rows.append(r)
         print(json.dumps({k: r[k] for k in ("model", "hr_dtop1", "hr_dtop1_ci95", "hr_cos", "baseline_class")},
                          ensure_ascii=False), flush=True)
