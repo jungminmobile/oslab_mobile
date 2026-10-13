@@ -48,7 +48,7 @@ cd siglip2
 RN50_RESULTS=../results/siglip2/G3_why "$SIGLIP2_PYTHON" s2_why_massive.py --n 32        # 약 1분 30초 (공용 잠금 안에서)
 ```
 
-밤샘 실행: `scripts/overnight_win.sh`의 1단계. 첫 실행(커밋 `706e473`)은 `dirty: true`로 기록됐다. 원인은 WSL에서 실행한 hailo 명령이 `siglip2/` 폴더에 남긴 로그 파일(`acceleras.log`, `hailo_sdk.client.log`)이다. 코드는 커밋과 같다. 로그 파일을 옮기고 `.git/info/exclude`에 넣은 뒤 `scripts/overnight_win2.sh`로 깨끗한 상태에서 다시 돌린다. **아래 표는 첫 실행 값이고, 재실행 값과 같은지 확인한 뒤 확정한다** (결정적 계산이라 같아야 한다).
+밤샘 실행: `scripts/overnight_win.sh`의 1단계. 첫 실행(커밋 `706e473`)은 `dirty: true`로 기록됐다. 원인은 WSL에서 실행한 hailo 명령이 `siglip2/` 폴더에 남긴 로그 파일(`acceleras.log`, `hailo_sdk.client.log`)이다. 코드는 커밋과 같다. 로그 파일을 옮기고 `.git/info/exclude`에 넣은 뒤 `scripts/overnight_win2.sh`로 깨끗한 상태에서 다시 돌린다. **깨끗한 재실행(커밋 `4e54dc0`, dirty=false, `why_massive.jsonl` 2번째 줄)의 블록별 값 전체가 첫 실행과 완전히 같다** (`blocks` 필드 비교). 아래 표는 깨끗한 재실행 값이다.
 
 ## 5. 결과 (`why_massive.jsonl`, 64장)
 
