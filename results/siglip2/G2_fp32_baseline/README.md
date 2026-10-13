@@ -71,7 +71,10 @@ open_clip 공개 결과표(`https://github.com/mlfoundations/open_clip/blob/main
 1. 자기 검증: dev 장수·클래스 수 assert, 전처리 범위 [−1, 1] assert. 프롬프트 비교·평가·모델 지표·지연 모두 커밋 `27ccbb4`, dirty=false
 2. 독립 재계산:
    - 파라미터 수 PyTorch vs ONNX 일치, GMACs fvcore vs 구조식 차이 0.1%(LayerNorm 몫으로 정확히 설명)
-   - **캐시 결정성**: pets dev 캐시를 다른 폴더에 다시 만들어 6개 파일 sha256 모두 일치 (`../G2_fp32_dev/cache_check/sha256.txt`). **확인한 것은 Pets뿐이다.** Flowers·Cars·Caltech·Food 캐시는 커밋 전(`0be48db` dirty) 코드로 만들었고(코드 내용은 이후 커밋 `8e58a1f`와 같음), 같은 재생성 확인을 추가로 할 예정 (CIFAR A·B는 깨끗한 커밋 `ed6f357`·`615d992`에서 생성)
+   - **캐시 결정성**: pets dev 캐시를 다른 폴더에 다시 만들어 6개 파일 sha256 모두 일치 (`../G2_fp32_dev/cache_check/sha256.txt`). **확인한 것은 Pets뿐이다.** Flowers·Cars·Caltech·Food 캐시는 커밋 전(`0be48db` dirty) 코드로 만들었고(코드 내용은 이후 커밋 `8e58a1f`와 같음), CIFAR A·B는 깨끗한 커밋 `ed6f357`·`615d992`에서 만들었다.
+     - **추가 확인 (10/14 밤샘, `scripts/overnight_win.sh`)**: 나머지 4종도 다른 폴더에 다시 만들어 비교했다. 6개 파일(x, y, clf, ref_fp32, sha1 목록, 보정 사진) sha256이 4종 모두 원래 캐시와 같았다 (`../G2_fp32_dev/cache_check/sha256_<d>.txt`). 다시 만들 때의 FP32 top-1(`cache_check/baselines.jsonl`)도 원래 값과 같다.
+     - Caltech·Food 재생성은 깨끗한 커밋(`42164b6`, dirty=false)에서 했다. 따라서 이 두 캐시는 dirty 코드로 만들었어도 깨끗한 코드와 비트 단위로 같다.
+     - Flowers·Cars 재생성은 실행 중 `siglip2/`에 커밋 전 분석 스크립트(캐시 코드와 무관)가 있어 dirty=true로 기록됐다. 해시는 일치하지만, 규칙대로 깨끗한 재실행(`scripts/overnight_win5.sh`, `sha256_<d>_rerun.txt`)을 예약했고 결과가 나오면 여기에 적는다.
    - FP32 dev top-1: 캐시 생성 때 값(`../G2_fp32_dev/baselines.jsonl`)과 `rn50/evaluate.py` 경로 값(`evaluate.jsonl`)이 7종 모두 같음 — 같은 캐시 임베딩을 다른 코드 경로로 다시 채점한 것이라 채점 코드 확인이지, 임베딩의 독립 재계산은 아니다
 3. 독립 검토: PR에서 서브에이전트 검토 예정
 
