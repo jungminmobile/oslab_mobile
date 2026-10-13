@@ -75,3 +75,17 @@
   - 세션 전환 중 백그라운드 작업이 모두 중단됨
 - 사람 결정(10/13 오전): 보정 OOM → 나눠서 누적 + 동등성 확인 / 단계별 PR 4개 / DFC 휠은 쭈리가 받음 / D-006 날짜 10/13
 - 다음 할 일: 히스토그램 보정 나눠 누적(동등성 확인) → G3 보정 방식 비교 → 누적 구성 곡선 → DFC 설치·G1 컴파일 게이트
+
+## 2026-10-13 (세션 2, 오후~밤)
+- 단계: G1 완료(판정: SigLIP2 계속, D-026) → G3 보정·누적 → G4 첫 구성
+- 결과:
+  - G1 DFC: 전 구간 컴파일 성공(HEF 69.2 MB, 18 컨텍스트, 2시간 16분), float 에뮬레이터 = ONNX(cos 1.0), 기본 8비트 붕괴(cos 0.12) → `results/siglip2/G1_dfc_gate`
+  - G3 보정 비교: 블록 5~11 fc2 FP32 + Percentile 99.999가 최선(cos 0.959). Percentile·Entropy는 메모리 때문에 16장씩 나눠 누적(Percentile 동등, Entropy 근사) → `results/siglip2/G3_calib_method`
+  - G3 누적: fc2(블록 5·9)만 FP32인 fc2L2(S8) 105.3 MiB(−70.3%), 고화질 Δtop-1 −0.50 [−1.01, +0.01](유의한 차이 없음). U8은 attention까지 정수로 돌지만 유의하게 나쁨(−0.41) → `results/siglip2/G3_cumulative`
+  - G4 DFC: 잔차 합만 16비트 cos 0.72 → 공식 패턴(블록 0·5 MLP 추가) 0.963, 블록 5~11 fc2 0.936 → `results/siglip2/G4_dfc_first`
+- 실패·이상치:
+  - G4 B 에뮬레이션이 메모리 11.6 GB + 스왑 12 GB로 1시간 53분 걸림 → 배치 8 → 2로 줄여 다시 실행 중(D·E)
+  - WSL 정리 후 첫 시작이 `HCS_E_CONNECTION_TIMEOUT`, 두 번째에 정상
+  - 지연 측정은 PC가 바쁜 상태(다른 프로그램)라 미룸 → `scripts/run_when_idle.ps1`이 G4 종료 후 CPU 3분 연속 15% 미만이면 자동 측정
+- 사람 결정: G1 SigLIP2 계속, 교차 확인은 G4 최종 후보로(D-027), Entropy는 근사로 표시, 열린 PR 브랜치 push는 묻지 않음, 지연은 한가할 때
+- 다음 할 일: G4 D·E 결과 → 후보 조합 컴파일(HEF 크기·컨텍스트), 지연 측정 결과 정리, ORT 후보 + DFC 구성 후보표(팀 선택용), PR 검토 요청
