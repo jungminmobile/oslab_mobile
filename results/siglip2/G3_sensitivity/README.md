@@ -32,7 +32,7 @@ bash scripts/g3_sensitivity.sh head    # pooling head 다시 (커밋 b7523b2)
 
 pooling head 행은 `screen.jsonl` 마지막 block 행(커밋 `b7523b2`, 다시 만든 파일). head는 블록 0과 비슷하게 cos 0.91 수준의 손실이지만 top-1 영향은 작다.
 
-블록 5~11의 붕괴는 G1 진단의 활성값 이상치(블록 5부터 잔차 흐름 최대값이 99.9% 분위수의 40~68배)와 정확히 겹친다. 블록 하나를 INT8로 할 때 그 블록의 잔차 합(Add)·LayerNorm 입력이 텐서별 8비트로 잘린다.
+블록 5~11의 붕괴는 G1 진단의 활성값 이상치(블록 5~11 잔차 흐름 최대값이 99.9% 분위수의 39~68배)와 위치가 겹친다. 블록 하나를 INT8로 할 때 그 블록의 잔차 합(Add)·LayerNorm 입력이 텐서별 8비트로 잘린다.
 
 ## 연산 유형 (`screen.jsonl` tag=optype, 블록 0~11의 해당 MatMul만 INT8, bias·LayerNorm·잔차 Add는 FP32)
 | 하나만 INT8 | 크기 MiB | 고화질 cos | 고화질 Δtop-1 | CIFAR A cos | CIFAR A Δtop-1 |
@@ -47,17 +47,18 @@ pooling head 행은 `screen.jsonl` 마지막 block 행(커밋 `b7523b2`, 다시 
 ## 해석 (CNN vs Transformer)
 - RN50 트랙: 앞쪽(stem·layer1)이 민감 (PRD 7절, archive 결론). SigLIP2: **뒤쪽 블록 5~11의 잔차 흐름과 fc2 입력**이 민감, 앞쪽 블록 1~4는 거의 무손실.
 - 크기 기여가 큰 MLP(fc1+fc2 = 블록 파라미터의 2/3) 중 fc2가 가장 민감하다 → "크기에 중요한 곳 = 민감한 곳"이 겹쳐 크기-정확도 균형이 어렵다. 반대로 QKV(−17%)는 거의 공짜.
-- CIFAR(32→224 확대 사진)는 고화질보다 cos가 일관되게 낮다(블록 0: 0.846 vs 0.928). CLAUDE.md의 "CIFAR는 초기 층 변화에 과민" 경고와 같은 경향 → 선택은 고화질 cos로.
+- CIFAR(32→224 확대 사진)는 **앞쪽**(patch 0.879 vs 0.966, 블록 0 0.846 vs 0.928, 블록 1, proj, fc1)에서 고화질보다 cos가 낮고, **뒤쪽** 블록 5~11(0.617~0.727 vs 0.415~0.512)·head에서는 오히려 높다. 앞쪽은 CLAUDE.md의 "CIFAR는 초기 층 변화에 과민" 경고와 같은 경향 → 선택은 고화질 cos로.
 
 ## 사고 기록 (숨기지 않음)
 1. **MSYS 경로 변환**: Windows Git Bash가 `/trunk/...` 인자를 `C:/Program Files/Git/trunk/...`로 바꿔 첫 실행의 블록 양자화가 모두 실패(`artifacts/siglip2/logs/g3_sensitivity_run1_msys.log`). `MSYS_NO_PATHCONV=1`로 수정(커밋 `b02382f`).
    이때 `--only /trunk/attn_pool/,/trunk/norm/`은 앞부분만 바뀌어 **마지막 norm 1개 노드만** 양자화된 `only_head` 파일이 만들어졌고, 두 번째 실행이 "파일이 있으면 재사용" 규칙으로 그 파일을 썼다 → 위 표의 "마지막 norm 1개만" 행. 파일은 `BAD_msys_only_finalnorm.onnx`로 이름을 바꿔 격리했고, 스크립트는 항상 다시 만들도록 고쳤다(`b7523b2`). head는 다시 만들어 측정했다(46/510 노드, 위 표).
-2. **고아 프로세스**: 첫 실행을 멈췄을 때(TaskStop) Windows에서 손자 프로세스(s2_screen)가 살아남아, 두 번째 실행이 만든 모델을 뒤따라 평가했다 → `screen.jsonl`의 block 행이 두 번씩 있다(05:53~07:54). **두 행의 값은 모두 비트 단위로 같다**(정수 커널 결정성의 추가 증거). 대신 CPU를 나눠 써 스크리닝이 모델당 약 9분 걸렸다. 위 표는 같은 값이라 한 번만 적었다.
+   `quantize_log.jsonl` 2행(only_head, `"only": "C:/Program Files/Git/trunk/attn_pool/,…"`)은 망가진 인자인데도 `commit b02382f, dirty=false`로 찍혔다. 기록의 commit/dirty는 **그 줄을 쓸 때의 HEAD와 작업 트리**이고, 이미 메모리에 올라와 돌던 첫 실행(bash)의 스크립트 판이 아니다(첫 실행 도중 `b02382f`를 커밋함). 그래서 이 행은 첫 실행의 산출물로 본다. 오래 도는 스크립트 실행 중에는 커밋하지 않는 것으로 규칙을 보완한다.
+2. **고아 프로세스**: 첫 실행을 멈췄을 때(TaskStop) Windows에서 손자 프로세스(s2_screen)가 살아남아, 두 번째 실행이 만든 모델을 뒤따라 평가했다 → `screen.jsonl`의 block 행이 두 번씩 있다(05:53~08:21). **두 행의 값은 모두 비트 단위로 같다**(정수 커널 결정성의 추가 증거). 대신 CPU를 나눠 써 스크리닝이 모델당 약 9분 걸렸다. 위 표는 같은 값이라 한 번만 적었다.
 
 ## 3중 확인
 1. 자기 검증: 모든 양자화에서 보정 256장 assert. 노드 선택 개수 로그(블록 36/510, patch 6/510, head 46/510)
 2. 독립 재계산: 같은 모델을 두 프로세스가 따로 평가 → cos·top-1 완전히 같음(사고 2). G1 진단(활성값 이상치)과 블록 민감도가 같은 위치를 가리킴
-3. 독립 검토: PR에서 서브에이전트 검토 예정
+3. 독립 검토: 서브에이전트가 35행 전부 재계산해 일치 확인. 지적(CIFAR 문구, 중복 시간대, quantize_log 2행의 커밋 태그, 이상치 배율 범위) 반영. **정수로 실행된 노드 목록(VERIFICATION D-G3)은 아직 없음** → 보정 방식 비교에서 `--dump-ops`로 기록
 
 ## 다음
 - 보정 방식 비교 (`../G3_calib_method`): MatMul만 INT8 구성에서 MinMax/Percentile/Entropy
