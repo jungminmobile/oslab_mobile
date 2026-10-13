@@ -82,6 +82,7 @@ def token_stats(t):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=32, help="데이터셋당 사진 수 (Pets·Caltech dev 앞쪽)")
+    ap.add_argument("--sets", default="pets_dev,caltech_dev", help="캐시 이름(쉼표). 기본은 처음 분석과 같은 Pets·Caltech dev")
     a = ap.parse_args()
     import torch
     out = S.require_results_dir()
@@ -91,7 +92,8 @@ def main():
     model, _, _ = S.load_model()
     unfuse_attention(model)
     trunk = model.visual.trunk
-    xs = np.concatenate([np.load(RC.CACHE_DIR / f"{d}_x.npy", mmap_mode="r")[:a.n] for d in ("pets_dev", "caltech_dev")])
+    sets = a.sets.split(",")
+    xs = np.concatenate([np.load(RC.CACHE_DIR / f"{d}_x.npy", mmap_mode="r")[:a.n] for d in sets])
     x = torch.as_tensor(np.ascontiguousarray(xs))
     cap = {}
 
@@ -128,7 +130,7 @@ def main():
               f"| q8 zero {r['residual']['q8']['frac_round_to_zero']:.2f} | fc2 q8 zero {r['fc2_input']['q8']['frac_round_to_zero']:.2f} "
               f"| attn->hi {r['attn_mass_to_highnorm_tokens']}", flush=True)
     res = {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"], "dirty": env["git"]["dirty"],
-           "n_images": int(len(x)), "data": f"pets_dev[0:{a.n}] + caltech_dev[0:{a.n}]", "sec": round(time.time() - t0),
+           "n_images": int(len(x)), "data": " + ".join(f"{d}[0:{a.n}]" for d in sets), "sec": round(time.time() - t0),
            "blocks": rows}
     with open(out / "why_massive.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(res, ensure_ascii=False) + "\n")
