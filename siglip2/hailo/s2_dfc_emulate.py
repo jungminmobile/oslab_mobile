@@ -51,8 +51,9 @@ def main():
     for name, ctx_type in (ctxs[1:] if a.quantized_only else ctxs):
         t0 = time.time()
         with runner.infer_context(ctx_type) as ctx:
-            out = np.concatenate([np.asarray(runner.infer(ctx, nhwc[i:i + a.bs])).reshape(len(nhwc[i:i + a.bs]), -1)
-                                  for i in range(0, len(nhwc), a.bs)])
+            # 데이터 전체를 한 번에 넘기고 DFC가 batch_size로 나눠 돌린다. 배치마다 infer를 따로 부르면
+            # 호출마다 에뮬레이션 그래프를 다시 준비하며 메모리가 쌓여 OOM(구성 D, 2026-10-14 00:1x)이 났다.
+            out = np.asarray(runner.infer(ctx, nhwc, batch_size=a.bs)).reshape(len(nhwc), -1)
         assert out.shape == (a.k, ref.shape[1]), out.shape
         e = l2n(out.astype(np.float32))
         cos = (e * ref).sum(1)
