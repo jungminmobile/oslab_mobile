@@ -8,6 +8,8 @@
 #   fc2L0 : fc2 보호 없음 (= mm, 비교용으로 이미 측정: cos 0.661)
 # 스크리닝: s2_screen (dev 각 200장, 정수 커널). 지연: s2_bench_speed (PRD 5절 조건, 스레드 1·2·4, 비공식)
 # 사용 (siglip2 폴더에서): bash scripts/g3_cumulative.sh screen   (양자화+스크리닝)
+#                          bash scripts/g3_cumulative.sh screen2  (fc2 하나만 보호, U8 변형)
+#                          bash scripts/g3_cumulative.sh full     (상위 후보 dev 전체 재측정)
 #                          bash scripts/g3_cumulative.sh speed    (지연만 — 다른 무거운 작업이 없을 때)
 set -euo pipefail
 export MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL='*'
@@ -30,12 +32,28 @@ M+=("$(q ${P}_fc2L4.onnx --tag fc2L4 --exclude "$(fc2 5 9 10 11)")")
 M+=("$(q ${P}_fc2L2.onnx --tag fc2L2 --exclude "$(fc2 5 9)")")
 RN50_RESULTS=$R "$PY" -u s2_screen.py --k 200 --tag cumulative --models "${M[@]}"
 fi
+if [ "$WHAT" = screen2 ]; then
+# fc2 하나만 보호 (블록 5 / 블록 9), fc2L2의 U8 활성값 변형 (U8은 attention MatMul까지 정수로 실행됨, G3_calib_method)
+U=siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16
+M=()
+M+=("$(q ${P}_fc2L1b5.onnx --tag fc2L1b5 --exclude "$(fc2 5)")")
+M+=("$(q ${P}_fc2L1b9.onnx --tag fc2L1b9 --exclude "$(fc2 9)")")
+M+=("$(q ${U}_fc2L2.onnx --tag fc2L2 --act-type u8 --exclude "$(fc2 5 9)")")
+RN50_RESULTS=$R "$PY" -u s2_screen.py --k 200 --tag cumulative --models "${M[@]}"
+fi
+if [ "$WHAT" = full ]; then
+# 상위 후보 dev 전체 재측정 (정수 커널, rn50/evaluate.py 그대로) — 스크리닝(200장) 순위와 비교
+RN50_RESULTS=$R/full "$PY" -u s2_evaluate.py --data cifar_A pets_dev flowers_dev cars_dev food_dev caltech_dev --exec int --threads 4 \
+    --models fp32 ${P}_mm_nofc2L.onnx ${P}_fc2L4.onnx ${P}_fc2L2.onnx \
+             siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_fc2L2.onnx
+fi
 if [ "$WHAT" = speed ]; then
 # 지연: FP32, INT8 전부(참고), 보정 비교 최선(fc2 7개 보호), fc2L4, fc2L2
 for t in 1 2 4; do
   RN50_RESULTS=$R/speed "$PY" -u s2_bench_speed.py --warmup 20 --n 200 --repeats 3 --threads $t \
       --models fp32=siglip2_image_fp32.onnx int8_all=siglip2_image_int8_minmax_highres256_s0_s8_all.onnx \
-               fc2L7=${P}_mm_nofc2L.onnx fc2L4=${P}_fc2L4.onnx fc2L2=${P}_fc2L2.onnx
+               fc2L7=${P}_mm_nofc2L.onnx fc2L4=${P}_fc2L4.onnx fc2L2=${P}_fc2L2.onnx \
+               fc2L2_u8=siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_fc2L2.onnx
 done
 fi
 echo "G3CUM DONE $WHAT"
