@@ -20,11 +20,12 @@ s2_why_writers.py — 거대 활성값은 어느 층이 "써 넣고", 그것을 
      high-norm 토큰(블록 출력 노름 > 5×중앙값)에서 채널 67·301·145·483에 각 가지가 더한 값의 평균,
      그리고 fc2 입력의 최대 채널 값이 high-norm 토큰에 있는지(최대값 위치 비율).
   B. 개입(인과 확인) — 최종 이미지 임베딩의 FP32 대비 코사인(이미지 평균·최소), 마지막 블록 high-norm 토큰 유무:
-     (범위는 보정처럼 이 사진들 전체에서 한 번 정한 정적 범위. minmax = 전체 min~max, pct = 0.001%~99.999% 분위수)
+     (범위는 보정처럼 이 사진들 전체에서 한 번 정한 정적 범위. minmax = 전체 min~max, pct = 아래 정의)
      fq_in_fc2_b   : 블록 b의 fc2 입력만 텐서별 비대칭 8비트(minmax)
      fq_io_fc2_b   : 블록 b의 fc2를 ORT QDQ처럼 — 입력 8비트(minmax) + 가중치 채널별 대칭 S8 + MatMul 출력(bias 전) 8비트(minmax)
-     pq_io_fc2_b   : fq_io와 같지만 범위가 pct (G3 최선 보정 Percentile 99.999의 근사)
+     pq_io_fc2_b   : fq_io와 같지만 범위가 pct (ORT Percentile 99.999 비대칭과 같은 정의: 양쪽 각 0.0005%, 64장에서 정확히)
      clip_in_fc2_b : 블록 b의 fc2 입력을 pct 범위로 자르기만 (반올림 없음 → 자르기 효과만 분리)
+     ort_io_fc2_b / ortclip_in_fc2_b : 범위를 ORT 실제 정수 모델(--ort-model)의 scale·zero point에서 구함 (보정 256장, train)
      fq_{in,out}_fc2_{5,9}_{all,hi_only,normal_only} : 입력 또는 MatMul 출력(bias 전)을 같은 minmax 8비트로,
                      모든 토큰 / high-norm 토큰에만 / 보통 토큰에만 (어느 쪽이 망가뜨리나)
      (ORT 그래프 확인: fc2 MatMul 출력 뒤에 QuantizeLinear가 있다 — only_fc2 모델)
@@ -65,11 +66,35 @@ def fq8r(t, lo, hi):
     return (q - zp) * s
 
 
+def ort_ranges(path):
+    """ORT QDQ 모델에서 블록별 fc2 입력(GELU 출력 Mul_1)·MatMul 출력의 8비트 표현 범위 [(qmin−zp)·s, (qmax−zp)·s]."""
+    import onnx
+    from onnx import numpy_helper as nh
+    m = onnx.load(str(path), load_external_data=False)
+    init = {i.name: i for i in m.graph.initializer}
+    out = {}
+    for n in m.graph.node:
+        if n.op_type != "QuantizeLinear":
+            continue
+        for b in range(12):
+            for which, name in (("in", f"/trunk/blocks/blocks.{b}/mlp/act/Mul_1_output_0"), ("out", f"/trunk/blocks/blocks.{b}/mlp/fc2/MatMul_output_0")):
+                if n.input[0] == name:
+                    s = float(nh.to_array(init[n.input[1]]))
+                    zp_arr = nh.to_array(init[n.input[2]])
+                    zp = int(zp_arr)
+                    qmin, qmax = (-128, 127) if zp_arr.dtype == np.int8 else (0, 255)
+                    out[(b, which)] = ((qmin - zp) * s, (qmax - zp) * s)
+    assert len(out) == 24, f"fc2 입력·출력 24개를 찾아야 함: {len(out)}"
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=32, help="데이터셋당 사진 수 (Pets·Caltech dev 앞쪽)")
+    ap.add_argument("--ort-model", default="", help="ORT 정수 모델(onnx 폴더 기준 이름). 주면 그 모델의 fc2 입력·출력 범위로도 개입한다")
     a = ap.parse_args()
     import torch
+    ort_rng = ort_ranges(RC.onnx_path(a.ort_model)) if a.ort_model else {}
     out = S.require_results_dir()
     out.mkdir(parents=True, exist_ok=True)
     env = env_info.collect()
@@ -121,6 +146,14 @@ def main():
         assert torch.allclose(T[f"in{i}"] + da + dm, T[f"out{i}"], atol=1e-3)
         r = {"block": i, "n_hi_tokens": int(m.sum())}
         if m.any():
+            # high-norm 토큰 위치를 모두 센다 (위치별 개수 상위 4개) + 위치별 거대 채널 값 (그 위치가 high-norm인 이미지 평균)
+            cnt = m.sum(0)
+            top = [int(p) for p in torch.argsort(cnt, descending=True)[:4] if cnt[p] > 0]
+            r["hi_positions"] = [[p, int(cnt[p])] for p in top]
+            r["per_position"] = {str(p): {f"ch{c}": {"in": round(float(T[f"in{i}"][m[:, p], p, c].mean()), 1),
+                                                    "mlp_add": round(float(dm[m[:, p], p, c].mean()), 1),
+                                                    "out": round(float(T[f"out{i}"][m[:, p], p, c].mean()), 1)} for c in CH}
+                                 for p in top[:2]}
             for c in CH:
                 r[f"ch{c}"] = {"in": round(float(T[f"in{i}"][..., c][m].mean()), 2), "attn_add": round(float(da[..., c][m].mean()), 2),
                                "mlp_add": round(float(dm[..., c][m].mean()), 2), "out": round(float(T[f"out{i}"][..., c][m].mean()), 2),
@@ -155,17 +188,29 @@ def main():
         return r
     rows_b = [measure("fp32_again")]
     assert rows_b[0]["cos_mean"] > 0.9999, rows_b[0]               # 같은 입력이면 같은 출력 (결정성)
-    # 정적 범위(보정처럼 사진 전체에서 한 번 정함): minmax = 전체 min~max, pct = 0.001%·99.999% 분위수 (표본 1/7, 메모리)
-    def ranges(t):
-        q = torch.quantile(t.flatten()[::7], torch.tensor([1e-5, 1 - 1e-5]))
-        return {"minmax": (float(t.min()), float(t.max())), "pct": (float(q[0]), float(q[1]))}
+    # 정적 범위(보정처럼 사진 전체에서 한 번 정함): minmax = 전체 min~max,
+    # pct = ORT Percentile 99.999(비대칭)과 같은 정의 — 양쪽에서 각각 (100−99.999)/200 = 0.0005%를 자른 값을 정확히(전체 원소 topk) 구한다.
+    # (첫 실행은 1/7 간격 표본으로 분위수를 구했는데, 196 = 28×7이라 모든 사진에서 같은 (토큰, 채널) 위치만 뽑혀
+    #  거대 값 위치(패치 55·13의 채널 67·301·483 등)가 통째로 빠졌다 — 독립 검토 지적. why_writers.jsonl 1번째 줄의 pq/clip 행은 무효)
+    # ort = ORT 실제 정수 모델(--ort-model, 같은 보정으로 만든 MatMul 전부 INT8 Percentile 모델)의 scale·zero point에서 거꾸로 구한 범위
+    def ranges(t, b, which):
+        f = t.flatten()
+        k = max(1, int(np.ceil(5e-6 * f.numel())))
+        r = {"minmax": (float(f.min()), float(f.max())),
+             "pct": (float(-(-f).topk(k).values[-1]), float(f.topk(k).values[-1]))}
+        if ort_rng:
+            r["ort"] = ort_rng[(b, which)]
+        return r
+    kinds = [("fq_in", "minmax", "in"), ("fq_io", "minmax", "io"), ("pq_io", "pct", "io"), ("clip_in", "pct", "clip")]
+    if ort_rng:
+        kinds += [("ort_io", "ort", "io"), ("ortclip_in", "ort", "clip")]
     for i, b in enumerate(blocks):
         fc2 = b.mlp.fc2
-        rin = ranges(T[f"g{i}"])
-        rout = ranges(T[f"y{i}"])
+        rin = ranges(T[f"g{i}"], i, "in")
+        rout = ranges(T[f"y{i}"], i, "out")
         w0 = fc2.weight.data.clone()
         wq = (w0 / (w0.abs().amax(1, keepdim=True) / 127)).round().clamp(-127, 127) * (w0.abs().amax(1, keepdim=True) / 127)
-        for tag, kind, io in (("fq_in", "minmax", "in"), ("fq_io", "minmax", "io"), ("pq_io", "pct", "io"), ("clip_in", "pct", "clip")):
+        for tag, kind, io in kinds:
             lo, up = rin[kind]
             if io == "clip":
                 h1 = fc2.register_forward_pre_hook(lambda _, inp, lo=lo, up=up: (inp[0].clamp(lo, up),))
@@ -217,7 +262,7 @@ def main():
         chs = [67, 301, 145] if k == 5 else [67, 301, 145, 483]
         state = {"s": 0}
 
-        def zero(_, inp, outp, k=k, chs=chs):
+        def zero(_, inp, outp, k=k, chs=chs, state=state):
             s = state["s"]
             m = hi[k][s:s + len(outp)]
             o = outp.clone()
@@ -251,6 +296,7 @@ def main():
     res = {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"], "dirty": env["git"]["dirty"],
            "n_images": N, "data": f"pets_dev[0:{a.n}] + caltech_dev[0:{a.n}]", "sec": round(time.time() - t0),
            "note": "B의 fq/clip은 가짜 양자화(디버깅·기전 확인용). 정확도 비교에 쓰지 않는다.",
+           "pct_method": "exact topk, (100-99.999)/200 per side (ORT percentile asymmetric)", "ort_model": a.ort_model,
            "writers": rows_a, "interventions": rows_b}
     with open(out / "why_writers.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(res, ensure_ascii=False) + "\n")

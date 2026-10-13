@@ -112,6 +112,7 @@ def main():
     for h in hs:
         h.remove()
     rows = []
+    prev_hi = None
     for i in range(len(trunk.blocks)):
         h = np.concatenate(cap[f"h{i}"]); g = np.concatenate(cap[f"g{i}"]); at = np.concatenate(cap[f"attn{i}"])
         assert h.shape[1:] == (196, 768) and g.shape[1:] == (196, 3072) and at.shape[1:] == (12, 196, 196), (h.shape, g.shape, at.shape)
@@ -119,10 +120,18 @@ def main():
         # high-norm 토큰이 받는 attention: 쿼리·헤드 평균으로 각 키 토큰이 받는 확률, high-norm 토큰들의 합 (이미지 평균)
         recv = at.mean(axis=(1, 2))                                # (N, 196)
         attn_to_hi = float(np.mean([recv[n][hi[n]].sum() for n in range(len(recv)) if hi[n].any()])) if hi.any() else None
+        # 블록 i의 attention이 보는 키는 블록 i "입력" 토큰이다 → 이전 블록 출력의 high-norm 토큰 기준으로도 잰다 (독립 검토 지적)
+        hp = prev_hi
+        attn_to_prev_hi = (float(np.mean([recv[n][hp[n]].sum() for n in range(len(recv)) if hp[n].any()]))
+                           if hp is not None and hp.any() else None)
+        prev_hi = hi
+        pc = hi.sum(0)                                             # high-norm 토큰 위치별 개수 (상위 4개)
+        ts["highnorm_positions"] = [[int(p), int(pc[p])] for p in np.argsort(-pc)[:4] if pc[p] > 0]
         rows.append({"block": i,
                      "residual": {"channel": channel_stats(h), "token": ts, "q8": q8_stats(h)},
                      "fc2_input": {"channel": channel_stats(g), "q8": q8_stats(g)},
                      "attn_mass_to_highnorm_tokens": None if attn_to_hi is None else round(attn_to_hi, 4),
+                     "attn_mass_to_prev_block_highnorm_tokens": None if attn_to_prev_hi is None else round(attn_to_prev_hi, 4),
                      "attn_uniform_per_token": round(1 / 196, 4)})
         r = rows[-1]
         print(f"block {i:2d} | res max/med-norm {ts['max_over_median_norm']:7.2f} hi-tok {ts['n_highnorm_tokens_mean']:4.1f} "
