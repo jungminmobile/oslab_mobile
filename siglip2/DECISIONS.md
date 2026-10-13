@@ -119,3 +119,47 @@
 - 대안: siglip2 문서의 원래 문구 유지 (RN50과 조건이 달라짐)
 - 근거: PRD 1·3·4-3·5절. 두 트랙이 같은 조건이어야 비교 성립
 - 영향: CLAUDE.md 3·4절, ROADMAP G2·G6, VERIFICATION 수정
+
+## D-018 Hailo Model Zoo의 SigLIP 계열 공식 HEF (G0 확인 기록 + G1 제안)
+- 상태: 제안 / 2026-10-13 (확인 사실은 아래 근거, 다음 행동은 사람 승인 필요)
+- 확인한 사실 (Model Zoo master, `docs/public_models/HAILO10H/HAILO10H_zero_shot_classification.rst`, DFC v5.4.0, CIFAR-100 top-1):
+  | 모델 | 입력 | float → HW | FPS (B=1) | Params / OPS |
+  |---|---|---|---|---|
+  | siglip_b_16_image_encoder (google/siglip-base-patch16-224) | 224 | 72.2 → 71.6 | 33.0 | 92.1M / 35.5G |
+  | siglip2_b_32_256_image_encoder (google/siglip2-base-patch32-256) | 256 | 74.7 → 70.4 | 64.7 | 93.9M / 11.5G |
+  | siglip_l_16_256_image_encoder | 256 | 82.0 → 79.1 | 16.2 | 315M / 163.1G |
+  | (참고) clip_resnet_50_image_encoder | 224 | 42.1 → 41.2 | 142 | 38.7M / 11.6G |
+  - **우리 모델 `ViT-B-16-SigLIP2`(224)의 이미지 인코더 HEF는 없다.** `cfg/alls/generic`에 `siglip2_b_16_text_encoder.alls`만 있다.
+  - 공식 `.alls`(siglip_b_16, siglip2_b_32_256 이미지 인코더): 정규화 평균·표준편차 127.5(= 0.5), `optimization_level=0`, `layer_norm_decomposition`, `equalization=disabled`, `calibset_size=64`, 입력 근처 conv·일부 conv·모든 `ew_add`(잔차 합)를 `a16_w16`
+- 제안:
+  1. G1 판정 위험은 낮다고 본다: 같은 구조의 SigLIP B/16 224가 Hailo-10H에서 컴파일·실행된다. 단, SigLIP2 B/16의 pooling head·위치 임베딩이 SigLIP과 같은지는 G1 ONNX 연산 목록으로 확인한다.
+  2. G4의 출발점(S-C 다음)으로 공식 `.alls` 패턴(`ew_add*`·입력 conv `a16_w16`, LayerNorm 분해)을 참고 구성으로 둔다.
+  3. 보고서 비교 기준으로 공식 siglip_b_16 수치(72.2 → 71.6, 33 FPS)를 인용할 수 있다 (CIFAR-100, 프롬프트·평가 조건이 우리와 다를 수 있음을 명시).
+- 대안: 공식 HEF가 있는 siglip2_b_32_256 또는 siglip_b_16으로 모델 변경 (D-002 변경 → 사람 결정)
+- 근거: WebFetch 요약과 raw `.rst`·GitHub API 목록을 따로 받아 대조 (일치)
+- 틀렸다면 보일 신호: G1 parse에서 SigLIP2 B/16 전용 연산(예: pooling head)이 실패
+
+> 아래 D-019부터는 2026-10-13 쭈리의 지시("아주 크리티컬하지 않은 결정은 추천안으로 자동 결정하고 진행")에 따라 Claude가 **자동 결정**한 항목이다.
+> 상태는 "확정(자동)"으로 적고, 사람이 보고 바꾸고 싶으면 새 항목으로 대체한다.
+
+## D-019 SigLIP2 코드 구조: 모듈 이름 `s2_` 접두사, ONNX는 fused attention 끄고 내보내기
+- 상태: 확정(자동) / 2026-10-13
+- 결정: ① siglip2 쪽 모듈은 `s2common.py`, `s2_export_onnx.py`, `s2_build_dev.py`처럼 `s2` 접두사를 붙인다 ② ONNX export 때 timm `fused_attn`을 끈다(13개 모듈: 블록 12 + MAP 헤드 1). `--fused-attn`으로 되돌릴 수 있다
+- 근거: ① `s2common`이 `rn50/`을 `sys.path` 앞에 넣어 `export_onnx`가 RN50 파일로 불려 온 실제 오류 (`artifacts/siglip2/logs/g2_build_dev_highres.log`, 데이터 처리 전 import 단계에서 멈춤) ② fused 상태 export는 배치 1 고정 그래프에도 Shape·Sqrt·Cast·Where가 남음 (686 → 543 노드, Sqrt 39 → 0). DFC 파싱에 유리
+- 틀렸다면 보일 신호: unfused ONNX의 PyTorch 대비 코사인 < 0.9999 → `--verify`로 확인
+
+## D-020 ONNX 파일 두 개 (배치 가변 / 배치 1 고정)
+- 상태: 확정(자동) / 2026-10-13
+- 결정: `siglip2_image_fp32.onnx`(배치 가변, ORT 평가·양자화용)와 `siglip2_image_fp32_b1.onnx`(1×3×224×224 고정, DFC용). 둘 다 `$SIGLIP2_ARTIFACTS/onnx`, sha256은 `results/siglip2/G1_onnx_export/export.jsonl`
+- 근거: `rn50 common.embed`는 50장씩 배치로 넣음 (RN50 export도 배치 가변). ROADMAP G1은 고정 입력 요구
+
+## D-021 SigLIP2 dev 캐시 형식
+- 상태: 확정(자동) / 2026-10-13
+- 결정: `<key>_x.npy`는 SigLIP2 전처리까지 끝난 **float32**로 저장(→ `rn50/evaluate.py`를 고치지 않고 그대로 사용). 보정 후보는 `calib_<이름>_f32.npy`(이름이 `_u8`이 아니어서 `rn50/quantize_onnx.py`가 CLIP 정규화로 잘못 읽지 못함). 고화질 dev 사진의 SHA-1 목록 `<key>_sha1.txt`를 추가로 저장
+- 대안: uint8 저장(디스크 1/4) — `rn50 common.to_input`이 CLIP 평균·표준편차를 적용하므로 공통 코드를 고쳐야 함
+- 영향: 캐시 약 4GB (D 드라이브 artifacts)
+
+## D-022 SigLIP2 토크나이저 의존성
+- 상태: 확정(자동) / 2026-10-13
+- 결정: `transformers==5.19.0` 추가 (open_clip `HFTokenizer`가 `transformers.AutoTokenizer` 사용). `siglip2/requirements.txt`에 고정
+- 근거: 첫 G0 실행이 `ModuleNotFoundError: transformers`로 멈춤 (`artifacts/siglip2/logs/g0_smoke_run1.log`)

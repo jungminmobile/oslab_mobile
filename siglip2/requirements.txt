@@ -1,0 +1,9 @@
+# SigLIP2 트랙 의존성. Python 3.11, CPU 전용.
+# 설치: "$SIGLIP2_PYTHON" -m pip install -r siglip2/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+# RN50 트랙과 같은 버전을 쓰기 위해 rn50/requirements.txt를 그대로 참조한다 (복사하지 않음, D-009).
+-r ../rn50/requirements.txt
+# SigLIP2 전용 추가분 (2026-10-13 설치 버전으로 고정)
+timm==1.0.30
+py-cpuinfo==9.0.0
+# open_clip의 SigLIP2 토크나이저(HFTokenizer)가 transformers.AutoTokenizer를 쓴다
+transformers==5.19.0
