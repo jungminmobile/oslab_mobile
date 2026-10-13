@@ -1,0 +1,191 @@
+{
+ "siglip2_image_fp32.onnx": {
+  "file": "siglip2_image_fp32.onnx",
+  "n_nodes": 934,
+  "ops": {
+   "Constant": 274,
+   "Add": 92,
+   "MatMul": 79,
+   "Unsqueeze": 54,
+   "Mul": 53,
+   "Shape": 42,
+   "Transpose": 41,
+   "Sqrt": 39,
+   "Squeeze": 38,
+   "Concat": 29,
+   "Reshape": 29,
+   "Gather": 28,
+   "LayerNormalization": 26,
+   "Cast": 26,
+   "Div": 26,
+   "Slice": 14,
+   "Split": 13,
+   "Softmax": 13,
+   "Erf": 13,
+   "Conv": 1,
+   "ConstantOfShape": 1,
+   "Equal": 1,
+   "Where": 1,
+   "Expand": 1
+  },
+  "inputs": [
+   [
+    "image",
+    [
+     "batch",
+     3,
+     224,
+     224
+    ]
+   ]
+  ],
+  "outputs": [
+   [
+    "embedding",
+    [
+     "batch",
+     768
+    ]
+   ]
+  ],
+  "gelu_form": "Erf (정확한 GELU)",
+  "layernorm": "LayerNormalization 연산",
+  "pool_nodes": [
+   "/trunk/attn_pool/Shape",
+   "/trunk/attn_pool/Constant",
+   "/trunk/attn_pool/Gather",
+   "/trunk/attn_pool/Shape_1",
+   "/trunk/attn_pool/Constant_1",
+   "/trunk/attn_pool/Gather_1",
+   "/trunk/attn_pool/Shape_2",
+   "/trunk/attn_pool/Constant_2",
+   "/trunk/attn_pool/Gather_2",
+   "/trunk/attn_pool/Constant_3",
+   "/trunk/attn_pool/Unsqueeze",
+   "/trunk/attn_pool/Constant_4",
+   "/trunk/attn_pool/Constant_5",
+   "/trunk/attn_pool/Concat",
+   "/trunk/attn_pool/Constant_6",
+   "/trunk/attn_pool/Reshape",
+   "/trunk/attn_pool/Shape_3",
+   "/trunk/attn_pool/ConstantOfShape",
+   "/trunk/attn_pool/Constant_7",
+   "/trunk/attn_pool/Mul",
+   "/trunk/attn_pool/Equal",
+   "/trunk/attn_pool/Where",
+   "/trunk/attn_pool/Expand",
+   "/trunk/attn_pool/q/MatMul",
+   "/trunk/attn_pool/q/Add",
+   "/trunk/attn_pool/Unsqueeze_1",
+   "/trunk/attn_pool/Constant_8",
+   "/trunk/attn_pool/Constant_9",
+   "/trunk/attn_pool/Constant_10",
+   "/trunk/attn_pool/Concat_1",
+   "/trunk/attn_pool/Reshape_1",
+   "/trunk/attn_pool/Transpose",
+   "/trunk/attn_pool/kv/MatMul",
+   "/trunk/attn_pool/kv/Add",
+   "/trunk/attn_pool/Unsqueeze_2",
+   "/trunk/attn_pool/Unsqueeze_3",
+   "/trunk/attn_pool/Constant_11",
+   "/trunk/attn_pool/Constant_12",
+   "/trunk/attn_pool/Constant_13",
+   "/trunk/attn_pool/Concat_2"
+  ],
+  "n_pool_nodes": 88
+ },
+ "siglip2_image_fp32_b1.onnx": {
+  "file": "siglip2_image_fp32_b1.onnx",
+  "n_nodes": 686,
+  "ops": {
+   "Constant": 164,
+   "Add": 92,
+   "MatMul": 79,
+   "Mul": 53,
+   "Transpose": 41,
+   "Sqrt": 39,
+   "Squeeze": 38,
+   "Reshape": 28,
+   "LayerNormalization": 26,
+   "Cast": 26,
+   "Div": 26,
+   "Shape": 14,
+   "Slice": 14,
+   "Split": 13,
+   "Softmax": 13,
+   "Erf": 13,
+   "Conv": 1,
+   "Concat": 1,
+   "ConstantOfShape": 1,
+   "Equal": 1,
+   "Where": 1,
+   "Expand": 1,
+   "Gather": 1
+  },
+  "inputs": [
+   [
+    "image",
+    [
+     1,
+     3,
+     224,
+     224
+    ]
+   ]
+  ],
+  "outputs": [
+   [
+    "embedding",
+    [
+     1,
+     768
+    ]
+   ]
+  ],
+  "gelu_form": "Erf (정확한 GELU)",
+  "layernorm": "LayerNormalization 연산",
+  "pool_nodes": [
+   "/trunk/attn_pool/Constant",
+   "/trunk/attn_pool/Constant_1",
+   "/trunk/attn_pool/ConstantOfShape",
+   "/trunk/attn_pool/Constant_2",
+   "/trunk/attn_pool/Mul",
+   "/trunk/attn_pool/Equal",
+   "/trunk/attn_pool/Where",
+   "/trunk/attn_pool/Expand",
+   "/trunk/attn_pool/q/MatMul",
+   "/trunk/attn_pool/q/Add",
+   "/trunk/attn_pool/Constant_3",
+   "/trunk/attn_pool/Reshape",
+   "/trunk/attn_pool/Transpose",
+   "/trunk/attn_pool/kv/MatMul",
+   "/trunk/attn_pool/kv/Add",
+   "/trunk/attn_pool/Constant_4",
+   "/trunk/attn_pool/Reshape_1",
+   "/trunk/attn_pool/Transpose_1",
+   "/trunk/attn_pool/Constant_5",
+   "/trunk/attn_pool/Split",
+   "/trunk/attn_pool/Constant_6",
+   "/trunk/attn_pool/Squeeze",
+   "/trunk/attn_pool/Constant_7",
+   "/trunk/attn_pool/Squeeze_1",
+   "/trunk/attn_pool/Shape",
+   "/trunk/attn_pool/Constant_8",
+   "/trunk/attn_pool/Constant_9",
+   "/trunk/attn_pool/Slice",
+   "/trunk/attn_pool/Cast",
+   "/trunk/attn_pool/Sqrt",
+   "/trunk/attn_pool/Constant_10",
+   "/trunk/attn_pool/Div",
+   "/trunk/attn_pool/Cast_1",
+   "/trunk/attn_pool/Transpose_2",
+   "/trunk/attn_pool/Sqrt_1",
+   "/trunk/attn_pool/Mul_1",
+   "/trunk/attn_pool/Sqrt_2",
+   "/trunk/attn_pool/Mul_2",
+   "/trunk/attn_pool/MatMul",
+   "/trunk/attn_pool/Softmax"
+  ],
+  "n_pool_nodes": 61
+ }
+}
