@@ -13,6 +13,7 @@ s2_quantize.py — SigLIP2 이미지 인코더 ONNX Runtime 정적 INT8 양자�
   --calib-source mix     : 반씩
   --method minmax | percentile(--percentile, 비대칭 범위) | entropy
   --op-types MatMul       : 이 연산 유형만 양자화 (기본: ORT 기본 목록 전부). 파일 이름에 _ops-MatMul이 붙는다
+  --hist-chunk 16         : percentile·entropy를 16장씩 나눠 히스토그램 누적 (메모리 부족 대책, 파일 이름에 _hc16)
   기본값은 PRD의 E3 전 기본값: highres 256장, 시드 0. 시드 고정으로 섞은 뒤 배치로 나눈다.
   보정 장수 확인 (RN50 "256장 중 16장" 버그 재발 방지):
     ① 보정기가 reader에서 가져간 사진 수 = 요청 장수 (reader를 끝까지 읽었는지)
@@ -50,7 +51,52 @@ import quantize_onnx as RQ                # noqa: E402  rn50/quantize_onnx.py
 assert Path(RQ.__file__).resolve().parent == S.RN50_DIR.resolve(), RQ.__file__
 
 RC = S.RC
-RS_CAL_N = lambda: int(S.RD.CAL_N)   # 보정 후보 풀 장수 규칙 (PRD E0 ⑦에서 64 → 256 예정)
+RS_CAL_N = lambda: int(S.RD.CAL_N)
+
+
+def enable_chunked_histogram(chunk_batches):
+    """ORT 1.25 HistogramCalibrater.collect_data는 모든 배치의 중간 텐서를 메모리에 쌓은 뒤 한 번에 히스토그램을 만든다
+    (calibrate.py 601~651행) → ViT·256장은 16 GB를 넘어 실패. 이 프로세스 안에서만 collect_data를 바꿔
+    chunk_batches 배치마다 HistogramCollector.collect(ORT가 제공하는 히스토그램 합치기, merge_histogram)로 누적하고 비운다.
+    ORT·RN50 코드는 바꾸지 않는다. 한꺼번에 계산한 것과의 차이는 s2_hist_chunk_check.py로 재서 기록한다."""
+    import copy
+    from onnxruntime.quantization.calibrate import HistogramCalibrater, HistogramCollector
+
+    def collect_data(self, data_reader):
+        input_names_set = {a.name for a in self.infer_session.get_inputs()}
+        output_names = [a.name for a in self.infer_session.get_outputs()]
+        flushed = 0
+
+        def flush():
+            merged = {}
+            for out in self.intermediate_outputs:
+                for k, v in zip(output_names, out):
+                    merged.setdefault(k, []).append(v)
+            clean = {k: v for k, v in merged.items() if k in self.tensors_to_calibrate}
+            if not self.collector:
+                self.collector = HistogramCollector(method=self.method, symmetric=self.symmetric,
+                                                    num_bins=self.num_bins, num_quantized_bins=self.num_quantized_bins,
+                                                    percentile=self.percentile, scenario=self.scenario)
+            self.collector.collect(clean)
+            self.clear_collected_data()
+
+        while True:
+            inputs = data_reader.get_next()
+            if not inputs:
+                break
+            outputs = self.infer_session.run(None, inputs)
+            self.intermediate_outputs.append([copy.copy(o) if output_names[i] in input_names_set else o
+                                              for i, o in enumerate(outputs)])
+            if len(self.intermediate_outputs) >= chunk_batches:
+                flush()
+                flushed += 1
+        if self.intermediate_outputs:
+            flush()
+            flushed += 1
+        if flushed == 0:
+            raise ValueError("No data is collected.")
+
+    HistogramCalibrater.collect_data = collect_data   # 보정 후보 풀 장수 규칙 (PRD E0 ⑦에서 64 → 256 예정)
 
 
 class CountingCalib(RQ.ImageCalib):
@@ -134,6 +180,8 @@ def main():
     ap.add_argument("--percentile", type=float, default=99.999,
                     help="--method percentile 전용. 범위는 비대칭(CalibTensorRangeSymmetric=False, PRD 3절)")
     ap.add_argument("--op-types", default="", help="양자화할 연산 유형(쉼표). 비우면 ORT 기본(전부). 예: MatMul")
+    ap.add_argument("--hist-chunk", type=int, default=0,
+                    help="percentile·entropy 전용: 이 장수마다 히스토그램을 누적하고 중간 텐서를 비움(메모리). 0이면 ORT 표준")
     ap.add_argument("--per-channel", type=int, default=1)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--exclude", default="")
@@ -155,6 +203,11 @@ def main():
         quant_pre_process(str(src), str(pre))
     meth = f"percentile{str(a.percentile).replace('.', '')}" if a.method == "percentile" else a.method
     ops_tag = f"_ops-{a.op_types.replace(',', '-')}" if a.op_types else ""
+    if a.hist_chunk:
+        assert a.method in ("percentile", "entropy"), "--hist-chunk는 percentile·entropy 전용"
+        assert a.hist_chunk % a.calib_bs == 0, "--hist-chunk는 --calib-bs의 배수"
+        enable_chunked_histogram(a.hist_chunk // a.calib_bs)
+        ops_tag += f"_hc{a.hist_chunk}"
     cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
     dst = RC.ONNX_DIR / f"siglip2_image_int8_{cal}{'_' + a.tag if a.tag else ''}.onnx"
     if dst.exists() and not a.overwrite:
@@ -189,7 +242,7 @@ def main():
     row = {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"],
            "dirty": env["git"]["dirty"], "options": vars(a), "model": dst.name,
            "MiB": round(dst.stat().st_size / 2**20, 2), "calib_seen": seen, "calib_pool_n": int(pool_n),
-           "rn50_CAL_N": RS_CAL_N(), "n_excluded_nodes": len(excl),
+           "rn50_CAL_N": RS_CAL_N(), "hist_chunk": a.hist_chunk, "n_excluded_nodes": len(excl),
            "qtype": f"{a.act_type.upper()}S8", "sec": round(time.time() - t0)}
     if a.dump_ops:
         row["ort_optimized_graph"] = dump_ops(dst, a.threads)
