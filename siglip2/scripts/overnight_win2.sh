@@ -12,8 +12,8 @@ R=../results/siglip2
 until grep -q "OVERNIGHT_WIN DONE" $ART/logs/overnight_win.log 2>/dev/null; do sleep 60; done
 echo "$(date +%T) start commit=$(git rev-parse --short HEAD) status=[$(git status --porcelain --untracked-files=all -- . | tr '\n' ' ')]"
 RN50_RESULTS=$R/G3_why "${LOCK[@]}" "SigLIP2 why-massive (clean rerun)" -- "$PY" -u s2_why_massive.py --n 32 > $ART/logs/overnight_why2.log 2>&1
-echo "$(date +%T) why rerun rc=$?"
+rc=$?; echo "$(date +%T) why rerun rc=$rc"
 RN50_RESULTS=$R/G3_calib_method/hist_chunk_check16 "${LOCK[@]}" "SigLIP2 hist-chunk check16 (clean rerun)" -- \
     "$PY" -u s2_hist_chunk_check.py --n 32 --chunk 16 > $ART/logs/overnight_histcheck16_2.log 2>&1
-echo "$(date +%T) histcheck16 rerun rc=$?"
+rc=$?; echo "$(date +%T) histcheck16 rerun rc=$rc"
 echo "OVERNIGHT_WIN2 DONE $(date +%T)"

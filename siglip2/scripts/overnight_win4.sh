@@ -13,6 +13,6 @@ echo "$(date +%T) start commit=$(git rev-parse --short HEAD) status=[$(git statu
 for d in pets_dev caltech_dev flowers_dev cars_dev food_dev cifar_A; do
   RN50_RESULTS=$R/G3_why/per_set "${LOCK[@]}" "SigLIP2 why-massive $d" -- "$PY" -u s2_why_massive.py --n 16 --sets $d \
       > $ART/logs/overnight_why_$d.log 2>&1
-  echo "$(date +%T) why $d rc=$?"
+  rc=$?; echo "$(date +%T) why $d rc=$rc"
 done
 echo "OVERNIGHT_WIN4 DONE $(date +%T)"

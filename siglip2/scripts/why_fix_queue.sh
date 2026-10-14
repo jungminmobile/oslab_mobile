@@ -8,5 +8,5 @@ until grep -a -q "SPEED_RERUN4_DONE" $SIGLIP2_ARTIFACTS/logs/speed_rerun_t4.log 
 echo "$(date +%T) start commit=$(git rev-parse --short HEAD) status=[$(git status --porcelain --untracked-files=all -- . | tr '\n' ' ')]"
 RN50_RESULTS=../results/siglip2/G3_why "$PY" D:/mokerton/locks/heavy_lock.py run --owner siglip2 --job "SigLIP2 why-fix (scale granularity)" -- \
     "$PY" -u s2_why_fix.py --n 32 > $SIGLIP2_ARTIFACTS/logs/why_fix.log 2>&1
-echo "$(date +%T) why_fix rc=$?"
+rc=$?; echo "$(date +%T) why_fix rc=$rc"
 echo "WHY_FIX DONE $(date +%T)"

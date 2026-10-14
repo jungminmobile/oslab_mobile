@@ -10,5 +10,5 @@ R=../results/siglip2
 until grep -q "OVERNIGHT_WIN2 DONE" $ART/logs/overnight_win2.log 2>/dev/null; do sleep 60; done
 echo "$(date +%T) start commit=$(git rev-parse --short HEAD) status=[$(git status --porcelain --untracked-files=all -- . | tr '\n' ' ')]"
 RN50_RESULTS=$R/G3_why "${LOCK[@]}" "SigLIP2 why-writers (interventions)" -- "$PY" -u s2_why_writers.py --n 32 > $ART/logs/overnight_writers.log 2>&1
-echo "$(date +%T) writers rc=$?"
+rc=$?; echo "$(date +%T) writers rc=$rc"
 echo "OVERNIGHT_WIN3 DONE $(date +%T)"

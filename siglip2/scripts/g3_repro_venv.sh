@@ -22,9 +22,11 @@ echo "$(date +%T) start commit=$(git rev-parse --short HEAD) status=[$(git statu
 if [ ! -f "$PYR" ]; then
   "${LOCK[@]}" "SigLIP2 repro venv install" -- "$BASE" -m venv "$VENV"
 fi
-"${LOCK[@]}" "SigLIP2 repro venv pip install" -- "$PYR" -m pip install --cache-dir 'D:\mokerton\cache\pip' \
+PYTHONUTF8=1 "${LOCK[@]}" "SigLIP2 repro venv pip install" -- "$PYR" -m pip install --cache-dir 'D:\mokerton\cache\pip' \
     -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu > $ART/logs/repro_pip.log 2>&1
-echo "$(date +%T) pip rc=$?"
+rc=$?; echo "$(date +%T) pip rc=$rc"
+# requirements.txt의 한글 주석 때문에 pip 24.0이 cp949로 읽다 실패한 일(10/14 19:00)이 있어 PYTHONUTF8=1, 설치 확인 후 진행
+"$PYR" -c "import torch, onnxruntime, open_clip, timm, transformers; print('repro venv ok', torch.__version__, onnxruntime.__version__)"     || { echo "REPRO VENV BROKEN — stop"; exit 1; }
 "$PYR" -m pip freeze > $R/pip_freeze_repro.txt
 "$PY0" -m pip freeze > $R/pip_freeze_original.txt
 echo "freeze diff lines: $(diff $R/pip_freeze_original.txt $R/pip_freeze_repro.txt | grep -c '^[<>]')"
@@ -34,19 +36,22 @@ export RN50_ONNX="$ART/onnx_repro"
 mkdir -p "$RN50_ONNX"
 RN50_RESULTS=$R/export "${LOCK[@]}" "SigLIP2 repro export" -- "$PYR" -u s2_export_onnx.py --out $R/export --overwrite \
     > $ART/logs/repro_export.log 2>&1
-echo "$(date +%T) export rc=$?"
+rc=$?; echo "$(date +%T) export rc=$rc"
+[ $rc -eq 0 ] || { echo "REPRO export FAILED — stop"; exit 1; }
 # 3) 양자화 (g3_cumulative.sh의 fc2L2와 같은 인자)
 RN50_RESULTS=$R "${LOCK[@]}" "SigLIP2 repro quantize fc2L2" -- "$PYR" -u s2_quantize.py --calib-source highres --calib-n 256 \
     --op-types MatMul --method percentile --percentile 99.999 --hist-chunk 16 --overwrite --dump-ops --tag fc2L2 \
     --exclude "/blocks.5/mlp/fc2/,/blocks.9/mlp/fc2/" > $ART/logs/repro_quantize.log 2>&1
-echo "$(date +%T) quantize rc=$?"
+rc=$?; echo "$(date +%T) quantize rc=$rc"
+[ $rc -eq 0 ] || { echo "REPRO quantize FAILED — stop"; exit 1; }
 ( cd "$ART" && sha256sum onnx/siglip2_image_fp32.onnx onnx_repro/siglip2_image_fp32.onnx onnx/siglip2_image_fp32_b1.onnx onnx_repro/siglip2_image_fp32_b1.onnx \
     onnx/${P}_fc2L2.onnx onnx_repro/${P}_fc2L2.onnx ) > $R/sha256.txt 2>&1
 cat $R/sha256.txt
 # 4) 사진별 예측 (새 venv, 새로 만든 모델)
 RN50_RESULTS=$R/full "${LOCK[@]}" "SigLIP2 repro paired_ci fc2L2" -- "$PYR" -u s2_paired_ci.py --models "$ART/onnx_repro/${P}_fc2L2.onnx" \
     > $ART/logs/repro_paired_ci.log 2>&1
-echo "$(date +%T) paired_ci rc=$?"
+rc=$?; echo "$(date +%T) paired_ci rc=$rc"
+[ $rc -eq 0 ] || { echo "REPRO paired_ci FAILED — stop"; exit 1; }
 "$PY0" - > $R/pred_compare.txt <<'EOF'
 import numpy as np, glob
 a = np.load("../results/siglip2/G3_cumulative/full/pred_siglip2_image_int8_percentile99999_highres256_s0_s8_ops-MatMul_hc16_fc2L2.npz")

@@ -21,7 +21,7 @@ echo "$(date +%T) start commit=$(git -C $REPO rev-parse --short HEAD) dirty=$(gi
 
 screen() {   # $1 har, $2 tag
   $LOCK "G4 screen $2" -- python ~/s2_dfc_screen.py --har $1 --tag $2 --k 200 --bs 8 --out $R/G4_dfc_screen > $R/G4_dfc_screen/log_$2.txt 2>&1
-  echo "$(date +%T) screen $2 rc=$? $(grep '"hr_cos"' $R/G4_dfc_screen/log_$2.txt | tail -1)"
+  rc=$?; echo "$(date +%T) screen $2 rc=$rc $(grep '"hr_cos"' $R/G4_dfc_screen/log_$2.txt | tail -1)"
 }
 
 # 1) 보정 256장
@@ -33,7 +33,7 @@ if [ ! -f $W3/opt_D256_official_b9fc2.har ]; then
 t0=$(date +%s)
   ( cd $W3 && $LOCK "DFC optimize D256" -- hailo optimize siglip2_b16_224.har --hw-arch hailo10h --model-script g4_D256_official_b9fc2.alls \
       --calib-set-path calib_highres256_s0_nhwc.npy --output-har-path opt_D256_official_b9fc2.har > optimize_D256.log 2>&1 )
-  echo "$(date +%T) optimize D256 rc=$? sec=$(( $(date +%s) - t0 ))"
+  rc=$?; echo "$(date +%T) optimize D256 rc=$rc sec=$(( $(date +%s) - t0 ))"
 else echo "$(date +%T) optimize D256 skipped (HAR exists)"; fi
 [ -f $R/G4_dfc_screen/calib256/sha256.txt ] || { mkdir -p $R/G4_dfc_screen/calib256; cp $W3/optimize_D256.log $W3/g4_D256_official_b9fc2.alls $R/G4_dfc_screen/calib256/ 2>/dev/null
 sha256sum $W3/opt_D256_official_b9fc2.har $W3/calib_highres256_s0_nhwc.npy > $R/G4_dfc_screen/calib256/sha256.txt 2>/dev/null; }
@@ -48,9 +48,9 @@ compile() {  # $1 har, $2 tag
   C=~/siglip2_dfc/compile_$(date +%Y%m%d); mkdir -p $C/$2 $R/G4_compile/$2
   t0=$(date +%s)
   ( cd $C/$2 && $LOCK "DFC compile $2" -- hailo compiler $1 --hw-arch hailo10h --output-dir . --output-har-path compiled_$2.har > compile.log 2>&1 )
-  echo "$(date +%T) compile $2 rc=$? sec=$(( $(date +%s) - t0 ))"
+  rc=$?; echo "$(date +%T) compile $2 rc=$rc sec=$(( $(date +%s) - t0 ))"
   ( cd $C/$2 && $LOCK "DFC profiler $2" -- hailo profiler compiled_$2.har --hef *.hef --out-path profiler.html --csv profiler.csv > prof.log 2>&1 )
-  echo "$(date +%T) profiler $2 rc=$?"
+  rc=$?; echo "$(date +%T) profiler $2 rc=$rc"
   ( cd $C/$2 && ls -la > $R/G4_compile/$2/files.txt; sha256sum *.hef >> $R/G4_compile/$2/files.txt 2>/dev/null
     grep -a -E "contexts|Number of Contexts|Successful|FPS|rror" compile.log prof.log | tail -40 > $R/G4_compile/$2/summary.txt
     cp profiler.csv $R/G4_compile/$2/ 2>/dev/null; tail -c 200000 compile.log > $R/G4_compile/$2/compile_tail.log )

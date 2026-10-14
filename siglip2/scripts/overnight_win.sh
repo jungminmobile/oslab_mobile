@@ -14,11 +14,11 @@ echo "$(date +%T) start commit=$(git rev-parse --short HEAD)"
 
 RN50_RESULTS=$R/G3_why "${LOCK[@]}" "SigLIP2 why-massive analysis" -- "$PY" -u s2_why_massive.py --n 32 \
     > $ART/logs/overnight_why.log 2>&1
-echo "$(date +%T) why rc=$?"
+rc=$?; echo "$(date +%T) why rc=$rc"
 
 RN50_RESULTS=$R/G3_calib_method/hist_chunk_check16 "${LOCK[@]}" "SigLIP2 hist-chunk check (chunk 16)" -- \
     "$PY" -u s2_hist_chunk_check.py --n 32 --chunk 16 > $ART/logs/overnight_histcheck16.log 2>&1
-echo "$(date +%T) histcheck16 rc=$?"
+rc=$?; echo "$(date +%T) histcheck16 rc=$rc"
 
 mkdir -p $R/G2_fp32_dev/cache_check
 for d in flowers cars caltech food; do

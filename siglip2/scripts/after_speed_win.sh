@@ -13,12 +13,12 @@ P=siglip2_image_int8_percentile99999_highres256_s0_s8_ops-MatMul_hc16
 until grep -a -q "SPEED_RERUN4_DONE" $ART/logs/speed_rerun_t4.log 2>/dev/null; do sleep 30; done
 echo "$(date +%T) start commit=$(git rev-parse --short HEAD) status=[$(git status --porcelain --untracked-files=all -- . | tr '\n' ' ')]"
 "$PY" hailo/s2_dfc_calib.py --n 256 > $ART/logs/dfc_calib256.log 2>&1
-echo "$(date +%T) dfc calib256 rc=$? $(tail -1 $ART/logs/dfc_calib256.log)"
+rc=$?; echo "$(date +%T) dfc calib256 rc=$rc $(tail -1 $ART/logs/dfc_calib256.log)"
 RN50_RESULTS=../results/siglip2/G3_cumulative/model_stats "${LOCK[@]}" "SigLIP2 candidate model stats (peak mem)" -- \
     "$PY" -u s2_model_stats.py --models fp32=siglip2_image_fp32.onnx int8_all=siglip2_image_int8_minmax_highres256_s0_s8_all.onnx \
       fc2L7=${P}_mm_nofc2L.onnx fc2L4=${P}_fc2L4.onnx fc2L2=${P}_fc2L2.onnx \
       fc2L2_u8=siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_fc2L2.onnx > $ART/logs/model_stats_candidates.log 2>&1
-echo "$(date +%T) model stats rc=$?"
+rc=$?; echo "$(date +%T) model stats rc=$rc"
 bash scripts/g3_repro_venv.sh > $ART/logs/repro_venv.log 2>&1
-echo "$(date +%T) repro rc=$? $(tail -1 $ART/logs/repro_venv.log)"
+rc=$?; echo "$(date +%T) repro rc=$rc $(tail -1 $ART/logs/repro_venv.log)"
 echo "AFTER_SPEED_WIN DONE $(date +%T)"

@@ -13,11 +13,11 @@ R=../results/siglip2
 echo "$(date +%T) start commit=$(git rev-parse --short HEAD) status=[$(git status --porcelain --untracked-files=all -- . | tr '\n' ' ')]"
 RN50_RESULTS=$R/G3_why "${LOCK[@]}" "SigLIP2 why-massive v2 (offline)" -- \
     "$PY" -u s2_why_massive.py --n 32 > $ART/logs/overnight_why_v2b.log 2>&1
-echo "$(date +%T) why v2 rc=$?"
+rc=$?; echo "$(date +%T) why v2 rc=$rc"
 RN50_RESULTS=$R/G3_why "${LOCK[@]}" "SigLIP2 why-writers v2 (offline)" -- \
     "$PY" -u s2_why_writers.py --n 32 --ort-model siglip2_image_int8_percentile99999_highres256_s0_s8_ops-MatMul_hc16_mm.onnx \
     > $ART/logs/overnight_writers_v2b.log 2>&1
-echo "$(date +%T) writers v2 rc=$?"
+rc=$?; echo "$(date +%T) writers v2 rc=$rc"
 for d in flowers cars; do
   rm -rf "$ART/cache_check_$d"
   RN50_CACHE="$ART/cache_check_$d" RN50_RESULTS=$R/G2_fp32_dev/cache_check "${LOCK[@]}" "SigLIP2 cache determinism $d (clean rerun, offline)" -- \

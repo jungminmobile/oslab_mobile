@@ -24,7 +24,7 @@ for item in "$W2/opt_D_official_b9fc2.har D_official_b9fc2" "$W2/opt_E_fc2_b0b5b
             "$W1/opt_C_official.har C_official" "$W1/opt_B_latefc2.har B_latefc2" "$W1/opt_A_ewadd_patch16.har A_ewadd_patch16"; do
   set -- $item
   $LOCK "G4 screen $2" -- python ~/s2_dfc_screen.py --har $1 --tag $2 --k 200 --bs 8 --out $R/G4_dfc_screen > $R/G4_dfc_screen/log_$2.txt 2>&1
-  echo "$(date +%T) screen $2 rc=$? $(grep '"hr_cos"' $R/G4_dfc_screen/log_$2.txt | tail -1)"
+  rc=$?; echo "$(date +%T) screen $2 rc=$rc $(grep '"hr_cos"' $R/G4_dfc_screen/log_$2.txt | tail -1)"
 done
 
 # 2) 층별 잡음 분석 (HAR을 복사해서 분석 — 원본 HAR은 그대로 둔다)
@@ -34,9 +34,9 @@ for item in "$W0/siglip2_b16_224_optimized.har G1_default" "$W2/opt_D_official_b
   cp $1 $N/noise_$2.har
   ( cd $N && $LOCK "DFC analyze-noise $2" -- hailo analyze-noise noise_$2.har --data-path $DATA --calib-data-path $CALIB \
       --batch-size 2 --data-count 64 > analyze_$2.log 2>&1 )
-  echo "$(date +%T) analyze-noise $2 rc=$?"
+  rc=$?; echo "$(date +%T) analyze-noise $2 rc=$rc"
   ( cd $N && $LOCK "DFC profiler $2" -- hailo profiler noise_$2.har --out-path profiler_$2.html --csv profiler_$2.csv > prof_$2.log 2>&1 )
-  echo "$(date +%T) profiler $2 rc=$?"
+  rc=$?; echo "$(date +%T) profiler $2 rc=$rc"
   cp $N/analyze_$2.log $N/profiler_$2.csv $N/prof_$2.log $R/G4_noise/ 2>/dev/null
 done
 

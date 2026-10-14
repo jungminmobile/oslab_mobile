@@ -12,9 +12,9 @@ R=../results/siglip2
 echo "$(date +%T) start commit=$(git rev-parse --short HEAD) status=[$(git status --porcelain --untracked-files=all -- . | tr '\n' ' ')]"
 RN50_RESULTS=$R/G3_why "${LOCK[@]}" "SigLIP2 why-massive v2 (positions, prev-block attention)" -- \
     "$PY" -u s2_why_massive.py --n 32 > $ART/logs/overnight_why_v2.log 2>&1
-echo "$(date +%T) why v2 rc=$?"
+rc=$?; echo "$(date +%T) why v2 rc=$rc"
 RN50_RESULTS=$R/G3_why "${LOCK[@]}" "SigLIP2 why-writers v2 (exact pct, ORT ranges)" -- \
     "$PY" -u s2_why_writers.py --n 32 --ort-model siglip2_image_int8_percentile99999_highres256_s0_s8_ops-MatMul_hc16_mm.onnx \
     > $ART/logs/overnight_writers_v2.log 2>&1
-echo "$(date +%T) writers v2 rc=$?"
+rc=$?; echo "$(date +%T) writers v2 rc=$rc"
 echo "OVERNIGHT_WIN6 DONE $(date +%T)"

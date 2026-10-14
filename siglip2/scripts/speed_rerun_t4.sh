@@ -16,6 +16,6 @@ for t in 4; do
       --models fp32=siglip2_image_fp32.onnx int8_all=siglip2_image_int8_minmax_highres256_s0_s8_all.onnx \
                fc2L7=${P}_mm_nofc2L.onnx fc2L4=${P}_fc2L4.onnx fc2L2=${P}_fc2L2.onnx \
                fc2L2_u8=siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_fc2L2.onnx
-  echo "$(date +%T) rerun threads=$t rc=$?"
+  rc=$?; echo "$(date +%T) rerun threads=$t rc=$rc"
 done
 echo "SPEED_RERUN4_DONE $(date +%T)"
