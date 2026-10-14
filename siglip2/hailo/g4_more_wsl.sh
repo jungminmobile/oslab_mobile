@@ -3,7 +3,7 @@
 #  1) 보정 사진 수 64 → 256 (ROADMAP G4 "보정 사진 수 64/256/1024"): 구성 D와 같은 .alls에 calibset_size=256
 #     (g4_D256_official_b9fc2.alls) → optimize → 스크리닝(dev 6×200, ORT와 같은 형식)
 #  2) 64장 비교에서 열세였던 A·B도 같은 형식으로 스크리닝 (overnight_wsl2.sh에서 지연 측정 때문에 멈춘 것)
-#  3) 구성 E 컴파일 (overnight_wsl2.sh 마지막 단계)
+#  3) 구성 E·C 컴파일 (E: overnight_wsl2.sh 마지막 단계, C: D-032 판단 자료)
 # 시작 조건: Windows 쪽 after_speed_win.sh가 보정 256장 파일을 만든 뒤 (지연 측정과 겹치지 않게)
 set -uo pipefail
 source ~/hailo10_venv/bin/activate
@@ -41,14 +41,18 @@ sha256sum $W3/opt_D256_official_b9fc2.har $W3/calib_highres256_s0_nhwc.npy > $R/
 screen $W1/opt_B_latefc2.har B_latefc2
 screen $W1/opt_A_ewadd_patch16.har A_ewadd_patch16
 
-# 3) E 컴파일
-C=~/siglip2_dfc/compile_$(date +%Y%m%d); mkdir -p $C/E_fc2_b0b5b9 $R/G4_compile/E_fc2_b0b5b9
-t0=$(date +%s)
-( cd $C/E_fc2_b0b5b9 && $LOCK "DFC compile E_fc2_b0b5b9" -- hailo compiler $W2/opt_E_fc2_b0b5b9.har --hw-arch hailo10h --output-dir . \
-    --output-har-path compiled_E_fc2_b0b5b9.har > compile.log 2>&1 )
-echo "$(date +%T) compile E rc=$? sec=$(( $(date +%s) - t0 ))"
-( cd $C/E_fc2_b0b5b9 && $LOCK "DFC profiler E" -- hailo profiler compiled_E_fc2_b0b5b9.har --hef *.hef --out-path profiler.html --csv profiler.csv > prof.log 2>&1 )
-( cd $C/E_fc2_b0b5b9 && ls -la > $R/G4_compile/E_fc2_b0b5b9/files.txt; sha256sum *.hef >> $R/G4_compile/E_fc2_b0b5b9/files.txt 2>/dev/null
-  grep -a -E "contexts|Number of Contexts|Successful|FPS|rror" compile.log prof.log | tail -40 > $R/G4_compile/E_fc2_b0b5b9/summary.txt
-  cp profiler.csv $R/G4_compile/E_fc2_b0b5b9/ 2>/dev/null; tail -c 200000 compile.log > $R/G4_compile/E_fc2_b0b5b9/compile_tail.log )
+# 3) 컴파일: E (overnight_wsl2.sh 마지막 단계), C (D-032 판단 자료: C의 HEF 크기·컨텍스트)
+compile() {  # $1 har, $2 tag
+  C=~/siglip2_dfc/compile_$(date +%Y%m%d); mkdir -p $C/$2 $R/G4_compile/$2
+  t0=$(date +%s)
+  ( cd $C/$2 && $LOCK "DFC compile $2" -- hailo compiler $1 --hw-arch hailo10h --output-dir . --output-har-path compiled_$2.har > compile.log 2>&1 )
+  echo "$(date +%T) compile $2 rc=$? sec=$(( $(date +%s) - t0 ))"
+  ( cd $C/$2 && $LOCK "DFC profiler $2" -- hailo profiler compiled_$2.har --hef *.hef --out-path profiler.html --csv profiler.csv > prof.log 2>&1 )
+  echo "$(date +%T) profiler $2 rc=$?"
+  ( cd $C/$2 && ls -la > $R/G4_compile/$2/files.txt; sha256sum *.hef >> $R/G4_compile/$2/files.txt 2>/dev/null
+    grep -a -E "contexts|Number of Contexts|Successful|FPS|rror" compile.log prof.log | tail -40 > $R/G4_compile/$2/summary.txt
+    cp profiler.csv $R/G4_compile/$2/ 2>/dev/null; tail -c 200000 compile.log > $R/G4_compile/$2/compile_tail.log )
+}
+compile $W2/opt_E_fc2_b0b5b9.har E_fc2_b0b5b9
+compile $W1/opt_C_official.har C_official
 echo "G4_MORE DONE $(date +%T)"
