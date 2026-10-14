@@ -220,7 +220,8 @@
 ## D-031 S8 vs U8 활성값 재검토 (D-023 관련) — 제안 (팀 결정)
 - 상태: 제안 / 2026-10-14
 - 데이터: fc2L2에서 U8 − S8 = −0.41 [−0.78, −0.02]%p로 U8이 유의하게 나쁘다 (`results/siglip2/G3_cumulative`). 대신 U8은 QKV 투영까지 정수로 돈다 (정수 MatMul 77개 vs 64개; 10/14 정정: 처음에 attention 행렬곱이라고 잘못 적음). **지연: U8은 두 측정 모두 모든 스레드에서 FP32의 약 절반이다.** S8 대 FP32의 4스레드 순위는 측정마다 바뀌었다. QKV 투영만 U8로 둔 모델은 U8과 예측이 완전히 같다 → 차이는 전부 QKV 정수 경로에서 나온다 (10/15, `results/siglip2/G3_cumulative/full_qkvu8`)
-- 선택지: S8 유지(D-023 그대로) / U8로 바꿈(속도 우선) / 둘 다 후보표에 두고 팀 선택
+- 대책 실험 (10/15, `results/siglip2/G3_cumulative/qkv_precision`): U8 + reduce_range −0.78, U8U8 −0.64로 둘 다 S8과 동률이지만 U8보다 유의하게 좋지는 않다. reduce_range는 U8과 같은 속도, U8U8은 느리다. x64quantprecision은 이 PC에서 출력이 같다
+- 선택지: S8 유지(D-023 그대로) / U8로 바꿈(속도 우선) / U8 + reduce_range(속도 U8, 정확도 중간, 비-VNNI 대책 겸용) / 후보표에 두고 팀 선택
 - 참고: PRD 3절의 "x86에서 S8S8 = U8S8"은 conv 모델 확인이라, ViT의 QKV 투영 MatMul에서는 다르다 (S8에서는 정수로 합쳐지지 않아 float로 계산됨, ORT 최적화 그래프로 확인). 정민에게 공유했다 (STATUS 5절)
 
 ## D-032 S-D(DFC 최종 `.alls`) — 제안 (팀 결정)
