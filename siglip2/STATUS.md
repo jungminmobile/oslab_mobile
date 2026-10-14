@@ -109,7 +109,7 @@ C와 D는 동률이고, 둘 다 ORT보다 1.4~1.7%p 유의하게 낮다. **D 컴
 ## 5. @정민 공유 (RN50에도 해당하는 것)
 1. **ORT 1.25 기본 Entropy 보정은 KL 탐색을 안 한다**: `num_bins=128`, `num_quantized_bins=128` 기본값이면 후보 임계값이 하나뿐이라 사실상 MinMax 범위. E2에서 Entropy를 비교하려면 `CalibNumBins`·`CalibNumQuantizedBins` 지정 필요해 보임
 2. ORT Percentile·Entropy 보정기는 모든 배치의 중간 텐서를 메모리에 쌓은 뒤 계산한다 (큰 모델·많은 장수에서 메모리 부족)
-3. S8 활성값이면 활성값끼리 곱하는 MatMul 일부가 정수로 융합되지 않는다(U8은 융합됨). PRD 3절 "x86에서 S8S8 = U8S8"은 conv 모델 확인이라 MatMul은 다를 수 있음
+3. S8 활성값이면 MatMul 일부(SigLIP2에서는 QKV 투영 12개 + 헤드 kv 1개, 10/14 정정)가 정수로 융합되지 않는다(U8은 융합됨). PRD 3절 "x86에서 S8S8 = U8S8"은 conv 모델 확인이라 MatMul은 다를 수 있음
 4. 이 PC도 VNNI가 있어서 비-VNNI 포화 재현은 불가
 5. `rn50/README.md`의 Pets 저장 경로가 `datasets.py`가 찾는 경로와 다름, PRD 3절 "DFC 미설치" 문구가 오래됨 (PR #3)
 6. (Windows) Python의 `subprocess`로 그냥 `bash`를 실행하면 `C:/Windows/System32/bash.exe`(WSL)가 잡혀 Windows 환경 변수가 전달되지 않는다 → Git Bash 전체 경로를 쓴다

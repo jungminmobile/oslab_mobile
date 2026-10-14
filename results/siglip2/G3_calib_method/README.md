@@ -62,7 +62,7 @@ MinMax·MatMul만은 12:24(`882fd7b`)와 16:47(`e57f356`) 두 번 재서 같은 
 | − 블록 5~11 fc2, **U8** | **QLinearMatMul 72**, QLinearSoftmax 13 | **MatMul 7**, LayerNormalization 25 |
 
 - `--op-types MatMul`인데도 Softmax가 정수(QLinearSoftmax)로 실행된다: 앞뒤 MatMul의 Q/DQ가 Softmax를 감싸 ORT가 융합한 것.
-- **S8 활성값에서는 활성값끼리 곱하는 attention MatMul 26개(QKᵀ·AV, 블록 12 + head 1 × 2) 중 13개(attention 모듈마다 1개)가 정수로 융합되지 않는다. U8에서는 정수로 실행된다.** 정확도는 같은 수준(cos 0.9360 vs 0.9365)이라, U8이 더 빠를 수 있다 → 지연 비교 후 D-023(S8 기본) 재검토를 제안할 예정. PRD 3절의 "x86에서 S8S8 = U8S8"은 conv 모델 확인이라 이 경우와 다르다.
+- ~~S8 활성값에서는 활성값끼리 곱하는 attention MatMul 26개 중 13개가 정수로 융합되지 않는다~~ (10/14 정정: ORT 최적화 그래프의 노드 이름으로 확인하니, S8에서 정수로 합쳐지지 않는 13개는 attention 행렬곱(QKᵀ·AV)이 아니라 **QKV 투영 MatMul 12개 + 헤드 `attn_pool/kv` 1개**다. QKᵀ·AV는 S8에서도 정수로 돈다. QKV 앞뒤만 U8로 바꾸면 합쳐진다 → `--u8-match` 실험) **S8에서는 MatMul 13개가 정수로 융합되지 않고, U8에서는 정수로 실행된다.** 정확도는 같은 수준(cos 0.9360 vs 0.9365)이라, U8이 더 빠를 수 있다 → 지연 비교 후 D-023(S8 기본) 재검토를 제안할 예정. PRD 3절의 "x86에서 S8S8 = U8S8"은 conv 모델 확인이라 이 경우와 다르다.
 
 ## 해석
 - fc2(블록 5~11)가 INT8이면 어떤 방법도 cos 0.68 이하. **방법 선택보다 혼합 정밀도(어디를 FP32로 둘지)가 훨씬 크다.**
