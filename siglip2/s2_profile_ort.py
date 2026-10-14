@@ -5,7 +5,7 @@ s2_profile_ort.py — ORT 연산별 시간 분해: 왜 S8 후보는 4스레드�
 [배경] 지연 최종 측정(results/siglip2/G3_cumulative/speed, 10/14 18:19): 4스레드에서 S8 후보(fc2L2 등)는 FP32보다 느리고
   (+2.5~+14.7%), U8은 모든 스레드에서 FP32의 약 절반이다.
 [가설] (실행 전에 정함)
-  H1 변환 오버헤드: S8에서는 attention 행렬곱 13개가 정수로 합쳐지지 않아 QuantizeLinear·DequantizeLinear가 많이 남고,
+  H1 변환 오버헤드: S8에서는 MatMul 13개(실행 후 확인: QKV 투영 12 + 헤드 kv, attention 행렬곱 아님)가 정수로 합쳐지지 않아 QuantizeLinear·DequantizeLinear가 많이 남고,
      이 변환 시간은 스레드를 늘려도 잘 줄지 않는다 → 4스레드에서 Q/DQ 시간 비중이 커진다.
   H2 커널 확장성: 정수 행렬곱(QLinearMatMul·MatMulInteger) 자체가 FP32 MatMul보다 스레드 확장성이 낮다
      → 1→4스레드에서 정수 행렬곱 시간이 FP32 MatMul보다 덜 준다.

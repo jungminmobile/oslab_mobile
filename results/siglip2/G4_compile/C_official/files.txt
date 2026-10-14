@@ -1,0 +1,7 @@
+total 24
+drwxr-xr-x 2 jjury jjury 4096 Oct 14 23:49 .
+drwxr-xr-x 5 jjury jjury 4096 Oct 14 23:33 ..
+-rw-r--r-- 1 jjury jjury  224 Oct 15 00:01 acceleras.log
+-rw-r--r-- 1 jjury jjury  863 Oct 14 23:49 compile.log
+-rw-r--r-- 1 jjury jjury 1788 Oct 15 00:01 hailo_sdk.client.log
+-rw-r--r-- 1 jjury jjury 3050 Oct 15 00:01 prof.log
