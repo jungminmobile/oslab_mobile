@@ -1,0 +1,55 @@
+# G4 컴파일: DFC 구성을 Hailo-10H용 HEF로 (2026-10-14, 진행 중)
+
+**결론 (구성 D): 컴파일 성공. HEF 99.8 MB, 컨텍스트 17개 (프로파일러 기준), 2시간 0분.** G1 기본 8비트(HEF 69.2 MB, 컨텍스트 18개)보다 HEF가 44% 크다. 16비트로 둔 층(잔차 합 `ew_add` 전체, patch embedding, 블록 0·5 MLP, 블록 9 fc2)의 가중치·활성값 때문이다. 컨텍스트 수는 비슷하다.
+
+## 1. 왜 했나
+
+G4 스크리닝(`../G4_dfc_screen`)에서 구성 D(Hailo 공식 패턴 + 블록 9 fc2 16비트)가 DFC 구성 중 정확도가 가장 높았다 (고화질 cos 0.952, Δtop-1 −1.1%p [−2.3, 0.0], 200장×5종).
+
+에뮬레이터 정확도만으로는 실기기에서 쓸 수 있는지 알 수 없다. 그래서 다음 세 가지를 확인했다.
+- 실제로 `.hef`가 만들어지는지
+- HEF 크기와 컨텍스트 수 (컨텍스트가 많을수록 칩 안팎 전환이 늘어 느려진다)
+- 컴파일 시간
+
+예선 요건("Hailo DFC로 `.hef` 컴파일이 가능해야 한다", CLAUDE.md)과도 직결된다.
+
+## 2. 실행
+
+- 스크립트: `siglip2/hailo/overnight_wsl2.sh`의 `compile` 함수 (WSL Ubuntu-22.04, DFC 5.4.0, `--hw-arch hailo10h`, 공용 잠금 안에서)
+- 입력: `~/siglip2_dfc/g4_20261013_221931/opt_D_official_b9fc2.har` (최적화 수준 0, 보정 64장, `.alls`는 `siglip2/hailo/g4_D_official_b9fc2.alls`)
+
+```bash
+hailo compiler opt_D_official_b9fc2.har --hw-arch hailo10h --output-dir . --output-har-path compiled_D_official_b9fc2.har
+hailo profiler compiled_D_official_b9fc2.har --hef siglip2_b16_224.hef --out-path profiler.html --csv profiler.csv
+```
+
+## 3. 결과
+
+| 구성 | 컴파일 | 시간 | HEF 크기 | 컨텍스트 (프로파일러) | HEF sha256 |
+|---|---|---|---|---|---|
+| G1 기본 8비트 (`../G1_dfc_gate`) | 성공 | 2시간 16분 | 69.2 MB | 18 | `6733511…3a17540` |
+| **D 공식 패턴 + 블록 9 fc2** | 성공 | 2시간 0분 (분할·배치 1시간 56분) | **99.8 MB** (99,840,000 B) | **17** | `033c7265ca1d50f3c04bc11492c9c038f825c8ec6e80d83752901736a919c3d5` |
+
+- 단일 컨텍스트는 자원 부족으로 실패했다 (`lcus=(120/80)`). 그래서 다중 컨텍스트로 컴파일됐다.
+- 프로파일러 모델 정보: 22.73 GMACs(연산 기준), 92.22 M 파라미터. 처리량·지연은 N/A다 (HailoRT 런타임 측정이 필요하고, 실칩 측정은 본선에서 한다 — D-015).
+- **컨텍스트 수 표기 주의**: 컴파일 로그에는 "Applying selected partition to 5 contexts", "… 6 contexts"가 나온다. 이것은 분할 탐색 단계의 부분 표기다. 전체 컨텍스트 수는 프로파일러의 `Number of Contexts 17`을 쓴다 (G1도 같은 기준으로 18).
+- 파일: `D_official_b9fc2/summary.txt` (로그 요약), `files.txt` (파일 크기·sha256), `profiler.csv` (층별 자원), `compile_tail.log` (로그 끝 200 KB).
+- HEF·HAR 본체는 WSL `~/siglip2_dfc/compile_20261014/D_official_b9fc2/`에 있고 커밋하지 않는다 (D-016).
+
+## 4. 해석
+
+- 16비트 층이 늘어 HEF가 커졌다 (+30.6 MB, +44%). 예선 기준(정확도·속도·용량)에서 "용량" 축에 해당하는 비용이다.
+- 컨텍스트는 18 → 17로 비슷하다. 실칩 지연은 컨텍스트 전환 횟수의 영향을 크게 받으므로, 실칩 지연은 G1과 비슷할 것으로 예상한다. 이것은 추정이고 본선 실기기에서 확인해야 한다.
+- 참고: Hailo 공식 `siglip_b_16_image_encoder`(224)는 Model Zoo 표에서 33.0 FPS(배치 1)다 (D-018). 같은 구조의 SigLIP v1이라 직접 비교는 아니다.
+
+## 5. 남은 것
+
+- 구성 E 컴파일 (`overnight_wsl2.sh` 마지막 단계)
+- 첫 컴파일 1회는 정민 노트북 결과와 교차 확인 (D-027: G4 최종 후보로) — 최종 구성은 팀 결정
+- 본선 Pi의 HailoRT 버전 확인 후 그 버전용 컴파일 경로 (`hailo/DFC_SETUP.md` 8장)
+
+## 6. 3중 확인
+
+1. 자기 검증: 컴파일 rc=0, `Successful Compilation`, HEF 파일 존재·sha256 기록, 프로파일러 rc=0.
+2. 독립 재계산: 프로파일러의 파라미터 수 92.22 M을 ONNX 파라미터 수 92,884,224와 비교했다. 차이는 661,860개(0.7%)다. 원인(상수로 접히거나 세지 않는 층)은 확인하지 않았다. 컨텍스트 수는 컴파일 로그 표기가 아니라 프로파일러로 확인했다.
+3. 독립 검토: (예정) E 컴파일까지 끝난 뒤.

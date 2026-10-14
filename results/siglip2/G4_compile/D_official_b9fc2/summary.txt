@@ -1,0 +1,40 @@
+compile.log:[info] Found valid partition to 5 contexts, Performance improved by 11.2%
+compile.log:[info] Iteration #62 - 5 contexts,
+compile.log:[info] Found valid partition to 5 contexts, Performance improved by 6.0%
+compile.log:[info] Iteration #124 - 5 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 6.3%
+compile.log:[info] Iteration #173 - 6 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 0.3%
+compile.log:[info] Iteration #175 - 6 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 0.6%
+compile.log:[info] Iteration #177 - 6 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 0.3%
+compile.log:[info] Iteration #179 - 6 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 0.6%
+compile.log:[info] Iteration #181 - 6 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 0.6%
+compile.log:[info] Iteration #184 - 6 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 0.4%
+compile.log:[info] Iteration #186 - 6 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 1.7%
+compile.log:[info] Iteration #190 - 6 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 0.4%
+compile.log:[info] Iteration #192 - 6 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 0.1%
+compile.log:[info] Iteration #193 - 6 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 0.1%
+compile.log:[info] Iteration #194 - 6 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 1.5%
+compile.log:[info] Iteration #195 - 6 contexts,
+compile.log:[info] Found valid partition to 6 contexts, Performance improved by 2.2%
+compile.log:[info] Iteration #197 - 6 contexts,
+compile.log:[info] Partition to contexts finished successfully
+compile.log:Top common errors:
+compile.log:[info] Applying selected partition to 6 contexts...
+compile.log:[info] siglip2_b16_224 Successful Multi Context Partition (duration: 37m 6s)
+compile.log:[info] siglip2_b16_224 Successful Allocation (duration: 4m 31s)
+compile.log:[info] siglip2_b16_224 Successful Partition and Allocation (duration: 1h 56m 26s)
+compile.log:[info] siglip2_b16_224 Successful Kernel Compilation (duration: 2m 19s)
+compile.log:[info] siglip2_b16_224 Successful Compilation (duration: 2h 0m 21s)
+prof.log:Optimization Goal  Reach Highest FPS
+prof.log:Number of Contexts      17
