@@ -49,7 +49,9 @@ def main():
     from hailo_sdk_client import ClientRunner, InferenceContext
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
-    git = lambda *x: subprocess.run(["git", "-C", str(REPO), *x], capture_output=True, text=True).stdout.strip()
+    # core.autocrlf=true: Windows git이 CRLF로 체크아웃한 파일을 WSL git이 "수정됨"으로 보아 dirty가 잘못 true가 되던 문제 (10/14 확인:
+    # WSL에서 51개 파일이 M, Windows·autocrlf=true·--ignore-cr-at-eol로는 0개)
+    git = lambda *x: subprocess.run(["git", "-c", "core.autocrlf=true", "-C", str(REPO), *x], capture_output=True, text=True).stdout.strip()
     row = {"date": datetime.now().isoformat(timespec="seconds"), "commit": git("rev-parse", "--short", "HEAD"),
            "dirty": bool(git("status", "--porcelain", "--untracked-files=no", "--", ".", ":(exclude)results")),
            "tag": a.tag, "har": Path(a.har).name, "har_sha256": sha256(a.har), "k": a.k, "bs": a.bs,
