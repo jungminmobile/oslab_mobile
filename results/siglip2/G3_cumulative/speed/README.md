@@ -15,3 +15,7 @@
 
 - 스레드 1·2: `scripts/speed_rerun_t12.sh`, 스레드 4: `scripts/speed_rerun_t4.sh`. 같은 모델·같은 조건이고 공용 잠금 안에서 잰다.
 - 결과는 이 폴더의 새 `speed_*.json` 파일이다. 표는 결과가 나오면 `../README.md`와 `../../candidates/README.md`에 채운다.
+
+## 중단 기록 (10/14 14:07)
+- `runs.jsonl` 마지막 줄(14:07, 스레드 1)은 시작 직후 Windows Update(`wuaucltcore.exe` 약 5코어)와 Defender가 겹쳐 중단한 실행이다. 결과 json은 만들어지지 않았다.
+- 다음 측정: `scripts/speed_when_idle.sh` (Windows Update가 조용해지면 잠금 → 잠금 안에서 전체 CPU 25% 미만 확인 후 측정).
