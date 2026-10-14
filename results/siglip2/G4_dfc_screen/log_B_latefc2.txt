@@ -6,3 +6,11 @@ WARNING: All log messages before absl::InitializeLog() is called are written to 
 I0000 00:00:1791972327.367883     271 service.cc:152] XLA service 0x5f3a6d043510 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
 I0000 00:00:1791972327.368689     271 service.cc:160]   StreamExecutor device (0): Host, Default Version
 I0000 00:00:1791972403.769449     271 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+cifar_A {"n": 200, "top1": 45.0, "fp32_top1": 74.5, "cos_mean": 0.8393, "cos_p1": 0.7198} 442s
+pets_dev {"n": 200, "top1": 91.0, "fp32_top1": 93.5, "cos_mean": 0.9317, "cos_p1": 0.8553} 813s
+flowers_dev {"n": 200, "top1": 82.0, "fp32_top1": 85.0, "cos_mean": 0.9152, "cos_p1": 0.7905} 1203s
+cars_dev {"n": 200, "top1": 89.5, "fp32_top1": 93.5, "cos_mean": 0.9225, "cos_p1": 0.8244} 1681s
+food_dev {"n": 200, "top1": 76.5, "fp32_top1": 87.5, "cos_mean": 0.8923, "cos_p1": 0.7765} 2133s
+caltech_dev {"n": 200, "top1": 96.0, "fp32_top1": 95.0, "cos_mean": 0.9033, "cos_p1": 0.7915} 2559s
+{"tag": "B_latefc2", "hr_cos": 0.913, "hr_dtop1": -3.9, "sec": 2559}
+RELEASED
