@@ -24,7 +24,7 @@ DFC **v5.4.0**, Python 3.10.12, WSL2 Ubuntu-22.04 (커널 6.6.87.2), 8스레드,
 |---|---|---|---|
 | parse | 성공 | 139초 | 원본 그래프로는 실패 → DFC가 자동으로 onnxsim 단순화 후 재시도해 성공. 실패 원인은 로그에 없음 (추정: pooling head의 `Shape`·`Where`·`Expand` 동적 연산, G1 export README). 393층, 끝 노드 `/trunk/attn_pool/Gather` |
 | optimize | 성공 | 1121초 | **GPU 없음 + 보정 1024장 미만 → 최적화 레벨 0으로 자동 하향**. LayerNorm Decomposition, Statistics Collector, Matmul Equalization 적용. 모델 스크립트 없음(기본) |
-| compile | 성공 | 8341초 (2시간 16분) | 단일 컨텍스트 불가(자원 123/80) → 다중 컨텍스트. **컨텍스트 18개** (프로파일러). HEF 69.2 MB, sha256 `6733511…3a17540` |
+| compile | 성공 | 벽시계 8341초(2시간 19분), 컴파일러 보고 2시간 15분 56초 | 단일 컨텍스트 불가(자원 123/80) → 다중 컨텍스트. **컨텍스트 18개** (프로파일러). HEF 69.2 MB, sha256 `6733511…3a17540` |
 
 산출물: `$SIGLIP2_ARTIFACTS/dfc/20261013_124213/` (HAR 3개·HEF·전체 로그·profiler.html). 이 폴더에는 작은 텍스트만(큰 로그는 앞뒤만).
 
