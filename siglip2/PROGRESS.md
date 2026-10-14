@@ -118,3 +118,24 @@
   4. 원인 분석 결과를 보고서 서사("CNN은 앞쪽, ViT는 거대 값을 쓰는 중간 MLP")로 쓸지
   5. 일정(내부 마감 10/31)
 - 다음 할 일: 원인 분석 v2(writers) 결과로 README 6-2 정정 → 3중 확인 재검토, G4 C·B·A 스크리닝, D 컴파일·잡음 분석, 지연 측정(한가할 때), Flowers·Cars 깨끗한 재실행, STATUS.md·PR #7 본문 갱신
+
+## 2026-10-14 (오전~14:30, 쭈리 복귀 후 → 잠시 중단)
+- 사람 결정: 지연 측정을 WSL 작업보다 먼저(D-029), DFC 잡음 분석 보류(D-028), Windows 보안 업데이트가 끝나면 지연 측정을 이어서 하고 그동안 CPU와 상관없는 실험 먼저, 14:30 "지금 하던 것까지만 하고 정리·종료, 나중에 재개"
+- 결과:
+  - 원인 분석 2단계 v2(정확한 분위수·ORT 실제 범위·위치별 잔차 분해), 독립 검토 2회 반영 → `results/siglip2/G3_why` README 6-2절
+  - 원인 분석 3단계(눈금 방식, 64장, **dirty 실행 — 깨끗한 재실행 필요**): fc2 5·9 8비트 cos 텐서 0.728 / high-norm 제외 0.995 / 토큰별 0.999 / 채널별 0.9995, fc2 12개 전부도 토큰·채널별이면 0.999 (`why_fix.jsonl` 1번째 줄)
+  - G4: C·D·E 스크리닝 README, D 컴파일(HEF 99.8 MB, 컨텍스트 17), 잡음 분석 실패 기록, 독립 검토 반영
+  - 후보표 초안(`results/siglip2/candidates`) + peak 메모리(fc2L2 227.5 MiB, −47.4%)
+  - 고화질 5종 캐시 결정성 모두 깨끗한 재실행으로 확인
+  - DECISIONS D-028·D-029(확정), D-030~D-033(팀 결정 제안), 보고서 SigLIP2 절 초안(`docs/report_section_draft.md`)
+- 실패·이상치:
+  - 지연 측정 5번 시작 → 값 없음 또는 오염: ① 10:50·10:52 잠금 도구가 WSL bash를 잡아 환경 변수 누락(→ Git Bash 전체 경로) ② 11:43~12:24 다른 세션 pip 설치·Defender 검사와 겹쳐 오염 ③ 14:07 Windows Update(5코어)와 겹쳐 중단. **아직 깨끗한 지연값 없음**
+  - DFC 스크리닝 dirty 오표시(WSL git CRLF) → 판정 코드 수정(`3d5c120`), 재실행 여부는 팀 결정(D-033)
+  - WSL 분리 실행이 한 번 바로 종료됨 → `Start-Process wsl.exe`(창 숨김)로 클라이언트를 띄워 둠
+- **재개 방법 (다음에 시작할 때)**:
+  1. `wsl -l --running`이 비었는지, `python D:/mokerton/locks/heavy_lock.py status`가 null인지, `D:\mokerton\locks\queue`가 비었는지 확인
+  2. 지연 측정(PC를 비우고): `bash scripts/speed_when_idle.sh` (Windows Update 조용 → 잠금 → 스레드 1·2·4). 환경 변수는 `siglip2/.claude/settings.local.json`에서 오지만, Start-Process로 띄우면 `export SIGLIP2_PYTHON=...` 등을 명령에 직접 넣는다
+  3. 원인 분석 3단계 깨끗한 재실행: `RN50_RESULTS=../results/siglip2/G3_why "$SIGLIP2_PYTHON" s2_why_fix.py --n 32` (잠금 안에서)
+  4. 새 venv 재현: `bash scripts/g3_repro_venv.sh`
+  5. WSL G4: 보정 256장 D의 최적화는 끝났다 (`~/siglip2_dfc/g4_calib256_20261014/opt_D256_official_b9fc2.har`). 남은 단계: D256 스크리닝 → B·A 스크리닝 → E·C 컴파일. `hailo/g4_more_wsl.sh`에서 최적화 단계를 건너뛰도록 고쳐 다시 실행한다
+- 다음 할 일: 위 재개 1~5, 지연 채운 후보표로 팀 결정(D-030~D-033), PR #7 검토 요청
