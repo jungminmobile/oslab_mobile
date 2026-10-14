@@ -4,7 +4,7 @@
 #     (g4_D256_official_b9fc2.alls) → optimize → 스크리닝(dev 6×200, ORT와 같은 형식)
 #  2) 64장 비교에서 열세였던 A·B도 같은 형식으로 스크리닝 (overnight_wsl2.sh에서 지연 측정 때문에 멈춘 것)
 #  3) 구성 E·C 컴파일 (E: overnight_wsl2.sh 마지막 단계, C: D-032 판단 자료)
-# 시작 조건: Windows 쪽 after_speed_win.sh가 보정 256장 파일을 만든 뒤 (지연 측정과 겹치지 않게)
+# 시작 조건: 지연 측정(scripts/speed_when_idle.sh)이 끝난 뒤. 보정 256장 최적화 HAR이 이미 있으면 건너뛴다 (10/14 14:31 완료)
 set -uo pipefail
 source ~/hailo10_venv/bin/activate
 cd ~
@@ -15,7 +15,7 @@ ART=/mnt/d/mokerton/artifacts/siglip2
 W0=~/siglip2_dfc/20261013_124213        # G1 HAR
 W1=~/siglip2_dfc/g4_20261013_165132     # A·B·C
 W2=~/siglip2_dfc/g4_20261013_221931     # D·E
-until [ -f $ART/dfc/calib_highres256_s0_nhwc.npy ] && grep -q "dfc calib256 rc=0" $ART/logs/after_speed_win.log 2>/dev/null; do sleep 60; done
+until grep -q "SPEED_IDLE_DONE" $ART/logs/speed_when_idle_v2_main.log 2>/dev/null; do sleep 60; done   # 지연 측정이 끝난 뒤 (10/14 재개)
 tr -d '\r' < $REPO/siglip2/hailo/s2_dfc_screen.py > ~/s2_dfc_screen.py
 echo "$(date +%T) start commit=$(git -C $REPO rev-parse --short HEAD) dirty=$(git -c core.autocrlf=true -C $REPO status --porcelain --untracked-files=no -- . ':(exclude)results' | wc -l)"
 
@@ -25,16 +25,18 @@ screen() {   # $1 har, $2 tag
 }
 
 # 1) 보정 256장
-W3=~/siglip2_dfc/g4_calib256_$(date +%Y%m%d); mkdir -p $W3
+W3=~/siglip2_dfc/g4_calib256_20261014; mkdir -p $W3   # 14:31에 최적화한 폴더 (날짜가 바뀌어도 같은 폴더)
 cp $W0/siglip2_b16_224.har $W3/
 cp $ART/dfc/calib_highres256_s0_nhwc.npy $W3/
 tr -d '\r' < $REPO/siglip2/hailo/g4_D256_official_b9fc2.alls > $W3/g4_D256_official_b9fc2.alls
+if [ ! -f $W3/opt_D256_official_b9fc2.har ]; then
 t0=$(date +%s)
-( cd $W3 && $LOCK "DFC optimize D256" -- hailo optimize siglip2_b16_224.har --hw-arch hailo10h --model-script g4_D256_official_b9fc2.alls \
-    --calib-set-path calib_highres256_s0_nhwc.npy --output-har-path opt_D256_official_b9fc2.har > optimize_D256.log 2>&1 )
-echo "$(date +%T) optimize D256 rc=$? sec=$(( $(date +%s) - t0 ))"
-mkdir -p $R/G4_dfc_screen/calib256; cp $W3/optimize_D256.log $W3/g4_D256_official_b9fc2.alls $R/G4_dfc_screen/calib256/ 2>/dev/null
-sha256sum $W3/opt_D256_official_b9fc2.har $W3/calib_highres256_s0_nhwc.npy > $R/G4_dfc_screen/calib256/sha256.txt 2>/dev/null
+  ( cd $W3 && $LOCK "DFC optimize D256" -- hailo optimize siglip2_b16_224.har --hw-arch hailo10h --model-script g4_D256_official_b9fc2.alls \
+      --calib-set-path calib_highres256_s0_nhwc.npy --output-har-path opt_D256_official_b9fc2.har > optimize_D256.log 2>&1 )
+  echo "$(date +%T) optimize D256 rc=$? sec=$(( $(date +%s) - t0 ))"
+else echo "$(date +%T) optimize D256 skipped (HAR exists)"; fi
+[ -f $R/G4_dfc_screen/calib256/sha256.txt ] || { mkdir -p $R/G4_dfc_screen/calib256; cp $W3/optimize_D256.log $W3/g4_D256_official_b9fc2.alls $R/G4_dfc_screen/calib256/ 2>/dev/null
+sha256sum $W3/opt_D256_official_b9fc2.har $W3/calib_highres256_s0_nhwc.npy > $R/G4_dfc_screen/calib256/sha256.txt 2>/dev/null; }
 [ -f $W3/opt_D256_official_b9fc2.har ] && screen $W3/opt_D256_official_b9fc2.har D256_official_b9fc2
 
 # 2) A·B
