@@ -1,0 +1,79 @@
+{
+ "date": "2026-10-14T18:06:04",
+ "env": {
+  "python": "3.11.9",
+  "onnxruntime": "1.25.0",
+  "cpu": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+  "threads": 2
+ },
+ "cond": {
+  "models": [
+   "fp32=siglip2_image_fp32.onnx",
+   "int8_all=siglip2_image_int8_minmax_highres256_s0_s8_all.onnx",
+   "fc2L7=siglip2_image_int8_percentile99999_highres256_s0_s8_ops-MatMul_hc16_mm_nofc2L.onnx",
+   "fc2L4=siglip2_image_int8_percentile99999_highres256_s0_s8_ops-MatMul_hc16_fc2L4.onnx",
+   "fc2L2=siglip2_image_int8_percentile99999_highres256_s0_s8_ops-MatMul_hc16_fc2L2.onnx",
+   "fc2L2_u8=siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_fc2L2.onnx"
+  ],
+  "n": 200,
+  "repeats": 3,
+  "warmup": 20,
+  "threads": 2
+ },
+ "results": {
+  "fp32": {
+   "file": "siglip2_image_fp32.onnx",
+   "MiB": 354.5,
+   "ms_per_img_mean": 271.89,
+   "ms_per_img_std": 44.01,
+   "ms_per_img_min": 226.04,
+   "lat_p50": 264.63,
+   "lat_p95": 365.81
+  },
+  "int8_all": {
+   "file": "siglip2_image_int8_minmax_highres256_s0_s8_all.onnx",
+   "MiB": 89.6,
+   "ms_per_img_mean": 235.37,
+   "ms_per_img_std": 40.11,
+   "ms_per_img_min": 191.25,
+   "lat_p50": 240.12,
+   "lat_p95": 307.19
+  },
+  "fc2L7": {
+   "file": "siglip2_image_int8_percentile99999_highres256_s0_s8_ops-MatMul_hc16_mm_nofc2L.onnx",
+   "MiB": 139.0,
+   "ms_per_img_mean": 247.88,
+   "ms_per_img_std": 50.04,
+   "ms_per_img_min": 196.51,
+   "lat_p50": 239.87,
+   "lat_p95": 341.41
+  },
+  "fc2L4": {
+   "file": "siglip2_image_int8_percentile99999_highres256_s0_s8_ops-MatMul_hc16_fc2L4.onnx",
+   "MiB": 118.8,
+   "ms_per_img_mean": 236.87,
+   "ms_per_img_std": 45.72,
+   "ms_per_img_min": 184.22,
+   "lat_p50": 234.3,
+   "lat_p95": 314.63
+  },
+  "fc2L2": {
+   "file": "siglip2_image_int8_percentile99999_highres256_s0_s8_ops-MatMul_hc16_fc2L2.onnx",
+   "MiB": 105.3,
+   "ms_per_img_mean": 237.81,
+   "ms_per_img_std": 48.48,
+   "ms_per_img_min": 182.75,
+   "lat_p50": 239.49,
+   "lat_p95": 317.09
+  },
+  "fc2L2_u8": {
+   "file": "siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_fc2L2.onnx",
+   "MiB": 105.3,
+   "ms_per_img_mean": 140.69,
+   "ms_per_img_std": 35.57,
+   "ms_per_img_min": 100.72,
+   "lat_p50": 129.53,
+   "lat_p95": 200.56
+  }
+ }
+}
