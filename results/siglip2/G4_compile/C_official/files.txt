@@ -1,7 +1,15 @@
-total 24
-drwxr-xr-x 2 jjury jjury 4096 Oct 14 23:49 .
-drwxr-xr-x 5 jjury jjury 4096 Oct 14 23:33 ..
--rw-r--r-- 1 jjury jjury  224 Oct 15 00:01 acceleras.log
--rw-r--r-- 1 jjury jjury  863 Oct 14 23:49 compile.log
--rw-r--r-- 1 jjury jjury 1788 Oct 15 00:01 hailo_sdk.client.log
--rw-r--r-- 1 jjury jjury 3050 Oct 15 00:01 prof.log
+total 2176004
+drwxr-xr-x 2 jjury jjury       4096 Oct 15 05:43 .
+drwxr-xr-x 5 jjury jjury       4096 Oct 14 23:33 ..
+-rw-r--r-- 1 jjury jjury        448 Oct 15 05:42 acceleras.log
+-rw-r--r-- 1 jjury jjury          0 Oct 15 00:24 allocator.log
+-rw-r--r-- 1 jjury jjury     507517 Oct 15 02:49 compile.log
+-rw-r--r-- 1 jjury jjury 2116956160 Oct 15 02:46 compiled_C_official.har
+-rw-r--r-- 1 jjury jjury     222840 Oct 15 05:42 estimation.csv
+-rw-r--r-- 1 jjury jjury       5694 Oct 15 05:43 hailo_sdk.client.log
+-rw-r--r-- 1 jjury jjury    6709822 Oct 15 02:23 hailo_sdk.core.log
+-rw-r--r-- 1 jjury jjury       1906 Oct 15 05:43 prof.log
+-rw-r--r-- 1 jjury jjury     222848 Oct 15 05:43 profiler.csv
+-rw-r--r-- 1 jjury jjury    6464867 Oct 15 05:42 profiler.html
+-rw-r--r-- 1 jjury jjury   97095680 Oct 15 02:31 siglip2_b16_224.hef
+dc0d39de66485338c6215292f4310573d27f24d6d3d685ee19ec135f7b82b4f0  siglip2_b16_224.hef
