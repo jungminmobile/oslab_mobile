@@ -191,6 +191,9 @@ def main():
     ap.add_argument("--tag", default="")
     ap.add_argument("--overwrite", action="store_true")
     ap.add_argument("--dump-ops", action="store_true")
+    ap.add_argument("--attn-u8", action="store_true",
+                    help="(기본 꺼짐) 활성값×활성값 MatMul(attention QKᵀ·AV)의 입력·출력만 U8, 나머지는 --act-type 그대로. "
+                         "ORT TensorQuantOverrides(quant_type) 사용. S8에서 attention 행렬곱이 정수로 합쳐지지 않는 문제 대책 실험 (10/14)")
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--log", default="", help="기본: $RN50_RESULTS/quantize_log.jsonl (RN50_RESULTS 명시 필요)")
     a = ap.parse_args()
@@ -213,6 +216,22 @@ def main():
     if dst.exists() and not a.overwrite:
         raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
     excl = RQ.select_excluded(str(pre), a)
+    attn_tensors = []
+    if a.attn_u8:
+        import onnx
+        assert a.act_type == "s8", "--attn-u8은 S8 활성값에서 attention만 U8로 바꾸는 옵션"
+        g = onnx.load(str(pre), load_external_data=False).graph
+        inits = {i.name for i in g.initializer}
+        consts = {o for n in g.node if n.op_type == "Constant" for o in n.output}
+        attn_nodes = [n for n in g.node if n.op_type == "MatMul" and n.name not in excl
+                      and not any(i in inits or i in consts for i in n.input)]
+        assert attn_nodes, "활성값×활성값 MatMul을 찾지 못함"
+        attn_tensors = sorted({t for n in attn_nodes for t in (*n.input, *n.output)})
+        ops_tag += "_attnu8"
+        cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
+        dst = RC.ONNX_DIR / f"siglip2_image_int8_{cal}{'_' + a.tag if a.tag else ''}.onnx"
+        if dst.exists() and not a.overwrite:
+            raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
     log_path = Path(a.log) if a.log else S.require_results_dir() / "quantize_log.jsonl"
 
     t0 = time.time()
@@ -224,6 +243,8 @@ def main():
         # ORT 1.25 Percentile 보정기 기본은 대칭 범위(−t~t)라 한쪽으로 치우친 활성값에서 눈금 절반을 버린다 → 비대칭으로 (PRD 3절)
         extra.update({"CalibPercentile": a.percentile, "CalibTensorRangeSymmetric": False})
     assert "CalibMaxIntermediateOutputs" not in extra, "보정 결과를 버리는 옵션 금지 (RN50 16장 버그)"
+    if attn_tensors:
+        extra["TensorQuantOverrides"] = {t: [{"quant_type": QuantType.QUInt8}] for t in attn_tensors}
     tmp = dst.with_name(dst.stem + ".tmp.onnx")
     quantize_static(str(pre), str(tmp), reader, quant_format=QuantFormat.QDQ,
                     activation_type=QuantType.QInt8 if a.act_type == "s8" else QuantType.QUInt8,
@@ -243,7 +264,9 @@ def main():
            "dirty": env["git"]["dirty"], "options": vars(a), "model": dst.name,
            "MiB": round(dst.stat().st_size / 2**20, 2), "calib_seen": seen, "calib_pool_n": int(pool_n),
            "rn50_CAL_N": RS_CAL_N(), "hist_chunk": a.hist_chunk, "n_excluded_nodes": len(excl),
-           "qtype": f"{a.act_type.upper()}S8", "sec": round(time.time() - t0)}
+           "qtype": f"{a.act_type.upper()}S8" + ("+attnU8" if a.attn_u8 else ""), "sec": round(time.time() - t0)}
+    if a.attn_u8:
+        row["attn_u8_tensors"] = len(attn_tensors)
     if a.dump_ops:
         row["ort_optimized_graph"] = dump_ops(dst, a.threads)
         print(json.dumps(row["ort_optimized_graph"], ensure_ascii=False))
