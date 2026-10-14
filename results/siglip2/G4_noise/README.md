@@ -22,7 +22,7 @@ hailo analyze-noise noise_<구성>.har --data-path /mnt/d/mokerton/artifacts/sig
 | G1 기본 8비트 | 10:22~10:25 | 실패: `ValueError: Dimensions must be equal, but are 768 and 780` (`lat_model_1/sub_25`, `conv_feature_splitter1_2_1/act_op_1` vs `conv_feature_splitter1_2_3/output_op_1`, 모양 [2,1,196,768] vs [2,1,196,780]) |
 | D 공식 패턴 + 블록 9 fc2 | 10:37~10:40 | 같은 오류 |
 
-- 오류는 "Full Quant Analysis" 첫 반복(0/32)에서 났다. 래퍼(heavy_lock) 종료 코드는 0이었지만 분석 결과는 만들어지지 않았다 (로그로 확인).
+- 오류는 "Full Quant Analysis" 첫 반복(0/32)에서 났다. 분석 결과는 만들어지지 않았다 (로그로 확인). 당시 로그의 `rc=0` 표시는 스크립트 버그였다 (`echo "$(date) rc=$?"`가 date의 종료 코드를 찍음, 10/14 19:00 수정). 실제 종료 코드는 기록되지 않았다.
 - 780 = 768 + 12다. DFC가 내부에서 채널을 나누는 층(feature splitter)에 정렬용 채움을 넣었고, 잡음 비교 단계에서 원래 크기와 맞지 않는 것으로 보인다. **이것은 추정이고 확인하지 않았다.**
 - 로그: `analyze_G1_default.log`, `analyze_D_official_b9fc2.log`. 같은 단계의 프로파일러(최적화 HAR)는 `prof_G1_default.log`에 있다. csv는 비어 있다.
 
