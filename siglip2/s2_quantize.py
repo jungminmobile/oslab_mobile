@@ -191,6 +191,10 @@ def main():
     ap.add_argument("--tag", default="")
     ap.add_argument("--overwrite", action="store_true")
     ap.add_argument("--dump-ops", action="store_true")
+    ap.add_argument("--reduce-range", action="store_true",
+                    help="(기본 꺼짐) 가중치를 7비트 범위로 (ORT reduce_range). U8S8 정수 커널 포화 대책 (PRD 3절, 10/15)")
+    ap.add_argument("--weight-type", choices=["s8", "u8"], default="s8",
+                    help="가중치 형식. 기본 s8. u8은 U8U8 (PRD 3절 비-VNNI 대책 후보, 10/15)")
     ap.add_argument("--u8-match", default="",
                     help="(기본 꺼짐) 이름에 이 문자열(쉼표로 여러 개)이 들어간 MatMul의 활성값 입력·출력만 U8, 나머지는 --act-type 그대로. "
                          "예: /attn/qkv/,/attn_pool/kv/ — S8에서 QKV 투영 MatMul이 정수로 합쳐지지 않는 문제 대책 (10/14)")
@@ -214,6 +218,10 @@ def main():
         assert a.hist_chunk % a.calib_bs == 0, "--hist-chunk는 --calib-bs의 배수"
         enable_chunked_histogram(a.hist_chunk // a.calib_bs)
         ops_tag += f"_hc{a.hist_chunk}"
+    if a.reduce_range:
+        ops_tag += "_rr"
+    if a.weight_type != "s8":
+        ops_tag += f"_w{a.weight_type}"
     cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
     dst = RC.ONNX_DIR / f"siglip2_image_int8_{cal}{'_' + a.tag if a.tag else ''}.onnx"
     if dst.exists() and not a.overwrite:
@@ -268,7 +276,8 @@ def main():
     tmp = dst.with_name(dst.stem + ".tmp.onnx")
     quantize_static(str(pre), str(tmp), reader, quant_format=QuantFormat.QDQ,
                     activation_type=QuantType.QInt8 if a.act_type == "s8" else QuantType.QUInt8,
-                    weight_type=QuantType.QInt8, per_channel=bool(a.per_channel),
+                    weight_type=QuantType.QInt8 if a.weight_type == "s8" else QuantType.QUInt8, per_channel=bool(a.per_channel),
+                    reduce_range=bool(a.reduce_range),
                     calibrate_method=RQ.METHODS[a.method], nodes_to_exclude=excl, extra_options=extra,
                     op_types_to_quantize=[o for o in a.op_types.split(",") if o] or None)
     # 보정기가 데이터를 읽은 회차마다 가져간 사진 수. 모든 회차가 요청 장수와 같아야 한다
@@ -284,7 +293,7 @@ def main():
            "dirty": env["git"]["dirty"], "options": vars(a), "model": dst.name,
            "MiB": round(dst.stat().st_size / 2**20, 2), "calib_seen": seen, "calib_pool_n": int(pool_n),
            "rn50_CAL_N": RS_CAL_N(), "hist_chunk": a.hist_chunk, "n_excluded_nodes": len(excl),
-           "qtype": f"{a.act_type.upper()}S8" + ("+attnU8" if a.attn_u8 else "") + (f"+U8[{a.u8_match}]" if a.u8_match else ""), "sec": round(time.time() - t0)}
+           "qtype": f"{a.act_type.upper()}{a.weight_type.upper()}" + ("+rr" if a.reduce_range else "") + ("+attnU8" if a.attn_u8 else "") + (f"+U8[{a.u8_match}]" if a.u8_match else ""), "sec": round(time.time() - t0)}
     if a.attn_u8 or a.u8_match:
         row["u8_override_tensors"] = len(attn_tensors)
     if a.dump_ops:
