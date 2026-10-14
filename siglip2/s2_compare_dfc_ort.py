@@ -40,8 +40,11 @@ def load(path, k):
     for d in DATA:
         pred, cos = z[f"{d}_pred"][:k], z[f"{d}_cos"][:k]
         assert len(pred) == k, (path, d, len(pred))
+        y = np.load(RC.CACHE_DIR / f"{d}_y.npy")[:k]
         if f"{d}_y" in z.files:                                     # DFC: 정답이 들어 있으면 캐시 정답과 같은지 확인
-            assert np.array_equal(z[f"{d}_y"][:k], np.load(RC.CACHE_DIR / f"{d}_y.npy")[:k]), (path, d)
+            assert np.array_equal(z[f"{d}_y"][:k], y), (path, d)
+        if f"{d}_correct" in z.files:                               # ORT: 정답 여부가 캐시 정답 순서와 맞는지 확인 (독립 검토 지적)
+            assert np.array_equal(z[f"{d}_correct"][:k], pred == y), (path, d)
         out[d] = {"pred": pred, "cos": cos}
     return out
 
