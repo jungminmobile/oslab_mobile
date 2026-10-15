@@ -39,8 +39,8 @@ def load(path, k):
     out = {}
     for d in DATA:
         pred, cos = z[f"{d}_pred"][:k], z[f"{d}_cos"][:k]
-        assert len(pred) == k, (path, d, len(pred))
         y = np.load(RC.CACHE_DIR / f"{d}_y.npy")[:k]
+        assert len(pred) == len(y), (path, d, len(pred), len(y))   # k=None이면 dev 전체
         if f"{d}_y" in z.files:                                     # DFC: 정답이 들어 있으면 캐시 정답과 같은지 확인
             assert np.array_equal(z[f"{d}_y"][:k], y), (path, d)
         if f"{d}_correct" in z.files:                               # ORT: 정답 여부가 캐시 정답 순서와 맞는지 확인 (독립 검토 지적)
@@ -53,23 +53,24 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dfc", nargs="*", default=[], help="DFC pred_<tag>.npz")
     ap.add_argument("--ort", nargs="*", default=[], help="ORT pred_<모델>.npz (dev 전체, 앞 k장만 씀)")
-    ap.add_argument("--k", type=int, default=200)
+    ap.add_argument("--k", type=int, default=200, help="데이터셋당 앞 k장. 0이면 dev 전체")
     ap.add_argument("--n-boot", type=int, default=1000)
     a = ap.parse_args()
+    K = a.k if a.k > 0 else None
     out = S.require_results_dir()
     out.mkdir(parents=True, exist_ok=True)
     env = env_info.collect()
     env_info.write_env(out, env)
-    y = {d: np.load(RC.CACHE_DIR / f"{d}_y.npy")[:a.k] for d in DATA}
+    y = {d: np.load(RC.CACHE_DIR / f"{d}_y.npy")[:K] for d in DATA}
     fp = {}
     for d in DATA:
-        ref, W = np.load(RC.CACHE_DIR / f"{d}_ref_fp32.npy")[:a.k], np.load(RC.CACHE_DIR / f"{d}_clf.npy")
-        fp[d] = {"pred": np.argmax(ref @ W, 1), "cos": np.ones(a.k, np.float32)}
+        ref, W = np.load(RC.CACHE_DIR / f"{d}_ref_fp32.npy")[:K], np.load(RC.CACHE_DIR / f"{d}_clf.npy")
+        fp[d] = {"pred": np.argmax(ref @ W, 1), "cos": np.ones(len(ref), np.float32)}
     cfg = {}
     for p in a.dfc:
-        cfg["dfc:" + Path(p).stem.removeprefix("pred_")] = load(p, a.k)
+        cfg["dfc:" + Path(p).stem.removeprefix("pred_")] = load(p, K)
     for p in a.ort:
-        cfg["ort:" + Path(p).stem.removeprefix("pred_siglip2_image_")] = load(p, a.k)
+        cfg["ort:" + Path(p).stem.removeprefix("pred_siglip2_image_")] = load(p, K)
     base = {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"], "dirty": env["git"]["dirty"],
             "k": a.k, "n_boot": a.n_boot, "files": a.dfc + a.ort}
     rows = []

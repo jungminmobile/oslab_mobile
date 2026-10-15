@@ -43,6 +43,7 @@ def main():
     ap.add_argument("--har", required=True)
     ap.add_argument("--tag", required=True, help="구성 이름 (예: D_official_b9fc2)")
     ap.add_argument("--k", type=int, default=200)
+    ap.add_argument("--start", type=int, default=0, help="데이터셋마다 [start, start+k) 구간 (dev 전체를 200장씩 나눠 따로 돌릴 때, 10/15)")
     ap.add_argument("--bs", type=int, default=8)
     ap.add_argument("--out", required=True, help="결과 폴더 (screen.jsonl, pred_<tag>.npz)")
     a = ap.parse_args()
@@ -54,16 +55,21 @@ def main():
     git = lambda *x: subprocess.run(["git", "-c", "core.autocrlf=true", "-C", str(REPO), *x], capture_output=True, text=True).stdout.strip()
     row = {"date": datetime.now().isoformat(timespec="seconds"), "commit": git("rev-parse", "--short", "HEAD"),
            "dirty": bool(git("status", "--porcelain", "--untracked-files=no", "--", ".", ":(exclude)results")),
-           "tag": a.tag, "har": Path(a.har).name, "har_sha256": sha256(a.har), "k": a.k, "bs": a.bs,
+           "tag": a.tag, "har": Path(a.har).name, "har_sha256": sha256(a.har), "k": a.k, "start": a.start, "bs": a.bs,
            "exec": "dfc_sdk_quantized"}
     runner = ClientRunner(har=a.har)
     preds = {}
     t0 = time.time()
     with runner.infer_context(InferenceContext.SDK_QUANTIZED) as ctx:
         for d in DATA:
-            x = np.load(CACHE / f"{d}_x.npy", mmap_mode="r")[:a.k].astype(np.float32)
-            y, W = np.load(CACHE / f"{d}_y.npy")[:a.k], np.load(CACHE / f"{d}_clf.npy")
-            ref = np.load(CACHE / f"{d}_ref_fp32.npy")[:a.k]
+            sl = slice(a.start, a.start + a.k)
+            x = np.load(CACHE / f"{d}_x.npy", mmap_mode="r")[sl].astype(np.float32)
+            y, W = np.load(CACHE / f"{d}_y.npy")[sl], np.load(CACHE / f"{d}_clf.npy")
+            ref = np.load(CACHE / f"{d}_ref_fp32.npy")[sl]
+            if len(x) == 0:
+                preds.update({f"{d}_pred": np.zeros(0, np.int64), f"{d}_cos": np.zeros(0, np.float32), f"{d}_y": y})
+                row[d] = {"n": 0}
+                continue
             e = l2n(np.asarray(runner.infer(ctx, np.ascontiguousarray(x.transpose(0, 2, 3, 1)), batch_size=a.bs))
                     .reshape(len(x), -1).astype(np.float32))
             assert e.shape == ref.shape, (e.shape, ref.shape)
@@ -74,8 +80,9 @@ def main():
                       "fp32_top1": round(100 * float((fp_pred == y).mean()), 2),
                       "cos_mean": round(float(cos.mean()), 4), "cos_p1": round(float(np.percentile(cos, 1)), 4)}
             print(d, json.dumps(row[d]), f"{time.time() - t0:.0f}s", flush=True)
-    row["hr_cos"] = round(float(np.mean([row[d]["cos_mean"] for d in HR])), 4)
-    row["hr_dtop1"] = round(float(np.mean([row[d]["top1"] - row[d]["fp32_top1"] for d in HR])), 2)
+    hr = [d for d in HR if row[d].get("n", 0) > 0]                    # --start 구간에 사진이 없는 데이터셋은 뺀다
+    row["hr_cos"] = round(float(np.mean([row[d]["cos_mean"] for d in hr])), 4) if hr else None
+    row["hr_dtop1"] = round(float(np.mean([row[d]["top1"] - row[d]["fp32_top1"] for d in hr])), 2) if hr else None
     row["sec"] = round(time.time() - t0)
     np.savez_compressed(out / f"pred_{a.tag}.npz", **preds)
     with open(out / "screen.jsonl", "a", encoding="utf-8") as f:
