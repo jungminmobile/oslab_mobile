@@ -81,6 +81,7 @@ def main():
                       "cos_mean": round(float(cos.mean()), 4), "cos_p1": round(float(np.percentile(cos, 1)), 4)}
             print(d, json.dumps(row[d]), f"{time.time() - t0:.0f}s", flush=True)
     hr = [d for d in HR if row[d].get("n", 0) > 0]                    # --start 구간에 사진이 없는 데이터셋은 뺀다
+    row["hr_sets"] = {d: row[d].get("n", 0) for d in hr}             # 구간 실행(--start>0)이면 데이터셋·장수가 달라 요약이 일반 행과 다르다 (독립 검토 지적)
     row["hr_cos"] = round(float(np.mean([row[d]["cos_mean"] for d in hr])), 4) if hr else None
     row["hr_dtop1"] = round(float(np.mean([row[d]["top1"] - row[d]["fp32_top1"] for d in hr])), 2) if hr else None
     row["sec"] = round(time.time() - t0)

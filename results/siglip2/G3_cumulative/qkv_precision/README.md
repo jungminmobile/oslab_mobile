@@ -4,14 +4,14 @@
 U8 fc2L2의 정확도 손실(S8 대비 −0.41%p)은 전부 QKV 투영 MatMul의 정수 경로에서 나온다 (`../full_qkvu8`). PRD 3절의 대책 세 가지로 이 손실을 되돌리면서 U8의 속도(FP32의 약 절반)를 유지할 수 있는지 확인했다.
 
 ## 방법
-U8 fc2L2와 같은 보정·인자다 (`siglip2/scripts/qkv_precision.sh`, 커밋 `a75d113`, dirty=false, 보정 256장 확인).
+U8 fc2L2와 같은 보정·인자다 (`siglip2/scripts/qkv_precision.sh`, dirty=false, 보정 256장 확인). 양자화·x64qp 확인은 커밋 `5bba77c`, 스크리닝·dev 전체는 `a75d113`에서 돌았다 (그 사이 SigLIP2 코드 변경 없음).
 - **reduce_range**: `s2_quantize.py --act-type u8 --reduce-range`. 가중치가 7비트(−64~63)가 된다. 정수 MatMul 77개.
 - **U8U8**: `--act-type u8 --weight-type u8`. 가중치도 U8이다. 정수 MatMul 77개.
 - **x64quantprecision**: 같은 U8 모델을 세션 설정 `session.x64quantprecision=1`로 실행 (`s2_sessopt_check.py`).
 
 ## 결과
 
-**x64quantprecision** (`sessopt_check.jsonl`, dev 6종 × 200장): 기본 설정과 **출력이 완전히 같다** (임베딩 차이 0, 예측 100% 같음). PRD 3절 기록("VNNI CPU에서는 차이 0.0")과 같다. 이 PC에서는 대책이 아니다. 이 PC의 U8 커널이 이미 VNNI 경로로 돈다는 뜻이기도 하므로, QKV 손실이 "U8S8 포화" 때문이라는 가설은 가능성이 낮다.
+**x64quantprecision** (`sessopt_check.jsonl`, dev 6종 × 200장): 기본 설정과 **출력이 완전히 같다** (임베딩 차이 0, 예측 100% 같음). PRD 3절 기록("VNNI CPU에서는 차이 0.0")과 같다. 이 PC에서는 대책이 아니다. x64quantprecision은 설계상 VNNI CPU에서는 동작이 바뀌지 않으므로 출력이 같은 것은 예상된 결과다. 이 PC는 `avx512_vnni=true`이므로 QKV 손실이 "U8S8 포화" 때문이라는 가설은 가능성이 낮다 (추정).
 
 **정확도** (`full/paired_ci.jsonl`, dev 전체, 고화질 Δtop-1 [95% 구간]):
 
