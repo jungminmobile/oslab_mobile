@@ -201,6 +201,11 @@ def main():
     ap.add_argument("--attn-u8", action="store_true",
                     help="(기본 꺼짐) 활성값×활성값 MatMul(attention QKᵀ·AV)의 입력·출력만 U8, 나머지는 --act-type 그대로. "
                          "ORT TensorQuantOverrides(quant_type) 사용. (10/14 결과: 효과 없음 — S8에서도 QKᵀ·AV는 이미 정수로 합쳐지고, 합쳐지지 않던 것은 QKV 투영이었다 → --u8-match)")
+    ap.add_argument("--w4-regex", default="",
+                    help="(기본 꺼짐) 이름이 이 정규식에 맞는 MatMul의 가중치를 4비트 블록 양자화(MatMulNBits)로 바꾼 뒤, 나머지를 평소처럼 INT8 QDQ로 양자화. "
+                         "예: '^/blocks\.\d+/mlp/fc1/' (10/15, 대회 안내 4.1 'INT8/INT4', D-036)")
+    ap.add_argument("--w4-block", type=int, default=32, help="4비트 블록 크기 (--w4-regex일 때)")
+    ap.add_argument("--w4-acc", type=int, default=4, help="MatMulNBits accuracy_level (4 = 활성값을 int8로 동적 양자화해 정수 계산)")
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--log", default="", help="기본: $RN50_RESULTS/quantize_log.jsonl (RN50_RESULTS 명시 필요)")
     a = ap.parse_args()
@@ -227,6 +232,30 @@ def main():
     if dst.exists() and not a.overwrite:
         raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
     excl = RQ.select_excluded(str(pre), a)
+    w4_nodes = []
+    if a.w4_regex:
+        import re
+        import onnx
+        from onnxruntime.quantization.matmul_nbits_quantizer import MatMulNBitsQuantizer
+        g = onnx.load(str(pre), load_external_data=False).graph
+        inits = {i.name for i in g.initializer}
+        w4_nodes = [n.name for n in g.node if n.op_type == "MatMul" and n.name not in excl
+                    and re.search(a.w4_regex, n.name) and n.input[1] in inits]
+        assert w4_nodes, f"--w4-regex {a.w4_regex!r}에 맞는 가중치 MatMul 없음"
+        print(f"--w4-regex: MatMul {len(w4_nodes)}개를 4비트로 (블록 {a.w4_block}, accuracy_level {a.w4_acc})")
+        ops_tag += f"_w4b{a.w4_block}a{a.w4_acc}"
+        cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
+        dst = RC.ONNX_DIR / f"siglip2_image_int8_{cal}{'_' + a.tag if a.tag else ''}.onnx"
+        if dst.exists() and not a.overwrite:
+            raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
+        q4 = MatMulNBitsQuantizer(onnx.load(str(pre)), bits=4, block_size=a.w4_block, is_symmetric=True,
+                                  accuracy_level=a.w4_acc, nodes_to_include=w4_nodes)
+        q4.process()
+        pre = dst.with_name(dst.stem + ".w4pre.onnx")             # 4비트로 바꾼 중간 모델 → 아래 INT8 QDQ의 입력
+        q4.model.save_model_to_file(str(pre), use_external_data_format=False)
+        g4 = onnx.load(str(pre), load_external_data=False).graph
+        n_nbits = sum(n.op_type == "MatMulNBits" for n in g4.node)
+        assert n_nbits == len(w4_nodes), f"MatMulNBits {n_nbits}개 ≠ 요청 {len(w4_nodes)}개"
     attn_tensors = []
     if a.attn_u8:
         import onnx
@@ -286,6 +315,8 @@ def main():
         tmp.unlink()
         raise AssertionError(f"보정에 쓰인 사진 {seen} ≠ 요청 {a.calib_n}장 — 모델 파일을 지웠음")
     tmp.replace(dst)
+    if w4_nodes:
+        pre.unlink()                                            # 4비트 중간 모델은 지움 (최종 dst에 그대로 들어 있음)
     print(f"saved {dst.name}  {dst.stat().st_size / 2**20:.1f} MiB  ({time.time() - t0:.0f}s), calib seen per pass={seen}")
 
     env = env_info.collect()
@@ -296,6 +327,8 @@ def main():
            "qtype": f"{a.act_type.upper()}{a.weight_type.upper()}" + ("+rr" if a.reduce_range else "") + ("+attnU8" if a.attn_u8 else "") + (f"+U8[{a.u8_match}]" if a.u8_match else ""), "sec": round(time.time() - t0)}
     if a.attn_u8 or a.u8_match:
         row["u8_override_tensors"] = len(attn_tensors)
+    if w4_nodes:
+        row["w4_nodes"] = w4_nodes
     if a.dump_ops:
         row["ort_optimized_graph"] = dump_ops(dst, a.threads)
         print(json.dumps(row["ort_optimized_graph"], ensure_ascii=False))
