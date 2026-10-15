@@ -9,6 +9,9 @@ export MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL='*' HF_HUB_DISABLE_SYMLINKS_WARNIN
 PY="$SIGLIP2_PYTHON"
 ART="$SIGLIP2_ARTIFACTS"
 LOCK=("$PY" D:/mokerton/locks/heavy_lock.py run --owner siglip2 --job)
+# W4_ONE_LOCK=1: 바깥에서 잠금 하나로 전체(약 40분)를 감싸 실행할 때 (10/15 밤: 개인연구 E20 뒤 WSL이 내려가 있는 동안 끝내려고).
+#  단계마다 잠금을 놓으면 그 사이 WSL 조각이 끼어들어 WSL VM 메모리와 Windows 양자화가 겹친다
+[ "${W4_ONE_LOCK:-0}" = 1 ] && LOCK=(env)
 R=../results/siglip2/G3_w4; mkdir -p $R
 Q=(--calib-source highres --calib-n 256 --op-types MatMul --method percentile --percentile 99.999 --hist-chunk 16 --overwrite --dump-ops
    --act-type u8 --reduce-range --exclude "/blocks.5/mlp/fc2/,/blocks.9/mlp/fc2/")
