@@ -19,7 +19,8 @@ source ~/hailo10_venv/bin/activate
 # WSL에서 NVIDIA 드라이버는 보이는데 CUDA·cuDNN이 없으면 TensorFlow가 GPU를 잡으려다 CUDA_ERROR_INVALID_HANDLE로 죽는다.
 # CUDA 12.5+·cuDNN 9.3+를 깔기 전까지는 GPU를 숨기고 CPU로 돌린다 (HAILO_USE_GPU=1이면 숨기지 않음)
 if [ "${HAILO_USE_GPU:-0}" != 1 ]; then export CUDA_VISIBLE_DEVICES=-1; fi
-cp "$SRC"/siglip2_text_blocks_b1.onnx "$SRC"/siglip2_text_blocks_pool_b1.onnx "$SRC"/dfc_text_calib64_s0.npy "$W/"
+cp "$SRC"/siglip2_text_blocks_b1.onnx "$SRC"/dfc_text_calib64_s0.npy "$W/"     # 필수
+cp "$SRC"/siglip2_text_blocks_pool_b1.onnx "$W/" 2>/dev/null || echo "pool 변형 없음 — 건너뜀"   # 선택
 cd "$W"
 {
   echo "tag=$TAG"; echo "commit=$(git -C "$REPO" rev-parse --short HEAD) dirty=$(git -C "$REPO" status --porcelain -- textenc | wc -l)"
@@ -37,6 +38,7 @@ step() {  # step <이름> <명령...>
 }
 
 for NET in siglip2_text_blocks_b1 siglip2_text_blocks_pool_b1; do
+  [ -f $NET.onnx ] || continue
   step "${NET}_parse" hailo parser onnx $NET.onnx --hw-arch hailo10h --net-name $NET --har-path $NET.har -y \
        --parsing-report-path ${NET}_parsing_report.json || continue
   if ! step "${NET}_optimize" hailo optimize $NET.har --hw-arch hailo10h --calib-set-path dfc_text_calib64_s0.npy \
