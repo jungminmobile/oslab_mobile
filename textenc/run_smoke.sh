@@ -32,5 +32,5 @@ echo "[4/6] eval $(date)";     "$PY" textenc/te_eval.py --models "${MODELS[@]}" 
 echo "[5/6] speed $(date)"
 BM=(fp32=siglip2_text_fp32.onnx D=siglip2_text_int8_embed8.onnx)
 for m in "${MODELS[@]}"; do k="${m#siglip2_text_int8_}"; BM+=("${k%.onnx}=$m"); done
-"$PY" textenc/te_bench.py --dir "$SIGLIP2_ARTIFACTS/textenc" --threads 1 2 4 --models "${BM[@]}" --out "$OUT/speed_x86"
+"$PY" textenc/te_bench.py --dir "$SIGLIP2_ARTIFACTS/textenc" --threads ${BENCH_THREADS:-1 2 4} --models "${BM[@]}" --out "$OUT/speed_x86"
 echo "[6/6] done $(date)"
