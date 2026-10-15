@@ -63,3 +63,26 @@ cd ~/ssd/junyong/oslab_mobile && nohup python3 textenc/te_bench.py --dir ~/ssd/j
 - export: PyTorch vs ORT cos ≥ 0.9999 assert, 팀 캐시 분류기(PyTorch)와 ORT FP32 분류기 비교
 - 보정: 회차마다 실제로 쓰인 문장 수 = 256 assert (실패하면 파일 삭제)
 - 정확도는 ORT 기본 설정(정수 커널)만. 최적화된 그래프의 연산 개수(`QLinearMatMul` 등)를 quantize_log에 남긴다
+
+## NPU(HEF) 시험 — 블록 12개만 (`te_export_blocks.py`, `hailo_parse_text.sh`)
+
+Hailo Model Zoo처럼 토큰 임베딩(Gather)과 풀링·projection은 호스트에서, 트랜스포머 블록만 NPU에 둔다.
+attention은 고정 shape 연산으로 다시 썼다. 결과 그래프에는 LayerNormalization·MatMul·Add·Slice·Reshape·Transpose·Mul·Softmax·Tanh(·Gemm)만 남는다
+(Shape·Gather·Cast·ArgMax 없음). PyTorch 대비 cos ≥ 0.99999982.
+
+1. ONNX 만들기 (SigLIP2 venv가 있는 x86):
+   ```
+   python textenc/te_export.py --out results/textenc/smoke && python textenc/te_export_blocks.py --out results/textenc/hailo_parse
+   ```
+   WSL Ubuntu 22.04에는 Python 3.10만 있고 팀 고정 버전(numpy 2.4 등)은 3.11 이상이 필요하다. 그래서 uv로 3.11 venv를 따로 만든다:
+   ```
+   curl -LsSf https://astral.sh/uv/install.sh | sh && source ~/.local/bin/env && uv venv ~/textenc_venv -p 3.11 && uv pip install -p ~/textenc_venv -r siglip2/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+   ```
+   ```
+   export SIGLIP2_DATA=~/textenc_work/data SIGLIP2_ARTIFACTS=~/textenc_work/art HF_HOME=~/textenc_work/hf && ~/textenc_venv/bin/python textenc/te_export.py --out results/textenc/smoke && ~/textenc_venv/bin/python textenc/te_export_blocks.py --out results/textenc/hailo_parse
+   ```
+2. DFC (WSL, `~/hailo10_venv`):
+   ```
+   nohup bash textenc/hailo_parse_text.sh ~/textenc_work/art/textenc > hailo_text.log 2>&1 &
+   ```
+   결과는 `results/textenc/hailo_parse/<날짜>/steps.txt`(단계별 rc)와 로그.
