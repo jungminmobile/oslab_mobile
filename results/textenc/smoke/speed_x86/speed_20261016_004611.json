@@ -1,0 +1,100 @@
+{
+ "date": "2026-10-16T00:40:25",
+ "commit": "221bd50",
+ "dirty": false,
+ "onnxruntime": "1.25.0",
+ "env": {
+  "machine": "x86_64",
+  "processor": "x86_64",
+  "python": "3.13.16",
+  "model name": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+  "flags": {
+   "avx2": true,
+   "avx512f": true,
+   "avx512_vnni": true,
+   "avx_vnni": true,
+   "asimddp": false,
+   "i8mm": false,
+   "sve": false
+  }
+ },
+ "cond": {
+  "dir": "/home/claude/work/art/textenc",
+  "models": [
+   "fp32=siglip2_text_fp32.onnx",
+   "C-u8=siglip2_text_int8_qdq_p99999_u8_protect.onnx",
+   "C-s8=siglip2_text_int8_qdq_p99999_s8_protect.onnx"
+  ],
+  "threads": [
+   1,
+   2
+  ],
+  "warmup": 20,
+  "n": 200,
+  "repeats": 3,
+  "tokens": "tokens_pets.npy",
+  "no_rss": false,
+  "allow_nonstandard": false,
+  "out": "results/textenc/smoke/speed_x86"
+ },
+ "standard": true,
+ "results": {
+  "fp32": {
+   "t1": {
+    "file": "siglip2_text_fp32.onnx",
+    "MiB": 1077.3,
+    "ms_mean": 126.0,
+    "ms_std": 0.38,
+    "lat_p50": 120.0,
+    "lat_p95": 160.51
+   },
+   "t2": {
+    "file": "siglip2_text_fp32.onnx",
+    "MiB": 1077.3,
+    "ms_mean": 73.29,
+    "ms_std": 0.84,
+    "lat_p50": 70.41,
+    "lat_p95": 92.38
+   },
+   "rss_MiB_t1": 1322.6
+  },
+  "C-u8": {
+   "t1": {
+    "file": "siglip2_text_int8_qdq_p99999_u8_protect.onnx",
+    "MiB": 840.1,
+    "ms_mean": 41.12,
+    "ms_std": 0.53,
+    "lat_p50": 38.24,
+    "lat_p95": 53.73
+   },
+   "t2": {
+    "file": "siglip2_text_int8_qdq_p99999_u8_protect.onnx",
+    "MiB": 840.1,
+    "ms_mean": 31.77,
+    "ms_std": 0.77,
+    "lat_p50": 31.67,
+    "lat_p95": 38.48
+   },
+   "rss_MiB_t1": 953.2
+  },
+  "C-s8": {
+   "t1": {
+    "file": "siglip2_text_int8_qdq_p99999_s8_protect.onnx",
+    "MiB": 840.1,
+    "ms_mean": 131.68,
+    "ms_std": 1.45,
+    "lat_p50": 122.47,
+    "lat_p95": 177.82
+   },
+   "t2": {
+    "file": "siglip2_text_int8_qdq_p99999_s8_protect.onnx",
+    "MiB": 840.1,
+    "ms_mean": 110.74,
+    "ms_std": 3.06,
+    "lat_p50": 106.4,
+    "lat_p95": 143.19
+   },
+   "rss_MiB_t1": 964.6
+  }
+ }
+}

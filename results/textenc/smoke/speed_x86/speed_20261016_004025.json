@@ -1,0 +1,100 @@
+{
+ "date": "2026-10-16T00:34:29",
+ "commit": "221bd50",
+ "dirty": false,
+ "onnxruntime": "1.25.0",
+ "env": {
+  "machine": "x86_64",
+  "processor": "x86_64",
+  "python": "3.13.16",
+  "model name": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+  "flags": {
+   "avx2": true,
+   "avx512f": true,
+   "avx512_vnni": true,
+   "avx_vnni": true,
+   "asimddp": false,
+   "i8mm": false,
+   "sve": false
+  }
+ },
+ "cond": {
+  "dir": "/home/claude/work/art/textenc",
+  "models": [
+   "fp32=siglip2_text_fp32.onnx",
+   "B-u8=siglip2_text_int8_qdq_p99999_u8.onnx",
+   "B-s8=siglip2_text_int8_qdq_p99999_s8.onnx"
+  ],
+  "threads": [
+   1,
+   2
+  ],
+  "warmup": 20,
+  "n": 200,
+  "repeats": 3,
+  "tokens": "tokens_pets.npy",
+  "no_rss": false,
+  "allow_nonstandard": false,
+  "out": "results/textenc/smoke/speed_x86"
+ },
+ "standard": true,
+ "results": {
+  "fp32": {
+   "t1": {
+    "file": "siglip2_text_fp32.onnx",
+    "MiB": 1077.3,
+    "ms_mean": 125.58,
+    "ms_std": 2.33,
+    "lat_p50": 119.04,
+    "lat_p95": 159.77
+   },
+   "t2": {
+    "file": "siglip2_text_fp32.onnx",
+    "MiB": 1077.3,
+    "ms_mean": 75.71,
+    "ms_std": 3.58,
+    "lat_p50": 76.05,
+    "lat_p95": 92.67
+   },
+   "rss_MiB_t1": 1304.6
+  },
+  "B-u8": {
+   "t1": {
+    "file": "siglip2_text_int8_qdq_p99999_u8.onnx",
+    "MiB": 833.4,
+    "ms_mean": 40.94,
+    "ms_std": 2.67,
+    "lat_p50": 37.71,
+    "lat_p95": 53.91
+   },
+   "t2": {
+    "file": "siglip2_text_int8_qdq_p99999_u8.onnx",
+    "MiB": 833.4,
+    "ms_mean": 32.0,
+    "ms_std": 3.18,
+    "lat_p50": 33.19,
+    "lat_p95": 37.42
+   },
+   "rss_MiB_t1": 951.0
+  },
+  "B-s8": {
+   "t1": {
+    "file": "siglip2_text_int8_qdq_p99999_s8.onnx",
+    "MiB": 833.4,
+    "ms_mean": 136.66,
+    "ms_std": 3.23,
+    "lat_p50": 125.95,
+    "lat_p95": 181.61
+   },
+   "t2": {
+    "file": "siglip2_text_int8_qdq_p99999_s8.onnx",
+    "MiB": 833.4,
+    "ms_mean": 117.35,
+    "ms_std": 5.09,
+    "lat_p50": 113.11,
+    "lat_p95": 148.57
+   },
+   "rss_MiB_t1": 960.1
+  }
+ }
+}

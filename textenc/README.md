@@ -52,8 +52,10 @@ nohup bash textenc/run_smoke.sh > textenc_smoke.log 2>&1 &
 onnxruntime·numpy·psutil만 있으면 된다(torch·transformers 불필요). x86에서 만든 ONNX와 `tokens_pets.npy`를 `~/ssd/junyong/textenc/`로 복사한 뒤:
 
 ```
-cd ~/ssd/junyong/oslab_mobile && nohup python3 textenc/te_bench.py --dir ~/ssd/junyong/textenc --threads 1 2 4 --out results/textenc/smoke/speed_agx --models fp32=siglip2_text_fp32.onnx A=siglip2_text_int8_dyn.onnx B-u8=siglip2_text_int8_qdq_p99999_u8.onnx B-s8=siglip2_text_int8_qdq_p99999_s8.onnx D=siglip2_text_int8_embed8.onnx > te_bench_agx.log 2>&1 &
+cd ~/ssd/junyong/oslab_mobile && nohup python3 textenc/te_bench.py --dir ~/ssd/junyong/textenc --threads 1 2 4 --out results/textenc/smoke/speed_agx --models fp32=siglip2_text_fp32.onnx D=siglip2_text_int8_embed8.onnx C-u8+D=siglip2_text_int8_qdq_p99999_u8_protect_embed8.onnx C-s8+D=siglip2_text_int8_qdq_p99999_s8_protect_embed8.onnx > te_bench_agx.log 2>&1 &
 ```
+
+1차 스모크 결과(x86)는 `results/textenc/smoke/README.md`. 위 4개가 그 결과의 후보다.
 
 ## 검증 방법 (코드)
 

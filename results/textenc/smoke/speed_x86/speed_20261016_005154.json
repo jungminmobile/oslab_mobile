@@ -1,0 +1,100 @@
+{
+ "date": "2026-10-16T00:46:12",
+ "commit": "221bd50",
+ "dirty": false,
+ "onnxruntime": "1.25.0",
+ "env": {
+  "machine": "x86_64",
+  "processor": "x86_64",
+  "python": "3.13.16",
+  "model name": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+  "flags": {
+   "avx2": true,
+   "avx512f": true,
+   "avx512_vnni": true,
+   "avx_vnni": true,
+   "asimddp": false,
+   "i8mm": false,
+   "sve": false
+  }
+ },
+ "cond": {
+  "dir": "/home/claude/work/art/textenc",
+  "models": [
+   "fp32=siglip2_text_fp32.onnx",
+   "C-u8+D=siglip2_text_int8_qdq_p99999_u8_protect_embed8.onnx",
+   "C-s8+D=siglip2_text_int8_qdq_p99999_s8_protect_embed8.onnx"
+  ],
+  "threads": [
+   1,
+   2
+  ],
+  "warmup": 20,
+  "n": 200,
+  "repeats": 3,
+  "tokens": "tokens_pets.npy",
+  "no_rss": false,
+  "allow_nonstandard": false,
+  "out": "results/textenc/smoke/speed_x86"
+ },
+ "standard": true,
+ "results": {
+  "fp32": {
+   "t1": {
+    "file": "siglip2_text_fp32.onnx",
+    "MiB": 1077.3,
+    "ms_mean": 123.4,
+    "ms_std": 1.34,
+    "lat_p50": 118.24,
+    "lat_p95": 153.47
+   },
+   "t2": {
+    "file": "siglip2_text_fp32.onnx",
+    "MiB": 1077.3,
+    "ms_mean": 79.44,
+    "ms_std": 2.98,
+    "lat_p50": 79.47,
+    "lat_p95": 94.94
+   },
+   "rss_MiB_t1": 1313.6
+  },
+  "C-u8+D": {
+   "t1": {
+    "file": "siglip2_text_int8_qdq_p99999_u8_protect_embed8.onnx",
+    "MiB": 278.6,
+    "ms_mean": 40.26,
+    "ms_std": 1.7,
+    "lat_p50": 37.42,
+    "lat_p95": 53.73
+   },
+   "t2": {
+    "file": "siglip2_text_int8_qdq_p99999_u8_protect_embed8.onnx",
+    "MiB": 278.6,
+    "ms_mean": 31.6,
+    "ms_std": 0.6,
+    "lat_p50": 30.86,
+    "lat_p95": 39.93
+   },
+   "rss_MiB_t1": 391.7
+  },
+  "C-s8+D": {
+   "t1": {
+    "file": "siglip2_text_int8_qdq_p99999_s8_protect_embed8.onnx",
+    "MiB": 278.6,
+    "ms_mean": 135.0,
+    "ms_std": 1.67,
+    "lat_p50": 124.46,
+    "lat_p95": 182.78
+   },
+   "t2": {
+    "file": "siglip2_text_int8_qdq_p99999_s8_protect_embed8.onnx",
+    "MiB": 278.6,
+    "ms_mean": 114.18,
+    "ms_std": 3.14,
+    "lat_p50": 107.94,
+    "lat_p95": 146.29
+   },
+   "rss_MiB_t1": 403.1
+  }
+ }
+}

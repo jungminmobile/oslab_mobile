@@ -1,0 +1,7 @@
+{
+ "rule": "activation input ratio >= 20.0",
+ "nodes": [
+  "/text/transformer/resblocks.0/mlp/c_proj/MatMul"
+ ],
+ "n_quant_nodes": 73
+}

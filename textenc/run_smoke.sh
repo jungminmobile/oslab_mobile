@@ -30,7 +30,12 @@ for m in "${MODELS[@]}"; do
 done
 echo "[4/6] eval $(date)";     "$PY" textenc/te_eval.py --models "${MODELS[@]}" siglip2_text_int8_embed8.onnx "${COMBO[@]}" "${A[@]}"
 echo "[5/6] speed $(date)"
-BM=(fp32=siglip2_text_fp32.onnx D=siglip2_text_int8_embed8.onnx)
-for m in "${MODELS[@]}"; do k="${m#siglip2_text_int8_}"; BM+=("${k%.onnx}=$m"); done
-"$PY" textenc/te_bench.py --dir "$SIGLIP2_ARTIFACTS/textenc" --threads ${BENCH_THREADS:-1 2 4} --models "${BM[@]}" --out "$OUT/speed_x86"
+# 모델을 한꺼번에 올리면 RAM이 모자랄 수 있다(각 약 1 GB) → FP32를 넣은 3개 묶음으로 잰다. 비교는 같은 묶음 안에서만
+B=(); for m in "${MODELS[@]}"; do k="${m#siglip2_text_int8_}"; B+=("${k%.onnx}=$m"); done
+B+=(D=siglip2_text_int8_embed8.onnx)
+for c in "${COMBO[@]}"; do k="${c#siglip2_text_int8_}"; B+=("${k%.onnx}=$c"); done
+for ((i=0; i<${#B[@]}; i+=2)); do
+  "$PY" textenc/te_bench.py --dir "$SIGLIP2_ARTIFACTS/textenc" --threads ${BENCH_THREADS:-1 2 4} \
+      --models fp32=siglip2_text_fp32.onnx "${B[@]:i:2}" --out "$OUT/speed_x86"
+done
 echo "[6/6] done $(date)"

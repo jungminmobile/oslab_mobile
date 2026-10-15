@@ -1,0 +1,100 @@
+{
+ "date": "2026-10-16T00:29:04",
+ "commit": "221bd50",
+ "dirty": false,
+ "onnxruntime": "1.25.0",
+ "env": {
+  "machine": "x86_64",
+  "processor": "x86_64",
+  "python": "3.13.16",
+  "model name": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+  "flags": {
+   "avx2": true,
+   "avx512f": true,
+   "avx512_vnni": true,
+   "avx_vnni": true,
+   "asimddp": false,
+   "i8mm": false,
+   "sve": false
+  }
+ },
+ "cond": {
+  "dir": "/home/claude/work/art/textenc",
+  "models": [
+   "fp32=siglip2_text_fp32.onnx",
+   "D=siglip2_text_int8_embed8.onnx",
+   "A=siglip2_text_int8_dyn.onnx"
+  ],
+  "threads": [
+   1,
+   2
+  ],
+  "warmup": 20,
+  "n": 200,
+  "repeats": 3,
+  "tokens": "tokens_pets.npy",
+  "no_rss": false,
+  "allow_nonstandard": false,
+  "out": "results/textenc/smoke/speed_x86"
+ },
+ "standard": true,
+ "results": {
+  "fp32": {
+   "t1": {
+    "file": "siglip2_text_fp32.onnx",
+    "MiB": 1077.3,
+    "ms_mean": 132.62,
+    "ms_std": 7.96,
+    "lat_p50": 129.99,
+    "lat_p95": 164.75
+   },
+   "t2": {
+    "file": "siglip2_text_fp32.onnx",
+    "MiB": 1077.3,
+    "ms_mean": 81.7,
+    "ms_std": 7.51,
+    "lat_p50": 79.61,
+    "lat_p95": 103.22
+   },
+   "rss_MiB_t1": 1304.5
+  },
+  "D": {
+   "t1": {
+    "file": "siglip2_text_int8_embed8.onnx",
+    "MiB": 515.7,
+    "ms_mean": 132.42,
+    "ms_std": 8.5,
+    "lat_p50": 130.97,
+    "lat_p95": 161.62
+   },
+   "t2": {
+    "file": "siglip2_text_int8_embed8.onnx",
+    "MiB": 515.7,
+    "ms_mean": 78.74,
+    "ms_std": 2.2,
+    "lat_p50": 77.54,
+    "lat_p95": 96.52
+   },
+   "rss_MiB_t1": 770.1
+  },
+  "A": {
+   "t1": {
+    "file": "siglip2_text_int8_dyn.onnx",
+    "MiB": 832.8,
+    "ms_mean": 35.73,
+    "ms_std": 0.79,
+    "lat_p50": 32.38,
+    "lat_p95": 47.11
+   },
+   "t2": {
+    "file": "siglip2_text_int8_dyn.onnx",
+    "MiB": 832.8,
+    "ms_mean": 25.92,
+    "ms_std": 1.59,
+    "lat_p50": 26.47,
+    "lat_p95": 32.57
+   },
+   "rss_MiB_t1": 939.1
+  }
+ }
+}
