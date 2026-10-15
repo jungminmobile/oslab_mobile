@@ -45,6 +45,8 @@ def main():
     ap.add_argument("--k", type=int, default=200)
     ap.add_argument("--start", type=int, default=0, help="데이터셋마다 [start, start+k) 구간 (dev 전체를 200장씩 나눠 따로 돌릴 때, 10/15)")
     ap.add_argument("--bs", type=int, default=8)
+    ap.add_argument("--sets", nargs="+", default=DATA, choices=DATA,
+                    help="돌릴 데이터셋 (기본: 6종 전부). 한 프로세스의 infer 횟수를 줄여 메모리를 아낄 때 (10/15 start=800 구간 OOM)")
     ap.add_argument("--out", required=True, help="결과 폴더 (screen.jsonl, pred_<tag>.npz)")
     a = ap.parse_args()
     from hailo_sdk_client import ClientRunner, InferenceContext
@@ -55,13 +57,13 @@ def main():
     git = lambda *x: subprocess.run(["git", "-c", "core.autocrlf=true", "-C", str(REPO), *x], capture_output=True, text=True).stdout.strip()
     row = {"date": datetime.now().isoformat(timespec="seconds"), "commit": git("rev-parse", "--short", "HEAD"),
            "dirty": bool(git("status", "--porcelain", "--untracked-files=no", "--", ".", ":(exclude)results")),
-           "tag": a.tag, "har": Path(a.har).name, "har_sha256": sha256(a.har), "k": a.k, "start": a.start, "bs": a.bs,
+           "tag": a.tag, "har": Path(a.har).name, "har_sha256": sha256(a.har), "k": a.k, "start": a.start, "bs": a.bs, "sets": a.sets,
            "exec": "dfc_sdk_quantized"}
     runner = ClientRunner(har=a.har)
     preds = {}
     t0 = time.time()
     with runner.infer_context(InferenceContext.SDK_QUANTIZED) as ctx:
-        for d in DATA:
+        for d in [d for d in DATA if d in a.sets]:
             sl = slice(a.start, a.start + a.k)
             x = np.load(CACHE / f"{d}_x.npy", mmap_mode="r")[sl].astype(np.float32)
             y, W = np.load(CACHE / f"{d}_y.npy")[sl], np.load(CACHE / f"{d}_clf.npy")
@@ -80,7 +82,7 @@ def main():
                       "fp32_top1": round(100 * float((fp_pred == y).mean()), 2),
                       "cos_mean": round(float(cos.mean()), 4), "cos_p1": round(float(np.percentile(cos, 1)), 4)}
             print(d, json.dumps(row[d]), f"{time.time() - t0:.0f}s", flush=True)
-    hr = [d for d in HR if row[d].get("n", 0) > 0]                    # --start 구간에 사진이 없는 데이터셋은 뺀다
+    hr = [d for d in HR if d in row and row[d].get("n", 0) > 0]      # --start 구간에 사진이 없거나 --sets로 뺀 데이터셋은 뺀다
     row["hr_sets"] = {d: row[d].get("n", 0) for d in hr}             # 구간 실행(--start>0)이면 데이터셋·장수가 달라 요약이 일반 행과 다르다 (독립 검토 지적)
     row["hr_cos"] = round(float(np.mean([row[d]["cos_mean"] for d in hr])), 4) if hr else None
     row["hr_dtop1"] = round(float(np.mean([row[d]["top1"] - row[d]["fp32_top1"] for d in hr])), 2) if hr else None
