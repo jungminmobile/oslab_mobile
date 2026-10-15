@@ -8,6 +8,7 @@
 #   dfc_text_calib64_s0.npy           (64,64,768) 보정 입력
 # 이번 시험의 질문은 "NPU에 올라가는가"뿐이다. optimize는 기본값(모델 스크립트 없음)이고, 정확도는 보지 않는다.
 # 보정 파일 모양이 DFC가 기대하는 것과 다르면 무작위 보정(--use-random-calib-set)으로 한 번 더 시도해 compile 가능 여부만 본다.
+# 1차 결과(2026-10-16, DFC 5.4.0, CPU·레벨 0): parse·compile 성공, HEF 67 MB, 컨텍스트 11개 이상. 3차원 보정 파일은 optimize 실패 → 4차원으로 고침
 set -uo pipefail
 SRC=$(realpath "${1:?ONNX 폴더를 인자로}")
 REPO=$(cd "$(dirname "$0")/.." && pwd)
@@ -22,6 +23,8 @@ if [ "${HAILO_USE_GPU:-0}" != 1 ]; then export CUDA_VISIBLE_DEVICES=-1; fi
 cp "$SRC"/siglip2_text_blocks_b1.onnx "$SRC"/dfc_text_calib64_s0.npy "$W/"     # 필수
 cp "$SRC"/siglip2_text_blocks_pool_b1.onnx "$W/" 2>/dev/null || echo "pool 변형 없음 — 건너뜀"   # 선택
 cd "$W"
+# 예전 3차원 보정 파일 (64,64,768)이면 DFC NHWC 형식 (64,1,64,768)으로 바꾼다 (3차원이면 optimize의 Slice 층에서 IndexError)
+python -c "import numpy as np; x=np.load('dfc_text_calib64_s0.npy'); x=x[:, None] if x.ndim == 3 else x; np.save('dfc_text_calib64_s0.npy', x); print('calib', x.shape)"
 {
   echo "tag=$TAG"; echo "commit=$(git -C "$REPO" rev-parse --short HEAD) dirty=$(git -C "$REPO" status --porcelain -- textenc | wc -l)"
   echo "CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES-unset}"; hailo --version 2>&1 | tail -1; python --version; uname -r; nproc; free -g | head -2

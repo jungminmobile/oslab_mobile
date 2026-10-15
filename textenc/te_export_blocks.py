@@ -11,7 +11,7 @@ te_export_blocks.py — Hailo DFC parse 시험용: SigLIP2 텍스트 인코더�
   siglip2_text_blocks_b1.onnx       입력 x (1,64,768) = 토큰 임베딩 + 위치 임베딩 (호스트 계산)
                                     출력 h (1,64,768) = 블록 12개 → ln_final  (위치 63 선택·projection은 호스트)
   siglip2_text_blocks_pool_b1.onnx  같은 입력, 출력 (1,768) = 위치 63 Slice → projection까지 NPU (Slice가 받아들여지는지 시험)
-  dfc_text_calib64_s0.npy           DFC 보정용 입력 x (64,64,768) = 보정 문장 앞 64개 (tokens_check_s0_64.npy)
+  dfc_text_calib64_s0.npy           DFC 보정용 입력 x (64,1,64,768) — DFC NHWC 형식 = 보정 문장 앞 64개 (tokens_check_s0_64.npy)
   host_text_head.npz                호스트 쪽 가중치: 위치 임베딩, projection (임베딩 표는 FP32 ONNX/INT8 D 쪽을 쓴다)
 
 [검증]  PyTorch encode_text와 "호스트 앞부분 + 블록 ONNX(ORT) + 호스트 뒷부분" 결과 cos ≥ 0.9999 (평가 프롬프트 + 확인 문장)
@@ -150,7 +150,8 @@ def main():
     print(json.dumps(row["verify"]))
     with torch.inference_mode():
         cal = np.concatenate([host_front(model, torch.as_tensor(tk1[None])) for tk1 in np.load(T.TE_DIR / "tokens_check_s0_64.npy")])
-    np.save(T.TE_DIR / "dfc_text_calib64_s0.npy", cal.astype(np.float32))
+    cal = cal[:, None].astype(np.float32)   # DFC는 (N,H,W,C)로 읽는다: 입력 (1,64,768) → (1,1,64,768). 3차원이면 Slice 층에서 IndexError
+    np.save(T.TE_DIR / "dfc_text_calib64_s0.npy", cal)
     np.savez(T.TE_DIR / "host_text_head.npz", positional_embedding=t.positional_embedding.detach().numpy(),
              proj_w=t.text_projection.weight.detach().numpy(), proj_b=t.text_projection.bias.detach().numpy())
     row["calib"] = {"file": "dfc_text_calib64_s0.npy", "shape": list(cal.shape)}
