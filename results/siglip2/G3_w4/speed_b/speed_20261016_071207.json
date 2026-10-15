@@ -1,0 +1,59 @@
+{
+ "date": "2026-10-16T07:12:07",
+ "env": {
+  "python": "3.11.9",
+  "onnxruntime": "1.25.0",
+  "cpu": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+  "threads": 4
+ },
+ "cond": {
+  "models": [
+   "fp32=siglip2_image_fp32.onnx",
+   "u8rr=siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx",
+   "w4C=siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_w4b32a4_w4C_fc2L2.onnx",
+   "w4D=siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_w4b32a4_w4D_fc2L2.onnx"
+  ],
+  "n": 200,
+  "repeats": 3,
+  "warmup": 20,
+  "threads": 4
+ },
+ "results": {
+  "fp32": {
+   "file": "siglip2_image_fp32.onnx",
+   "MiB": 354.5,
+   "ms_per_img_mean": 219.88,
+   "ms_per_img_std": 8.54,
+   "ms_per_img_min": 210.51,
+   "lat_p50": 217.32,
+   "lat_p95": 241.34
+  },
+  "u8rr": {
+   "file": "siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx",
+   "MiB": 105.3,
+   "ms_per_img_mean": 111.09,
+   "ms_per_img_std": 1.32,
+   "ms_per_img_min": 110.01,
+   "lat_p50": 111.22,
+   "lat_p95": 118.84
+  },
+  "w4C": {
+   "file": "siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_w4b32a4_w4C_fc2L2.onnx",
+   "MiB": 76.1,
+   "ms_per_img_mean": 218.7,
+   "ms_per_img_std": 4.16,
+   "ms_per_img_min": 215.39,
+   "lat_p50": 218.84,
+   "lat_p95": 243.96
+  },
+  "w4D": {
+   "file": "siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_w4b32a4_w4D_fc2L2.onnx",
+   "MiB": 73.6,
+   "ms_per_img_mean": 233.31,
+   "ms_per_img_std": 1.28,
+   "ms_per_img_min": 232.2,
+   "lat_p50": 233.01,
+   "lat_p95": 259.35
+  }
+ }
+}
