@@ -248,8 +248,12 @@ def main():
         dst = RC.ONNX_DIR / f"siglip2_image_int8_{cal}{'_' + a.tag if a.tag else ''}.onnx"
         if dst.exists() and not a.overwrite:
             raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
+        # ORT 1.25: nodes_to_include는 "추가로 포함"이라 기본 op_types(MatMul)와 합쳐져 가중치 MatMul 전부가 4비트가 된다
+        #  (10/16 04:38 확인: 12개 요청 → 53개 변환, 아래 개수 assert가 잡음). 그래서 고르지 않은 가중치 MatMul은 nodes_to_exclude로 뺀다
+        w_all = [n.name for n in g.node if n.op_type == "MatMul" and n.input[1] in inits]
         q4 = MatMulNBitsQuantizer(onnx.load(str(pre)), bits=4, block_size=a.w4_block, is_symmetric=True,
-                                  accuracy_level=a.w4_acc, nodes_to_include=w4_nodes)
+                                  accuracy_level=a.w4_acc, nodes_to_include=w4_nodes,
+                                  nodes_to_exclude=[n for n in w_all if n not in set(w4_nodes)])
         q4.process()
         pre = dst.with_name(dst.stem + ".w4pre.onnx")             # 4비트로 바꾼 중간 모델 → 아래 INT8 QDQ의 입력
         q4.model.save_model_to_file(str(pre), use_external_data_format=False)
