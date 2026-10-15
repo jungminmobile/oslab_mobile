@@ -32,3 +32,26 @@ Pets dev 990장 / Food dev 985장. 이미지는 FP32 임베딩 그대로 두고 
 - 잔차 합까지 16비트로 둬도 −8%p다. ORT의 C+D(−0.25%p)와는 차이가 크다.
 - 처음 정한 판단 기준(cos ≥ 0.99, Δ ≥ −1.0%p)을 넘는 구성은 아직 없다.
 - t0_base(전부 8비트) 줄은 이 요약에 옮기지 않았다(로그 앞부분에 있음).
+
+## 3. 추가 시험 (같은 날, `t3_cproj0_ewadd_ln`, `t4_all16`)
+
+| 구성 | 결과 |
+|---|---|
+| t3: t2 + `{layer_normalization*}` 16비트 | optimize 성공. 그러나 **t2와 모든 숫자가 끝자리까지 같다** (Δ −8.0) → 설정이 적용되지 않았다 |
+| t4: conv·ew_add·LayerNorm·normalization·matmul·softmax 전부 16비트 | optimize **실패**: 자동으로 끼워진 `precision_change12` 층(`a16_w16_a8`)이 hailo10h에서 지원되지 않음 |
+
+t3가 효과 없던 이유는 로그와 HAR 비교로 확인했다.
+- optimize 순서는 `Mixed Precision`(16비트 지정)이 먼저이고 그다음이 `LayerNorm Decomposition`이다.
+- optimize 뒤 HAR은 184층에서 321층으로 늘었다. `layer_normalization` 25개와 `softmax` 12개는 사라지고, reduce_mean 25·ew_sub 37·reduce_sum 37·ew_mult 37·feature_multiplier 25·activation 26·reduce_max 12 등으로 쪼개졌다.
+- 원래 LayerNorm 층에 붙인 16비트 지정은 쪼개진 층으로 옮겨지지 않는다.
+
+## 4. 결론 (2026-10-16)
+
+- **텍스트 인코더 블록 12개는 Hailo-10H HEF로 컴파일된다**(67 MB). 토큰 임베딩·위치 63 선택·projection은 호스트가 맡는다.
+- **최적화 레벨 0(GPU 없음)에서 가장 좋은 구성은 Δtop-1 −8.0%p**(블록 0 c_proj + 잔차 합 16비트)다. 판단 기준(−1.0%p)에 못 미친다.
+- 원인은 CPU 스모크와 같다. 블록 0이 잔차 흐름 채널 556에 써 넣는 거대 값(약 434)이다. ORT에서는 잔차 Add·LayerNorm을 FP32로 둘 수 있었지만, Hailo에서는 이 경로가 모두 양자화된다. LayerNorm은 쪼개진 뒤에 정밀도를 지정할 방법을 아직 찾지 못했다.
+- 배포 때 텍스트 인코더는 쓰지 않으므로(클래스 임베딩 미리 계산), **텍스트는 FP32 유지**로 둔다.
+
+다시 열 때 해 볼 것 (선택):
+1. 쪼개진 LayerNorm 층(ew_sub 등)의 이름으로 16비트를 직접 지정한다. optimize 뒤 HAR의 층 이름이 필요하다.
+2. 데스크탑에 CUDA를 설치해 최적화 레벨 2 이상(QFT)으로 t2를 다시 돌린다.
