@@ -1,0 +1,14 @@
+waiting for lock held by None (queue position 2)
+ACQUIRED {'owner': 'siglip2', 'job': 'G4 full-dev D256L1 start=800', 'since': '2026-10-15T15:26:47', 'host': 'localhost', 'pid': 6848}
+[info] No GPU chosen and no suitable GPU found, falling back to CPU.
+[info] Hailo HW architecture: hailo10h
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792045725.448295    6849 service.cc:152] XLA service 0x63385eb81bf0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1792045725.449088    6849 service.cc:160]   StreamExecutor device (0): Host, Default Version
+I0000 00:00:1792045817.773689    6849 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+cifar_A {"n": 200, "top1": 72.0, "fp32_top1": 76.0, "cos_mean": 0.9178, "cos_p1": 0.8632} 615s
+pets_dev {"n": 190, "top1": 92.11, "fp32_top1": 94.74, "cos_mean": 0.9757, "cos_p1": 0.9496} 1395s
+flowers_dev {"n": 157, "top1": 84.71, "fp32_top1": 87.26, "cos_mean": 0.9708, "cos_p1": 0.9454} 2037s
+cars_dev {"n": 167, "top1": 89.82, "fp32_top1": 90.42, "cos_mean": 0.9616, "cos_p1": 0.9135} 2684s
+food_dev {"n": 185, "top1": 83.78, "fp32_top1": 88.11, "cos_mean": 0.9639, "cos_p1": 0.9356} 3386s
+RELEASED
