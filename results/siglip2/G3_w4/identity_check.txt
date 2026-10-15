@@ -1,0 +1,2 @@
+01:46:12 identity check sha256=\5eee783955591d1de818b532ea73b2bb2ea8a008e327cc92d323992c0f9083a DIFFERENT
+01:46:56 정정: 위 DIFFERENT는 스크립트 버그(경로의 역슬래시 때문에 sha256sum 출력 앞에 '\'가 붙어 64자 자르기가 어긋남). Python hashlib로 다시 계산: 5eee783955591d1de818b532ea73b2bb2ea8a008e327cc92d323992c0f9083ac → SAME (기록값과 같음, 옵션을 끈 기본 경로는 이전과 비트 단위로 같다)
