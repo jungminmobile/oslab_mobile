@@ -54,10 +54,11 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     # core.autocrlf=true: Windows git이 CRLF로 체크아웃한 파일을 WSL git이 "수정됨"으로 보아 dirty가 잘못 true가 되던 문제 (10/14 확인:
     # WSL에서 51개 파일이 M, Windows·autocrlf=true·--ignore-cr-at-eol로는 0개)
+    # commit은 실행 시점의 저장소 HEAD다. WSL 체인은 이 파일을 시작할 때 ~/로 복사해 쓰므로, 실제 실행 코드는 script_sha256으로 확인한다 (10/15 검토 지적)
     git = lambda *x: subprocess.run(["git", "-c", "core.autocrlf=true", "-C", str(REPO), *x], capture_output=True, text=True).stdout.strip()
     row = {"date": datetime.now().isoformat(timespec="seconds"), "commit": git("rev-parse", "--short", "HEAD"),
            "dirty": bool(git("status", "--porcelain", "--untracked-files=no", "--", ".", ":(exclude)results")),
-           "tag": a.tag, "har": Path(a.har).name, "har_sha256": sha256(a.har), "k": a.k, "start": a.start, "bs": a.bs, "sets": a.sets,
+           "tag": a.tag, "har": Path(a.har).name, "har_sha256": sha256(a.har), "script_sha256": sha256(__file__), "k": a.k, "start": a.start, "bs": a.bs, "sets": a.sets,
            "exec": "dfc_sdk_quantized"}
     runner = ClientRunner(har=a.har)
     preds = {}

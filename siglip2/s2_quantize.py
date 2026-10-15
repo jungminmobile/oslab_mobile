@@ -203,7 +203,7 @@ def main():
                          "ORT TensorQuantOverrides(quant_type) 사용. (10/14 결과: 효과 없음 — S8에서도 QKᵀ·AV는 이미 정수로 합쳐지고, 합쳐지지 않던 것은 QKV 투영이었다 → --u8-match)")
     ap.add_argument("--w4-regex", default="",
                     help="(기본 꺼짐) 이름이 이 정규식에 맞는 MatMul의 가중치를 4비트 블록 양자화(MatMulNBits)로 바꾼 뒤, 나머지를 평소처럼 INT8 QDQ로 양자화. "
-                         "예: '^/blocks\.\d+/mlp/fc1/' (10/15, 대회 안내 4.1 'INT8/INT4', D-036)")
+                         r"예: '^/blocks\.\d+/mlp/fc1/' (10/15, 대회 안내 4.1 'INT8/INT4', D-036·D-037)")
     ap.add_argument("--w4-block", type=int, default=32, help="4비트 블록 크기 (--w4-regex일 때)")
     ap.add_argument("--w4-acc", type=int, default=4, help="MatMulNBits accuracy_level (4 = 활성값을 int8로 동적 양자화해 정수 계산)")
     ap.add_argument("--threads", type=int, default=4)
@@ -303,6 +303,18 @@ def main():
     if attn_tensors:
         extra["TensorQuantOverrides"] = {t: [{"quant_type": QuantType.QUInt8}] for t in attn_tensors}
     tmp = dst.with_name(dst.stem + ".tmp.onnx")
+    try:
+        _quantize_static_checked(quantize_static, pre, tmp, reader, a, excl, extra, QuantFormat, QuantType)
+    finally:
+        if w4_nodes and pre.exists():
+            pre.unlink()                                        # 4비트 중간 모델은 성공·실패 모두 지움 (수백 MB, 10/15 검토 지적)
+    seen = reader.counts()
+    tmp.replace(dst)
+    print(f"saved {dst.name}  {dst.stat().st_size / 2**20:.1f} MiB  ({time.time() - t0:.0f}s), calib seen per pass={seen}")
+    _log(a, dst, seen, pool_n, excl, attn_tensors, w4_nodes, t0, log_path)
+
+
+def _quantize_static_checked(quantize_static, pre, tmp, reader, a, excl, extra, QuantFormat, QuantType):
     quantize_static(str(pre), str(tmp), reader, quant_format=QuantFormat.QDQ,
                     activation_type=QuantType.QInt8 if a.act_type == "s8" else QuantType.QUInt8,
                     weight_type=QuantType.QInt8 if a.weight_type == "s8" else QuantType.QUInt8, per_channel=bool(a.per_channel),
@@ -314,17 +326,15 @@ def main():
     if not (seen and all(c == a.calib_n for c in seen)):
         tmp.unlink()
         raise AssertionError(f"보정에 쓰인 사진 {seen} ≠ 요청 {a.calib_n}장 — 모델 파일을 지웠음")
-    tmp.replace(dst)
-    if w4_nodes:
-        pre.unlink()                                            # 4비트 중간 모델은 지움 (최종 dst에 그대로 들어 있음)
-    print(f"saved {dst.name}  {dst.stat().st_size / 2**20:.1f} MiB  ({time.time() - t0:.0f}s), calib seen per pass={seen}")
 
+
+def _log(a, dst, seen, pool_n, excl, attn_tensors, w4_nodes, t0, log_path):
     env = env_info.collect()
     row = {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"],
            "dirty": env["git"]["dirty"], "options": vars(a), "model": dst.name,
            "MiB": round(dst.stat().st_size / 2**20, 2), "calib_seen": seen, "calib_pool_n": int(pool_n),
            "rn50_CAL_N": RS_CAL_N(), "hist_chunk": a.hist_chunk, "n_excluded_nodes": len(excl),
-           "qtype": f"{a.act_type.upper()}{a.weight_type.upper()}" + ("+rr" if a.reduce_range else "") + ("+attnU8" if a.attn_u8 else "") + (f"+U8[{a.u8_match}]" if a.u8_match else ""), "sec": round(time.time() - t0)}
+           "qtype": f"{a.act_type.upper()}{a.weight_type.upper()}" + ("+rr" if a.reduce_range else "") + ("+attnU8" if a.attn_u8 else "") + (f"+U8[{a.u8_match}]" if a.u8_match else "") + (f"+W4b{a.w4_block}a{a.w4_acc}" if a.w4_regex else ""), "sec": round(time.time() - t0)}
     if a.attn_u8 or a.u8_match:
         row["u8_override_tensors"] = len(attn_tensors)
     if w4_nodes:

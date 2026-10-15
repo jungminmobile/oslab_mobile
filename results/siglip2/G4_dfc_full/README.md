@@ -17,7 +17,7 @@ DFC 최종 구성(D-032)을 고르고 ORT 후보와 비교하려면, ORT 후보�
   - start=200·400·600·1000: `siglip2/hailo/g4_more4_wsl.sh` (커밋 `e8dcff1`에서 시작, dirty=0)
   - start=800: 첫 실행이 마지막 데이터셋(caltech)에서 **OOM으로 죽었다** (rc=247, WSL dmesg: python anon-rss 11.7 GB). 결과 파일을 쓰기 전이라 남은 것이 없다.
     `--sets` 옵션(기본 6종 전부, 계산 같음)을 추가해 3종씩 두 프로세스로 다시 돌렸다 (`g4_more6_wsl.sh`, 커밋 `41071d7`, dirty=0).
-- 합치기: `siglip2/s2_merge_dfc_windows.py` — 모든 조각의 HAR sha256이 같은지(`84e981f7…`), 데이터셋마다 구간이 빈틈·겹침 없이 [0, n)을 덮는지, 정답 순서가 캐시와 같은지 assert. 결과 `pred_D256L1_official_b9fc2_full.npz`, `merge.json`.
+- 합치기: `siglip2/s2_merge_dfc_windows.py` — 모든 조각의 HAR sha256이 같은지(`84e981f7…`), 데이터셋마다 구간이 빈틈·겹침 없이 [0, n)을 덮는지, 정답 순서가 캐시와 같은지 assert. 결과 `pred_D256L1_official_b9fc2_full.npz`, `merge_D256L1_official_b9fc2.json` (처음 이름 `merge.json`, 다른 구성이 덮어쓰지 않게 바꿈).
 - 짝 비교: `siglip2/s2_compare_dfc_ort.py --k 0` (dev 전체, 데이터셋별 층화 부트스트랩 1000회) → `compare_dfc_ort.jsonl`.
 
 ```bash
@@ -67,7 +67,11 @@ FP32 열의 고화질 평균 91.66은 G2 기준치(`../G2_fp32_baseline`)와 같
 
 - start=800 첫 실행 OOM은 숨기지 않는다 (`log_D256L1_s800.txt`). 재실행은 같은 HAR·같은 구간이고 데이터셋 묶음만 나눴다.
 - start=200~1000 구간의 `screen.jsonl` 행은 `hr_sets` 필드가 생기기 전 스크립트 복사본으로 돌았다 (구간 요약 hr_cos·hr_dtop1은 그 구간에 있는 데이터셋만의 평균). 최종 수치는 합친 npz에서 다시 계산한 위 표를 쓴다.
-- C256L1 dev 전체 평가는 진행 중이다 (`siglip2/hailo/g4_more7_wsl.sh`, 10/15 20:0x 시작).
+- C256L1 dev 전체 평가는 진행 중이다 (`siglip2/hailo/g4_more7_wsl.sh`, 10/15 19:58 시작).
+- **`commit` 필드 주의 (10/15 독립 검토 지적)**: WSL 체인은 시작할 때 `s2_dfc_screen.py`를 `~/`로 한 번 복사해 쓰는데, 각 행의 `commit`은 그 행을 실행한 시점의 저장소 HEAD다.
+  그래서 `screen.jsonl`의 s200 행은 `5e3a287`, s400·s600·s1000 행은 `ff07336`으로 적혀 있지만, **실제로 실행된 코드는 체인 시작 커밋의 복사본**이다 (g4_more4: `e8dcff1`, g4_more6: `41071d7`). 두 커밋 사이에 바뀐 것은 행 요약 필드(`hr_sets`·`sets`)뿐이고 계산은 같다.
+  앞으로는 행에 실행한 스크립트의 sha256(`script_sha256`)을 같이 기록한다.
+- **재현성 근거**: OOM으로 죽은 첫 start=800 실행의 로그(`log_D256L1_s800.txt`)에 찍힌 5종 값이 3종씩 나눈 재실행(s800a·s800b)의 값과 완전히 같다.
 
 ## 6. 3중 확인
 

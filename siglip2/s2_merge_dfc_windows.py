@@ -5,7 +5,7 @@ s2_merge_dfc_windows.py — DFC 스크리닝을 구간(--start)·데이터셋 �
       한 npz에 일부 데이터셋만 있어도 된다 (--sets로 나눠 돌린 구간, 10/15 start=800 OOM 재실행).
 확인: 모든 part의 har_sha256이 같음, 데이터셋마다 구간이 [0, n)을 빈틈·겹침 없이 덮음,
       합친 길이 = dev 캐시 길이, 정답 순서 = 캐시 정답
-출력: <out>/pred_<name>_full.npz → s2_compare_dfc_ort.py --k 0 으로 ORT dev 전체와 짝 비교
+출력: <out>/pred_<name>_full.npz, <out>/merge_<name>.json(조각 목록·HAR sha256; 10/15 검토 지적: 이름을 고정하면 다른 구성 합치기가 덮어씀) → s2_compare_dfc_ort.py --k 0 으로 ORT dev 전체와 짝 비교
 
 사용:
   "$SIGLIP2_PYTHON" s2_merge_dfc_windows.py --name D256L1_official_b9fc2 --out ../results/siglip2/G4_dfc_full \
@@ -67,7 +67,7 @@ def main():
               "cos", round(float(out[f"{d}_cos"].mean()), 4))
     dst = Path(a.out) / f"pred_{a.name}_full.npz"
     np.savez_compressed(dst, **out)
-    with open(Path(a.out) / "merge.json", "w", encoding="utf-8") as f:
+    with open(Path(a.out) / f"merge_{a.name}.json", "w", encoding="utf-8") as f:
         json.dump({"name": a.name, "har_sha256": hars.pop(), "parts": info, "out": dst.name}, f, ensure_ascii=False, indent=1)
     print("saved", dst)
 

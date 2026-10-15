@@ -24,6 +24,12 @@ declare -A RX=(
   [C]='^/blocks\.\d+/(mlp/fc[12]|attn/(qkv|proj))/MatMul$'
   [D]='^/(blocks\.\d+/(mlp/fc[12]|attn/(qkv|proj))|attn_pool/(q|kv|proj|mlp/fc[12]))/MatMul$'
 )
+# 0) 옵션을 끈 기본 경로가 이전과 같은지: 4비트 코드 추가 뒤 U8+rr 최종 모델을 다시 만들어 sha256을 기록값(5eee7839…)과 비교 (CLAUDE.md 협업 규칙 2)
+REF=5eee783955591d1de818b532ea73b2bb2ea8a008e327cc92d323992c0f9083ac
+RN50_RESULTS=$R "${LOCK[@]}" "SigLIP2 quantize identity check" -- "$PY" -u s2_quantize.py "${Q[@]}" --tag idcheck_fc2L2 > $ART/logs/w4_idcheck.log 2>&1
+H=$(sha256sum "$ART/onnx/siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_idcheck_fc2L2.onnx" | cut -c1-64)
+echo "$(date +%T) identity check sha256=$H $([ "$H" = "$REF" ] && echo SAME || echo DIFFERENT)" | tee -a $R/identity_check.txt
+[ "$H" = "$REF" ] || { echo "IDENTITY CHECK FAILED — 기본 경로가 바뀜, 4비트 중단"; exit 1; }
 M=()
 for k in A B C D; do
   RN50_RESULTS=$R "${LOCK[@]}" "SigLIP2 quantize w4$k" -- "$PY" -u s2_quantize.py "${Q[@]}" --w4-regex "${RX[$k]}" --tag "w4${k}_fc2L2" > $ART/logs/w4_quantize_$k.log 2>&1
