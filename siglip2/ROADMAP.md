@@ -113,7 +113,7 @@ Hailo는 모든 연산을 8/16비트로 계산하므로 두 런타임의 민감�
 - [ ] U8S8 포화 점검: 최종 INT8 모델을 `reduce_range`·U8U8·`session.x64quantprecision=1` 대안과 비교하고(S8S8은 x86에서 U8S8과 같음), 가능하면 VNNI 없는 CPU에서도 실행해 정확도 일치 확인. RN50 E0 ⑧ 결과를 먼저 참고
 - [ ] 스크립트를 팀 저장소 구조에 맞춰 정리, README에 SigLIP2 재현 명령어 한 줄과 보고서 표 번호 대응
 - [ ] 코드를 작성하지 않은 팀원이 새 환경에서 재현
-- [ ] 보고서 절 초안: 선정 사유, 민감도 지도(ORT vs Hailo), 결과표, CNN vs Transformer 비교 그림
+- [ ] 보고서 초안 (SigLIP2가 제출 모델일 때): 선정 사유, 민감도 지도(ORT vs Hailo), 원인 분석, 결과표 (D-034: 모델 하나 제출, CNN vs Transformer 비교 서사는 쓰지 않음)
 
 ## G7. 통합·제출 — 10/28~10/31
 
