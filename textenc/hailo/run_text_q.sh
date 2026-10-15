@@ -7,6 +7,8 @@
 #   t0_base         전부 8비트 (DFC 기본)
 #   t1_cproj0       블록 0 c_proj(conv4)만 16비트 — CPU 스모크의 "거대 활성값 층 1개 보호"와 같은 처방
 #   t2_cproj0_ewadd t1 + 잔차 합(ew_add) 전부 16비트 — 잔차 흐름 채널 556의 거대 값(약 434)을 위해. 이미지 쪽 A 구성과 같은 처방
+#   t3_cproj0_ewadd_ln t2 + LayerNorm 전부 16비트 (잔차 흐름을 읽는 층)
+#   t4_all16        conv·ew_add·LayerNorm·normalization·matmul·softmax 전부 16비트 — 레벨 0의 상한 확인용
 # compile은 하지 않는다 (정확도가 나오는 구성만 나중에 compile).
 set -uo pipefail
 W=$(realpath "${1:?작업 폴더}")
