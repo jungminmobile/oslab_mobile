@@ -73,6 +73,7 @@ dev 전체(고화질 4,923장 + CIFAR A 1,000장). 지연·메모리는 이 PC �
 | 참고: 전부 INT8 (MinMax) | 89.6 | 220.5 | — | 1.37 (붕괴) | 0.445 | — |
 
 - test (고화질 5종 + CIFAR-100 test + ImageNetV2): [test]
+- 손실의 모양 (`G3_error_classes`): 새 오답은 특정 클래스에 몰리지 않고 클래스마다 1~4장씩 흩어져 있으며, marigold↔english marigold, beef tartare↔tuna tartare처럼 원래 비슷한 클래스 쌍에서 뒤집힌다. 작은 임베딩 오차가 경계 근처 사진의 순위를 바꾼 것으로, 특정 클래스가 망가진 것이 아니다.
 
 ## 6. 한계점 및 엣지 디바이스 이식 계획
 
