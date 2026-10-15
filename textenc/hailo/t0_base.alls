@@ -1,0 +1,3 @@
+model_optimization_flavor(optimization_level=0, compression_level=0)
+pre_quantization_optimization(layer_norm_decomposition, equalization=disabled, bit_decomposition_mode=uniform_precision)
+model_optimization_config(calibration, calibset_size=64)

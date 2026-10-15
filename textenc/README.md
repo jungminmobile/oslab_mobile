@@ -86,3 +86,14 @@ attention은 고정 shape 연산으로 다시 썼다. 결과 그래프에는 Lay
    nohup bash textenc/hailo_parse_text.sh ~/textenc_work/art/textenc > hailo_text.log 2>&1 &
    ```
    결과는 `results/textenc/hailo_parse/<날짜>/steps.txt`(단계별 rc)와 로그.
+
+### 2차: 양자화 구성별 정확도 (DFC 에뮬레이션, `textenc/hailo/`)
+
+1차 결과(2026-10-16, 데스크탑 DFC 5.4.0, CPU·레벨 0): 블록 12개 parse·compile 성공, HEF 67 MB, 컨텍스트 11개 이상.
+보정 입력은 NHWC (64,1,64,768)이어야 한다. HAR 층 이름 대응: 블록 0 c_fc = `conv3`, 블록 0 c_proj = `conv4`.
+
+```
+python textenc/te_dfc_evalset.py      # torch 환경: dfc_eval_{pets,food,holdout}.npz
+nohup bash textenc/hailo/run_text_q.sh <HAR·보정·npz가 있는 폴더> > text_q.log 2>&1 &   # WSL hailo10_venv
+```
+구성: `t0_base`(전부 8비트) / `t1_cproj0`(블록 0 c_proj 16비트) / `t2_cproj0_ewadd`(+ 잔차 합 16비트).
