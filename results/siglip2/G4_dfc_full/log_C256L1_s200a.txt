@@ -1,0 +1,2 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'G4 full-dev C256L1 start=200 a', 'since': '2026-10-15T19:58:21', 'host': 'localhost', 'pid': 25}
+[info] No GPU chosen and no suitable GPU found, falling back to CPU.
