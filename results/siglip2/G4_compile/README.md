@@ -58,4 +58,4 @@ hailo profiler compiled_D_official_b9fc2.har --hef siglip2_b16_224.hef --out-pat
 2. 독립 재계산: 프로파일러의 파라미터 수 92.22 M을 ONNX 파라미터 수 92,884,224와 비교했다. 차이는 661,860개(0.7%)다. 원인(상수로 접히거나 세지 않는 층)은 확인하지 않았다. 컨텍스트 수는 컴파일 로그 표기가 아니라 프로파일러로 확인했다.
 3. 독립 검토: 10/15 서브에이전트 검토 — HEF 바이트·sha256·컨텍스트(16/16/17/17)·컴파일 시간 모두 원본과 일치.
 
-입력 HAR·명령 (C·E·D256L1): C `~/siglip2_dfc/g4_20261013_165132/opt_C_official.har`, E `~/siglip2_dfc/g4_20261013_221931/opt_E_fc2_b0b5b9.har`, D256L1 `~/siglip2_dfc/g4_lvl1_20261015/opt_D256L1_official_b9fc2.har`. 명령은 D와 같다 (`hailo compiler <har> --hw-arch hailo10h`, 이어서 `hailo profiler`). 스크립트: `siglip2/hailo/g4_more_wsl.sh`(E), `D:\mokertonrtifacts\siglip2\logs\compile_c_after_latency.sh`(C 재실행), `compile_d256l1.sh`(D256L1).
+입력 HAR·명령 (C·E·D256L1): C `~/siglip2_dfc/g4_20261013_165132/opt_C_official.har`, E `~/siglip2_dfc/g4_20261013_221931/opt_E_fc2_b0b5b9.har`, D256L1 `~/siglip2_dfc/g4_lvl1_20261015/opt_D256L1_official_b9fc2.har`. 명령은 D와 같다 (`hailo compiler <har> --hw-arch hailo10h`, 이어서 `hailo profiler`). 스크립트: `siglip2/hailo/g4_more_wsl.sh`(E), `D:\mokerton\artifacts\siglip2\logs\compile_c_after_latency.sh`(C 재실행), `compile_d256l1.sh`(D256L1).
