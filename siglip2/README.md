@@ -72,9 +72,17 @@ RN50_RESULTS=../results/siglip2/G3_cumulative/qkv_precision/full python s2_paire
 - 기대값 (이 PC, x86 AVX-512 VNNI, ORT 1.25.0): FP32 고화질 평균 91.66%, 최종 모델 Δ −0.78 [−1.26, −0.31]%p, cos 0.955.
 - 저장소 없이 다른 기기에서 빠르게 확인: `scripts/portable_eval.py` (numpy + onnxruntime만 필요, dev 6종 × 200장 묶음).
 
-## 5. test (최종 1회) [동결 뒤 채움]
+## 5. test (최종 1회)
 
-- test 7종(고화질 5종 test + CIFAR-100 test + ImageNetV2)은 최종 모델이 정해진 뒤 한 번만 평가한다. 명령: [G6에서 추가]
+```bash
+# 데이터셋마다 한 번만 (done_<set>.json이 있으면 멈춤). ImageNetV2는 $SIGLIP2_DATA/extra/imagenetv2-mf.tar 필요 (scripts/test_g6.sh가 받음)
+for s in pets caltech flowers cars cifar_test imagenetv2 food; do
+  RN50_RESULTS=../results/siglip2/G6_test python s2_test_eval.py $s --threads 4     --models siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx
+done
+```
+
+- test 7종: CIFAR-100 test(1만), ImageNetV2 matched-frequency(1만), Oxford Pets·Flowers-102·Stanford Cars·Food-101·Caltech-101 공식 test 전체. 사진·클래스 이름·프롬프트는 `rn50/datasets.py`와 같고, 전처리·텍스트 분류기는 dev와 같은 SigLIP2 것이다.
+- 출력: `test.jsonl`(top-1·top-5·FP32 cos), `test_<set>.npz`(사진별 예측). 결과: [test 수치는 평가 뒤 채움]
 
 ## 6. 속도·메모리·크기
 
