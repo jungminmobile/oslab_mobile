@@ -81,7 +81,7 @@ FP32 열의 고화질 평균 91.66은 G2 기준치(`../G2_fp32_baseline`)와 같
 
 ## 7. C256L1 dev 전체 (10/16 01:46~03:21) — D-038 (가) 판정
 
-- 실행: `siglip2/hailo/g4_more7_wsl.sh`(10/15 19:58~22:02, 4조각) + `g4_more7b_wsl.sh`(이어 하기, 10/16 01:46~03:21, 5조각). 데이터셋 3종씩 두 프로세스(`--sets`). 10/15 22:56에 시작된 start=600 a는 23:09 재부팅으로 중단돼 10/16에 다시 돌렸다 (PROGRESS 10/16).
+- 실행: [0, 200)은 `../G4_dfc_screen`의 C256L1 스크리닝(10/15 12:04) + `siglip2/hailo/g4_more7_wsl.sh`(10/15 19:58~22:02, 4조각) + `g4_more7b_wsl.sh`(이어 하기, 10/16 01:46~03:21, 5조각) = 합쳐서 10조각. 데이터셋 3종씩 두 프로세스(`--sets`). 10/15 22:56에 시작된 start=600 a는 23:09 재부팅으로 중단돼 10/16에 다시 돌렸다 (PROGRESS 10/16).
 - 합치기: `s2_merge_dfc_windows.py --name C256L1_official` → `pred_C256L1_official_full.npz`, `merge_C256L1_official.json` (HAR sha256 `81221319…` 모든 조각 같음, 빈틈·겹침 assert 통과).
 - 비교: `s2_compare_dfc_ort.py --k 0` (10/16, 1000회 층화 부트스트랩) → `compare_dfc_ort.jsonl`
 
