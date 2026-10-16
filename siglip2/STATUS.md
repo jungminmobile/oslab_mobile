@@ -124,6 +124,8 @@ C와 D는 동률이고, 둘 다 ORT보다 1.4~1.7%p 유의하게 낮다. **D 컴
 6. (Windows) Python의 `subprocess`로 그냥 `bash`를 실행하면 `C:/Windows/System32/bash.exe`(WSL)가 잡혀 Windows 환경 변수가 전달되지 않는다 → Git Bash 전체 경로를 쓴다
 7. WSL에서 `git status`로 dirty를 판정하면 Windows가 CRLF로 체크아웃한 파일을 수정으로 본다 → `git -c core.autocrlf=true`
 
+- (10/17) **ImageNetV2 클래스 이름 동점**: `open_clip.zero_shot_metadata.IMAGENET_CLASSNAMES`에 같은 이름이 두 쌍 있다 ("missile" 657·744, "sunglasses" 836·837). 텍스트 벡터가 같아 점수가 정확히 동점이 되고, `topk_metrics`(argsort)와 argmax의 top-1이 0.05%p 안팎 다를 수 있다 (SigLIP2 test에서 5장 차이). RN50 test도 같은 목록을 쓴다 → 보고서에 각주 권장 (`results/siglip2/G6_test/README.md`)
+
 ## 6. 다음 할 일
 - G3: 후보 지연 재측정 (스레드 1·2·4, U8 포함, 첫 측정은 다른 작업과 겹쳐 오염) → PRD 속도 하한 확인
 - **후보표 초안**: `results/siglip2/candidates/README.md` → 지연 채운 뒤 팀이 선택 (Claude는 선택하지 않음)
