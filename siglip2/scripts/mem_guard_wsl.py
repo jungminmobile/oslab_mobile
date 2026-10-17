@@ -5,7 +5,9 @@ mem_guard_wsl.py — SigLIP2 WSL 작업이 공용 잠금을 잡고 있는 동안
 사용: "$SIGLIP2_PYTHON" scripts/mem_guard_wsl.py --until-file <끝 표시 로그> --done-text "TONIGHT_1018 DONE"
 """
 import argparse
+import io
 import json
+import sys
 import subprocess
 import time
 from datetime import datetime
@@ -25,6 +27,8 @@ def our_wsl_job():
 
 
 def main():
+    # 10/18 01:02: 콘솔 cp949로 "—" 출력 중 UnicodeEncodeError로 죽어 WSL을 못 내림 → 출력을 UTF-8로 고정하고 종료 명령을 출력보다 먼저
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace", line_buffering=True)
     ap = argparse.ArgumentParser()
     ap.add_argument("--until-file", required=True)
     ap.add_argument("--done-text", required=True)
@@ -42,8 +46,8 @@ def main():
             if low == 1 or (low == 0 and int(time.time()) % 600 < 10):
                 print(datetime.now().strftime("%T"), f"avail {av:.2f} GB", flush=True)
             if low >= 2:
-                print(datetime.now().strftime("%T"), f"여유 메모리 {av:.2f} GB < {a.min_avail_gb} — WSL 종료", flush=True)
                 subprocess.run(["wsl.exe", "-t", "Ubuntu-22.04"])
+                print(datetime.now().strftime("%T"), f"avail {av:.2f} GB < {a.min_avail_gb} -> WSL terminated", flush=True)
                 low = 0
         else:
             low = 0
