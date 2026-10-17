@@ -1,0 +1,18 @@
+2026-10-18 07:32:47,849 - INFO - main.py:26 - Current Time: 07:32:47, 10/18/26
+2026-10-18 07:32:48,856 - INFO - main.py:38 - CPU: Architecture: x86_64, Model: Intel(R) Core(TM) Ultra 9 285K, Number Of Cores: 24, Utilization: 0.0%
+2026-10-18 07:32:48,856 - INFO - main.py:42 - Memory: Total: 30GB, Available: 29GB
+2026-10-18 07:32:48,856 - INFO - main.py:46 - System info: OS: Linux, Kernel: 6.6.114.1-microsoft-standard-WSL2
+2026-10-18 07:32:48,856 - INFO - main.py:47 - Hailo DFC Version: 5.4.0
+2026-10-18 07:32:48,856 - INFO - main.py:52 - HailoRT Version: Not Installed
+2026-10-18 07:32:48,874 - INFO - main.py:68 - PCIe: No Hailo PCIe device was found
+2026-10-18 07:32:48,874 - INFO - main.py:104 - Running `hailo parser onnx siglip2_image_fp32_rcmask55at5-13at9_b1.onnx --hw-arch hailo10h --net-name siglip2_rcmask55at5_13at9`
+2026-10-18 07:32:55,072 - INFO - parser.py:174 - Translation started on ONNX model siglip2_rcmask55at5_13at9
+2026-10-18 07:32:56,085 - INFO - parser.py:209 - Restored ONNX model siglip2_rcmask55at5_13at9 (completion time: 00:00:01.01)
+2026-10-18 07:33:00,084 - INFO - parser.py:232 - Extracted ONNXRuntime meta-data for Hailo model (completion time: 00:00:05.01)
+2026-10-18 07:33:06,001 - INFO - parser.py:285 - Simplified ONNX model for a parsing retry attempt (completion time: 00:00:10.93)
+2026-10-18 07:33:06,002 - INFO - parser.py:286 - Saved simplified ONNX to: siglip2_image_fp32_rcmask55at5-13at9_b1.sim.onnx, will be used for parsing retry.
+2026-10-18 07:33:06,963 - INFO - parser.py:434 - Start nodes mapped from original model: 'image': 'siglip2_rcmask55at5_13at9/input_layer1'.
+2026-10-18 07:33:06,963 - INFO - parser.py:435 - End nodes mapped from original model: '/trunk/Gather'.
+2026-10-18 07:33:07,039 - INFO - parser.py:301 - Translation completed on ONNX model siglip2_rcmask55at5_13at9 (completion time: 00:00:11.97)
+2026-10-18 07:33:07,661 - INFO - sdk_backend.py:266 - Hailo HW architecture: hailo10h
+2026-10-18 07:33:08,423 - INFO - sdk_backend.py:2441 - Saved HAR to: /home/junyong/siglip2_work/hailo_g3r_mask/siglip2_rcmask55at5_13at9.har

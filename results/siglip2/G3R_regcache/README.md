@@ -1,6 +1,6 @@
 # G3R 판별 실험: sink 토큰을 레지스터로 빼내 SigLIP2를 전부 8비트로 (설계, 2026-10-18)
 
-> 상태: **G0~G2·G3a 완료 (10/18, 연구실 데스크탑). G2 채택 실패 확정(① 정확도 비열등 미달), G3a 1차 실패(DFC가 토큰 축 Concat 미지원) → 제자리 마스크 그래프로 1회 재시도 (D-041).** 결과는 8·9절. G3b는 시작하지 않음. 판정 기준(5절)은 결과를 보기 전에 고정했고 바꾸지 않았다.
+> 상태: **G0~G2·G3a 완료 (10/18, 연구실 데스크탑). G2 채택 실패 확정(① 정확도 비열등 미달), G3a 1차 실패(DFC가 토큰 축 Concat 미지원) → 제자리 마스크 그래프(D-041)로 재시도해 **DFC 파싱 통과** (`g3a_mask/`). INT8 재평가·G3b·컴파일은 하지 않음.** 결과는 8·9절. G3b는 시작하지 않음. 판정 기준(5절)은 결과를 보기 전에 고정했고 바꾸지 않았다.
 > 브랜치: `siglip2/g3r-regcache` (`siglip2/g3-sensitivity`에서 분기). 담당: 용.
 
 ## 1. 한 줄 질문
@@ -215,7 +215,8 @@ hailo parser onnx siglip2_image_fp32_rc55at5-13at9_b1.onnx --hw-arch hailo10h
 
 ### G3a (DFC 파싱): 실패 — `g3a/README.md`
 - `/trunk/Concat_2` (블록 5 K에 캐시 상수 K를 토큰 축으로 붙이는 Concat)에서 `UnsupportedModelError`. DFC concat은 feature 축만 지원. 그 전에 MatMul shape 계산 IndexError.
-- b1 파일에도 Expand 17·Where 17이 남았다 (7절 "b1에서 상수로 접힐 것" 예상과 다름). 대안 그래프(상수 K·V를 외부 입력으로)는 아직 시도하지 않았다. G3b는 시작하지 않았다.
+- b1 파일에도 Expand 17·Where 17이 남았다 (7절 "b1에서 상수로 접힐 것" 예상과 다름).
+- **재시도 (D-041, 사후 변경): 제자리 마스크 그래프로 파싱 통과.** 토큰 196개를 유지하고 sink 위치의 K·V를 상수로 바꿔 끼우는 방식으로, R1과 FP32 cos 최소 0.9999998, Concat·Slice·Expand·Where는 원래 FP32와 같은 수. 자세한 내용은 `g3a_mask/README.md`. G3b는 시작하지 않았다.
 
 ### 기록용: 다른 토큰이 sink 패치에 주는 attention 비중 (`attn_share.jsonl`, dev 64장, 원래 FP32, 헤드 평균 / 최대 헤드, 균등 분배 = 1/196 = 0.0051)
 | 블록 | 패치 13 | 패치 55 |

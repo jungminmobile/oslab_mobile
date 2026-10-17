@@ -313,3 +313,4 @@
 - 확인 기준 (실행 전 고정): (a) 마스크 모델 vs R1 FP32 임베딩 cos 최소 ≥ 0.99999 (dev 64장), (b) ONNX에 Concat·Slice·Expand·Where가 원래 FP32보다 늘지 않고 토큰 수 196 유지, (c) b1 파일 `hailo parser --hw-arch hailo10h` 통과
 - 범위: 1회만. 파싱되면 멈추고 보고 (INT8 재평가·G3b·컴파일은 하지 않음). 실패하면 막힌 연산만 기록하고 G3R은 "ORT 전용"으로 정리한다
 - G2(ORT 채택)는 이 변경과 관계없이 실패로 확정 (README 9절)
+- 결과 (10/18): (a) cos 최소 0.9999998, (b) Concat·Slice·Expand·Where 원래와 같음·196 토큰, (c) `hailo parser --hw-arch hailo10h` 통과 → G3a 통과 (`results/siglip2/G3R_regcache/g3a_mask`). 지시대로 INT8 재평가·G3b·컴파일 전에 멈춤
