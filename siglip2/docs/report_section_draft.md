@@ -52,7 +52,8 @@
 |---|---|---|
 | 양자화·정확도·지연(비공식) | Intel i7-1165G7 (4코어 8스레드, AVX2·AVX-512F·AVX-512 VNNI), RAM 16 GB, Windows 11, 고성능 전원 모드 | Python 3.11, onnxruntime 1.25.0, onnx, numpy, timm 1.0.30 (`siglip2/requirements.txt`, 결과마다 `env.json`) |
 | 공식 지연 (x86) | [정민 노트북, 스레드 1·2·4] | [같은 requirements] |
-| 공식 지연 (ARM) | NVIDIA Jetson AGX Orin CPU (Cortex-A78AE) [준용] | onnxruntime 1.23.2 (Python 3.10용 최신. x86에서 1.23.2와 1.25.0 속도 차이 없음 확인) |
+| 교차 측정 (x86) | Intel Core Ultra 9 285K (AVX-VNNI, AVX-512 없음) [준용] | onnxruntime 1.23.2·1.25.0 (결과 같음) |
+| 교차 측정 (ARM) | NVIDIA Jetson AGX Orin CPU (Cortex-A78AE) [준용] | onnxruntime 1.23.2 (Python 3.10용 최신. x86에서 1.23.2와 1.25.0 속도 차이 없음 확인) |
 | Hailo 컴파일·에뮬레이션 | 같은 PC의 WSL2 Ubuntu 22.04 | Hailo DFC 5.4.0, `--hw-arch hailo10h` |
 
 ## 4. 벤치마크 및 측정 방법 (선정 사유 포함)
@@ -76,6 +77,7 @@ dev 전체(고화질 4,923장 + CIFAR A 1,000장). 지연·메모리는 이 PC �
 | 참고: 전부 INT8 (MinMax) | 89.6 | 220.5 | — | 1.37 (붕괴) | 0.445 | — |
 
 - **test (1회, `G6_test`)**: 고화질 5종 평균 FP32 90.34% → 최종 89.51%, **Δ −0.83 [−1.01, −0.66]%p** (dev −0.78과 거의 같음). 데이터셋별 Pets −0.79, Flowers −1.51, Cars −1.07, Food −1.16, Caltech +0.38. CIFAR-100 −4.71, ImageNetV2 −1.95 (별도 표기).
+- **다른 CPU에서의 재현 (`G3_xplat`, 준용 측정 포함)**: 최종 모델의 출력은 x86 두 세대(i7 AVX-512 VNNI, Ultra 9 AVX-VNNI)에서 비트 단위로 같고, ARM(Orin)에서는 예측 98.1% 일치·정확도 차이 0.00 [−0.6, +0.5]%p. 속도는 4스레드 기준 이 PC 약 2.0배, Ultra 9 2.21배, ARM 2.27배 빨라졌고, peak 메모리는 −50~−55%였다.
 - 손실의 모양 (`G3_error_classes`): 새 오답은 특정 클래스에 몰리지 않고 클래스마다 1~4장씩 흩어져 있으며, marigold↔english marigold, beef tartare↔tuna tartare처럼 원래 비슷한 클래스 쌍에서 뒤집힌다. 작은 임베딩 오차가 경계 근처 사진의 순위를 바꾼 것으로, 특정 클래스가 망가진 것이 아니다.
 
 ## 6. 한계점 및 엣지 디바이스 이식 계획
