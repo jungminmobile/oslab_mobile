@@ -128,13 +128,26 @@ def pool_forward(pool, x, kx=None, vx=None):
     return o
 
 
+def _replace_kv(k, v, km, kc, vc):
+    """sink 위치의 K·V를 상수로 바꿔 끼운다.
+    full : K·km + kc (km = 1−m, kc = m·K_c 를 196토큰 크기로 미리 만든 상수)
+    bcast: K + Σ_j m_j ⊙ (K_c,j − K) (m_j (1,1,N,1), K_c,j (1,H,1,d)). 상수끼리 곱하는 부분이 없어 export·ORT·DFC의 상수 접기로
+           196토큰 크기 상수가 다시 생기지 않는다. 마스크가 서로 겹치지 않으므로 full과 수학적으로 같다."""
+    if isinstance(km, (list, tuple)):
+        k0, v0 = k, v
+        for m, kj, vj in zip(km, kc, vc):
+            k, v = k + m * (kj - k0), v + m * (vj - v0)
+        return k, v
+    return k * km + kc, v * km + vc
+
+
 def attn_forward_mask(attn, h, km, kc, vc):
     """attn_forward와 같은 계산인데, K·V의 sink 위치를 상수로 바꿔 끼운다 (K' = K·km + kc). 토큰 수 그대로."""
     B, N, C = h.shape
     H, d = attn.num_heads, attn.head_dim
     q, k, v = _split_heads(attn.qkv(h), B, N, 3, H, d)
     q, k = attn.q_norm(q), attn.k_norm(k)
-    k, v = k * km + kc, v * km + vc
+    k, v = _replace_kv(k, v, km, kc, vc)
     a = ((q * attn.scale) @ k.transpose(-2, -1)).softmax(dim=-1)
     o = (a @ v).transpose(1, 2).reshape(B, N, H * d)
     return attn.proj(attn.norm(o))
@@ -147,7 +160,7 @@ def pool_forward_mask(pool, x, km, kc, vc):
     q = pool.q(pool.latent.expand(B, -1, -1)).reshape(B, L, H, d).transpose(1, 2)
     k, v = pool_kv(pool, x)
     q = pool.q_norm(q)
-    k, v = k * km + kc, v * km + vc
+    k, v = _replace_kv(k, v, km, kc, vc)
     a = ((q * pool.scale) @ k.transpose(-2, -1)).softmax(dim=-1)
     o = pool.proj((a @ v).transpose(1, 2).reshape(B, L, C))
     if pool.mlp is not None:
@@ -247,10 +260,12 @@ class MaskRegCacheTrunk(nn.Module):
     sink 토큰의 잔차는 시작 블록 입력부터 매 블록 입출력에서 h·(1−m)으로 0 → 거대 값이 생기지 않는다.
     다른 토큰이 보는 key·value 집합이 RegCacheTrunk(mean)와 같으므로 수학적으로 같다. ONNX에는 상수 Mul·Add만 늘어난다 (Concat·Slice 없음)."""
 
-    def __init__(self, trunk, sinks, cache):
+    def __init__(self, trunk, sinks, cache, form="full"):
         super().__init__()
         _check_trunk(trunk)
-        self.t, self.sinks = trunk, list(sinks)
+        assert form in ("full", "bcast"), form
+        self.t, self.sinks, self.form = trunk, list(sinks), form
+        self.n_act = {}
         N = trunk.patch_embed.num_patches
         assert all(0 <= p < N and 0 < b < len(trunk.blocks) for p, b in self.sinks), self.sinks
         self.first = min(b for _, b in self.sinks)
@@ -266,12 +281,25 @@ class MaskRegCacheTrunk(nn.Module):
                 keep[p] = 0
                 kc[0, :, p], vc[0, :, p] = k[:, j], v[:, j]
             self.register_buffer(f"hm_{key}", keep.view(1, N, 1))                      # 잔차 마스크 (1−m)
-            self.register_buffer(f"km_{key}", keep.view(1, 1, N, 1))                   # K·V 마스크 (1−m)
-            self.register_buffer(f"kc_{key}", kc)                                      # m·K_c
-            self.register_buffer(f"vc_{key}", vc)
+            self.n_act[key] = len(act)
+            if form == "full":
+                self.register_buffer(f"km_{key}", keep.view(1, 1, N, 1))               # K·V 마스크 (1−m)
+                self.register_buffer(f"kc_{key}", kc)                                  # m·K_c (196토큰 크기)
+                self.register_buffer(f"vc_{key}", vc)
+            else:
+                for j, p in enumerate(act):                                            # sink마다 one-hot m_j와 헤드별 1행 K_c,j
+                    m = torch.zeros(1, 1, N, 1)
+                    m[0, 0, p] = 1
+                    self.register_buffer(f"m_{key}_{j}", m)
+                    self.register_buffer(f"kc_{key}_{j}", k[:, j].reshape(1, H, 1, d).clone())
+                    self.register_buffer(f"vc_{key}_{j}", v[:, j].reshape(1, H, 1, d).clone())
 
     def _kv(self, key):
-        return getattr(self, f"km_{key}"), getattr(self, f"kc_{key}"), getattr(self, f"vc_{key}")
+        if self.form == "full":
+            return getattr(self, f"km_{key}"), getattr(self, f"kc_{key}"), getattr(self, f"vc_{key}")
+        js = range(self.n_act[key])
+        return ([getattr(self, f"m_{key}_{j}") for j in js], [getattr(self, f"kc_{key}_{j}") for j in js],
+                [getattr(self, f"vc_{key}_{j}") for j in js])
 
     def forward(self, x):
         trunk = self.t
@@ -353,6 +381,7 @@ def cmd_selftest(a):
         mean_out = rc(x)
         none_out = RegCacheTrunk(trunk, sinks, "none").eval()(x)
         res["mask_vs_mean_max_abs"] = float((MaskRegCacheTrunk(trunk, sinks, cache).eval()(x) - mean_out).abs().max())
+        res["maskbc_vs_mean_max_abs"] = float((MaskRegCacheTrunk(trunk, sinks, cache, "bcast").eval()(x) - mean_out).abs().max())
         res["mean_vs_original_cos_min"] = float(torch.nn.functional.cosine_similarity(mean_out, ref).min())
         res["none_vs_original_cos_min"] = float(torch.nn.functional.cosine_similarity(none_out, ref).min())
         # 배치 1 이미지의 평균 캐시 = 그 이미지 자신의 K·V → mean 출력이 원래와 같아야 함 (캐시 경로 검증)
@@ -382,6 +411,7 @@ def cmd_selftest(a):
         "자기 캐시 mean = 원래": res["mean_selfcache_vs_original_max_abs"] < 1e-4,
         "ORT = PyTorch": res["ort_vs_torch_max_abs"] < 1e-3,
         "제자리 마스크 = mean (D-041)": res["mask_vs_mean_max_abs"] < 1e-4,
+        "제자리 마스크 bcast = mean": res["maskbc_vs_mean_max_abs"] < 1e-4,
         "TopK·NonZero 없음 (NPU 친화)": not any(o in ops for o in ("TopK", "NonZero", "ScatterND")),
     }
     res["checks"] = checks
@@ -440,7 +470,7 @@ def _make_mask_trunk(RC, model, a):
     assert cp.exists(), f"{cp.name} 없음 — 먼저 cache 하위 명령"
     cache, meta = load_cache(cp)
     assert meta["sinks"] == [list(s) for s in sinks], (meta["sinks"], sinks)
-    return MaskRegCacheTrunk(model.visual.trunk, sinks, cache).eval()
+    return MaskRegCacheTrunk(model.visual.trunk, sinks, cache, getattr(a, "mask_form", "full")).eval()
 
 
 def cmd_cache(a):
@@ -608,7 +638,7 @@ def cmd_export(a):
     if a.graph == "mask":
         assert a.mode == "mean", "--graph mask는 mode=mean만"
         model.visual.trunk = _make_mask_trunk(RC, model, a)
-        stem = f"siglip2_image_fp32_rcmask{sinks_slug(sinks)}"
+        stem = f"siglip2_image_fp32_rcmask{'' if a.mask_form == 'full' else 'bc'}{sinks_slug(sinks)}"
     else:
         model.visual.trunk = _make_trunk(S, RC, model, a, a.mode)
         stem = f"siglip2_image_fp32_rc{sinks_slug(sinks)}" + ("" if a.mode == "mean" else f"_{a.mode}")
@@ -767,9 +797,12 @@ def main():
     p.add_argument("--overwrite", action="store_true")
     p.add_argument("--graph", default="concat", choices=["concat", "mask"],
                    help="concat = 토큰 삭제 + K·V Concat (기본, R1). mask = 토큰 196개 유지 + 제자리 마스크 (D-041)")
+    p.add_argument("--mask-form", default="full", choices=["full", "bcast"],
+                   help="--graph mask의 상수 모양. full = 196토큰 크기 상수(기본, 12cbe01과 같음), bcast = m·(K_c−K) broadcast")
     p.set_defaults(func=cmd_export)
     p = common(sub.add_parser("maskcheck"))
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩)")
+    p.add_argument("--mask-form", default="full", choices=["full", "bcast"])
     p.set_defaults(func=cmd_maskcheck)
     p = common(sub.add_parser("attn"))
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩, stats와 같음)")
