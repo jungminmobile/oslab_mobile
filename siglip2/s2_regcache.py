@@ -21,6 +21,7 @@ s2_regcache.py — sink 토큰을 지우고 그 K·V를 상수로 캐시해 붙�
   stats     sink K·V가 사진마다 얼마나 같은지 + 잔차 흐름·fc2 범위 비율 (원래 vs 변환)            (G0, G1b 부가)
   fp32      PyTorch FP32로 원래 / oracle / mean / none 의 dev 스크리닝 정확도·cos                    (G1a, G1b)
   export    변환 모델을 ONNX로 (배치 가변 + b1) + ORT vs PyTorch 확인 + 연산 표                       (G2·G3 준비)
+  maskcheck 제자리 마스크 그래프(D-041) vs R1 FP32 동치 확인. export --graph mask로 마스크 ONNX
   attn      (기록용) 블록마다 다른 토큰이 sink 패치에 주는 attention 비중 (원래 FP32, dev 사진)
 
 [사용]  (siglip2/ 폴더에서, RN50_RESULTS 지정)
@@ -127,6 +128,37 @@ def pool_forward(pool, x, kx=None, vx=None):
     return o
 
 
+def attn_forward_mask(attn, h, km, kc, vc):
+    """attn_forward와 같은 계산인데, K·V의 sink 위치를 상수로 바꿔 끼운다 (K' = K·km + kc). 토큰 수 그대로."""
+    B, N, C = h.shape
+    H, d = attn.num_heads, attn.head_dim
+    q, k, v = _split_heads(attn.qkv(h), B, N, 3, H, d)
+    q, k = attn.q_norm(q), attn.k_norm(k)
+    k, v = k * km + kc, v * km + vc
+    a = ((q * attn.scale) @ k.transpose(-2, -1)).softmax(dim=-1)
+    o = (a @ v).transpose(1, 2).reshape(B, N, H * d)
+    return attn.proj(attn.norm(o))
+
+
+def pool_forward_mask(pool, x, km, kc, vc):
+    """pool_forward와 같은 계산인데, kv의 sink 위치를 상수로 바꿔 끼운다."""
+    B, N, C = x.shape
+    H, d, L = pool.num_heads, pool.head_dim, pool.latent_len
+    q = pool.q(pool.latent.expand(B, -1, -1)).reshape(B, L, H, d).transpose(1, 2)
+    k, v = pool_kv(pool, x)
+    q = pool.q_norm(q)
+    k, v = k * km + kc, v * km + vc
+    a = ((q * pool.scale) @ k.transpose(-2, -1)).softmax(dim=-1)
+    o = pool.proj((a @ v).transpose(1, 2).reshape(B, L, C))
+    if pool.mlp is not None:
+        o = o + pool.mlp(pool.norm(o))
+    if pool.pool == "token":
+        o = o[:, 0]
+    elif pool.pool == "avg":
+        o = o.mean(1)
+    return o
+
+
 def _embed_tokens(trunk, x):
     x = trunk.patch_embed(x)
     x = trunk._pos_embed(x)
@@ -209,6 +241,54 @@ class RegCacheTrunk(nn.Module):
         return _head(trunk, pool_forward(trunk.attn_pool, h_tok, kx, vx))
 
 
+class MaskRegCacheTrunk(nn.Module):
+    """제자리 마스크 그래프 (D-041): 토큰 196개를 유지하고, sink 위치 p의 K·V를 상수 캐시로 바꿔 끼운다.
+    K' = K·(1−m) + m·K_c, V' 같음 (m은 블록 l에서 활성인 sink 위치만 1). 풀링 헤드 kv도 같다.
+    sink 토큰의 잔차는 시작 블록 입력부터 매 블록 입출력에서 h·(1−m)으로 0 → 거대 값이 생기지 않는다.
+    다른 토큰이 보는 key·value 집합이 RegCacheTrunk(mean)와 같으므로 수학적으로 같다. ONNX에는 상수 Mul·Add만 늘어난다 (Concat·Slice 없음)."""
+
+    def __init__(self, trunk, sinks, cache):
+        super().__init__()
+        _check_trunk(trunk)
+        self.t, self.sinks = trunk, list(sinks)
+        N = trunk.patch_embed.num_patches
+        assert all(0 <= p < N and 0 < b < len(trunk.blocks) for p, b in self.sinks), self.sinks
+        self.first = min(b for _, b in self.sinks)
+        H, d = trunk.blocks[0].attn.num_heads, trunk.blocks[0].attn.head_dim
+        keys = [(f"b{l}", [p for p, b in self.sinks if b <= l]) for l in range(self.first, len(trunk.blocks))]
+        keys.append(("pool", [p for p, _ in self.sinks]))
+        for key, act in keys:
+            k, v = (torch.as_tensor(np.asarray(t)).float() for t in cache[key])        # (H, S, d), act 순서
+            assert k.shape == (H, len(act), d), (key, k.shape)
+            keep = torch.ones(N)
+            kc, vc = torch.zeros(1, H, N, d), torch.zeros(1, H, N, d)
+            for j, p in enumerate(act):
+                keep[p] = 0
+                kc[0, :, p], vc[0, :, p] = k[:, j], v[:, j]
+            self.register_buffer(f"hm_{key}", keep.view(1, N, 1))                      # 잔차 마스크 (1−m)
+            self.register_buffer(f"km_{key}", keep.view(1, 1, N, 1))                   # K·V 마스크 (1−m)
+            self.register_buffer(f"kc_{key}", kc)                                      # m·K_c
+            self.register_buffer(f"vc_{key}", vc)
+
+    def _kv(self, key):
+        return getattr(self, f"km_{key}"), getattr(self, f"kc_{key}"), getattr(self, f"vc_{key}")
+
+    def forward(self, x):
+        trunk = self.t
+        h = _embed_tokens(trunk, x)
+        for l, blk in enumerate(trunk.blocks):
+            if l < self.first:
+                h = blk(h)
+                continue
+            hm = getattr(self, f"hm_b{l}")
+            h = h * hm                                                                  # 시작 블록 입력부터 sink 잔차 0
+            h = h + blk.drop_path1(blk.ls1(attn_forward_mask(blk.attn, blk.norm1(h), *self._kv(f"b{l}"))))
+            h = h + blk.drop_path2(blk.ls2(blk.mlp(blk.norm2(h))))
+            h = h * hm                                                                  # 블록 출력에서도 0
+        h = trunk.norm(h)
+        return _head(trunk, pool_forward_mask(trunk.attn_pool, h, *self._kv("pool")))
+
+
 @torch.no_grad()
 def build_mean_cache(trunk, x, sinks, bs=16):
     """보정 사진 x (N,3,H,W)로 sink K·V의 사진 평균 → {key: (K (H,S,d), V)} numpy float32."""
@@ -272,6 +352,7 @@ def cmd_selftest(a):
         rc = RegCacheTrunk(trunk, sinks, "mean", cache).eval()
         mean_out = rc(x)
         none_out = RegCacheTrunk(trunk, sinks, "none").eval()(x)
+        res["mask_vs_mean_max_abs"] = float((MaskRegCacheTrunk(trunk, sinks, cache).eval()(x) - mean_out).abs().max())
         res["mean_vs_original_cos_min"] = float(torch.nn.functional.cosine_similarity(mean_out, ref).min())
         res["none_vs_original_cos_min"] = float(torch.nn.functional.cosine_similarity(none_out, ref).min())
         # 배치 1 이미지의 평균 캐시 = 그 이미지 자신의 K·V → mean 출력이 원래와 같아야 함 (캐시 경로 검증)
@@ -300,6 +381,7 @@ def cmd_selftest(a):
         "oracle = 원래 (G1a 구현 검증)": res["oracle_vs_original_max_abs"] < 1e-4,
         "자기 캐시 mean = 원래": res["mean_selfcache_vs_original_max_abs"] < 1e-4,
         "ORT = PyTorch": res["ort_vs_torch_max_abs"] < 1e-3,
+        "제자리 마스크 = mean (D-041)": res["mask_vs_mean_max_abs"] < 1e-4,
         "TopK·NonZero 없음 (NPU 친화)": not any(o in ops for o in ("TopK", "NonZero", "ScatterND")),
     }
     res["checks"] = checks
@@ -350,6 +432,15 @@ def _make_trunk(S, RC, model, a, mode):
         cache, meta = load_cache(cp)
         assert meta["sinks"] == [list(s) for s in sinks], (meta["sinks"], sinks)
     return RegCacheTrunk(model.visual.trunk, sinks, mode, cache).eval()
+
+
+def _make_mask_trunk(RC, model, a):
+    sinks = parse_sinks(a.sinks)
+    cp = _cache_path(RC, sinks, a.calib_n, a.seed)
+    assert cp.exists(), f"{cp.name} 없음 — 먼저 cache 하위 명령"
+    cache, meta = load_cache(cp)
+    assert meta["sinks"] == [list(s) for s in sinks], (meta["sinks"], sinks)
+    return MaskRegCacheTrunk(model.visual.trunk, sinks, cache).eval()
 
 
 def cmd_cache(a):
@@ -514,8 +605,13 @@ def cmd_export(a):
     env_info.write_env(out, env)
     model, preprocess = _load_visual(S, a.threads)
     sinks = parse_sinks(a.sinks)
-    model.visual.trunk = _make_trunk(S, RC, model, a, a.mode)
-    stem = f"siglip2_image_fp32_rc{sinks_slug(sinks)}" + ("" if a.mode == "mean" else f"_{a.mode}")
+    if a.graph == "mask":
+        assert a.mode == "mean", "--graph mask는 mode=mean만"
+        model.visual.trunk = _make_mask_trunk(RC, model, a)
+        stem = f"siglip2_image_fp32_rcmask{sinks_slug(sinks)}"
+    else:
+        model.visual.trunk = _make_trunk(S, RC, model, a, a.mode)
+        stem = f"siglip2_image_fp32_rc{sinks_slug(sinks)}" + ("" if a.mode == "mean" else f"_{a.mode}")
     paths = [RC.ONNX_DIR / f"{stem}.onnx", RC.ONNX_DIR / f"{stem}_b1.onnx"]
     import onnx
     x1 = torch.randn(1, 3, 224, 224)
@@ -572,6 +668,35 @@ def sink_attn_share(trunk, x, patches):
     prob = ((q * pool.scale) @ k.transpose(-2, -1)).softmax(-1)                                  # (B,H,L,N)
     out["pool"] = {p: prob[:, :, :, p].mean((0, 2)) for p in patches}
     return out
+
+
+def cmd_maskcheck(a):
+    """D-041 (a): 제자리 마스크 그래프 vs R1(토큰 삭제 + 평균 캐시) PyTorch FP32 임베딩 cos (dev 사진, Pets·Caltech 반씩)."""
+    S, RC, env_info = _setup()
+    out = S.require_results_dir()
+    out.mkdir(parents=True, exist_ok=True)
+    env = env_info.collect()
+    env_info.write_env(out, env)
+    model, _ = _load_visual(S, a.threads)
+    orig = model.visual.trunk
+    x = _dev_x(RC, a.n // 2, ["pets_dev", "caltech_dev"])
+    ref = np.concatenate([np.load(RC.CACHE_DIR / f"{d}_ref_fp32.npy")[:a.n // 2] for d in ["pets_dev", "caltech_dev"]])
+    model.visual.trunk = _make_trunk(S, RC, model, a, "mean")
+    r1 = RC.l2n(_feat(model.visual, x, 16))
+    model.visual.trunk = orig
+    model.visual.trunk = _make_mask_trunk(RC, model, a)
+    mk = RC.l2n(_feat(model.visual, x, 16))
+    model.visual.trunk = orig
+    c = (mk * r1).sum(1)
+    res = {"n": int(len(x)), "mask_vs_r1_cos_min": float(c.min()), "mask_vs_r1_cos_mean": float(c.mean()),
+           "mask_vs_r1_max_abs": float(np.abs(mk - r1).max()),
+           "mask_vs_fp32ref_cos_min": float((mk * RC.l2n(ref)).sum(1).min()),
+           "r1_vs_fp32ref_cos_min": float((r1 * RC.l2n(ref)).sum(1).min())}
+    res["pass_a"] = res["mask_vs_r1_cos_min"] >= 0.99999
+    row = _row(env, a, **res)
+    _append(out, "maskcheck.jsonl", row)
+    print(json.dumps(res, ensure_ascii=False, indent=1))
+    assert res["pass_a"], "D-041 (a) 실패: mask vs R1 cos < 0.99999"
 
 
 def cmd_attn(a):
@@ -640,7 +765,12 @@ def main():
     p.add_argument("--opset", type=int, default=17)
     p.add_argument("--verify", type=int, default=64)
     p.add_argument("--overwrite", action="store_true")
+    p.add_argument("--graph", default="concat", choices=["concat", "mask"],
+                   help="concat = 토큰 삭제 + K·V Concat (기본, R1). mask = 토큰 196개 유지 + 제자리 마스크 (D-041)")
     p.set_defaults(func=cmd_export)
+    p = common(sub.add_parser("maskcheck"))
+    p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩)")
+    p.set_defaults(func=cmd_maskcheck)
     p = common(sub.add_parser("attn"))
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩, stats와 같음)")
     p.set_defaults(func=cmd_attn)
