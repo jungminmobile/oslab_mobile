@@ -20,3 +20,16 @@
 | `siglip2_image_fp32_rcmaskbc55at5-13at9.onnx` | 354.51 | `export.jsonl` |
 | `siglip2_image_fp32_rcmaskbc55at5-13at9_b1.onnx` | 354.48 | `export.jsonl` |
 | `siglip2_rcmaskbc55at5_13at9.har` (`~/siglip2_work/hailo_g3r_maskbc/`) | 353.2 | `fbf722b51272b450…` |
+
+## ORT INT8 재평가 (10/18, `../int8_maskbc/`)
+R1-INT8과 같은 조건(예외 없음, U8 + reduce_range, percentile 99.999, highres 256 s0, hc16)으로 양자화. MatMul 79개 전부 QLinearMatMul, 보정 실제 256장.
+
+| 구성 | 크기 MiB | 고화질 Δtop-1 [95%] (FP32 대비) | cos | CIFAR A |
+|---|---|---|---|---|
+| R1-INT8 (토큰 삭제 + Concat) | 91.84 | −0.68 [−1.17, −0.19] | 0.9628 | 71.6 |
+| **마스크 bcast INT8** | **91.8** (`quantize_log.jsonl`) | **−0.73 [−1.20, −0.21]** | **0.9625** | 72.0 |
+| 마스크 − R1 짝 차이 | | **−0.04 [−0.42, +0.30] → 동률** | | |
+
+- 데이터셋별 top-1 (마스크): Pets 92.83, Flowers 85.58, Cars 92.66, Food 87.72, Caltech 95.90, CIFAR A 72.00.
+- 결론: ORT 예선 그래프와 Hailo 본선 그래프를 같은 마스크 그래프로 쓸 수 있다 (정확도는 R1과 동률). 지연은 아직 재지 않았다 (회전 실험과 순서 정한 뒤).
+- 짝 비교는 회전 실험(`~/oslab_rot`)의 python 작업이 끝날 때까지 기다렸다가 시작했다 (08:00~08:12 대기, `run.log`).
