@@ -1,0 +1,19 @@
+[info] Current Time: 15:18:18, 10/17/26
+[info] CPU: Architecture: x86_64, Model: Intel(R) Core(TM) Ultra 7 258V, Number Of Cores: 8, Utilization: 0.1%
+[info] Memory: Total: 23GB, Available: 22GB
+[info] System info: OS: Linux, Kernel: 5.15.167.4-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo parser onnx siglip2_image_fp32_b1.onnx --hw-arch hailo10h --net-name siglip2_b16_224 --har-path siglip2_b16_224.har -y`
+[info] No GPU chosen and no suitable GPU found, falling back to CPU.
+[info] Translation started on ONNX model siglip2_b16_224
+[info] Restored ONNX model siglip2_b16_224 (completion time: 00:00:00.91)
+[info] Extracted ONNXRuntime meta-data for Hailo model (completion time: 00:00:05.03)
+[info] Simplified ONNX model for a parsing retry attempt (completion time: 00:00:11.70)
+[info] Saved simplified ONNX to: siglip2_image_fp32_b1.sim.onnx, will be used for parsing retry.
+[info] Start nodes mapped from original model: 'image': 'siglip2_b16_224/input_layer1'.
+[info] End nodes mapped from original model: '/trunk/attn_pool/Gather'.
+[info] Translation completed on ONNX model siglip2_b16_224 (completion time: 00:00:12.95)
+[info] Hailo HW architecture: hailo10h
+[info] Saved HAR to: /home/sset0/siglip2_crosscheck/siglip2_b16_224.har
