@@ -16,3 +16,14 @@
 06:57:11 s=2 t=4 pre win_cpu10s=36% wsl_load=0.05 0.30 0.85 running=[Ubuntu-22.04] top=[remoting_host=4 remoting_desktop=2 claude=0 dwm=0 claude=0]
 06:59:34 s=2 t=4 pre win_cpu10s=34% wsl_load=0.00 0.19 0.72 running=[Ubuntu-22.04] top=[remoting_host=2 remoting_desktop=2 dwm=0 claude=0 vmmemwsl=0]
 07:01:00 게이트 변경을 위해 중단 (s=2 t=4 대기 중, 측정 없음)
+07:01:32 start commit=be28bd8 dirty=0 proc_thresh=10 start=s2/t4
+07:01:58 s=2 t=4 pre proc_sum10s=3% win_cpu10s=24% wsl_load=0.10 0.14 0.63 running=[Ubuntu-22.04] top=[remoting_host=3 remoting_desktop=2 claude=1 dwm=0 claude=0]
+07:03:35 s=2 t=4 done busy=0 post proc_sum10s=3% win_cpu10s=17%
+07:04:27 s=3 t=1 pre proc_sum10s=3% win_cpu10s=36% wsl_load=1.44 0.94 0.87 running=[Ubuntu-22.04] top=[remoting_host=3 remoting_desktop=2 wmiprvse=0 svchost=0 system=0]
+07:09:26 s=3 t=1 done busy=0 post proc_sum10s=3% win_cpu10s=20%
+07:10:18 s=3 t=2 pre proc_sum10s=3% win_cpu10s=34% wsl_load=0.43 0.82 0.87 running=[Ubuntu-22.04] top=[remoting_host=2 remoting_desktop=1 dwm=0 claude=0 system=0]
+07:13:04 s=3 t=2 done busy=0 post proc_sum10s=3% win_cpu10s=15%
+07:13:55 s=3 t=4 pre proc_sum10s=4% win_cpu10s=12% wsl_load=0.83 1.11 0.99 running=[Ubuntu-22.04] top=[remoting_host=4 remoting_desktop=1 dwm=0 claude=0 claude=0]
+07:15:30 s=3 t=4 done busy=0 post proc_sum10s=4% win_cpu10s=20%
+07:15:57 peak memory
+G3R_SPEED_DONE 07:16:15
