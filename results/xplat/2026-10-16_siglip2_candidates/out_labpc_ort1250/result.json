@@ -1,0 +1,143 @@
+{
+ "date": "2026-10-15T22:34:24",
+ "machine": "x86_64",
+ "processor": "",
+ "platform": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+ "python": "3.14.4",
+ "onnxruntime": "1.25.0",
+ "numpy": "2.5.4",
+ "threads": 4,
+ "bs": 50,
+ "models": {
+  "fp32": {
+   "cifar_A": {
+    "n": 200,
+    "top1": 74.5,
+    "fp32_top1": 74.5,
+    "cos_mean": 1.0
+   },
+   "pets_dev": {
+    "n": 200,
+    "top1": 93.5,
+    "fp32_top1": 93.5,
+    "cos_mean": 1.0
+   },
+   "flowers_dev": {
+    "n": 200,
+    "top1": 85.0,
+    "fp32_top1": 85.0,
+    "cos_mean": 1.0
+   },
+   "cars_dev": {
+    "n": 200,
+    "top1": 93.5,
+    "fp32_top1": 93.5,
+    "cos_mean": 1.0
+   },
+   "food_dev": {
+    "n": 200,
+    "top1": 87.5,
+    "fp32_top1": 87.5,
+    "cos_mean": 1.0
+   },
+   "caltech_dev": {
+    "n": 200,
+    "top1": 95.0,
+    "fp32_top1": 95.0,
+    "cos_mean": 1.0
+   },
+   "hr_cos": 1.0,
+   "hr_dtop1": 0.0,
+   "file": "siglip2_image_fp32.onnx",
+   "MiB": 354.45,
+   "sec": 89
+  },
+  "s8": {
+   "cifar_A": {
+    "n": 200,
+    "top1": 67.5,
+    "fp32_top1": 74.5,
+    "cos_mean": 0.8775
+   },
+   "pets_dev": {
+    "n": 200,
+    "top1": 94.0,
+    "fp32_top1": 93.5,
+    "cos_mean": 0.9666
+   },
+   "flowers_dev": {
+    "n": 200,
+    "top1": 86.0,
+    "fp32_top1": 85.0,
+    "cos_mean": 0.9605
+   },
+   "cars_dev": {
+    "n": 200,
+    "top1": 94.0,
+    "fp32_top1": 93.5,
+    "cos_mean": 0.9492
+   },
+   "food_dev": {
+    "n": 200,
+    "top1": 86.5,
+    "fp32_top1": 87.5,
+    "cos_mean": 0.9605
+   },
+   "caltech_dev": {
+    "n": 200,
+    "top1": 95.5,
+    "fp32_top1": 95.0,
+    "cos_mean": 0.9416
+   },
+   "hr_cos": 0.9557,
+   "hr_dtop1": 0.3,
+   "file": "siglip2_image_int8_percentile99999_highres256_s0_s8_ops-MatMul_hc16_fc2L2.onnx",
+   "MiB": 105.31,
+   "sec": 60
+  },
+  "u8rr": {
+   "cifar_A": {
+    "n": 200,
+    "top1": 69.0,
+    "fp32_top1": 74.5,
+    "cos_mean": 0.8785
+   },
+   "pets_dev": {
+    "n": 200,
+    "top1": 92.5,
+    "fp32_top1": 93.5,
+    "cos_mean": 0.966
+   },
+   "flowers_dev": {
+    "n": 200,
+    "top1": 85.5,
+    "fp32_top1": 85.0,
+    "cos_mean": 0.9608
+   },
+   "cars_dev": {
+    "n": 200,
+    "top1": 94.0,
+    "fp32_top1": 93.5,
+    "cos_mean": 0.9474
+   },
+   "food_dev": {
+    "n": 200,
+    "top1": 86.0,
+    "fp32_top1": 87.5,
+    "cos_mean": 0.9591
+   },
+   "caltech_dev": {
+    "n": 200,
+    "top1": 97.0,
+    "fp32_top1": 95.0,
+    "cos_mean": 0.9393
+   },
+   "hr_cos": 0.9545,
+   "hr_dtop1": 0.1,
+   "file": "siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx",
+   "MiB": 105.31,
+   "sec": 43
+  }
+ },
+ "peak_rss_mib_process": 2551.4
+}
