@@ -389,10 +389,14 @@ def _ranges(trunk, rc, x):
     """블록 출력(잔차 흐름)과 fc2 입력·출력의 max/p99.9 비율. rc=None이면 원래 모델."""
     caps, hs = {}, []
     blocks = trunk.blocks
+
+    def _hook(m, i, o, l):
+        # forward hook이 None이 아닌 값을 돌려주면 PyTorch가 그 값으로 출력을 바꾼다 → 반드시 None 반환
+        caps.setdefault(f"fc2_in{l}", []).append(i[0].detach())
+        caps.setdefault(f"fc2_out{l}", []).append((o - m.bias).detach())
+
     for l, blk in enumerate(blocks):
-        hs.append(blk.mlp.fc2.register_forward_hook(
-            lambda m, i, o, l=l: (caps.setdefault(f"fc2_in{l}", []).append(i[0].detach()),
-                                  caps.setdefault(f"fc2_out{l}", []).append((o - m.bias).detach()))))
+        hs.append(blk.mlp.fc2.register_forward_hook(lambda m, i, o, l=l: _hook(m, i, o, l)))
     try:
         if rc is None:
             xt = _embed_tokens(trunk, x)

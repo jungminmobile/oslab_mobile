@@ -116,6 +116,8 @@ RN50_RESULTS=$R/identity "$SIGLIP2_PYTHON" s2_quantize.py --calib-source highres
 "$SIGLIP2_PYTHON" -c "import hashlib,sys; print(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest())" \
   "$SIGLIP2_ARTIFACTS/onnx/siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_idcheck_fc2L2.onnx"
 # 기대값 5eee783955591d1de818b532ea73b2bb2ea8a008e327cc92d323992c0f9083ac
+# 이 PC에서 5eee가 안 맞을 때의 대체 확인 (용 승인, 10/18): 같은 PC에서 --src 추가 전 커밋 c887a42의 s2_quantize.py(git worktree)로
+#   같은 명령을 태그 idcheck_base로 돌려 지금 코드 결과(idcheck_fc2L2)와 sha256 비교. 같으면 코드 동일성 통과 + 5eee 불일치는 PC(CPU·패키지) 차이로 기록, 다르면 코드 문제로 멈춤
 
 # 1. 평균 캐시 (보정 train 256장 s0)
 RN50_RESULTS=$R "$SIGLIP2_PYTHON" s2_regcache.py cache
