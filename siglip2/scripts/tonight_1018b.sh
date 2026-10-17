@@ -6,6 +6,7 @@ PY="$SIGLIP2_PYTHON"; STOP=/d/mokerton/locks/siglip2.STOP
 while true; do
   [ -f $STOP ] && { echo "$(date +%T) STOP 파일 — 멈춤"; exit 3; }
   h=$(date +%H)
+  [ "$h" -ge 7 ] && { echo "$(date +%T) 07시가 지나 오늘 시도 안 함"; echo "TONIGHT_1018B DONE $(date +%T) (not run)"; exit 0; }
   if [ "$h" -lt 7 ]; then
     c=$("$PY" -c 'import psutil; print(round(psutil.cpu_percent(interval=60)))'); m=$("$PY" -c 'import psutil; print(round(psutil.virtual_memory().available/2**30,1))')
     echo "$(date +%T) cpu60s=$c% avail=${m}GB"
