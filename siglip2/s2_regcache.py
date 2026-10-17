@@ -21,6 +21,7 @@ s2_regcache.py — sink 토큰을 지우고 그 K·V를 상수로 캐시해 붙�
   stats     sink K·V가 사진마다 얼마나 같은지 + 잔차 흐름·fc2 범위 비율 (원래 vs 변환)            (G0, G1b 부가)
   fp32      PyTorch FP32로 원래 / oracle / mean / none 의 dev 스크리닝 정확도·cos                    (G1a, G1b)
   export    변환 모델을 ONNX로 (배치 가변 + b1) + ORT vs PyTorch 확인 + 연산 표                       (G2·G3 준비)
+  attn      (기록용) 블록마다 다른 토큰이 sink 패치에 주는 attention 비중 (원래 FP32, dev 사진)
 
 [사용]  (siglip2/ 폴더에서, RN50_RESULTS 지정)
   python s2_regcache.py selftest
@@ -549,6 +550,59 @@ def cmd_export(a):
         assert all(v["pass_cos_ge_0.9999"] for v in row["verify"].values()), "ORT vs PyTorch cos < 0.9999"
 
 
+@torch.no_grad()
+def sink_attn_share(trunk, x, patches):
+    """원래 모델에서 다른 토큰(query)이 각 패치(key)에 주는 attention 확률. 반환 {"b<l>"/"pool": {p: (H,) 사진·query 평균}}."""
+    out = {}
+    xt = _embed_tokens(trunk, x)
+    N = xt.shape[1]
+    for l, blk in enumerate(trunk.blocks):
+        h = blk.norm1(xt)
+        at = blk.attn
+        q, k, _ = _split_heads(at.qkv(h), *h.shape[:2], 3, at.num_heads, at.head_dim)
+        prob = ((at.q_norm(q) * at.scale) @ at.k_norm(k).transpose(-2, -1)).softmax(-1)      # (B,H,N,N)
+        out[f"b{l}"] = {p: prob[:, :, [i for i in range(N) if i != p], p].mean((0, 2)) for p in patches}
+        xt = xt + blk.drop_path1(blk.ls1(attn_forward(at, h)))
+        xt = xt + blk.drop_path2(blk.ls2(blk.mlp(blk.norm2(xt))))
+    pool = trunk.attn_pool
+    xt = trunk.norm(xt)
+    B = xt.shape[0]
+    q = pool.q_norm(pool.q(pool.latent.expand(B, -1, -1)).reshape(B, pool.latent_len, pool.num_heads, pool.head_dim).transpose(1, 2))
+    k, _ = pool_kv(pool, xt)
+    prob = ((q * pool.scale) @ k.transpose(-2, -1)).softmax(-1)                                  # (B,H,L,N)
+    out["pool"] = {p: prob[:, :, :, p].mean((0, 2)) for p in patches}
+    return out
+
+
+def cmd_attn(a):
+    """(기록용, 판정에 안 씀) 블록마다 다른 토큰이 sink 패치에 주는 attention 비중 — 헤드 평균·최대, dev 사진 (원래 FP32)."""
+    S, RC, env_info = _setup()
+    out = S.require_results_dir()
+    out.mkdir(parents=True, exist_ok=True)
+    env = env_info.collect()
+    env_info.write_env(out, env)
+    model, _ = _load_visual(S, a.threads)
+    trunk, sinks = model.visual.trunk, parse_sinks(a.sinks)
+    patches = [p for p, _ in sinks]
+    x = torch.as_tensor(_dev_x(RC, a.n // 2, ["pets_dev", "caltech_dev"]))     # stats와 같은 사진 구성
+    acc, nb = {}, 0
+    for i in range(0, len(x), 16):
+        for key, d in sink_attn_share(trunk, x[i:i + 16], patches).items():
+            for p, v in d.items():
+                acc.setdefault(key, {}).setdefault(p, []).append((v * len(x[i:i + 16])).double())
+        nb += len(x[i:i + 16])
+    assert nb == len(x)
+    share = {key: {str(p): {"head_mean": round(float(torch.stack(v).sum(0).div(nb).mean()), 6),
+                            "head_max": round(float(torch.stack(v).sum(0).div(nb).max()), 6)} for p, v in d.items()}
+             for key, d in acc.items()}
+    uni = 1.0 / trunk.patch_embed.num_patches
+    row = _row(env, a, n=int(len(x)), uniform=round(uni, 6), share=share)
+    _append(out, "attn_share.jsonl", row)
+    print(f"균등 분배 기준 1/{trunk.patch_embed.num_patches} = {uni:.4f}")
+    for key in share:
+        print(key, {p: (v["head_mean"], v["head_max"]) for p, v in share[key].items()})
+
+
 def _sha256(p):
     import hashlib
     h = hashlib.sha256()
@@ -587,6 +641,9 @@ def main():
     p.add_argument("--verify", type=int, default=64)
     p.add_argument("--overwrite", action="store_true")
     p.set_defaults(func=cmd_export)
+    p = common(sub.add_parser("attn"))
+    p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩, stats와 같음)")
+    p.set_defaults(func=cmd_attn)
     a = ap.parse_args()
     a.func(a)
 
