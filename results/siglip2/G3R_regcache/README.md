@@ -98,7 +98,55 @@ MAP 풀링 헤드: kv 뒤에 두 토큰의 캐시 K·V를 붙임
 - **패치 13 내용 손실**: 블록 8까지 오른쪽 위 모서리 내용을 실어 나르던 토큰을 지운다. CIFAR(작은 사진)에 더 민감할 수 있어 CIFAR A를 따로 본다.
 - **준혁 트랙과의 관계**: 코드는 `siglip2/`에 새 파일로만 추가하고 기존 기본 동작은 바꾸지 않는다. 시작 전에 준혁에게 공유한다.
 
-## 7. 참고
+## 7. 실행 순서 (데이터 있는 PC, `siglip2/` 폴더)
+
+코드: [`siglip2/s2_regcache.py`](../../../siglip2/s2_regcache.py), `s2_quantize.py --src`(기본 꺼짐).
+
+```bash
+export OPENBLAS_NUM_THREADS=1
+R=../results/siglip2/G3R_regcache
+
+# 0. 구현 검증 (데이터 불필요, 약 15초) — 무작위 가중치로 오라클 동치·ONNX·연산 종류
+"$SIGLIP2_PYTHON" s2_regcache.py selftest
+# 0-b. --src 옵션을 끈 기본 경로가 기존 최종과 비트 단위로 같은지 (sha256 5eee7839…, G3_w4 identity_check와 같은 방법)
+RN50_RESULTS=$R/identity "$SIGLIP2_PYTHON" s2_quantize.py --calib-source highres --calib-n 256 --op-types MatMul \
+  --method percentile --percentile 99.999 --hist-chunk 16 --act-type u8 --reduce-range \
+  --exclude "/blocks.5/mlp/fc2/,/blocks.9/mlp/fc2/" --tag idcheck_fc2L2
+# 기존 최종 파일을 덮어쓰지 않도록 다른 이름(idcheck)으로 만든다. sha256은 Python hashlib로 (sha256sum은 역슬래시 경로에서 오판정, G3_w4)
+"$SIGLIP2_PYTHON" -c "import hashlib,sys; print(hashlib.sha256(open(sys.argv[1],'rb').read()).hexdigest())" \
+  "$SIGLIP2_ARTIFACTS/onnx/siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_idcheck_fc2L2.onnx"
+# 기대값 5eee783955591d1de818b532ea73b2bb2ea8a008e327cc92d323992c0f9083ac
+
+# 1. 평균 캐시 (보정 train 256장 s0)
+RN50_RESULTS=$R "$SIGLIP2_PYTHON" s2_regcache.py cache
+# G0 + G1b 부가 (sink K·V 일관성, 잔차·fc2 범위 비율)
+RN50_RESULTS=$R "$SIGLIP2_PYTHON" s2_regcache.py stats --n 64
+# G1a + G1b 스크리닝 (dev 6종 × 200장, PyTorch FP32)
+RN50_RESULTS=$R "$SIGLIP2_PYTHON" s2_regcache.py fp32 --k 200 --modes oracle mean none
+
+# 2. (G1b 스크리닝 통과 시) ONNX export → dev 전체 FP32 짝 비교
+RN50_RESULTS=$R "$SIGLIP2_PYTHON" s2_regcache.py export --verify 64
+RN50_RESULTS=$R/fp32_full "$SIGLIP2_PYTHON" s2_paired_ci.py --models siglip2_image_fp32.onnx siglip2_image_fp32_rc55at5-13at9.onnx
+
+# 3. G2: 예외 없이 INT8 (R0과 --exclude만 다름) → R0과 짝 비교 → 지연·메모리
+RN50_RESULTS=$R/int8 "$SIGLIP2_PYTHON" s2_quantize.py --src siglip2_image_fp32_rc55at5-13at9.onnx \
+  --calib-source highres --calib-n 256 --op-types MatMul --method percentile --percentile 99.999 --hist-chunk 16 \
+  --act-type u8 --reduce-range --tag all --dump-ops
+RN50_RESULTS=$R/int8 "$SIGLIP2_PYTHON" s2_paired_ci.py --models siglip2_image_fp32.onnx \
+  siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx \
+  siglip2_image_int8_rc55at5-13at9_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx
+# 지연 3세션 (s2_bench_speed.py, 스레드 1·2·4), peak 메모리 (s2_model_stats.py) — G3_cumulative/speed와 같은 명령에 모델만 추가
+
+# 4. G3a: DFC 파싱 (WSL Ubuntu-22.04, ~/hailo10_venv, CUDA_VISIBLE_DEVICES=-1)
+hailo parser onnx siglip2_image_fp32_rc55at5-13at9_b1.onnx --hw-arch hailo10h
+```
+
+### 구현 검증 기록 (selftest, 2026-10-18, 클라우드 CPU, timm 1.0.30 · torch 2.14.1)
+- 무작위 가중치 `vit_base_patch16_siglip_224`, 사진 4장: sink K·V 추출 경로 = timm trunk (차이 0.0), **오라클 = 원래 (최대 차이 < 1e-4)**, 사진 1장의 자기 캐시 mean = 원래 (5.5e-7), ORT = PyTorch (1.3e-6).
+- ONNX 연산: **MatMul 79개로 원래 모델과 같다.** 늘어난 것은 Concat(+34)·Expand(+16) 등 모양 연산뿐이고 TopK·NonZero·ScatterND는 없다. 배치 가변 export라 Expand·Where가 생겼고, Hailo용 b1 파일에서는 상수로 접힐 것으로 예상한다 (G3a에서 확인).
+- 무작위 가중치에는 sink가 없으므로 정확도 의미는 없다. 실제 가중치 검증은 G1a.
+
+## 8. 참고
 
 - Jiang et al., Vision Transformers Don't Need Trained Registers, NeurIPS 2025 (arXiv 2506.08010)
 - RegCache: Activation Quantization of Vision Encoders Needs Prefixing Registers (arXiv 2510.04547)
