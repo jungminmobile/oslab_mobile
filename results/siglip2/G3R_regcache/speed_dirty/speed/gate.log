@@ -1,0 +1,23 @@
+05:50:13 start commit=6599192 dirty=0 thresh=25
+05:50:30 s=1 t=1 pre win_cpu10s=20% wsl_load=2.63 3.70 3.87 running=[Ubuntu-22.04] top=[remoting_host=4 remoting_desktop=2 claude=0 dwm=0 claude=0]
+05:55:24 s=1 t=1 done busy=0 post win_cpu10s=23%
+05:55:55 s=1 t=2 pre win_cpu10s=16% wsl_load=0.62 1.84 3.00 running=[Ubuntu-22.04] top=[remoting_host=3 remoting_desktop=1 system=0 dwm=0 claude=0]
+05:58:37 s=1 t=2 done busy=0 post win_cpu10s=21%
+05:59:08 s=1 t=4 pre win_cpu10s=24% wsl_load=1.14 1.71 2.74 running=[Ubuntu-22.04] top=[remoting_host=2 remoting_desktop=1 system=0 dwm=0 claude=0]
+06:00:43 s=1 t=4 done busy=0 post win_cpu10s=24%
+06:01:14 s=2 t=1 pre win_cpu10s=21% wsl_load=2.00 2.05 2.75 running=[Ubuntu-22.04] top=[remoting_host=2 remoting_desktop=1 dwm=0 claude=0 claude=0]
+06:06:12 s=2 t=1 done busy=0 post win_cpu10s=22%
+06:06:43 s=2 t=2 pre win_cpu10s=26% wsl_load=0.61 1.27 2.21 running=[Ubuntu-22.04] top=[remoting_host=2 remoting_desktop=1 claude=0 dwm=0 system=0]
+06:09:07 s=2 t=2 pre win_cpu10s=21% wsl_load=0.08 0.81 1.91 running=[Ubuntu-22.04] top=[remoting_host=2 remoting_desktop=2 system=0 claude=0 dwm=0]
+06:11:48 s=2 t=2 done busy=0 post win_cpu10s=19%
+06:12:19 s=2 t=4 pre win_cpu10s=19% wsl_load=1.24 1.21 1.87 running=[Ubuntu-22.04] top=[remoting_host=3 remoting_desktop=1 dwm=0 claude=0 system=0]
+06:13:56 s=2 t=4 done busy=0 post win_cpu10s=16%
+06:14:27 s=3 t=1 pre win_cpu10s=16% wsl_load=2.18 1.78 2.01 running=[Ubuntu-22.04] top=[remoting_host=2 remoting_desktop=1 claude=0 dwm=0 claude=0]
+06:19:28 s=3 t=1 done busy=0 post win_cpu10s=26%
+06:19:59 s=3 t=2 pre win_cpu10s=29% wsl_load=0.77 1.21 1.70 running=[Ubuntu-22.04] top=[remoting_host=4 remoting_desktop=1 claude=0 dwm=0 claude=0]
+06:22:22 s=3 t=2 pre win_cpu10s=16% wsl_load=0.83 0.97 1.53 running=[Ubuntu-22.04] top=[remoting_host=4 remoting_desktop=1 claude=0 claude=0 dwm=0]
+06:25:03 s=3 t=2 done busy=0 post win_cpu10s=13%
+06:25:34 s=3 t=4 pre win_cpu10s=13% wsl_load=1.51 1.41 1.61 running=[Ubuntu-22.04] top=[claude=1 vmmemwsl=0 claude=0 system=0 svchost=0]
+06:27:03 s=3 t=4 done busy=0 post win_cpu10s=10%
+06:27:19 peak memory
+G3R_SPEED_DONE 06:27:36
