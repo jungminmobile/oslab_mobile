@@ -329,8 +329,10 @@ def _cache_path(RC, sinks, calib_n, seed):
 
 
 def _row(env, a, **kw):
+    from scripts import env_info
     return {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"],
-            "dirty": env["git"]["dirty"], "options": {k: v for k, v in vars(a).items() if k != "func"}, **kw}
+            "dirty": env["git"]["dirty"], **env_info.flat(env), "cpu_flags": env["cpu"]["flags"],
+            "options": {k: v for k, v in vars(a).items() if k != "func"}, **kw}
 
 
 def _append(out, name, row):
