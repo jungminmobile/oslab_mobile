@@ -1,6 +1,6 @@
 # G3R 판별 실험: sink 토큰을 레지스터로 빼내 SigLIP2를 전부 8비트로 (설계, 2026-10-18)
 
-> 상태: **설계만 완료. 아직 아무것도 실행하지 않았다.** 판정 기준(5절)은 결과를 보기 전에 고정한다.
+> 상태: **1단계(G0·G1a·G1b 스크리닝) 완료, 2단계 전 (10/18, 연구실 데스크탑).** 결과는 8절. 판정 기준(5절)은 결과를 보기 전에 고정했고 바꾸지 않았다.
 > 브랜치: `siglip2/g3r-regcache` (`siglip2/g3-sensitivity`에서 분기). 담당: 용.
 
 ## 1. 한 줄 질문
@@ -148,7 +148,31 @@ hailo parser onnx siglip2_image_fp32_rc55at5-13at9_b1.onnx --hw-arch hailo10h
 - ONNX 연산: **MatMul 79개로 원래 모델과 같다.** 늘어난 것은 Concat(+34)·Expand(+16) 등 모양 연산뿐이고 TopK·NonZero·ScatterND는 없다. 배치 가변 export라 Expand·Where가 생겼고, Hailo용 b1 파일에서는 상수로 접힐 것으로 예상한다 (G3a에서 확인).
 - 무작위 가중치에는 sink가 없으므로 정확도 의미는 없다. 실제 가중치 검증은 G1a.
 
-## 8. 참고
+## 8. 1단계 결과 (2026-10-18, 연구실 데스크탑 WSL Ubuntu-22.04, 커밋 `92d9617`, dirty 아님)
+
+환경: Intel Core Ultra 9 285K (avx2 O, avx512f X, avx512_vnni X, avx_vnni O), Python 3.11.17, torch 2.14.0+cpu, timm 1.0.30, ORT 1.25.0.
+고정 버전 13개 모두 requirements와 같음 (`env_labpc/`). dev 7종(CIFAR A·B + 고화질 5종)의 장수·보정 후보 수·FP32 top-1이 준혁 `G2_fp32_dev`와 같음.
+기준 FP32는 Release `siglip2_image_fp32.onnx` (sha256 `333cad08…`).
+
+| 관문 | 결과 | 판정 | raw |
+|---|---|---|---|
+| 0-a selftest (무작위 가중치) | 오라클·자기 캐시·ORT 검사 모두 통과, ORT vs PyTorch 9.6e-7 | 통과 | 실행 로그 |
+| 0-b identity | Release `5eee…`와 불일치. 같은 PC에서 지금 코드 = `--src` 추가 전 코드(c887a42) = `410d7483…` | 코드 동일성 통과 (차이는 PC: 활성 눈금 127쌍 상대 3e-7~5e-6) | `identity/README.md` |
+| cache | 보정 train 고화질 256장, 시드 0 → `regcache_55at5-13at9_highres256_s0.npz` sha256 `e6e8fbde…` (meta에 커밋 해시가 들어가 커밋마다 sha가 바뀜) | — | `cache.jsonl` |
+| G0 (기록용) | sink K·V vs 평균 캐시, 최소 헤드 중앙 cos (K, V): b5 (0.998, 0.978), b6~b8·b10·b11·pool ≥ 0.993, **b9 (0.862, 0.394)** | **b9 0.95 미만 → 상수 근사 위험 표시** | `stats.jsonl` |
+| G1b 부가 (dev 64장 미리보기) | 잔차 max/p99.9 원래 → mean: 블록 5~11 38~68 → 7.8~20 (b5 17.1, b6 20.0, b7 18.2, b8 13.2, b9 9.6, b10 7.8, b11 9.5) | 미리보기에서 b5~b8·b11이 10 초과. 최종 판정은 dev 전체로 | `stats.jsonl` |
+| **G1a** | oracle 임베딩 cos 최소 **1.000000** (dev 6종 × 200장), top-1 원래와 모두 같음 | **통과** (≥ 0.99999) | `fp32_screen.jsonl` |
+| **G1b 스크리닝** | mean(R1): 고화질 cos 평균 **0.99990** (최소 0.99854), Δtop-1 +0.00%p, CIFAR A +0.00%p | **통과** (≥ 0.99) | `fp32_screen.jsonl` |
+| (소거) none(R2) | 고화질 cos 0.92128 (최소 0.75095), Δtop-1 −3.00%p, CIFAR A −4.50%p | 실패 → **캐시가 필요하다** | `fp32_screen.jsonl` |
+
+- 스크리닝은 PyTorch FP32, 데이터셋마다 앞 200장. Δ는 Release FP32 ONNX(ref_fp32) 대비. `original`(변환 없음 PyTorch)도 cos 1.000000.
+- b9의 V가 사진마다 꽤 다른데도(cos 0.39) mean의 최종 cos가 0.9999인 것은, 블록 9 이후 13번 sink로 가는 attention 몫이 작거나 V 차이가 출력에 크게 번지지 않기 때문으로 보인다 (가설, 확인 안 함).
+- 실행 중 찾은 코드 버그 2개는 고친 뒤 위 결과를 다시 냈다: stats fc2 hook이 출력을 바꿔치기(`078342a`), fp32에서 oracle 다음 mean이 RegCacheTrunk를 이중으로 감쌈(`f55c3e7`). 결과 행 CPU·ORT 기록 추가(`92d9617`).
+- **G2의 R0는 이 PC에서 만든 fc2L2(`410d…`, identity 파일과 같은 조건)를 쓴다** (용 결정, 10/18). R1-INT8과 같은 PC·같은 조건에서 만든 INT8끼리 비교하기 위해서다.
+
+다음: README 7절 2단계 (export → dev 전체 FP32 짝 비교 = G1b 최종). 용 확인 후 진행.
+
+## 9. 참고
 
 - Jiang et al., Vision Transformers Don't Need Trained Registers, NeurIPS 2025 (arXiv 2506.08010)
 - RegCache: Activation Quantization of Vision Encoders Needs Prefixing Registers (arXiv 2510.04547)
