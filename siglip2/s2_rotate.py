@@ -393,7 +393,10 @@ def _load_q(RC, qn):
     p = _q_path(RC, qn)
     assert p.exists(), f"{p.name} 없음 — 먼저 build"
     Q = np.load(p)
-    assert np.array_equal(Q, make_q(qn)), f"{p.name}가 지금 코드로 만든 Q와 다름"
+    # 저장한 파일이 기준(sha256 기록). QR은 스레드 수에 따라 마지막 자리가 달라지므로 다시 만든 Q와는 근사로만 비교
+    assert np.abs(Q - make_q(qn)).max() < 1e-10, f"{p.name}가 지금 코드로 만든 Q와 다름"
+    c = q_checks(Q)
+    assert c["orth_max_abs"] < 1e-10 and c["q1_minus_1_max_abs"] < 1e-10, c
     return Q, _sha256(p)
 
 
@@ -429,7 +432,7 @@ def cmd_build(a):
         assert c["orth_max_abs"] < 1e-10 and c["q1_minus_1_max_abs"] < 1e-10, (qn, c)
         p = _q_path(RC, qn)
         if p.exists():
-            assert np.array_equal(np.load(p), Q), f"{p.name}가 지금 코드로 만든 Q와 다름"
+            assert np.abs(np.load(p) - Q).max() < 1e-10, f"{p.name}가 지금 코드로 만든 Q와 다름"   # 기존 파일 유지
         else:
             np.save(p, Q)
         row = _row(env, a, q=qn, file=p.name, sha256=_sha256(p), checks=c)
