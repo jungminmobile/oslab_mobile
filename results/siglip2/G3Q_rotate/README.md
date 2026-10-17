@@ -29,6 +29,7 @@
    - 참고: Q1 = 1이면 이 등식은 중심화 없이도 성립한다. 중심화(2)는 사양대로 넣는다 (잔차 텐서의 토큰별 평균을 0으로 만들어 Add 쪽 눈금에도 영향을 줄 수 있음, 동치성은 그대로).
    - MLP 내부(3072)와 attention 헤드 내부(q·k·v, proj 입력)는 회전하지 않는다. 풀링 헤드의 q(latent)·proj·norm·mlp는 잔차 흐름이 아니므로 그대로.
 4. 계산은 float64로 하고 마지막에 float32로 바꾼다.
+5. ONNX 후처리: 접은 LN 25개의 γ(모두 1)·β(모두 0)가 같은 값이라 torch exporter가 initializer를 하나로 합치고 `Identity` 노드 48개로 잇는다 (원래 export에는 Identity 없음, Q0에서 발견). export 뒤 그 Identity마다 출력 이름으로 initializer 사본을 만들고 노드를 지워 원래와 같은 그래프로 되돌린다 (`undedup_initializers`, 계산은 같음).
 
 ### 3-2. Q 후보 (미리 두 개만, 결과를 본 뒤 다른 Q를 추가하지 않는다)
 
@@ -37,7 +38,9 @@
 | 이름 | 구성 | Q·1 = 1 확인 |
 |---|---|---|
 | `rotrand0` (a) | `Q = P·diag(1, R)·P`, R = 767×767 무작위 직교 (torch 생성기 시드 0, float64 정규분포 → QR, R 대각 부호로 부호 고정) | P·1 = √n·e₁ → diag(1,R)는 e₁ 고정 → P·e₁·√n = 1 |
-| `rothad` (b) | `Q = (H/√n)·P`, H = H₁₂ ⊗ H₆₄ (H₁₂ = Paley 구성, H₆₄ = Sylvester), 둘 다 첫 행·첫 열이 모두 1이 되게 정규화 → H의 첫 열 = 1 | P·1 = √n·e₁ → (H/√n)·√n·e₁ = H의 첫 열 = 1 |
+| `rothad` (b) | `Q = (H/√n)·diag(1, S)·P`, H = H₁₂ ⊗ H₆₄ (H₁₂ = Paley 구성, H₆₄ = Sylvester), 둘 다 첫 행·첫 열이 모두 1이 되게 정규화 → H의 첫 열 = 1. S = ±1 부호 767개 (torch 생성기 시드 0, QuaRot의 무작위 부호 Hadamard와 같은 꼴) | P·1 = √n·e₁ → diag(1,S)는 e₁ 고정 → (H/√n)·√n·e₁ = H의 첫 열 = 1 |
+
+- **설계 수정 기록 (10/18, Q0 selftest에서 발견, 실제 가중치 결과 보기 전)**: 처음 사양 `Q = (H/√n)·P`는 H/√n과 P가 같은 두 벡터(e₁ ↔ 1/√n)를 맞바꾸기 때문에 Q·e₁ = e₁이 되어 **채널 0이 전혀 섞이지 않았다** (Q의 원소 하나가 1). 부호 S를 끼워 이것을 없앴다. 두 Q 모두 max|Q| < 0.5를 selftest에서 확인한다 (rotrand0 0.164, rothad 0.141).
 
 ### 3-3. 비교 구성 (모두 이 PC, 같은 INT8 조건)
 
@@ -58,7 +61,7 @@
 
 | 단계 | 내용 | 통과 기준 | 실패 시 |
 |---|---|---|---|
-| **Q0** selftest | 무작위 가중치 `vit_base_patch16_siglip_224` (LN γ·β와 bias도 무작위로), 두 Q 모두 | ① 회전 모델 = 원래 (PyTorch 출력 최대 차이 < 1e-4) ② ORT = PyTorch (회전 ONNX, < 1e-4) ③ ONNX 연산 종류별 개수가 원래 export와 같음 (노드 이름 목록도 같음) ④ QᵀQ = I, Q1 = 1 (float64 오차 < 1e-10) | 구현 버그 → 고친다 |
+| **Q0** selftest | 무작위 가중치 `vit_base_patch16_siglip_224` (LN γ·β와 bias도 무작위로), 두 Q 모두 | ① 회전 모델 = 원래 (PyTorch 출력 최대 차이 < 1e-4) ② ORT = PyTorch (회전 ONNX, < 1e-4) ③ ONNX 연산 종류별 개수가 원래 export와 같음 (연산 순서, 범위가 붙은 노드 이름, initializer 이름 목록도 같음. 자동 번호 이름 `Constant_<번호>`는 후처리로 번호만 밀리므로 제외) ④ QᵀQ = I, Q1 = 1 (float64 오차 < 1e-10) | 구현 버그 → 고친다 |
 | **Q1** FP32 동치 (실제 가중치) | 회전 FP32 ONNX(배치 가변·b1) ORT 임베딩 vs 원래 FP32 ONNX 임베딩(dev 캐시 `ref_fp32`), dev 64장 (Pets·Caltech dev 앞 32장씩, G3_why·G3R과 같은 구성) | cos 최소 ≥ **0.99999** (두 Q, 두 파일 모두) | 구현 버그 → **멈추고 보고** |
 | **Q2** 스크리닝 | Rot-INT8(fc2L2)과 R0를 `s2_screen.py --k 200`으로 같은 실행에서 잼 | Q별로: 고화질 cos ≥ R0 고화질 cos. 미달 Q는 **실패로 기록**. 둘 다 미달이면 **멈춤** | 기록 후 멈춤 |
 | Q2 → Q3 | Q2를 통과한 Q 가운데 스크리닝 고화질 cos가 더 높은 **하나만** Q3로 보낸다 (같으면 `rothad`) | — | — |
@@ -108,3 +111,19 @@ RN50_RESULTS=$R/full "$SIGLIP2_PYTHON" s2_paired_ci.py --models siglip2_image_fp
 CUDA_VISIBLE_DEVICES=-1 hailo parser onnx siglip2_image_fp32_<q>_b1.onnx --hw-arch hailo10h < /dev/null
 # Q3 ②: 지연 3세션 (용 확인 + ps 확인 후)
 ```
+
+## 7. Q0 selftest 결과 (2026-10-18, 연구실 데스크탑 WSL Ubuntu-22.04, timm 1.0.30 · torch 2.14.0+cpu · ORT 1.25.0)
+
+무작위 가중치 `vit_base_patch16_siglip_224` (LN γ·β, 모든 bias, pos_embed 무작위 + 블록 5 fc2 bias 채널 67에 +20), 사진 4장. `"$SIGLIP2_PYTHON" s2_rotate.py selftest`, 약 50초.
+
+| 검사 | rotrand0 | rothad | 기준 |
+|---|---|---|---|
+| QᵀQ − I 최대, Q1 − 1 최대 | 2.0e-15, 3.0e-14 | 1.4e-15, 1.8e-14 | < 1e-10 |
+| max\|Q\| (고정 기저 없음) | 0.164 | 0.141 | < 0.5 |
+| ① 회전 vs 원래 PyTorch 출력 최대 차이 | 8.3e-7 | 9.5e-7 | < 1e-4 |
+| LN₀(Qx) = Q·LN₀(x) (블록 0 norm1) | 4.4e-6 | 4.1e-6 | < 1e-4 |
+| 잔차 토큰 평균 (중심화) | 4.7e-8 | 3.0e-8 | < 1e-4 |
+| ② ORT vs PyTorch (배치 가변 / b1) | 1.1e-6 / 1.1e-6 | 1.1e-6 / 1.0e-6 | < 1e-4 |
+| ③ 연산 종류별 개수, 연산 순서·범위 이름·initializer 이름 (배치 가변 / b1) | 같음 / 같음 | 같음 / 같음 | 같음 |
+
+- **Q0 통과.** 도중에 찾은 두 가지(LN initializer 합치기로 생긴 Identity 48개, rothad의 채널 0 고정)는 3-1절 5번, 3-2절 설계 수정 기록에 적고 고친 뒤 위 결과를 냈다.
