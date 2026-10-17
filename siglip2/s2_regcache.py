@@ -479,7 +479,9 @@ def cmd_fp32(a):
     orig_trunk = model.visual.trunk
     for mode in ["original", *a.modes]:
         t0 = time.time()
-        model.visual.trunk = orig_trunk if mode == "original" else _make_trunk(S, RC, model, a, mode)
+        model.visual.trunk = orig_trunk                    # 앞 mode의 RegCacheTrunk를 다시 감싸지 않도록 원래 trunk로 되돌림
+        if mode != "original":
+            model.visual.trunk = _make_trunk(S, RC, model, a, mode)
         res = {}
         for d in DATA:
             f = lambda s: RC.CACHE_DIR / f"{d}_{s}.npy"
