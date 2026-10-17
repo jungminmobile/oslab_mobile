@@ -13,6 +13,7 @@ s2_dfc_screen.py — DFC 양자화 에뮬레이션 스크리닝: dev 6종 각 �
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import time
 from datetime import datetime
@@ -20,8 +21,9 @@ from pathlib import Path
 
 import numpy as np
 
-CACHE = Path("/mnt/d/mokerton/artifacts/siglip2/cache")
-REPO = Path("/mnt/d/mokerton/oslab_mobile")
+# 기본은 준혁 PC 경로. 다른 PC는 환경 변수로 바꾼다 (기본 꺼짐, 10/18 G3R: 연구실 데스크탑 ~/siglip2_work)
+CACHE = Path(os.environ.get("S2_DFC_CACHE", "/mnt/d/mokerton/artifacts/siglip2/cache"))
+REPO = Path(os.environ.get("S2_DFC_REPO", "/mnt/d/mokerton/oslab_mobile"))
 DATA = ["cifar_A", "pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev"]
 HR = DATA[1:]
 
