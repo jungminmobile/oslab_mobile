@@ -190,3 +190,32 @@ dev 전체 짝 비교 (`full/paired_ci.jsonl`, 층화 짝 부트스트랩 1000�
 ## 9. 플랫폼 재현 확인 (기록용, 판정 아님): `xplat/README.md`
 - 같은 dev 6×200 묶음·같은 `portable_eval.py`로 x86 285K(ORT 1.25.0)와 ARM AGX Orin(ORT 1.23.2)을 쟀다. R0 대비 rothad 고화질 cos는 **+0.0136 (x86) / +0.0134 (ARM)**로 같고, 순서 rothad > rotrand0 > R0도 같다. 200장 top-1 차이는 모두 구간이 0을 포함한다.
 - 10/16 기록의 Orin·285K U8+rr(5eee) 예측과 사진 단위로 비트까지 같다 (재현 확인).
+
+## 10. 진단 (판정용 아님): ORT에 남은 손실(R0·rothad 모두 FP32 대비 약 −0.6%p)이 attention 행렬곱에서 나오는가 (설계, 10/18 — 실행 전에 고정)
+### 10-0. 이미 돌렸는지
+- 아니다. `G3_sensitivity`의 "attention 행렬곱"은 그 연산만 INT8로 한 **민감도** 실험이고(거의 무손실), 최종 구성(R0)에서 attention 행렬곱만 FP32로 되돌린 실험은 없다. `G3R_regcache/diag5`는 DFC 층별 SNR이라 다르다.
+
+### 10-1. 전제 확인: R0의 attention 행렬곱은 정수 커널인가 — **그렇다 (가설 기각 안 됨)**
+- R0(`410d…`) QDQ 모델: 블록 attention MatMul 24개 모두 입력 앞에 DequantizeLinear. ORT_ENABLE_ALL 최적화 그래프(`optimized_model_filepath`로 저장): 24개 모두 **QLinearMatMul** (그래프 전체 QLinearMatMul 77 = 79 − fc2 2개). softmax는 QLinearSoftmax(U8 출력).
+- 노드 (`diag/attn_matmul_nodes.csv`, R0·rothad·두 FP32 ONNX 모두 같은 이름):
+  - **Q × Kᵀ** = `/trunk/blocks/blocks.N/attn/MatMul` (입력: scale Mul, Kᵀ Transpose)
+  - **확률 × V** = `/trunk/blocks/blocks.N/attn/MatMul_1` (입력: Softmax, V Squeeze)
+  - 풀링 헤드의 attention 2개(`/trunk/attn_pool/…`)는 대상 아님.
+
+### 10-2. 가설
+- 남은 손실은 softmax 출력(attention 확률)을 U8 텐서별 눈금으로 재는 데서 나온다. 균등 확률 1/196 ≈ 0.005가 눈금 한 칸(≈ 1/255)과 비슷해서 대부분 0~1칸으로 뭉개지고, sink 토큰에 확률이 몰리면(블록 6~11에서 27~52%, G3_why) 눈금이 더 거칠어진다.
+
+### 10-3. 진단 모델 (R0와 같은 명령, `--exclude`에만 추가)
+공통: `--calib-source highres --calib-n 256 --op-types MatMul --method percentile --percentile 99.999 --hist-chunk 16 --act-type u8 --reduce-range`, 기본 exclude `/blocks.5/mlp/fc2/,/blocks.9/mlp/fc2/`.
+| 이름 | 추가 exclude | 추가 keep | FP32로 남는 attention 행렬곱 |
+|---|---|---|---|
+| D1 | `/attn/MatMul_1` | — | 확률 × V 12개 |
+| D2 | `/attn/MatMul` | 블록 0~11 `/attn/MatMul_1` 12개 (부분 문자열이라 MatMul_1도 걸리므로) | Q × Kᵀ 12개 |
+| D3 | `/attn/MatMul` | — | 24개 모두 |
+- 같은 3개를 회전 FP32(`siglip2_image_fp32_rothad.onnx`) 위에도 만든다 (rothad_D1~D3). 실제로 빠지는 노드 수를 양자화 전에 `select_excluded`로 확인하고, 양자화 로그·최적화 그래프의 QLinearMatMul 수로 다시 확인한다.
+
+### 10-4. 측정·해석 규칙 (실행 전에 고정)
+- dev 6×200 스크리닝 (`s2_screen.py --k 200`, 정수 커널, 4스레드), R0·rothad를 같은 실행에 넣는다. 표: 구성 / 정수 MatMul 수 / 고화질 cos / 고화질 Δtop-1 (FP32 대비) / CIFAR A Δ.
+- **D1 또는 D3가 R0 대비 고화질 Δtop-1을 +0.3%p 이상 회복하면 "attention 확률이 주원인 후보"** → dev 전체 짝 비교 1회 (R0 vs 가장 좋은 D, 고화질 Δtop-1 기준, 같으면 cos가 높은 쪽). 아니면 **"attention 행렬곱은 주원인 아님"**으로 기록하고 끝.
+- rothad_D1~D3는 같은 규칙을 rothad 대비로 적용해 기록만 한다 (dev 전체 비교는 R0 쪽 규칙으로만 결정).
+- 지연은 재지 않는다. 양자화·스크리닝 전 `free -g` 여유 ≥ 10 GB 확인 (G3R 세션 DFC와 공유).
