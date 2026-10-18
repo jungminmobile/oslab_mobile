@@ -4,7 +4,8 @@
 # 사용: bash g3r_g3b_wsl.sh A256L1_all8 B256L1_nosink16      (구성 이름 X → g3r_X.alls)
 set -uo pipefail
 source ~/hailo10_venv/bin/activate
-export CUDA_VISIBLE_DEVICES=-1 S2_DFC_CACHE=$HOME/siglip2_work/artifacts/cache S2_DFC_REPO=$HOME/oslab_mobile_yong
+export CUDA_VISIBLE_DEVICES=-1 S2_DFC_CACHE=${S2_DFC_CACHE:-$HOME/siglip2_work/artifacts/cache} S2_DFC_REPO=${S2_DFC_REPO:-$HOME/oslab_mobile_yong}
+CALIB=${CALIB:-$HOME/siglip2_work/artifacts/dfc/calib_highres256_s0_nhwc.npy}
 MIN_FREE_GB=${MIN_FREE_GB:-15}
 H=$(cd "$(dirname "$0")" && pwd)
 # SRC_HAR: 파싱된 HAR (기본 = 제자리 마스크 bcast), OUT: 결과 폴더 이름 (기본 g3b). LOCK: DFC 공용 잠금 (회전 세션과 같은 파일, 10/18)
@@ -12,7 +13,8 @@ SRC_HAR=${SRC_HAR:-$HOME/siglip2_work/hailo_g3r_maskbc/siglip2_rcmaskbc55at5_13a
 LOCK=${LOCK:-$HOME/siglip2_work/dfc.lock}
 HAR=$(basename $SRC_HAR)
 W=$HOME/siglip2_work/g3b_$(date +%Y%m%d_%H%M%S); mkdir -p $W; cd $W
-cp $SRC_HAR $HOME/siglip2_work/artifacts/dfc/calib_highres256_s0_nhwc.npy .
+for f in $SRC_HAR $CALIB; do [ -f "$f" ] || { echo "없음: $f"; exit 1; }; done
+cp $SRC_HAR $CALIB . || exit 1
 O=$S2_DFC_REPO/results/siglip2/G3R_regcache/${OUT:-g3b}; mkdir -p $O
 echo "commit=$(git -C $S2_DFC_REPO rev-parse --short HEAD) dirty=$(git -C $S2_DFC_REPO status --porcelain --untracked-files=no | wc -l) cfgs=$* har=$HAR har_sha256=$(sha256sum $HAR | cut -c1-64) calib_sha256=$(sha256sum calib_highres256_s0_nhwc.npy | cut -c1-64) lock=$LOCK" | tee -a $O/run_info.txt
 waitmem() { while true; do f=$(free -g | awk '/Mem:/{print $7}'); [ "$f" -ge "$MIN_FREE_GB" ] && { echo "$(date +%T) $1 free=${f}G 시작"; return; }; echo "$(date +%T) $1 free=${f}G < ${MIN_FREE_GB}G 대기"; sleep 60; done; }

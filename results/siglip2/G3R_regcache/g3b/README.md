@@ -1,12 +1,14 @@
 # G3b: 제자리 마스크(bcast) HAR로 16비트 층 줄이기 (2026-10-18, 연구실 데스크탑 WSL Ubuntu-22.04, DFC 5.4.0, CPU)
 
+> **사전 계획 밖 실행 (탐색적 결과).** 설계 4절은 G3b를 "G2·G3a 통과 시"에만 하도록 정했고, D-041도 처음에는 "파싱되면 멈춤"이었다. G2가 실패한 뒤 용의 승인으로 G3b를 4회 실행했다. 판정 기준(cos ≥ 0.952)은 바꾸지 않았다. 결론에 쓰기 전에 팀(쭈리·준혁) 확인이 필요하다 (siglip2/CLAUDE.md: 최종 결정권자).
+
 ## 결론: **실패** (README 5절 G3b 기준 "D256L1 이상의 스크리닝 cos 0.952" 미달). 컴파일(HEF)은 하지 않았다.
 
 | 구성 | `.alls` | optimize | 스크리닝 (dev 앞 200장, SDK_QUANTIZED) | 판정 |
 |---|---|---|---|---|
 | A 전부 a8_w8 | `siglip2/hailo/g3r_A256L1_all8.alls` | rc=0, 27분 | 5종 cos 0.14~0.27, top-1 0~1.5% (붕괴, 4종 뒤 중단) | 실패 |
 | B D256L1 − sink 층 (`{ew_add*}` 16비트) | `g3r_B256L1_nosink16.alls` | **rc=1, 53초**: `Unsupported layers for the target mercury` precision_change 8개 (a16_w16_a8, signed) | — | 실패 |
-| B2 D256L1 − sink 층 (잔차 ew_add 26개만 16비트) | `g3r_B2256L1_nosink16res.alls` | rc=0, 56분, 출력 SNR 3.5 dB | CIFAR A cos 0.730 / top-1 4.0, Pets 0.778 / 3.5 (2종 뒤 중단) | 실패 |
+| B2 D256L1 − sink 층 (잔차 ew_add 26개만 16비트) | `g3r_B2256L1_nosink16res.alls` | rc=0, 56분, 출력 SNR 3.5 dB | **부분(2종)**: CIFAR A cos 0.730 / top-1 4.0, Pets 0.778 / 3.5 (2종 뒤 중단, jsonl 없음 — 고화질 5종 평균 아님) | 실패 |
 
 - 공통: 최적화 수준 1, 보정 256장 시드 0(`calib_highres256_s0_nhwc.npy` `91f551e3…`), `layer_norm_decomposition`, equalization 끔 — D256L1과 같음. HAR `fbf722b5…`(`../g3a_maskbc`).
 - 중단 이유: A·B2 모두 결과가 이미 분명했고, B2 스크리닝 중 WSL 메모리 available이 1 GB까지 떨어져(이 스크리닝 RSS 18 GB + 회전 실험 DFC 스크리닝 12 GB) 회전 실험 작업까지 죽을 위험이 있어 멈췄다. 부분 로그 `screen_*_partial.log`.
@@ -54,7 +56,7 @@ python siglip2/hailo/s2_dfc_native_check.py --har <har> --ctx native|fp_optimize
 |---|---|---|---|
 | (a) vs R1 FP32 cos 최소 | 0.9999998 | 0.9999998 | 통과 |
 | (b) sink 행 max / 일반 토큰 max (잔차·fc2 입력, 블록 5~11 최대) | 1.05 (`fc2in_10`) | 1.09 | 통과 |
-| (c) sink 행 1/√(분산+ε) ⊂ 일반 토큰 [min, max] | **15개 LN 중 12개 범위 밖**: 최대 11.72 (블록 6 norm1) vs 일반 최대 8.16. 범위 밖 배율 1.02~1.9배 | 15개 중 8개 범위 밖, norm1·final은 1000.0 | **실패** |
+| (c) sink 행 1/√(분산+ε) ⊂ 일반 토큰 [min, max] | **15개 LN 중 12개 범위 밖**: 최대 11.72 (블록 6 norm1) vs 일반 최대 8.16. 범위 밖 배율 1.02~1.9배 | 15개 중 9개 범위 밖 (norm1 7개·final은 1000.0, n2_8 1개) | **실패** |
 
 - 층별 값은 `../g3b_hc/hccheck.jsonl`. h_c로 바꿔 1/√ 값이 1000 → 최대 11.7로 줄었지만, 일반 토큰 범위 안에 들지 않았다.
 - 해석 (**가설**): h_c는 많은 토큰의 평균이라 채널 사이 값 차이가 작아져 분산이 어느 개별 토큰보다도 작다 → 1/√분산이 일반 토큰보다 크다.

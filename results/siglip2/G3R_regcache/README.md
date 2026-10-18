@@ -1,6 +1,6 @@
 # G3R 판별 실험: sink 토큰을 레지스터로 빼내 SigLIP2를 전부 8비트로 (설계, 2026-10-18)
 
-> 상태: **G0~G2·G3a 완료 (10/18, 연구실 데스크탑). G2 채택 실패 확정(① 정확도 비열등 미달), G3a 1차 실패(DFC가 토큰 축 Concat 미지원) → 제자리 마스크 그래프(D-041)로 재시도해 **DFC 파싱 통과**, 상수 broadcast(`g3a_maskbc/`)로 크기 R1과 같음, ORT INT8은 R1-INT8과 동률. **G3b 최종 실패** (전부 8비트 붕괴, 16비트 줄인 구성 cos 0.73~0.78 < 0.952; 원인 가설: sink 잔차 0 → Hailo LN 분해의 1/√ε 이상치; h_c 채움은 사전 확인 (c) 실패, 4번째(용 요청) 분산 맞춤 h_c*는 LN 이상치는 없앴지만 스크리닝 cos 0.733 < 0.952 — 채움 연산이 잔차 흐름을 8비트로 깎는 것으로 보임, `g3b/`). 컴파일 안 함. **G3R 종료: ORT 동률이나 미채택, Hailo는 G3R 미채택** (Hailo 최종은 D-042에서 회전 모델 rothad_D256L1로 바뀜, G3R과 별개) (`g3b/README.md` 끝).** 결과는 8·9절. G3b는 시작하지 않음. 판정 기준(5절)은 결과를 보기 전에 고정했고 바꾸지 않았다.
+> 상태: **종료 (10/18, 연구실 데스크탑).** G1a·G1b 통과, **G2 채택 실패**(① 정확도 비열등 미달), G3a는 1차 실패 뒤 제자리 마스크 그래프로 파싱 통과, ORT INT8은 마스크 그래프도 R1과 동률, **G3b 최종 실패**(4회 시도, `g3b/`). 결과는 8·9절. **5절의 통과 조건(숫자)은 바꾸지 않았다.** G3a 실패 시 대안 경로는 D-041로 사후 변경했고(용 승인), G2 실패 뒤의 G3b 실행은 4절 계획("G2·G3a 통과 시") 밖의 **탐색적 실행**이다 (용 승인, 팀 확인 필요).
 > 브랜치: `siglip2/g3r-regcache` (`siglip2/g3-sensitivity`에서 분기). 담당: 용.
 
 ## 1. 한 줄 질문
@@ -160,7 +160,7 @@ hailo parser onnx siglip2_image_fp32_rc55at5-13at9_b1.onnx --hw-arch hailo10h
 | 0-b identity | Release `5eee…`와 불일치. 같은 PC에서 지금 코드 = `--src` 추가 전 코드(c887a42) = `410d7483…` | 코드 동일성 통과 (차이는 PC: 활성 눈금 127쌍 상대 3e-7~5e-6) | `identity/README.md` |
 | cache | 보정 train 고화질 256장, 시드 0 → `regcache_55at5-13at9_highres256_s0.npz` sha256 `e6e8fbde…` (meta에 커밋 해시가 들어가 커밋마다 sha가 바뀜) | — | `cache.jsonl` |
 | G0 (기록용) | sink K·V vs 평균 캐시, 최소 헤드 중앙 cos (K, V): b5 (0.998, 0.978), b6~b8·b10·b11·pool ≥ 0.993, **b9 (0.862, 0.394)** | **b9 0.95 미만 → 상수 근사 위험 표시** | `stats.jsonl` |
-| G1b 부가 (dev 64장 미리보기) | 잔차 max/p99.9 원래 → mean: 블록 5~11 38~68 → 7.8~20 (b5 17.1, b6 20.0, b7 18.2, b8 13.2, b9 9.6, b10 7.8, b11 9.5) | 미리보기에서 b5~b8·b11이 10 초과. 최종 판정은 dev 전체로 | `stats.jsonl` |
+| G1b 부가 (dev 64장 미리보기) | 잔차 max/p99.9 원래 → mean: 블록 5~11 38~68 → 7.8~20 (b5 17.1, b6 20.0, b7 18.2, b8 13.2, b9 9.6, b10 7.8, b11 9.5) | **미판정**: 미리보기에서 b5~b8·b11이 10 초과(규칙상 블록 5~7 초과 → R3 시도 대상). dev 전체 재측정·R3는 용 결정으로 하지 않음 (9절 G2 기록) | `stats.jsonl` |
 | **G1a** | oracle 임베딩 cos 최소 **1.000000** (dev 6종 × 200장), top-1 원래와 모두 같음 | **통과** (≥ 0.99999) | `fp32_screen.jsonl` |
 | **G1b 스크리닝** | mean(R1): 고화질 cos 평균 **0.99990** (최소 0.99854), Δtop-1 +0.00%p, CIFAR A +0.00%p | **통과** (≥ 0.99) | `fp32_screen.jsonl` |
 | (소거) none(R2) | 고화질 cos 0.92128 (최소 0.75095), Δtop-1 −3.00%p, CIFAR A −4.50%p | 실패 → **캐시가 필요하다** | `fp32_screen.jsonl` |
@@ -206,8 +206,8 @@ hailo parser onnx siglip2_image_fp32_rc55at5-13at9_b1.onnx --hw-arch hailo10h
 
 ### 측정 조건·기록
 - 지연: `s2_bench_speed.py --warmup 20 --n 200 --repeats 3`, 배치 1, 세 모델 번갈아, 스레드 1·2·4 × 3세션 (`scripts/g3r_speed.sh`, raw `speed/speed_*.json`, `speed/runs.jsonl` 9줄 모두 dirty 아님).
-  세션 1·2(t1·t2)는 커밋 `56097dd`, 나머지는 `be28bd8` (측정 스크립트 게이트만 바뀜, 측정 코드 같음).
-- 부하 기록 (`speed/gate.log`): 다른 WSL 배포판은 꺼져 있음(Ubuntu 26.04·docker-desktop Stopped). 측정 직전 다른 프로세스 CPU 합 3~4% (대부분 원격 데스크톱 `remoting_host`·`remoting_desktop` 2~4%).
+  세션 1 전체(t1·t2·t4)와 세션 2의 t1·t2 (5회)는 커밋 `56097dd`·WMI LoadPercentage 게이트(25%), 나머지 4회(s2 t4, s3 전부)는 `be28bd8`·다른 프로세스 CPU 합 게이트(10%) (측정 스크립트 게이트만 바뀜, 측정 코드 같음).
+- 부하 기록 (`speed/gate.log`): 다른 WSL 배포판은 꺼져 있음(Ubuntu 26.04·docker-desktop Stopped). 측정 직전 다른 프로세스 CPU 합 3~4% (뒤의 4회만 잼; 앞의 5회는 WMI 값 16~26%만 기록) (대부분 원격 데스크톱 `remoting_host`·`remoting_desktop` 2~4%).
   처음 게이트로 쓴 WMI `LoadPercentage`가 프로세스 합 3.5%일 때도 28~36%로 나와 s2 t4에서 10분 넘게 대기 → 게이트를 "다른 프로세스 CPU 합 < 10%"로 바꾸고 s2 t4부터 이어서 쟀다.
 - 1차 측정(05:50~06:27)은 `siglip2/hailo_sdk.client.log`(DFC 로그) 때문에 dirty로 판정되어 `speed_dirty/`로 분리했다. 보고서에 쓰지 않는다.
 - peak 메모리: `s2_model_stats.py`, 모델마다 새 프로세스, 추론 50회 중 최대 RSS, 1회 측정 (`model_stats/model_stats.jsonl`, `be28bd8`, dirty 아님).
@@ -216,7 +216,7 @@ hailo parser onnx siglip2_image_fp32_rc55at5-13at9_b1.onnx --hw-arch hailo10h
 ### G3a (DFC 파싱): 실패 — `g3a/README.md`
 - `/trunk/Concat_2` (블록 5 K에 캐시 상수 K를 토큰 축으로 붙이는 Concat)에서 `UnsupportedModelError`. DFC concat은 feature 축만 지원. 그 전에 MatMul shape 계산 IndexError.
 - b1 파일에도 Expand 17·Where 17이 남았다 (7절 "b1에서 상수로 접힐 것" 예상과 다름).
-- **재시도 (D-041, 사후 변경): 제자리 마스크 그래프로 파싱 통과.** 토큰 196개를 유지하고 sink 위치의 K·V를 상수로 바꿔 끼우는 방식으로, R1과 FP32 cos 최소 0.9999998, Concat·Slice·Expand·Where는 원래 FP32와 같은 수. 자세한 내용은 `g3a_mask/README.md`. G3b는 시작하지 않았다.
+- **재시도 (D-041, 사후 변경): 제자리 마스크 그래프로 파싱 통과.** 토큰 196개를 유지하고 sink 위치의 K·V를 상수로 바꿔 끼우는 방식으로, R1과 FP32 cos 최소 0.9999998, Concat·Slice·Expand·Where는 원래 FP32와 같은 수. 자세한 내용은 `g3a_mask/README.md`. G3b는 그 뒤 계획 밖으로 4회 시도해 실패했다 (`g3b/README.md`).
 
 ### 기록용: 다른 토큰이 sink 패치에 주는 attention 비중 (`attn_share.jsonl`, dev 64장, 원래 FP32, 헤드 평균 / 최대 헤드, 균등 분배 = 1/196 = 0.0051)
 | 블록 | 패치 13 | 패치 55 |

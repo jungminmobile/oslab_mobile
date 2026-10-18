@@ -724,6 +724,8 @@ def cmd_export(a):
     env_info.write_env(out, env)
     model, preprocess = _load_visual(S, a.threads)
     sinks = parse_sinks(a.sinks)
+    if a.graph != "mask":
+        assert a.mask_form == "full" and a.hfill == "zero", "--mask-form·--hfill은 --graph mask에서만 쓴다 (concat에서는 무시되므로 오류로 멈춤)"
     if a.graph == "mask":
         assert a.mode == "mean", "--graph mask는 mode=mean만"
         model.visual.trunk = _make_mask_trunk(RC, model, a)
