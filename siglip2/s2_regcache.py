@@ -22,6 +22,7 @@ s2_regcache.py — sink 토큰을 지우고 그 K·V를 상수로 캐시해 붙�
   fp32      PyTorch FP32로 원래 / oracle / mean / none 의 dev 스크리닝 정확도·cos                    (G1a, G1b)
   export    변환 모델을 ONNX로 (배치 가변 + b1) + ORT vs PyTorch 확인 + 연산 표                       (G2·G3 준비)
   maskcheck 제자리 마스크 그래프(D-041) vs R1 FP32 동치 확인. export --graph mask로 마스크 ONNX
+  hcache    sink 잔차를 채울 h_c (보정 train 평균, 비-sink 토큰). hccheck: h_c 마스크 사전 확인 (a)(b)(c)
   attn      (기록용) 블록마다 다른 토큰이 sink 패치에 주는 attention 비중 (원래 FP32, dev 사진)
 
 [사용]  (siglip2/ 폴더에서, RN50_RESULTS 지정)
@@ -260,18 +261,28 @@ class MaskRegCacheTrunk(nn.Module):
     sink 토큰의 잔차는 시작 블록 입력부터 매 블록 입출력에서 h·(1−m)으로 0 → 거대 값이 생기지 않는다.
     다른 토큰이 보는 key·value 집합이 RegCacheTrunk(mean)와 같으므로 수학적으로 같다. ONNX에는 상수 Mul·Add만 늘어난다 (Concat·Slice 없음)."""
 
-    def __init__(self, trunk, sinks, cache, form="full"):
+    def __init__(self, trunk, sinks, cache, form="full", hc=None):
         super().__init__()
         _check_trunk(trunk)
         assert form in ("full", "bcast"), form
         self.t, self.sinks, self.form = trunk, list(sinks), form
         self.n_act = {}
+        self.hfill = hc is not None          # True: sink 잔차를 0 대신 h_c(보정 평균, 비-sink 토큰)로 채움 (G3b 마지막 시도)
         N = trunk.patch_embed.num_patches
         assert all(0 <= p < N and 0 < b < len(trunk.blocks) for p, b in self.sinks), self.sinks
         self.first = min(b for _, b in self.sinks)
         H, d = trunk.blocks[0].attn.num_heads, trunk.blocks[0].attn.head_dim
         keys = [(f"b{l}", [p for p, b in self.sinks if b <= l]) for l in range(self.first, len(trunk.blocks))]
         keys.append(("pool", [p for p, _ in self.sinks]))
+        if self.hfill:
+            for l in list(range(self.first, len(trunk.blocks))) + ["final"]:
+                key = f"b{l}" if l != "final" else "final"
+                act = [p for p, b in self.sinks if l == "final" or b <= l]
+                m = torch.zeros(1, N, 1)
+                m[0, act] = 1
+                v = torch.as_tensor(np.asarray(hc[key])).float().reshape(1, 1, -1)
+                self.register_buffer(f"hfm_{key}", m)                                  # 채울 위치 m
+                self.register_buffer(f"hc_{key}", v)                                   # h_c (1,1,C)
         for key, act in keys:
             k, v = (torch.as_tensor(np.asarray(t)).float() for t in cache[key])        # (H, S, d), act 순서
             assert k.shape == (H, len(act), d), (key, k.shape)
@@ -294,6 +305,13 @@ class MaskRegCacheTrunk(nn.Module):
                     self.register_buffer(f"kc_{key}_{j}", k[:, j].reshape(1, H, 1, d).clone())
                     self.register_buffer(f"vc_{key}_{j}", v[:, j].reshape(1, H, 1, d).clone())
 
+    def _fill(self, h, key):
+        """hfill=False: h·(1−m) (0으로). hfill=True: h + m ⊙ (h_c − h) (상수 접기로 큰 상수가 생기지 않는 꼴)."""
+        if not self.hfill:
+            return h * getattr(self, f"hm_{key}")
+        m = getattr(self, f"hfm_{key}")
+        return h + m * (getattr(self, f"hc_{key}") - h)
+
     def _kv(self, key):
         if self.form == "full":
             return getattr(self, f"km_{key}"), getattr(self, f"kc_{key}"), getattr(self, f"vc_{key}")
@@ -308,11 +326,13 @@ class MaskRegCacheTrunk(nn.Module):
             if l < self.first:
                 h = blk(h)
                 continue
-            hm = getattr(self, f"hm_b{l}")
-            h = h * hm                                                                  # 시작 블록 입력부터 sink 잔차 0
+            h = self._fill(h, f"b{l}")                                                  # 시작 블록 입력부터 sink 잔차 0 (또는 h_c)
             h = h + blk.drop_path1(blk.ls1(attn_forward_mask(blk.attn, blk.norm1(h), *self._kv(f"b{l}"))))
             h = h + blk.drop_path2(blk.ls2(blk.mlp(blk.norm2(h))))
-            h = h * hm                                                                  # 블록 출력에서도 0
+            if not self.hfill:
+                h = h * getattr(self, f"hm_b{l}")                                       # 블록 출력에서도 0
+        if self.hfill:
+            h = self._fill(h, "final")
         h = trunk.norm(h)
         return _head(trunk, pool_forward_mask(trunk.attn_pool, h, *self._kv("pool")))
 
@@ -333,6 +353,28 @@ def build_mean_cache(trunk, x, sinks, bs=16):
                 acc[key] = [ks, vs]
         n += len(xb)
     return {key: ((k / n).float().numpy(), (v / n).float().numpy()) for key, (k, v) in acc.items()}, n
+
+
+@torch.no_grad()
+def build_hc(trunk, x, sinks, bs=16):
+    """보정 사진 x로 h_c: 블록 l(≥ 첫 시작 블록) 입력 잔차와 마지막 norm 입력을 sink가 아닌 토큰·사진에 대해 평균 → {"b<l>"/"final": (C,)}."""
+    first = min(b for _, b in sinks)
+    N = trunk.patch_embed.num_patches
+    keep = [i for i in range(N) if i not in {p for p, _ in sinks}]
+    acc, n = {}, 0
+    for i in range(0, len(x), bs):
+        h = _embed_tokens(trunk, torch.as_tensor(np.ascontiguousarray(x[i:i + bs]), dtype=torch.float32))
+        for l, blk in enumerate(trunk.blocks):
+            if l >= first:
+                acc[f"b{l}"] = acc.get(f"b{l}", 0) + h[:, keep].double().sum((0, 1))
+            h = blk(h)
+        acc["final"] = acc.get("final", 0) + h[:, keep].double().sum((0, 1))
+        n += len(h)
+    return {k: (v / (n * len(keep))).float().numpy() for k, v in acc.items()}, n
+
+
+def _hc_path(RC, sinks, calib_n, seed):
+    return RC.ONNX_DIR / f"regcache_hc_{sinks_slug(sinks)}_highres{calib_n}_s{seed}.npz"
 
 
 def save_cache(path, cache, meta):
@@ -382,6 +424,8 @@ def cmd_selftest(a):
         none_out = RegCacheTrunk(trunk, sinks, "none").eval()(x)
         res["mask_vs_mean_max_abs"] = float((MaskRegCacheTrunk(trunk, sinks, cache).eval()(x) - mean_out).abs().max())
         res["maskbc_vs_mean_max_abs"] = float((MaskRegCacheTrunk(trunk, sinks, cache, "bcast").eval()(x) - mean_out).abs().max())
+        hc, _ = build_hc(trunk, x.numpy(), sinks, bs=2)
+        res["maskhc_vs_mean_max_abs"] = float((MaskRegCacheTrunk(trunk, sinks, cache, "bcast", hc).eval()(x) - mean_out).abs().max())
         res["mean_vs_original_cos_min"] = float(torch.nn.functional.cosine_similarity(mean_out, ref).min())
         res["none_vs_original_cos_min"] = float(torch.nn.functional.cosine_similarity(none_out, ref).min())
         # 배치 1 이미지의 평균 캐시 = 그 이미지 자신의 K·V → mean 출력이 원래와 같아야 함 (캐시 경로 검증)
@@ -412,6 +456,7 @@ def cmd_selftest(a):
         "ORT = PyTorch": res["ort_vs_torch_max_abs"] < 1e-3,
         "제자리 마스크 = mean (D-041)": res["mask_vs_mean_max_abs"] < 1e-4,
         "제자리 마스크 bcast = mean": res["maskbc_vs_mean_max_abs"] < 1e-4,
+        "제자리 마스크 bcast + h_c 채움 = mean": res["maskhc_vs_mean_max_abs"] < 1e-4,
         "TopK·NonZero 없음 (NPU 친화)": not any(o in ops for o in ("TopK", "NonZero", "ScatterND")),
     }
     res["checks"] = checks
@@ -470,7 +515,14 @@ def _make_mask_trunk(RC, model, a):
     assert cp.exists(), f"{cp.name} 없음 — 먼저 cache 하위 명령"
     cache, meta = load_cache(cp)
     assert meta["sinks"] == [list(s) for s in sinks], (meta["sinks"], sinks)
-    return MaskRegCacheTrunk(model.visual.trunk, sinks, cache, getattr(a, "mask_form", "full")).eval()
+    hc = None
+    if getattr(a, "hfill", "zero") == "mean":
+        hp = _hc_path(RC, sinks, a.calib_n, a.seed)
+        assert hp.exists(), f"{hp.name} 없음 — 먼저 hcache 하위 명령"
+        z = np.load(hp)
+        assert json.loads(str(z["meta"]))["sinks"] == [list(s) for s in sinks]
+        hc = {k: z[k] for k in z.files if k != "meta"}
+    return MaskRegCacheTrunk(model.visual.trunk, sinks, cache, getattr(a, "mask_form", "full"), hc).eval()
 
 
 def cmd_cache(a):
@@ -638,7 +690,8 @@ def cmd_export(a):
     if a.graph == "mask":
         assert a.mode == "mean", "--graph mask는 mode=mean만"
         model.visual.trunk = _make_mask_trunk(RC, model, a)
-        stem = f"siglip2_image_fp32_rcmask{'' if a.mask_form == 'full' else 'bc'}{sinks_slug(sinks)}"
+        stem = (f"siglip2_image_fp32_rcmask{'' if a.mask_form == 'full' else 'bc'}{'hc' if a.hfill == 'mean' else ''}"
+                f"{sinks_slug(sinks)}")
     else:
         model.visual.trunk = _make_trunk(S, RC, model, a, a.mode)
         stem = f"siglip2_image_fp32_rc{sinks_slug(sinks)}" + ("" if a.mode == "mean" else f"_{a.mode}")
@@ -729,6 +782,111 @@ def cmd_maskcheck(a):
     assert res["pass_a"], "D-041 (a) 실패: mask vs R1 cos < 0.99999"
 
 
+def cmd_hcache(a):
+    """h_c (G3b 마지막 시도): 보정 구간(train 고화질 calib_n장, seed)으로 비-sink 토큰 잔차 평균. dev는 쓰지 않는다."""
+    S, RC, env_info = _setup()
+    out = S.require_results_dir()
+    out.mkdir(parents=True, exist_ok=True)
+    env = env_info.collect()
+    env_info.write_env(out, env)
+    model, _ = _load_visual(S, a.threads)
+    sinks = parse_sinks(a.sinks)
+    from s2_quantize import calib_images                 # s2_quantize와 같은 보정 사진 (train, dev 제외)
+    x = calib_images("highres", a.calib_n, a.seed)
+    hc, n = build_hc(model.visual.trunk, x, sinks)
+    assert n == a.calib_n, (n, a.calib_n)
+    hp = _hc_path(RC, sinks, a.calib_n, a.seed)
+    np.savez(hp, meta=json.dumps({"sinks": [list(s) for s in sinks], "calib": f"highres{a.calib_n}_s{a.seed}", "n": n,
+                                  "commit": env["git"]["commit"]}), **hc)
+    row = _row(env, a, file=hp.name, sha256=_sha256(hp), n=n,
+               norms={k: round(float(np.linalg.norm(v)), 4) for k, v in hc.items()})
+    _append(out, "hcache.jsonl", row)
+    print(json.dumps(row["norms"]), hp.name, n)
+
+
+@torch.no_grad()
+def _trace_mask(rc, x):
+    """MaskRegCacheTrunk.forward와 같은 순서로, 블록 l ≥ first의 norm1·norm2 입력, fc2 입력, 블록 출력과 마지막 norm 입력을 꺼낸다."""
+    trunk, caps = rc.t, {}
+    h = _embed_tokens(trunk, x)
+    for l, blk in enumerate(trunk.blocks):
+        if l < rc.first:
+            h = blk(h)
+            continue
+        h = rc._fill(h, f"b{l}")
+        caps[f"n1_{l}"] = h
+        h = h + blk.drop_path1(blk.ls1(attn_forward_mask(blk.attn, blk.norm1(h), *rc._kv(f"b{l}"))))
+        caps[f"n2_{l}"] = h
+        f1 = blk.mlp.norm(blk.mlp.drop1(blk.mlp.act(blk.mlp.fc1(blk.norm2(h)))))
+        caps[f"fc2in_{l}"] = f1
+        h = h + blk.drop_path2(blk.ls2(blk.mlp.drop2(blk.mlp.fc2(f1))))
+        if not rc.hfill:
+            h = h * getattr(rc, f"hm_b{l}")
+        caps[f"res_{l}"] = h
+    if rc.hfill:
+        h = rc._fill(h, "final")
+    caps["final"] = h
+    return caps
+
+
+def cmd_hccheck(a):
+    """G3b 마지막 시도 사전 확인 (a) h_c 마스크 vs R1 cos (b) sink 행 거대 값 재발 여부 (c) LN 분해 1/√(분산+ε)의 sink 행 범위. zero 방식도 비교로 계산."""
+    S, RC, env_info = _setup()
+    out = S.require_results_dir()
+    out.mkdir(parents=True, exist_ok=True)
+    env = env_info.collect()
+    env_info.write_env(out, env)
+    model, _ = _load_visual(S, a.threads)
+    orig = model.visual.trunk
+    sinks = parse_sinks(a.sinks)
+    x = _dev_x(RC, a.n // 2, ["pets_dev", "caltech_dev"])
+    model.visual.trunk = _make_trunk(S, RC, model, a, "mean")
+    r1 = RC.l2n(_feat(model.visual, x, 16))
+    model.visual.trunk = orig
+    res = {"n": int(len(x))}
+    for fill in ("mean", "zero"):
+        a.hfill = fill
+        rc = _make_mask_trunk(RC, model, a)
+        model.visual.trunk = rc
+        e = RC.l2n(_feat(model.visual, x, 16))
+        model.visual.trunk = orig
+        caps = {}
+        for i in range(0, len(x), 16):
+            for k, v in _trace_mask(rc, torch.as_tensor(np.ascontiguousarray(x[i:i + 16]))).items():
+                caps.setdefault(k, []).append(v)
+        caps = {k: torch.cat(v) for k, v in caps.items()}
+        b, c = {}, {}
+        for l in range(rc.first, len(orig.blocks)):
+            act = [p for p, s0 in sinks if s0 <= l]
+            other = [i for i in range(orig.patch_embed.num_patches) if i not in {p for p, _ in sinks}]
+            for k in (f"res_{l}", f"fc2in_{l}"):
+                t = caps[k].abs()
+                sm, om = float(t[:, act].max()), float(t[:, other].max())
+                b[k] = {"sink_max": round(sm, 3), "other_max": round(om, 3), "ratio": round(sm / om, 4)}
+            for k, eps in ((f"n1_{l}", orig.blocks[l].norm1.eps), (f"n2_{l}", orig.blocks[l].norm2.eps)):
+                inv = 1 / torch.sqrt(caps[k].var(-1, unbiased=False) + eps)                # (B,N)
+                si, oi = inv[:, act], inv[:, other]
+                c[k] = {"sink_min": round(float(si.min()), 4), "sink_max": round(float(si.max()), 4),
+                        "other_min": round(float(oi.min()), 4), "other_max": round(float(oi.max()), 4),
+                        "inside": bool(si.min() >= oi.min() and si.max() <= oi.max())}
+        inv = 1 / torch.sqrt(caps["final"].var(-1, unbiased=False) + orig.norm.eps)
+        act = [p for p, _ in sinks]
+        other = [i for i in range(orig.patch_embed.num_patches) if i not in set(act)]
+        c["final"] = {"sink_min": round(float(inv[:, act].min()), 4), "sink_max": round(float(inv[:, act].max()), 4),
+                      "other_min": round(float(inv[:, other].min()), 4), "other_max": round(float(inv[:, other].max()), 4),
+                      "inside": bool(inv[:, act].min() >= inv[:, other].min() and inv[:, act].max() <= inv[:, other].max())}
+        cos = (e * r1).sum(1)
+        res[fill] = {"a_cos_min_vs_r1": float(cos.min()), "pass_a": bool(cos.min() >= 0.99999),
+                     "b": b, "pass_b": all(v["ratio"] <= 2 for v in b.values()),
+                     "c": c, "pass_c": all(v["inside"] for v in c.values())}
+        print(fill, "(a)", round(float(cos.min()), 7), res[fill]["pass_a"], " (b)", res[fill]["pass_b"],
+              "최대 비율", max(v["ratio"] for v in b.values()), " (c)", res[fill]["pass_c"],
+              "sink 1/√ 최대", max(v["sink_max"] for v in c.values()), "일반 최대", max(v["other_max"] for v in c.values()))
+    a.hfill = "mean"
+    row = _row(env, a, **res)
+    _append(out, "hccheck.jsonl", row)
+
+
 def cmd_attn(a):
     """(기록용, 판정에 안 씀) 블록마다 다른 토큰이 sink 패치에 주는 attention 비중 — 헤드 평균·최대, dev 사진 (원래 FP32)."""
     S, RC, env_info = _setup()
@@ -799,11 +957,18 @@ def main():
                    help="concat = 토큰 삭제 + K·V Concat (기본, R1). mask = 토큰 196개 유지 + 제자리 마스크 (D-041)")
     p.add_argument("--mask-form", default="full", choices=["full", "bcast"],
                    help="--graph mask의 상수 모양. full = 196토큰 크기 상수(기본, 12cbe01과 같음), bcast = m·(K_c−K) broadcast")
+    p.add_argument("--hfill", default="zero", choices=["zero", "mean"],
+                   help="--graph mask에서 sink 잔차를 채우는 값. zero = 0(기본, 이전과 같음), mean = h_c (hcache 하위 명령)")
     p.set_defaults(func=cmd_export)
     p = common(sub.add_parser("maskcheck"))
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩)")
     p.add_argument("--mask-form", default="full", choices=["full", "bcast"])
     p.set_defaults(func=cmd_maskcheck)
+    common(sub.add_parser("hcache")).set_defaults(func=cmd_hcache)
+    p = common(sub.add_parser("hccheck"))
+    p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩)")
+    p.add_argument("--mask-form", default="bcast", choices=["full", "bcast"])
+    p.set_defaults(func=cmd_hccheck, hfill="mean")
     p = common(sub.add_parser("attn"))
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩, stats와 같음)")
     p.set_defaults(func=cmd_attn)
