@@ -23,6 +23,7 @@ s2_regcache.py — sink 토큰을 지우고 그 K·V를 상수로 캐시해 붙�
   export    변환 모델을 ONNX로 (배치 가변 + b1) + ORT vs PyTorch 확인 + 연산 표                       (G2·G3 준비)
   maskcheck 제자리 마스크 그래프(D-041) vs R1 FP32 동치 확인. export --graph mask로 마스크 ONNX
   hcache    sink 잔차를 채울 h_c (보정 train 평균, 비-sink 토큰). hccheck: h_c 마스크 사전 확인 (a)(b)(c)
+  hcvcache  분산 맞춤 h_c* (G3b 4번째 시도): h_c의 채널 분산을 보정 train 비-sink LN 입력 분산 중앙값으로
   attn      (기록용) 블록마다 다른 토큰이 sink 패치에 주는 attention 비중 (원래 FP32, dev 사진)
 
 [사용]  (siglip2/ 폴더에서, RN50_RESULTS 지정)
@@ -377,6 +378,42 @@ def _hc_path(RC, sinks, calib_n, seed):
     return RC.ONNX_DIR / f"regcache_hc_{sinks_slug(sinks)}_highres{calib_n}_s{seed}.npz"
 
 
+def _hcv_path(RC, sinks, calib_n, seed):
+    return RC.ONNX_DIR / f"regcache_hcv_{sinks_slug(sinks)}_highres{calib_n}_s{seed}.npz"
+
+
+@torch.no_grad()
+def build_vtarget(trunk, x, sinks, bs=16):
+    """보정 사진 x로 v_target: 블록 l(≥ 첫 시작 블록) 입력(= norm1 입력)과 마지막 norm 입력에서 sink가 아닌 토큰의
+    토큰별 채널 분산(편향, LayerNorm과 같음)의 중앙값 → {"b<l>"/"final": float}."""
+    first = min(b for _, b in sinks)
+    N = trunk.patch_embed.num_patches
+    keep = [i for i in range(N) if i not in {p for p, _ in sinks}]
+    vs, n = {}, 0
+    for i in range(0, len(x), bs):
+        h = _embed_tokens(trunk, torch.as_tensor(np.ascontiguousarray(x[i:i + bs]), dtype=torch.float32))
+        for l, blk in enumerate(trunk.blocks):
+            if l >= first:
+                vs.setdefault(f"b{l}", []).append(h[:, keep].var(-1, unbiased=False).flatten())
+            h = blk(h)
+        vs.setdefault("final", []).append(h[:, keep].var(-1, unbiased=False).flatten())
+        n += len(h)
+    return {k: float(torch.cat(v).double().median()) for k, v in vs.items()}, n, len(keep)
+
+
+def match_var(hc, vt):
+    """h_c* = μ + (h_c − μ)·√(v_target / v(h_c)) — 채널 평균은 그대로, 채널 분산을 v_target으로."""
+    out, info = {}, {}
+    for k, v in hc.items():
+        v = np.asarray(v, dtype=np.float64)
+        mu, var = v.mean(), v.var()
+        w = mu + (v - mu) * np.sqrt(vt[k] / var)
+        out[k] = w.astype(np.float32)
+        info[k] = {"mu": round(float(mu), 6), "v_hc": round(float(var), 6), "v_target": round(float(vt[k]), 6),
+                   "v_hc_star": round(float(w.var()), 6)}
+    return out, info
+
+
 def save_cache(path, cache, meta):
     arr = {}
     for key, (k, v) in cache.items():
@@ -516,9 +553,9 @@ def _make_mask_trunk(RC, model, a):
     cache, meta = load_cache(cp)
     assert meta["sinks"] == [list(s) for s in sinks], (meta["sinks"], sinks)
     hc = None
-    if getattr(a, "hfill", "zero") == "mean":
-        hp = _hc_path(RC, sinks, a.calib_n, a.seed)
-        assert hp.exists(), f"{hp.name} 없음 — 먼저 hcache 하위 명령"
+    if getattr(a, "hfill", "zero") in ("mean", "meanvar"):
+        hp = (_hc_path if a.hfill == "mean" else _hcv_path)(RC, sinks, a.calib_n, a.seed)
+        assert hp.exists(), f"{hp.name} 없음 — 먼저 hcache / hcvcache 하위 명령"
         z = np.load(hp)
         assert json.loads(str(z["meta"]))["sinks"] == [list(s) for s in sinks]
         hc = {k: z[k] for k in z.files if k != "meta"}
@@ -690,7 +727,7 @@ def cmd_export(a):
     if a.graph == "mask":
         assert a.mode == "mean", "--graph mask는 mode=mean만"
         model.visual.trunk = _make_mask_trunk(RC, model, a)
-        stem = (f"siglip2_image_fp32_rcmask{'' if a.mask_form == 'full' else 'bc'}{'hc' if a.hfill == 'mean' else ''}"
+        stem = (f"siglip2_image_fp32_rcmask{'' if a.mask_form == 'full' else 'bc'}{ {'zero': '', 'mean': 'hc', 'meanvar': 'hcv'}[a.hfill] }"
                 f"{sinks_slug(sinks)}")
     else:
         model.visual.trunk = _make_trunk(S, RC, model, a, a.mode)
@@ -804,6 +841,34 @@ def cmd_hcache(a):
     print(json.dumps(row["norms"]), hp.name, n)
 
 
+def cmd_hcvcache(a):
+    """h_c* (G3b 4번째 시도): hcache의 h_c를 보정 구간(train 고화질 calib_n장, seed)의 비-sink 토큰 LN 입력 분산 중앙값에 맞춘다. dev는 쓰지 않는다."""
+    S, RC, env_info = _setup()
+    out = S.require_results_dir()
+    out.mkdir(parents=True, exist_ok=True)
+    env = env_info.collect()
+    env_info.write_env(out, env)
+    model, _ = _load_visual(S, a.threads)
+    sinks = parse_sinks(a.sinks)
+    hp = _hc_path(RC, sinks, a.calib_n, a.seed)
+    assert hp.exists(), f"{hp.name} 없음 — 먼저 hcache"
+    z = np.load(hp)
+    hc = {k: z[k] for k in z.files if k != "meta"}
+    from s2_quantize import calib_images                 # s2_quantize와 같은 보정 사진 (train, dev 제외)
+    x = calib_images("highres", a.calib_n, a.seed)
+    vt, n, nk = build_vtarget(model.visual.trunk, x, sinks)
+    assert n == a.calib_n, (n, a.calib_n)
+    hcs, info = match_var(hc, vt)
+    vp = _hcv_path(RC, sinks, a.calib_n, a.seed)
+    np.savez(vp, meta=json.dumps({"sinks": [list(s) for s in sinks], "calib": f"highres{a.calib_n}_s{a.seed}", "n": n,
+                                  "from": hp.name, "info": info, "commit": env["git"]["commit"]}), **hcs)
+    row = _row(env, a, file=vp.name, sha256=_sha256(vp), hc_file=hp.name, hc_sha256=_sha256(hp), n=n,
+               tokens_per_image=nk, info=info)
+    _append(out, "hcvcache.jsonl", row)
+    for k, v in info.items():
+        print(k, v)
+
+
 @torch.no_grad()
 def _trace_mask(rc, x):
     """MaskRegCacheTrunk.forward와 같은 순서로, 블록 l ≥ first의 norm1·norm2 입력, fc2 입력, 블록 출력과 마지막 norm 입력을 꺼낸다."""
@@ -844,7 +909,7 @@ def cmd_hccheck(a):
     r1 = RC.l2n(_feat(model.visual, x, 16))
     model.visual.trunk = orig
     res = {"n": int(len(x))}
-    for fill in ("mean", "zero"):
+    for fill in a.fills:
         a.hfill = fill
         rc = _make_mask_trunk(RC, model, a)
         model.visual.trunk = rc
@@ -882,7 +947,7 @@ def cmd_hccheck(a):
         print(fill, "(a)", round(float(cos.min()), 7), res[fill]["pass_a"], " (b)", res[fill]["pass_b"],
               "최대 비율", max(v["ratio"] for v in b.values()), " (c)", res[fill]["pass_c"],
               "sink 1/√ 최대", max(v["sink_max"] for v in c.values()), "일반 최대", max(v["other_max"] for v in c.values()))
-    a.hfill = "mean"
+    a.hfill = a.fills[0]
     row = _row(env, a, **res)
     _append(out, "hccheck.jsonl", row)
 
@@ -957,8 +1022,8 @@ def main():
                    help="concat = 토큰 삭제 + K·V Concat (기본, R1). mask = 토큰 196개 유지 + 제자리 마스크 (D-041)")
     p.add_argument("--mask-form", default="full", choices=["full", "bcast"],
                    help="--graph mask의 상수 모양. full = 196토큰 크기 상수(기본, 12cbe01과 같음), bcast = m·(K_c−K) broadcast")
-    p.add_argument("--hfill", default="zero", choices=["zero", "mean"],
-                   help="--graph mask에서 sink 잔차를 채우는 값. zero = 0(기본, 이전과 같음), mean = h_c (hcache 하위 명령)")
+    p.add_argument("--hfill", default="zero", choices=["zero", "mean", "meanvar"],
+                   help="--graph mask에서 sink 잔차를 채우는 값. zero = 0(기본, 이전과 같음), mean = h_c (hcache), meanvar = 분산 맞춤 h_c* (hcvcache)")
     p.set_defaults(func=cmd_export)
     p = common(sub.add_parser("maskcheck"))
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩)")
@@ -968,7 +1033,10 @@ def main():
     p = common(sub.add_parser("hccheck"))
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩)")
     p.add_argument("--mask-form", default="bcast", choices=["full", "bcast"])
+    p.add_argument("--fills", nargs="+", default=["mean", "zero"], choices=["meanvar", "mean", "zero"],
+                   help="확인할 채움 방식 (첫 번째가 주 구성). 기본 mean zero = 3번째 시도와 같음")
     p.set_defaults(func=cmd_hccheck, hfill="mean")
+    common(sub.add_parser("hcvcache")).set_defaults(func=cmd_hcvcache)
     p = common(sub.add_parser("attn"))
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩, stats와 같음)")
     p.set_defaults(func=cmd_attn)
