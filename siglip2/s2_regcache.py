@@ -24,6 +24,7 @@ s2_regcache.py — sink 토큰을 지우고 그 K·V를 상수로 캐시해 붙�
   maskcheck 제자리 마스크 그래프(D-041) vs R1 FP32 동치 확인. export --graph mask로 마스크 ONNX
   hcache    sink 잔차를 채울 h_c (보정 train 평균, 비-sink 토큰). hccheck: h_c 마스크 사전 확인 (a)(b)(c)
   hcvcache  분산 맞춤 h_c* (G3b 4번째 시도): h_c의 채널 분산을 보정 train 비-sink LN 입력 분산 중앙값으로
+  ucache    M2(--mask-site mlp)의 u_c: 원래 모델 norm2 출력의 보정 train 비-sink 평균. m2check: M2 사전 확인 (a)~(d)
   attn      (기록용) 블록마다 다른 토큰이 sink 패치에 주는 attention 비중 (원래 FP32, dev 사진)
 
 [사용]  (siglip2/ 폴더에서, RN50_RESULTS 지정)
@@ -262,19 +263,28 @@ class MaskRegCacheTrunk(nn.Module):
     sink 토큰의 잔차는 시작 블록 입력부터 매 블록 입출력에서 h·(1−m)으로 0 → 거대 값이 생기지 않는다.
     다른 토큰이 보는 key·value 집합이 RegCacheTrunk(mean)와 같으므로 수학적으로 같다. ONNX에는 상수 Mul·Add만 늘어난다 (Concat·Slice 없음)."""
 
-    def __init__(self, trunk, sinks, cache, form="full", hc=None):
+    def __init__(self, trunk, sinks, cache, form="full", hc=None, uc=None):
         super().__init__()
         _check_trunk(trunk)
         assert form in ("full", "bcast"), form
+        assert hc is None or uc is None, "hc(잔차 채움)와 uc(MLP 입력 바꿔 끼우기)는 함께 쓰지 않는다"
         self.t, self.sinks, self.form = trunk, list(sinks), form
         self.n_act = {}
         self.hfill = hc is not None          # True: sink 잔차를 0 대신 h_c(보정 평균, 비-sink 토큰)로 채움 (G3b 마지막 시도)
+        self.mlp_site = uc is not None       # True (M2, G3b 5번째): 잔차는 건드리지 않고 sink 행의 MLP 입력(norm2 출력)만 u_c로 바꿔 끼움
         N = trunk.patch_embed.num_patches
         assert all(0 <= p < N and 0 < b < len(trunk.blocks) for p, b in self.sinks), self.sinks
         self.first = min(b for _, b in self.sinks)
         H, d = trunk.blocks[0].attn.num_heads, trunk.blocks[0].attn.head_dim
         keys = [(f"b{l}", [p for p, b in self.sinks if b <= l]) for l in range(self.first, len(trunk.blocks))]
         keys.append(("pool", [p for p, _ in self.sinks]))
+        if self.mlp_site:
+            for l in range(self.first, len(trunk.blocks)):
+                act = [p for p, b in self.sinks if b <= l]
+                m = torch.zeros(1, N, 1)
+                m[0, act] = 1
+                self.register_buffer(f"zm_b{l}", m)                                       # MLP 입력을 바꿀 위치 m
+                self.register_buffer(f"uc_b{l}", torch.as_tensor(np.asarray(uc[f"b{l}"])).float().reshape(1, 1, -1))
         if self.hfill:
             for l in list(range(self.first, len(trunk.blocks))) + ["final"]:
                 key = f"b{l}" if l != "final" else "final"
@@ -306,6 +316,13 @@ class MaskRegCacheTrunk(nn.Module):
                     self.register_buffer(f"kc_{key}_{j}", k[:, j].reshape(1, H, 1, d).clone())
                     self.register_buffer(f"vc_{key}_{j}", v[:, j].reshape(1, H, 1, d).clone())
 
+    def _mlp_in(self, z, l):
+        """M2: z + m ⊙ (u_c − z) (sink 행의 MLP 입력만 u_c로). mlp_site가 아니면 그대로."""
+        if not self.mlp_site:
+            return z
+        m = getattr(self, f"zm_b{l}")
+        return z + m * (getattr(self, f"uc_b{l}") - z)
+
     def _fill(self, h, key):
         """hfill=False: h·(1−m) (0으로). hfill=True: h + m ⊙ (h_c − h) (상수 접기로 큰 상수가 생기지 않는 꼴)."""
         if not self.hfill:
@@ -327,10 +344,11 @@ class MaskRegCacheTrunk(nn.Module):
             if l < self.first:
                 h = blk(h)
                 continue
-            h = self._fill(h, f"b{l}")                                                  # 시작 블록 입력부터 sink 잔차 0 (또는 h_c)
+            if not self.mlp_site:
+                h = self._fill(h, f"b{l}")                                              # 시작 블록 입력부터 sink 잔차 0 (또는 h_c)
             h = h + blk.drop_path1(blk.ls1(attn_forward_mask(blk.attn, blk.norm1(h), *self._kv(f"b{l}"))))
-            h = h + blk.drop_path2(blk.ls2(blk.mlp(blk.norm2(h))))
-            if not self.hfill:
+            h = h + blk.drop_path2(blk.ls2(blk.mlp(self._mlp_in(blk.norm2(h), l))))
+            if not self.hfill and not self.mlp_site:
                 h = h * getattr(self, f"hm_b{l}")                                       # 블록 출력에서도 0
         if self.hfill:
             h = self._fill(h, "final")
@@ -401,6 +419,31 @@ def build_vtarget(trunk, x, sinks, bs=16):
     return {k: float(torch.cat(v).double().median()) for k, v in vs.items()}, n, len(keep)
 
 
+def _uc_path(RC, sinks, calib_n, seed):
+    return RC.ONNX_DIR / f"regcache_uc_{sinks_slug(sinks)}_highres{calib_n}_s{seed}.npz"
+
+
+@torch.no_grad()
+def build_uc(trunk, x, sinks, bs=16):
+    """M2의 u_c: 원래 FP32 모델에서 블록 l(≥ 첫 시작 블록)의 norm2 출력(affine 포함)을 sink가 아닌 토큰·사진에 대해 평균 → {"b<l>": (C,)}."""
+    first = min(b for _, b in sinks)
+    N = trunk.patch_embed.num_patches
+    keep = [i for i in range(N) if i not in {p for p, _ in sinks}]
+    acc, n = {}, 0
+    for i in range(0, len(x), bs):
+        h = _embed_tokens(trunk, torch.as_tensor(np.ascontiguousarray(x[i:i + bs]), dtype=torch.float32))
+        for l, blk in enumerate(trunk.blocks):
+            if l >= first:
+                h = h + blk.drop_path1(blk.ls1(blk.attn(blk.norm1(h))))
+                z = blk.norm2(h)
+                acc[f"b{l}"] = acc.get(f"b{l}", 0) + z[:, keep].double().sum((0, 1))
+                h = h + blk.drop_path2(blk.ls2(blk.mlp(z)))
+            else:
+                h = blk(h)
+        n += len(h)
+    return {k: (v / (n * len(keep))).float().numpy() for k, v in acc.items()}, n
+
+
 def match_var(hc, vt):
     """h_c* = μ + (h_c − μ)·√(v_target / v(h_c)) — 채널 평균은 그대로, 채널 분산을 v_target으로."""
     out, info = {}, {}
@@ -462,6 +505,8 @@ def cmd_selftest(a):
         res["mask_vs_mean_max_abs"] = float((MaskRegCacheTrunk(trunk, sinks, cache).eval()(x) - mean_out).abs().max())
         res["maskbc_vs_mean_max_abs"] = float((MaskRegCacheTrunk(trunk, sinks, cache, "bcast").eval()(x) - mean_out).abs().max())
         hc, _ = build_hc(trunk, x.numpy(), sinks, bs=2)
+        uc_t, _ = build_uc(trunk, x.numpy(), sinks, bs=2)
+        res["maskmlp_vs_mean_max_abs"] = float((MaskRegCacheTrunk(trunk, sinks, cache, "bcast", None, uc_t).eval()(x) - mean_out).abs().max())
         res["maskhc_vs_mean_max_abs"] = float((MaskRegCacheTrunk(trunk, sinks, cache, "bcast", hc).eval()(x) - mean_out).abs().max())
         res["mean_vs_original_cos_min"] = float(torch.nn.functional.cosine_similarity(mean_out, ref).min())
         res["none_vs_original_cos_min"] = float(torch.nn.functional.cosine_similarity(none_out, ref).min())
@@ -494,6 +539,7 @@ def cmd_selftest(a):
         "제자리 마스크 = mean (D-041)": res["mask_vs_mean_max_abs"] < 1e-4,
         "제자리 마스크 bcast = mean": res["maskbc_vs_mean_max_abs"] < 1e-4,
         "제자리 마스크 bcast + h_c 채움 = mean": res["maskhc_vs_mean_max_abs"] < 1e-4,
+        "제자리 마스크 bcast + MLP 입력 u_c (M2) = mean": res["maskmlp_vs_mean_max_abs"] < 1e-4,
         "TopK·NonZero 없음 (NPU 친화)": not any(o in ops for o in ("TopK", "NonZero", "ScatterND")),
     }
     res["checks"] = checks
@@ -559,7 +605,15 @@ def _make_mask_trunk(RC, model, a):
         z = np.load(hp)
         assert json.loads(str(z["meta"]))["sinks"] == [list(s) for s in sinks]
         hc = {k: z[k] for k in z.files if k != "meta"}
-    return MaskRegCacheTrunk(model.visual.trunk, sinks, cache, getattr(a, "mask_form", "full"), hc).eval()
+    uc = None
+    if getattr(a, "mask_site", "residual") == "mlp":
+        assert getattr(a, "hfill", "zero") == "zero", "--mask-site mlp에서는 --hfill을 쓰지 않는다 (잔차를 건드리지 않음)"
+        up = _uc_path(RC, sinks, a.calib_n, a.seed)
+        assert up.exists(), f"{up.name} 없음 — 먼저 ucache 하위 명령"
+        z = np.load(up)
+        assert json.loads(str(z["meta"]))["sinks"] == [list(s) for s in sinks]
+        uc = {k: z[k] for k in z.files if k != "meta"}
+    return MaskRegCacheTrunk(model.visual.trunk, sinks, cache, getattr(a, "mask_form", "full"), hc, uc).eval()
 
 
 def cmd_cache(a):
@@ -725,12 +779,13 @@ def cmd_export(a):
     model, preprocess = _load_visual(S, a.threads)
     sinks = parse_sinks(a.sinks)
     if a.graph != "mask":
-        assert a.mask_form == "full" and a.hfill == "zero", "--mask-form·--hfill은 --graph mask에서만 쓴다 (concat에서는 무시되므로 오류로 멈춤)"
+        assert a.mask_form == "full" and a.hfill == "zero" and a.mask_site == "residual", \
+            "--mask-form·--hfill·--mask-site는 --graph mask에서만 쓴다 (concat에서는 무시되므로 오류로 멈춤)"
     if a.graph == "mask":
         assert a.mode == "mean", "--graph mask는 mode=mean만"
         model.visual.trunk = _make_mask_trunk(RC, model, a)
         stem = (f"siglip2_image_fp32_rcmask{'' if a.mask_form == 'full' else 'bc'}{ {'zero': '', 'mean': 'hc', 'meanvar': 'hcv'}[a.hfill] }"
-                f"{sinks_slug(sinks)}")
+                f"{'mlp' if a.mask_site == 'mlp' else ''}{sinks_slug(sinks)}")
     else:
         model.visual.trunk = _make_trunk(S, RC, model, a, a.mode)
         stem = f"siglip2_image_fp32_rc{sinks_slug(sinks)}" + ("" if a.mode == "mean" else f"_{a.mode}")
@@ -869,6 +924,124 @@ def cmd_hcvcache(a):
     _append(out, "hcvcache.jsonl", row)
     for k, v in info.items():
         print(k, v)
+
+
+def cmd_ucache(a):
+    """M2 u_c: 보정 구간(train 고화질 calib_n장, seed)에서 원래 모델 norm2 출력의 비-sink 토큰 평균. dev는 쓰지 않는다."""
+    S, RC, env_info = _setup()
+    out = S.require_results_dir()
+    out.mkdir(parents=True, exist_ok=True)
+    env = env_info.collect()
+    env_info.write_env(out, env)
+    model, _ = _load_visual(S, a.threads)
+    sinks = parse_sinks(a.sinks)
+    from s2_quantize import calib_images                 # s2_quantize와 같은 보정 사진 (train, dev 제외)
+    x = calib_images("highres", a.calib_n, a.seed)
+    uc, n = build_uc(model.visual.trunk, x, sinks)
+    assert n == a.calib_n, (n, a.calib_n)
+    up = _uc_path(RC, sinks, a.calib_n, a.seed)
+    np.savez(up, meta=json.dumps({"sinks": [list(s) for s in sinks], "calib": f"highres{a.calib_n}_s{a.seed}", "n": n,
+                                  "commit": env["git"]["commit"]}), **uc)
+    row = _row(env, a, file=up.name, sha256=_sha256(up), n=n,
+               norms={k: round(float(np.linalg.norm(v)), 4) for k, v in uc.items()})
+    _append(out, "ucache.jsonl", row)
+    print(json.dumps(row["norms"]), up.name, n)
+
+
+@torch.no_grad()
+def _trace_m2(rc, x, orig=False):
+    """M2 그래프(또는 orig=True면 원래 모델)의 블록 l ≥ first: norm1·norm2 입력, norm2 출력 z, u_c − z, m⊙(u_c − z), z', fc2 입력, 블록 출력, 마지막 norm 입력."""
+    trunk, caps = rc.t, {}
+    h = _embed_tokens(trunk, x)
+    for l, blk in enumerate(trunk.blocks):
+        if l < rc.first:
+            h = blk(h)
+            continue
+        caps[f"n1_{l}"] = h
+        if orig:
+            h = h + blk.drop_path1(blk.ls1(blk.attn(blk.norm1(h))))
+        else:
+            h = h + blk.drop_path1(blk.ls1(attn_forward_mask(blk.attn, blk.norm1(h), *rc._kv(f"b{l}"))))
+        caps[f"n2_{l}"] = h
+        z = blk.norm2(h)
+        caps[f"z_{l}"] = z
+        if not orig:
+            m, u = getattr(rc, f"zm_b{l}"), getattr(rc, f"uc_b{l}")
+            d = u - z
+            caps[f"sub_{l}"], caps[f"mul_{l}"] = d, m * d
+            z = z + m * d
+            caps[f"add_{l}"] = z
+        f1 = blk.mlp.norm(blk.mlp.drop1(blk.mlp.act(blk.mlp.fc1(z))))
+        caps[f"fc2in_{l}"] = f1
+        h = h + blk.drop_path2(blk.ls2(blk.mlp.drop2(blk.mlp.fc2(f1))))
+        caps[f"res_{l}"] = h
+    caps["final"] = h
+    return caps
+
+
+def cmd_m2check(a):
+    """M2 사전 확인 (a) vs R1 cos (b) sink 행 잔차 max ≤ 일반 ×2 (c) 새 연산 범위 ≤ 원래 같은 위치(norm2 출력) ×2 (d) LN 1/√(분산+ε) 일반 범위 안. dev 사진."""
+    S, RC, env_info = _setup()
+    out = S.require_results_dir()
+    out.mkdir(parents=True, exist_ok=True)
+    env = env_info.collect()
+    env_info.write_env(out, env)
+    model, _ = _load_visual(S, a.threads)
+    orig = model.visual.trunk
+    sinks = parse_sinks(a.sinks)
+    x = _dev_x(RC, a.n // 2, ["pets_dev", "caltech_dev"])
+    model.visual.trunk = _make_trunk(S, RC, model, a, "mean")
+    r1 = RC.l2n(_feat(model.visual, x, 16))
+    model.visual.trunk = orig
+    rc = _make_mask_trunk(RC, model, a)
+    model.visual.trunk = rc
+    e = RC.l2n(_feat(model.visual, x, 16))
+    model.visual.trunk = orig
+    cm, co = {}, {}
+    for i in range(0, len(x), 16):
+        xb = torch.as_tensor(np.ascontiguousarray(x[i:i + 16]))
+        for k, v in _trace_m2(rc, xb).items():
+            cm.setdefault(k, []).append(v)
+        for k, v in _trace_m2(rc, xb, orig=True).items():
+            co.setdefault(k, []).append(v)
+    cm = {k: torch.cat(v) for k, v in cm.items()}
+    co = {k: torch.cat(v) for k, v in co.items()}
+    N = orig.patch_embed.num_patches
+    other = [i for i in range(N) if i not in {p for p, _ in sinks}]
+    rng = lambda t: (float(t.abs().max()), float(_range_ratio(t)[2]))      # (max, 99.9% 분위수)
+    b, c, d = {}, {}, {}
+    for l in range(rc.first, len(orig.blocks)):
+        act = [p for p, s0 in sinks if s0 <= l]
+        t = cm[f"res_{l}"].abs()
+        sm, om = float(t[:, act].max()), float(t[:, other].max())
+        b[f"res_{l}"] = {"sink_max": round(sm, 3), "other_max": round(om, 3), "ratio": round(sm / om, 4)}
+        ref_max, ref_q = rng(co[f"z_{l}"])                                   # 원래 모델의 같은 위치 텐서 = norm2 출력
+        for k in (f"z_{l}", f"sub_{l}", f"mul_{l}", f"add_{l}"):
+            mx, q = rng(cm[k])
+            c[k] = {"max": round(mx, 4), "p999": round(q, 4), "ref_max": round(ref_max, 4), "ref_p999": round(ref_q, 4),
+                    "ok": bool(mx <= 2 * ref_max and q <= 2 * ref_q)}
+        for k, eps in ((f"n1_{l}", orig.blocks[l].norm1.eps), (f"n2_{l}", orig.blocks[l].norm2.eps)):
+            inv = 1 / torch.sqrt(cm[k].var(-1, unbiased=False) + eps)
+            si, oi = inv[:, act], inv[:, other]
+            d[k] = {"sink_min": round(float(si.min()), 4), "sink_max": round(float(si.max()), 4),
+                    "other_min": round(float(oi.min()), 4), "other_max": round(float(oi.max()), 4),
+                    "inside": bool(si.min() >= oi.min() and si.max() <= oi.max())}
+    inv = 1 / torch.sqrt(cm["final"].var(-1, unbiased=False) + orig.norm.eps)
+    act = [p for p, _ in sinks]
+    d["final"] = {"sink_min": round(float(inv[:, act].min()), 4), "sink_max": round(float(inv[:, act].max()), 4),
+                  "other_min": round(float(inv[:, other].min()), 4), "other_max": round(float(inv[:, other].max()), 4),
+                  "inside": bool(inv[:, act].min() >= inv[:, other].min() and inv[:, act].max() <= inv[:, other].max())}
+    cos = (e * r1).sum(1)
+    res = {"n": int(len(x)), "a_cos_min_vs_r1": float(cos.min()), "pass_a": bool(cos.min() >= 0.99999),
+           "b": b, "pass_b": all(v["ratio"] <= 2 for v in b.values()),
+           "c": c, "pass_c_ranges": all(v["ok"] for v in c.values()),
+           "d": d, "pass_d": all(v["inside"] for v in d.values())}
+    row = _row(env, a, **res)
+    _append(out, "m2check.jsonl", row)
+    print("(a)", round(float(cos.min()), 7), res["pass_a"], " (b)", res["pass_b"], "최대 비율", max(v["ratio"] for v in b.values()),
+          " (c 범위)", res["pass_c_ranges"], "최대 max비", round(max(v["max"] / v["ref_max"] for v in c.values()), 3),
+          "최대 p99.9비", round(max(v["p999"] / max(v["ref_p999"], 1e-12) for v in c.values()), 3),
+          " (d)", res["pass_d"], "sink 1/√ 최대", max(v["sink_max"] for v in d.values()), "일반 최대", max(v["other_max"] for v in d.values()))
 
 
 @torch.no_grad()
@@ -1024,6 +1197,8 @@ def main():
                    help="concat = 토큰 삭제 + K·V Concat (기본, R1). mask = 토큰 196개 유지 + 제자리 마스크 (D-041)")
     p.add_argument("--mask-form", default="full", choices=["full", "bcast"],
                    help="--graph mask의 상수 모양. full = 196토큰 크기 상수(기본, 12cbe01과 같음), bcast = m·(K_c−K) broadcast")
+    p.add_argument("--mask-site", default="residual", choices=["residual", "mlp"],
+                   help="--graph mask에서 sink 행을 다루는 곳. residual = 잔차를 0/h_c로 채움(기본, 이전과 같음), mlp = 잔차는 그대로, MLP 입력만 u_c (M2, ucache)")
     p.add_argument("--hfill", default="zero", choices=["zero", "mean", "meanvar"],
                    help="--graph mask에서 sink 잔차를 채우는 값. zero = 0(기본, 이전과 같음), mean = h_c (hcache), meanvar = 분산 맞춤 h_c* (hcvcache)")
     p.set_defaults(func=cmd_export)
@@ -1039,6 +1214,10 @@ def main():
                    help="확인할 채움 방식 (첫 번째가 주 구성). 기본 mean zero = 3번째 시도와 같음")
     p.set_defaults(func=cmd_hccheck, hfill="mean")
     common(sub.add_parser("hcvcache")).set_defaults(func=cmd_hcvcache)
+    common(sub.add_parser("ucache")).set_defaults(func=cmd_ucache)
+    p = common(sub.add_parser("m2check"))
+    p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩)")
+    p.set_defaults(func=cmd_m2check, mask_form="bcast", mask_site="mlp", hfill="zero")
     p = common(sub.add_parser("attn"))
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩, stats와 같음)")
     p.set_defaults(func=cmd_attn)
