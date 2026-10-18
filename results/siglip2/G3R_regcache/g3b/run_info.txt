@@ -1,0 +1,8 @@
+commit=f64cc86 dirty=0 cfgs=A256L1_all8 B256L1_nosink16 har_sha256=fbf722b51272b4503ef792c083a61745ab393ed12f0c5659e02f05b7dc6c6d0a calib_sha256=91f551e312271d1af6c87c163505c9484e157dcf09afc91689609d7095ca4355
+08:28:48 optimize A256L1_all8 free=29G 시작
+08:55:52 A256L1_all8 optimize rc=0 sec=1624
+08:55:56 screen A256L1_all8 free=29G 시작
+09:02:15 A256L1_all8 screen rc=0 sec=379 food_dev {"n": 200, "top1": 0.0, "fp32_top1": 87.5, "cos_mean": 0.201, "cos_p1": -0.0441} 337s
+09:02:15 optimize B256L1_nosink16 free=29G 시작
+09:03:08 B256L1_nosink16 optimize rc=1 sec=53
+G3B DONE /home/junyong/siglip2_work/g3b_20261018_082847

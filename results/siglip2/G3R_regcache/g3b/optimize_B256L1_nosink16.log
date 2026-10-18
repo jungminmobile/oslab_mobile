@@ -1,0 +1,126 @@
+[info] Current Time: 09:02:17, 10/18/26
+[info] CPU: Architecture: x86_64, Model: Intel(R) Core(TM) Ultra 9 285K, Number Of Cores: 24, Utilization: 1.1%
+[info] Memory: Total: 30GB, Available: 29GB
+[info] System info: OS: Linux, Kernel: 6.6.114.1-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo optimize siglip2_rcmaskbc55at5_13at9.har --hw-arch hailo10h --model-script g3r_B256L1_nosink16.alls --calib-set-path calib_highres256_s0_nhwc.npy --output-har-path opt_B256L1_nosink16.har`
+[info] Hailo HW architecture: hailo10h
+[info] Loading model script commands to siglip2_rcmaskbc55at5_13at9 from g3r_B256L1_nosink16.alls
+[info] Starting Model Optimization
+[info] Model received quantization params from the hn
+[info] Notice: For optimal performance, if your model has more than 10M parameters, it is recommended to set the compression level to 4. (Current model has 92.36M parameters.)
+[info] Notice: For optimal accuracy with compressed models, it is recommended to set the optimization level to 4.
+[info] MatmulDecompose skipped
+[info] Starting Mixed Precision
+[info] Model Optimization Algorithm Mixed Precision is done (completion time is 00:00:01.44)
+[info] Starting LayerNorm Decomposition
+[info] Using dataset with 256 entries for calibration
+Calibration:   0%|          | 0/256 [00:00<?, ?entries/s]Calibration:   3%|▎         | 8/256 [00:05<03:03,  1.35entries/s]Calibration:   6%|▋         | 16/256 [00:06<01:20,  2.98entries/s]Calibration:   9%|▉         | 24/256 [00:06<00:47,  4.87entries/s]Calibration:  12%|█▎        | 32/256 [00:07<00:32,  6.92entries/s]Calibration:  16%|█▌        | 40/256 [00:07<00:23,  9.06entries/s]Calibration:  19%|█▉        | 48/256 [00:07<00:18, 11.14entries/s]Calibration:  22%|██▏       | 56/256 [00:09<00:22,  8.86entries/s]Calibration:  25%|██▌       | 64/256 [00:09<00:17, 10.75entries/s]Calibration:  28%|██▊       | 72/256 [00:10<00:14, 12.48entries/s]Calibration:  31%|███▏      | 80/256 [00:10<00:12, 14.15entries/s]Calibration:  34%|███▍      | 88/256 [00:10<00:10, 15.62entries/s]Calibration:  38%|███▊      | 96/256 [00:11<00:09, 16.86entries/s]Calibration:  41%|████      | 104/256 [00:11<00:08, 17.88entries/s]Calibration:  44%|████▍     | 112/256 [00:12<00:07, 18.54entries/s]Calibration:  47%|████▋     | 120/256 [00:12<00:07, 19.15entries/s]Calibration:  50%|█████     | 128/256 [00:12<00:06, 19.42entries/s]Calibration:  53%|█████▎    | 136/256 [00:13<00:06, 19.95entries/s]Calibration:  56%|█████▋    | 144/256 [00:13<00:05, 20.49entries/s]Calibration:  59%|█████▉    | 152/256 [00:13<00:05, 20.75entries/s]Calibration:  62%|██████▎   | 160/256 [00:14<00:04, 20.97entries/s]Calibration:  66%|██████▌   | 168/256 [00:14<00:04, 21.14entries/s]Calibration:  69%|██████▉   | 176/256 [00:15<00:03, 21.33entries/s]Calibration:  72%|███████▏  | 184/256 [00:15<00:03, 21.49entries/s]Calibration:  75%|███████▌  | 192/256 [00:15<00:02, 21.45entries/s]Calibration:  78%|███████▊  | 200/256 [00:16<00:02, 21.17entries/s]Calibration:  81%|████████▏ | 208/256 [00:16<00:02, 21.23entries/s]Calibration:  84%|████████▍ | 216/256 [00:16<00:01, 21.39entries/s]Calibration:  88%|████████▊ | 224/256 [00:17<00:01, 21.52entries/s]Calibration:  91%|█████████ | 232/256 [00:17<00:01, 21.49entries/s]Calibration:  94%|█████████▍| 240/256 [00:17<00:00, 21.51entries/s]Calibration:  97%|█████████▋| 248/256 [00:18<00:00, 21.32entries/s]Calibration: 100%|██████████| 256/256 [00:18<00:00, 21.34entries/s]Calibration: 100%|██████████| 256/256 [00:18<00:00, 21.34entries/s]Calibration: 100%|██████████| 256/256 [00:18<00:00, 13.65entries/s]
+[info] Model Optimization Algorithm LayerNorm Decomposition is done (completion time is 00:00:27.56)
+[error] Unsupported layers for the target mercury: siglip2_rcmaskbc55at5_13at9/precision_change16:
+  bias_mode: single_scale_decomposition
+  precision_mode: a16_w16_a8
+  precision_split_mode: disabled
+  quantization_groups: 1
+  signed_output: true
+  uint16_mode: disabled
+  weight_group_size: 0
+siglip2_rcmaskbc55at5_13at9/precision_change24:
+  bias_mode: single_scale_decomposition
+  precision_mode: a16_w16_a8
+  precision_split_mode: disabled
+  quantization_groups: 1
+  signed_output: true
+  uint16_mode: disabled
+  weight_group_size: 0
+siglip2_rcmaskbc55at5_13at9/precision_change32:
+  bias_mode: single_scale_decomposition
+  precision_mode: a16_w16_a8
+  precision_split_mode: disabled
+  quantization_groups: 1
+  signed_output: true
+  uint16_mode: disabled
+  weight_group_size: 0
+siglip2_rcmaskbc55at5_13at9/precision_change42:
+  bias_mode: single_scale_decomposition
+  precision_mode: a16_w16_a8
+  precision_split_mode: disabled
+  quantization_groups: 1
+  signed_output: true
+  uint16_mode: disabled
+  weight_group_size: 0
+siglip2_rcmaskbc55at5_13at9/precision_change52:
+  bias_mode: single_scale_decomposition
+  precision_mode: a16_w16_a8
+  precision_split_mode: disabled
+  quantization_groups: 1
+  signed_output: true
+  uint16_mode: disabled
+  weight_group_size: 0
+siglip2_rcmaskbc55at5_13at9/precision_change62:
+  bias_mode: single_scale_decomposition
+  precision_mode: a16_w16_a8
+  precision_split_mode: disabled
+  quantization_groups: 1
+  signed_output: true
+  uint16_mode: disabled
+  weight_group_size: 0
+siglip2_rcmaskbc55at5_13at9/precision_change72:
+  bias_mode: single_scale_decomposition
+  precision_mode: a16_w16_a8
+  precision_split_mode: disabled
+  quantization_groups: 1
+  signed_output: true
+  uint16_mode: disabled
+  weight_group_size: 0
+siglip2_rcmaskbc55at5_13at9/precision_change8:
+  bias_mode: single_scale_decomposition
+  precision_mode: a16_w16_a8
+  precision_split_mode: disabled
+  quantization_groups: 1
+  signed_output: true
+  uint16_mode: disabled
+  weight_group_size: 0
+
+Traceback (most recent call last):
+  File "/home/junyong/hailo10_venv/bin/hailo", line 6, in <module>
+    sys.exit(main())
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/cmd_utils/main.py", line 106, in main
+    ret_val = client_command_runner.run()
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/cmd_utils/base_utils.py", line 68, in run
+    return self._run(argv)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/cmd_utils/base_utils.py", line 98, in _run
+    return args.func(args)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/optimize_cli.py", line 128, in run
+    self._runner.optimize(dataset, work_dir=args.work_dir)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_common/states/states.py", line 16, in wrapped_func
+    return func(self, *args, **kwargs)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/runner/client_runner.py", line 2277, in optimize
+    result = self._optimize(
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_common/states/states.py", line 16, in wrapped_func
+    return func(self, *args, **kwargs)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/runner/client_runner.py", line 2085, in _optimize
+    checkpoint_info = self._sdk_backend.full_quantization(
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/sdk_backend/sdk_backend.py", line 1345, in full_quantization
+    new_checkpoint_info = self._full_acceleras_run(
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/sdk_backend/sdk_backend.py", line 1570, in _full_acceleras_run
+    new_checkpoint_info = self._optimization_flow_runner(optimization_flow, checkpoint_info)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/sdk_backend/sdk_backend.py", line 2183, in _optimization_flow_runner
+    optimization_flow.run()
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/tools/orchestator.py", line 239, in wrapper
+    return func(self, *args, **kwargs)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/flows/optimization_flow.py", line 404, in run
+    step_func()
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/tools/subprocess_wrapper.py", line 152, in parent_wrapper
+    func(self, *args, **kwargs)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/flows/optimization_flow.py", line 420, in step1
+    self.pre_quantization_structural()
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/flows/optimization_flow.py", line 485, in pre_quantization_structural
+    self._correct_model()
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/flows/optimization_flow.py", line 739, in _correct_model
+    self._verify_hw_support()
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/flows/optimization_flow.py", line 1024, in _verify_hw_support
+    raise AccelerasUnsupportedError(
+hailo_model_optimization.acceleras.utils.acceleras_exceptions.AccelerasUnsupportedError: Unsupported layers for the provided optimization target. Review the log to see exact layers and configurations
