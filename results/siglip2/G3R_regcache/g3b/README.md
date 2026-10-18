@@ -120,3 +120,14 @@ python siglip2/hailo/s2_dfc_native_check.py --har <har> --ctx native|fp_optimize
   (d) LN 분해 1/√(분산+ε)의 sink 행 값이 일반 토큰 범위 안
 - 그다음 parse → B2와 같은 규칙의 .alls(잔차 ew_add만 16비트, 이 HAR 층 이름으로 다시 매칭, 매칭 표 저장) → optimize → **출력 SNR이 10 dB 미만이면 스크리닝 생략하고 실패** → 스크리닝.
 - 새 기능은 기본 꺼진 옵션(`--mask-site mlp`)으로 넣고, 기본 export sha256이 이전과 같은지 확인한다. DFC는 모두 flock 안, free ≥ 15 GB.
+
+### 1단계 진단 결과 (10/18, `../diag5/`) → **판정: 주원인 = 잔차 위 마스크(채움) 연산 → 2단계 M2 진행** (0단계 규칙대로, 묻지 않음)
+| 진단 | 결과 | 파일 |
+|---|---|---|
+| ① 층별 정밀도 | 잔차 경로 위 층 중 **입력 8비트 층**: 원래 D256L1 **0개** / 0 채움 22개(h·(1−m) Mul이 `a8_w8_a8` → 잔차가 통째로 8비트 + 8→16 변환) / h_c* **8개 = 채움 덧셈 전부**(`a8_w8_a16`) | `residual_path_*.csv`, `residual_a8_summary.txt` |
+| ② 층별 잡음 | `hailo analyze-noise`는 원래 D256L1에서도 DFC 내부 오류(차원 768 vs 780)로 실패 → optimize가 HAR에 저장한 Layer Noise Analysis(누적 snr·층 자체 partial_snr)로 대체 | `layer_snr_*.csv`, `analyze_noise_*_fail.log` |
+| ② 누적 SNR 추적 (h_c*) | 블록 4 출력 15.6 dB(원래 16.3) → 블록 5 attention 뒤 15.7 → **블록 5 MLP 뒤 11.4 (−4.4)** → **블록 6 채움 덧셈 5.95 (−5.4, 단일 최대)** → 블록 7 채움 −2.1 … 채움 덧셈 합계 **−9.5 dB** → 최종 3.6 (원래 16.05) | `snr_trace_block5.txt`, `snr_trace_fill.txt` |
+| ② 부원인 | 블록 5 fc1(conv24)·fc2(conv25)가 B2에서 8비트: partial 6.1·10.8 dB (원래 D256L1은 16비트로 38·46 dB) → 블록 5 MLP에서 −4.4 dB. **M2로는 고쳐지지 않는다** (B2 규칙 고정) | 같음 |
+| ② 비주원인 | `reduce_sum_matmul*`(K′의 헤드별 합, 행렬곱 zero point 보정용으로 DFC가 새로 만든 8비트 층): 텐서 partial 1.3~2.5 dB로 가장 낮지만, 블록 5 Q·K′ᵀ 누적 SNR 13.1 dB = 원래 13.3 dB → 출력에 번지지 않음. 원래 모델에서는 이 합을 qkv conv가 직접 계산(780채널) | `reduce_sum_compare.txt` |
+| ③ limvals 같은 역할 비교 | 같은 이름 층 235개 중 h_c*가 원래보다 2배 이상 넓은 층 **0개** (38개는 2배 이상 좁음). K′ 범위 9.0 vs 원래 K 11.9 | `limvals_role_compare.txt` |
+- 해석: 용의 가설(잔차 위 8비트 마스크 연산)이 맞다. 0 채움과 h_c*의 결과가 같았던 것은 둘 다 잔차를 8비트로 지나게 했고, 블록 5 MLP 8비트도 공통이기 때문이다. LN 분해는 주원인이 아니다.
