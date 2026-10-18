@@ -1,0 +1,40 @@
+  fp32 cifar_A top1=76.90
+  fp32 pets_dev top1=93.33
+  fp32 flowers_dev top1=86.73
+  fp32 cars_dev top1=93.80
+  fp32 food_dev top1=89.44
+  fp32 caltech_dev top1=95.02
+  siglip2_image_fp32.onnx cifar_A top1=76.90
+  siglip2_image_fp32.onnx pets_dev top1=93.33
+  siglip2_image_fp32.onnx flowers_dev top1=86.73
+  siglip2_image_fp32.onnx cars_dev top1=93.80
+  siglip2_image_fp32.onnx food_dev top1=89.44
+  siglip2_image_fp32.onnx caltech_dev top1=95.02
+  siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatM cifar_A top1=71.80
+  siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatM pets_dev top1=92.93
+  siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatM flowers_dev top1=85.89
+  siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatM cars_dev top1=93.17
+  siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatM food_dev top1=87.82
+  siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatM caltech_dev top1=95.41
+  siglip2_image_int8_rothad_percentile99999_highres256_s0_u8_o cifar_A top1=71.40
+  siglip2_image_int8_rothad_percentile99999_highres256_s0_u8_o pets_dev top1=92.83
+  siglip2_image_int8_rothad_percentile99999_highres256_s0_u8_o flowers_dev top1=86.00
+  siglip2_image_int8_rothad_percentile99999_highres256_s0_u8_o cars_dev top1=93.80
+  siglip2_image_int8_rothad_percentile99999_highres256_s0_u8_o food_dev top1=87.82
+  siglip2_image_int8_rothad_percentile99999_highres256_s0_u8_o caltech_dev top1=94.82
+  siglip2_image_int8_rothad_r2had64_percentile99999_highres256 cifar_A top1=72.70
+  siglip2_image_int8_rothad_r2had64_percentile99999_highres256 pets_dev top1=92.32
+  siglip2_image_int8_rothad_r2had64_percentile99999_highres256 flowers_dev top1=86.42
+  siglip2_image_int8_rothad_r2had64_percentile99999_highres256 cars_dev top1=94.11
+  siglip2_image_int8_rothad_r2had64_percentile99999_highres256 food_dev top1=87.82
+  siglip2_image_int8_rothad_r2had64_percentile99999_highres256 caltech_dev top1=95.80
+{"model": "siglip2_image_fp32.onnx", "hr_dtop1": 0.0, "hr_dtop1_ci95": [0.0, 0.0], "hr_cos": 1.0, "baseline_class": "≤0.5%p"}
+{"model": "siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_idcheck_fc2L2.onnx", "hr_dtop1": -0.62, "hr_dtop1_ci95": [-1.09, -0.08], "hr_cos": 0.9548, "baseline_class": "≤1.0%p"}
+{"model": "siglip2_image_int8_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx", "hr_dtop1": -0.61, "hr_dtop1_ci95": [-1.07, -0.14], "hr_cos": 0.9685, "baseline_class": "≤1.0%p"}
+{"model": "siglip2_image_int8_rothad_r2had64_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx", "hr_dtop1": -0.37, "hr_dtop1_ci95": [-0.84, 0.12], "hr_cos": 0.9688, "baseline_class": "≤0.5%p"}
+pair siglip2_image_fp32 c16_rr_idcheck_fc2L2 -0.62 [-1.09, -0.08]
+pair siglip2_image_fp32 MatMul_hc16_rr_fc2L2 -0.61 [-1.07, -0.14]
+pair siglip2_image_fp32 MatMul_hc16_rr_fc2L2 -0.37 [-0.84, 0.12]
+pair c16_rr_idcheck_fc2L2 MatMul_hc16_rr_fc2L2 0.01 [-0.45, 0.48]
+pair c16_rr_idcheck_fc2L2 MatMul_hc16_rr_fc2L2 0.25 [-0.18, 0.71]
+pair MatMul_hc16_rr_fc2L2 MatMul_hc16_rr_fc2L2 0.24 [-0.16, 0.65]
