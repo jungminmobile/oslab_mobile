@@ -8,7 +8,7 @@ AGX Orin + Hailo-10H(HailoRT 5.3.0)에서 돈다. numpy + hailo_platform만 쓴�
   HEF 입력은 NHWC다 (s2_dfc_screen.py·s2_dfc_calib.py가 에뮬레이터·보정에 넣은 것과 같은 정규화된 float32 NHWC).
   입력·출력 형식을 FLOAT32로 두어 양자화·역양자화를 HailoRT가 한다 (HEF의 quant_info 그대로).
   출력: --out/emb_<이름>.npz (<set>_emb: N×D float32, 정규화 전), 데스크탑에서 top-1·cos를 계산한다.
-[bench] 배치 1 지연. 입력은 dev 사진 1장을 HEF quant_info로 양자화한 UINT8 (batch_bench.py와 같은 UINT8 입력), 출력 UINT8.
+[bench] 배치 1 지연. 입력은 dev 사진 1장을 HEF quant_info로 양자화한 UINT8 (batch_bench.py와 같은 UINT8 입력), 출력은 HEF 원래 형식(UINT16).
   모델마다: 워밍업 --warmup회 → --n회 각각 run_async+wait 시간(perf_counter). --rounds번 모델을 번갈아 잰다.
   hailortcli monitor는 켜지 않는다 (팀 규칙: 지연 꼬리 오염). 같은 프로세스에서 VDevice를 모델마다 새로 만들고 닫는다.
 [사용]
@@ -43,10 +43,15 @@ class Runner:
         self.vdevice = hpf.VDevice()
         self.im = self.vdevice.create_infer_model(str(hef))
         self.im.set_batch_size(1)
-        ft = hpf.FormatType.FLOAT32 if float_io else hpf.FormatType.UINT8
-        self.im.input().set_format_type(ft)
-        self.im.output().set_format_type(ft)
-        self.dtype = np.float32 if float_io else np.uint8
+        # float_io=False: 입력 UINT8(HEF 입력 그대로), 출력은 HEF 원래 형식 (SigLIP2 D256L1은 마지막 ew_add가 16비트라 UINT16 — UINT8로 두면 configure가 INVALID_ARGUMENT)
+        if float_io:
+            self.im.input().set_format_type(hpf.FormatType.FLOAT32)
+            self.im.output().set_format_type(hpf.FormatType.FLOAT32)
+            self.dtype = self.out_dtype = np.float32
+        else:
+            self.im.input().set_format_type(hpf.FormatType.UINT8)
+            self.dtype = np.uint8
+            self.out_dtype = {hpf.FormatType.UINT8: np.uint8, hpf.FormatType.UINT16: np.uint16}[self.im.output().format.type]
         self.cfg = self.im.configure()
         self.in_shape = tuple(self.im.input().shape)
         self.out_shape = tuple(self.im.output().shape)
@@ -54,7 +59,7 @@ class Runner:
         self.qin = (float(qi.qp_scale), float(qi.qp_zp))
         self.qout = (float(qo.qp_scale), float(qo.qp_zp))
         self.b = self.cfg.create_bindings()
-        self.ob = np.empty(self.out_shape, dtype=self.dtype)
+        self.ob = np.empty(self.out_shape, dtype=self.out_dtype)
         self.b.output().set_buffer(self.ob)
 
     def run(self, x):
