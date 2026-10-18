@@ -1,0 +1,49 @@
+{
+ "date": "2026-10-19T00:11:35",
+ "env": {
+  "python": "3.11.17",
+  "onnxruntime": "1.25.0",
+  "cpu": "x86_64",
+  "threads": 1
+ },
+ "cond": {
+  "models": [
+   "fp32=siglip2_image_fp32.onnx",
+   "R0_fc2L2=siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_idcheck_fc2L2.onnx",
+   "E3_projfp32=siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2_E3.onnx"
+  ],
+  "n": 200,
+  "repeats": 3,
+  "warmup": 20,
+  "threads": 1
+ },
+ "results": {
+  "fp32": {
+   "file": "siglip2_image_fp32.onnx",
+   "MiB": 354.5,
+   "ms_per_img_mean": 239.71,
+   "ms_per_img_std": 0.17,
+   "ms_per_img_min": 239.54,
+   "lat_p50": 239.2,
+   "lat_p95": 247.19
+  },
+  "R0_fc2L2": {
+   "file": "siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_idcheck_fc2L2.onnx",
+   "MiB": 105.3,
+   "ms_per_img_mean": 96.84,
+   "ms_per_img_std": 0.44,
+   "ms_per_img_min": 96.36,
+   "lat_p50": 96.34,
+   "lat_p95": 100.9
+  },
+  "E3_projfp32": {
+   "file": "siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2_E3.onnx",
+   "MiB": 125.5,
+   "ms_per_img_mean": 109.38,
+   "ms_per_img_std": 0.51,
+   "ms_per_img_min": 108.91,
+   "lat_p50": 108.91,
+   "lat_p95": 113.25
+  }
+ }
+}
