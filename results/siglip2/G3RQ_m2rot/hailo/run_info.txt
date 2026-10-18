@@ -1,0 +1,10 @@
+commit=0a6aa23 dirty=0 cfgs=M2rot_D256L1equiv har=siglip2_m2rot.har har_sha256=ab7b324a1658507181e26a70e0f1b1c3e8abbc378b44dc3756dfd218d5c396a3 calib_sha256=91f551e312271d1af6c87c163505c9484e157dcf09afc91689609d7095ca4355 lock=/home/junyong/siglip2_work/dfc.lock
+21:50:07 optimize M2rot_D256L1equiv 잠금 대기
+21:50:07 optimize M2rot_D256L1equiv 잠금 잡음
+21:50:07 optimize M2rot_D256L1equiv free=29G 시작
+22:20:05 M2rot_D256L1equiv optimize rc=0 sec=1798
+22:20:09 screen M2rot_D256L1equiv 잠금 대기
+22:20:09 screen M2rot_D256L1equiv 잠금 잡음
+22:20:09 screen M2rot_D256L1equiv free=29G 시작
+22:30:24 M2rot_D256L1equiv screen rc=0 sec=615 {"tag": "M2rot_D256L1equiv", "hr_cos": 0.9866, "hr_dtop1": -0.2, "sec": 583}
+G3B DONE /home/junyong/siglip2_work/g3b_20261018_215006
