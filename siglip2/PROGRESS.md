@@ -211,3 +211,13 @@
 - 이상치: ImageNetV2 클래스 이름 중복(missile·sunglasses)으로 점수 동점 → 계산 방법에 따라 0.05%p 차이. RN50도 해당 → STATUS 정민 공유란
 - 독립 검토 (10/16): 숫자는 모두 raw와 일치, 낡은 문서 문장과 C256L1 판정의 난수 민감성 지적 → 반영
 - 다음 할 일: 정민께 공식 지연(x86)·Hailo 교차 컴파일(D256L1) 요청, 준용 ARM 결과 비교, 팀원 재현 확인, 보고서 다듬기, RN50과 비교·제출 모델 선택(팀)
+
+## 2026-10-18 (G3R 레지스터 캐시 판별, 용 — 연구실 데스크탑 WSL Ubuntu-22.04, 브랜치 `siglip2/g3r-regcache`)
+- 환경: uv Python 3.11 venv, dev 7종 재구축(준혁 G2와 장수·top-1 동일), FP32 직접 export가 Release `333cad08…`와 비트 단위 동일. identity는 5eee 불일치(AVX2 vs AVX-512 보정 눈금 차이) → c887a42 코드와 같아 코드 동일성 통과
+- 결과: G1a·G1b 통과 (R1 FP32 Δ +0.10 [0.00, +0.22]). **G2 실패** (R1-INT8 − R0 −0.06 [−0.44, +0.33], 크기 −12.8%, t4 −4.1% 비공식). G3a는 토큰 축 Concat 미지원 → 제자리 마스크(D-041)로 파싱 통과, ORT INT8은 R1과 동률. **G3b 실패** (sink 잔차 0 → Hailo LN 분해 1/√ε 이상치, 마지막 시도 h_c 채움은 사전 확인 (c) 실패)
+- 결론: G3R 종료. ORT 최종(D-030) 그대로, G3R은 Hailo에도 쓰지 않음 (Hailo 최종은 같은 날 D-042에서 rothad_D256L1로 바뀜). 원인 가설(공통 −0.6~0.7%p는 QKV/LN, D-031)은 `siglip2/g3q-rotate`에서
+- 막힌 것·이상: 코드 버그 2개(stats hook, fp32 이중 감싸기) 수정 후 재실행. 1차 지연 측정이 DFC 로그 파일로 dirty → 재측정. WMI LoadPercentage 게이트 부정확 → 프로세스 합 게이트로 교체. DFC 스크리닝 RSS 18 GB로 WSL available 1 GB까지 → 중단, 이후 flock 공유
+- 다음 할 일: PR 전 `siglip2/g3-sensitivity` 최신으로 rebase, 3중 확인(독립 검토) 후 PR (용 확인)
+- (추가 17:30) 용 요청 4번째 Hailo 시도(분산 맞춤 h_c*): 사전 확인 통과·LN 이상치 제거됐으나 스크리닝 cos 0.733으로 실패 → G3R Hailo 종료. 다음: rebase·독립 검토·PR
+- (추가 저녁) 용 요청 5번째(진짜 마지막) Hailo 시도: 진단(층별 정밀도·optimize 저장 SNR·limvals) → 주원인 잔차 위 8비트 마스크 연산 확인 → M2 처방. M2 사전 확인 (d) 실패(블록 5의 55번 행 1/√가 일반 범위 아래)로 optimize 안 함 → G3R Hailo 종료. `hailo analyze-noise`는 원래 D256L1에서도 DFC 내부 오류(768 vs 780)
+- (추가 19:50) 용 승인 (d) 사후 변경으로 M2 진행: SNR 10.59 dB, 스크리닝 cos 0.936 → 실패, G3R Hailo 종료. 진단용 M2 + D256L1 16비트 구성: cos 0.980 (원래 D256L1 0.967, rothad 0.978, 같은 PC) — 후보 여부는 팀 결정

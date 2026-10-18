@@ -1,0 +1,98 @@
+{
+ "from": "m2check.jsonl (commit 127a4fd, dirty False)",
+ "rule": "고친 (d): sink_max <= other_max (위쪽만)",
+ "rows": {
+  "n1_5": {
+   "sink_max": 1.8117,
+   "other_max": 6.7104,
+   "pass_upper": true,
+   "pass_both_old": false
+  },
+  "n2_5": {
+   "sink_max": 1.9101,
+   "other_max": 5.5316,
+   "pass_upper": true,
+   "pass_both_old": false
+  },
+  "n1_6": {
+   "sink_max": 1.6084,
+   "other_max": 8.1599,
+   "pass_upper": true,
+   "pass_both_old": true
+  },
+  "n2_6": {
+   "sink_max": 1.8213,
+   "other_max": 6.173,
+   "pass_upper": true,
+   "pass_both_old": true
+  },
+  "n1_7": {
+   "sink_max": 1.679,
+   "other_max": 5.5115,
+   "pass_upper": true,
+   "pass_both_old": true
+  },
+  "n2_7": {
+   "sink_max": 1.6707,
+   "other_max": 6.7862,
+   "pass_upper": true,
+   "pass_both_old": true
+  },
+  "n1_8": {
+   "sink_max": 1.5989,
+   "other_max": 4.4704,
+   "pass_upper": true,
+   "pass_both_old": true
+  },
+  "n2_8": {
+   "sink_max": 1.5544,
+   "other_max": 4.2451,
+   "pass_upper": true,
+   "pass_both_old": true
+  },
+  "n1_9": {
+   "sink_max": 1.6792,
+   "other_max": 3.114,
+   "pass_upper": true,
+   "pass_both_old": true
+  },
+  "n2_9": {
+   "sink_max": 1.7642,
+   "other_max": 2.8723,
+   "pass_upper": true,
+   "pass_both_old": true
+  },
+  "n1_10": {
+   "sink_max": 1.4649,
+   "other_max": 2.0015,
+   "pass_upper": true,
+   "pass_both_old": true
+  },
+  "n2_10": {
+   "sink_max": 1.6878,
+   "other_max": 2.5397,
+   "pass_upper": true,
+   "pass_both_old": true
+  },
+  "n1_11": {
+   "sink_max": 1.3263,
+   "other_max": 1.669,
+   "pass_upper": true,
+   "pass_both_old": true
+  },
+  "n2_11": {
+   "sink_max": 1.4541,
+   "other_max": 1.6507,
+   "pass_upper": true,
+   "pass_both_old": true
+  },
+  "final": {
+   "sink_max": 0.846,
+   "other_max": 1.0117,
+   "pass_upper": true,
+   "pass_both_old": true
+  }
+ },
+ "pass_d_new": true,
+ "pass_d_old": false
+}

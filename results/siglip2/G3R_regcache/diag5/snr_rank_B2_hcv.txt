@@ -1,0 +1,35 @@
+partial SNR(층 하나만 양자화) 낮은 순 상위 15
+     1.34 dB  누적   0.72  기타(reduce_sum) reduce_sum_matmul23          a8_w8_a8     
+     1.58 dB  누적   1.24  기타(reduce_sum) reduce_sum_matmul13          a8_w8_a8     
+     1.58 dB  누적   0.68  기타(reduce_sum) reduce_sum_matmul19          a8_w8_a8     
+     1.58 dB  누적   1.53  기타(reduce_sum) reduce_sum_matmul11          a8_w8_a8     
+     1.58 dB  누적   1.14  기타(reduce_sum) reduce_sum_matmul15          a8_w8_a8     
+     1.58 dB  누적   0.80  기타(reduce_sum) reduce_sum_matmul17          a8_w8_a8     
+     1.58 dB  누적   0.77  기타(reduce_sum) reduce_sum_matmul21          a8_w8_a8     
+     2.03 dB  누적  -5.37  잔차 채움          ew_mult4                     a8_w8_a8     /trunk/Mul_4
+     2.43 dB  누적  -5.36  잔차 채움          ew_mult7                     a8_w8_a8     /trunk/Mul_8
+     2.50 dB  누적   2.08  기타(reduce_sum) reduce_sum_matmul25          a8_w8_a8     
+     3.49 dB  누적  -4.23  잔차 채움          ew_mult10                    a8_w8_a8     /trunk/Mul_12
+     3.50 dB  누적   2.87  잔차 채움          normalization16              a8_w8_a8     /trunk/Sub_3
+     4.00 dB  누적   2.35  잔차 채움          normalization21              a8_w8_a8     /trunk/Sub_6
+     4.28 dB  누적  -3.70  잔차 채움          ew_mult18                    a8_w8_a8     /trunk/Mul_22
+     4.70 dB  누적   1.76  잔차 채움          normalization26              a8_w8_a8     /trunk/Sub_9
+
+역할별 partial SNR (개수, 최소, 중앙값)
+  기타(reduce_sum)   n= 21  최소    1.34  중앙   26.43
+  잔차 채움            n= 24  최소    2.03  중앙    9.42
+  conv(선형층)        n= 78  최소    5.09  중앙   21.50
+  기타(activation)   n= 42  최소    7.45  중앙   27.57
+  attention 행렬곱    n= 26  최소   19.12  중앙   25.48
+  기타(ew_sub)       n= 13  최소   22.01  중앙   30.51
+  기타(ew_mult)      n= 13  최소   26.41  중앙   30.04
+  K·V 마스크          n= 72  최소   29.81  중앙   37.62
+  기타(dw)           n=  1  최소   35.49  중앙   35.49
+  LN 분해            n=130  최소   36.10  중앙   61.14
+  기타(reduce_max)   n= 13  최소   41.22  중앙   44.82
+  잔차 ew_add        n= 24  최소   47.68  중앙   55.55
+  기타(input_layer)  n=  1  최소   48.80  중앙   48.80
+  기타(const_input)  n= 34  최소   50.66  중앙   80.09
+  기타(output_layer) n=  1  최소   73.82  중앙   73.82
+  기타(space_to_depth) n=  1  최소   98.72  중앙   98.72
+  기타(concat)       n=  8  최소  106.67  중앙  107.17

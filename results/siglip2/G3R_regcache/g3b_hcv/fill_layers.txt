@@ -1,0 +1,10 @@
+채움 덧셈(잔차 흐름을 지나는 8비트 ew_add): 8
+  ew_add12  /trunk/Add_1     |limval|     8.19
+  ew_add17  /trunk/Add_6     |limval|    66.14
+  ew_add22  /trunk/Add_11    |limval|    73.81
+  ew_add27  /trunk/Add_16    |limval|    74.76
+  ew_add32  /trunk/Add_21    |limval|    75.07
+  ew_add39  /trunk/Add_28    |limval|    75.40
+  ew_add46  /trunk/Add_35    |limval|    76.02
+  ew_add53  /trunk/Add_42    |limval|   192.01
+참고: 잔차 ew_add(16비트) 블록 5 이후 |limval| 예: {'ew_add15': 5.87, 'ew_add16': 66.14, 'ew_add51': 74.7, 'ew_add52': 192.01}

@@ -1,0 +1,17 @@
+commit=eedd3a3 dirty=0 cfgs=DLm2_D256L1orig har=siglip2_rcm2.har har_sha256=4faabdf4913e20fa94c97f83124a04f634a571306a7084f89729f49923da4424 calib_sha256=91f551e312271d1af6c87c163505c9484e157dcf09afc91689609d7095ca4355 lock=/home/junyong/siglip2_work/dfc.lock
+19:08:41 optimize DLm2_D256L1orig 잠금 대기
+19:08:41 optimize DLm2_D256L1orig 잠금 잡음
+19:08:41 optimize DLm2_D256L1orig free=29G 시작
+19:09:33 DLm2_D256L1orig optimize rc=1 sec=52
+G3B DONE /home/junyong/siglip2_work/g3b_20261018_190839
+LITERAL_FAIL → 같은 의미로 옮긴 판
+commit=eedd3a3 dirty=0 cfgs=DLm2eq_D256L1equiv har=siglip2_rcm2.har har_sha256=4faabdf4913e20fa94c97f83124a04f634a571306a7084f89729f49923da4424 calib_sha256=91f551e312271d1af6c87c163505c9484e157dcf09afc91689609d7095ca4355 lock=/home/junyong/siglip2_work/dfc.lock
+19:09:34 optimize DLm2eq_D256L1equiv 잠금 대기
+19:09:34 optimize DLm2eq_D256L1equiv 잠금 잡음
+19:09:34 optimize DLm2eq_D256L1equiv free=29G 시작
+19:38:35 DLm2eq_D256L1equiv optimize rc=0 sec=1741
+19:38:39 screen DLm2eq_D256L1equiv 잠금 대기
+19:38:39 screen DLm2eq_D256L1equiv 잠금 잡음
+19:38:39 screen DLm2eq_D256L1equiv free=29G 시작
+19:49:08 DLm2eq_D256L1equiv screen rc=0 sec=629 {"tag": "DLm2eq_D256L1equiv", "hr_cos": 0.9803, "hr_dtop1": 1.1, "sec": 599}
+G3B DONE /home/junyong/siglip2_work/g3b_20261018_190933

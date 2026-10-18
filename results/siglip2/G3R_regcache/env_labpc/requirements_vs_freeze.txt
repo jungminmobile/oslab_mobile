@@ -1,0 +1,13 @@
+OK   timm==1.0.30
+OK   py-cpuinfo==9.0.0
+OK   transformers==5.19.0
+OK   torch==2.14.0
+OK   torchvision==0.29.0
+OK   open_clip_torch==3.3.0 (freeze 표기 open-clip-torch==3.3.0, 이름 표기만 다름)
+OK   numpy==2.4.4
+OK   onnx==1.23.1
+OK   onnxruntime==1.25.0
+OK   pillow==12.2.0
+OK   pyarrow==25.0.1
+OK   psutil==7.2.2
+OK   fvcore==0.1.5.post20221221

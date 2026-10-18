@@ -1,0 +1,12 @@
+commit=14fe06b dirty=0 cfgs=B2m2256L1_nosink16res har=siglip2_rcm2.har har_sha256=4faabdf4913e20fa94c97f83124a04f634a571306a7084f89729f49923da4424 calib_sha256=91f551e312271d1af6c87c163505c9484e157dcf09afc91689609d7095ca4355 lock=/home/junyong/siglip2_work/dfc.lock
+18:17:05 optimize B2m2256L1_nosink16res 잠금 대기
+18:17:05 optimize B2m2256L1_nosink16res 잠금 잡음
+18:17:05 optimize B2m2256L1_nosink16res free=29G 시작
+18:57:07 B2m2256L1_nosink16res optimize rc=0 sec=2402
+18:57:08 SNR 게이트: 출력 SNR 10.59 dB (기준 10)
+18:57:08 SNR ≥ 10 dB → 스크리닝 진행
+18:57:11 screen B2m2256L1_nosink16res 잠금 대기
+18:57:11 screen B2m2256L1_nosink16res 잠금 잡음
+18:57:11 screen B2m2256L1_nosink16res free=29G 시작
+19:07:47 B2m2256L1_nosink16res screen rc=0 sec=636 {"tag": "B2m2256L1_nosink16res", "hr_cos": 0.9358, "hr_dtop1": -5.0, "sec": 606}
+G3B DONE /home/junyong/siglip2_work/g3b_20261018_181703
