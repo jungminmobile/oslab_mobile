@@ -100,7 +100,10 @@ def info(a):
 def cmd_eval(a, out, models):
     res = info(a)
     res["models"] = {}
-    data = {d: np.load(Path(a.data) / f"{d}.npz") for d in SETS if (Path(a.data) / f"{d}.npz").exists()}
+    if a.x_npy:      # (기본 꺼짐) dev 캐시 <set>_x.npy를 그대로 (dev 전체, 10/18)
+        data = {d: {"x": np.load(Path(a.data) / f"{d}_x.npy", mmap_mode="r")} for d in SETS if (Path(a.data) / f"{d}_x.npy").exists()}
+    else:
+        data = {d: np.load(Path(a.data) / f"{d}.npz") for d in SETS if (Path(a.data) / f"{d}.npz").exists()}
     for name, hef in models.items():
         t0 = time.time()
         r = Runner(hef, float_io=True)
@@ -109,7 +112,7 @@ def cmd_eval(a, out, models):
         for d, z in data.items():
             x = z["x"]
             assert x.dtype == np.float32 and x.shape[1:] == (3, 224, 224)
-            e = np.stack([r.run(x[i].transpose(1, 2, 0)).reshape(-1).copy() for i in range(len(x))]).astype(np.float32)
+            e = np.stack([r.run(np.asarray(x[i]).transpose(1, 2, 0)).reshape(-1).copy() for i in range(len(x))]).astype(np.float32)
             embs[f"{d}_emb"] = e
             print(name, d, e.shape, f"{time.time() - t0:.0f}s", flush=True)
         res["models"][name] = {"hef": Path(hef).name, "hef_sha256": sha256(hef), "in_shape": r.in_shape, "out_shape": r.out_shape,
@@ -155,6 +158,7 @@ def main():
     ap.add_argument("--warmup", type=int, default=20)
     ap.add_argument("--n", type=int, default=200)
     ap.add_argument("--rounds", type=int, default=3)
+    ap.add_argument("--x-npy", action="store_true", help="(기본 꺼짐) eval 입력을 --data/<set>_x.npy에서 (dev 캐시 형식)")
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)

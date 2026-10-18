@@ -30,7 +30,8 @@ def main():
     ap.add_argument("--models", nargs="+", required=True)
     ap.add_argument("--vs", default="")
     ap.add_argument("--emu", default="", help="에뮬레이터 pred_<이름>.npz 폴더 (있으면 사진별 일치 비교)")
-    ap.add_argument("--k", type=int, default=200)
+    ap.add_argument("--k", type=int, default=200, help="데이터셋마다 앞 k장 (0이면 전체)")
+    ap.add_argument("--out-name", default="chip_eval.json")
     a = ap.parse_args()
     out = S.require_results_dir()
     env = env_info.collect()
@@ -41,7 +42,8 @@ def main():
         z = np.load(Path(a.chip) / f"emb_{m}.npz")
         row, P[m] = {}, {}
         for d in DATA:
-            y, W, ref = (np.load(RC.CACHE_DIR / f"{d}_{s}.npy")[:a.k] if s != "clf" else np.load(RC.CACHE_DIR / f"{d}_clf.npy")
+            sl = slice(None) if a.k == 0 else slice(a.k)
+            y, W, ref = (np.load(RC.CACHE_DIR / f"{d}_{s}.npy")[sl] if s != "clf" else np.load(RC.CACHE_DIR / f"{d}_clf.npy")
                          for s in ("y", "clf", "ref_fp32"))
             e = RC.l2n(z[f"{d}_emb"].astype(np.float32))
             assert e.shape == ref.shape, (m, d, e.shape, ref.shape)
@@ -80,7 +82,7 @@ def main():
                  "cifar_A_top1_diff": round(res["models"][m]["cifar_A"]["top1"] - res["models"][a.vs]["cifar_A"]["top1"], 2)}
             res["vs"][f"{m}-{a.vs}"] = r
             print(f"{m} − {a.vs}", json.dumps(r, ensure_ascii=False))
-    with open(out / "chip_eval.json", "w", encoding="utf-8") as f:
+    with open(out / a.out_name, "w", encoding="utf-8") as f:
         json.dump(res, f, ensure_ascii=False, indent=1)
 
 
