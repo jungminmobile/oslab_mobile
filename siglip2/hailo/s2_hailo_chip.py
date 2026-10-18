@@ -72,6 +72,13 @@ class Runner:
         return self.ob
 
     def close(self):
+        # batch_bench.py와 같은 순서: configured.shutdown() → bindings·configured·infer_model 해제 → VDevice release.
+        # shutdown 없이 마지막 run 직후 바로 release하면 HailoRT 5.3.0(Hailo-10H, hrpc)에서 VDevice 해제가 HAILO_TIMEOUT으로 멈췄다 (10/18)
+        time.sleep(0.2)               # 마지막 run 직후 바로 shutdown하면 HAILO_TIMEOUT (측정 구간 밖)
+        try:
+            self.cfg.shutdown()
+        except Exception:
+            pass
         for a in ("b", "ib", "cfg", "im"):
             try:
                 delattr(self, a)
