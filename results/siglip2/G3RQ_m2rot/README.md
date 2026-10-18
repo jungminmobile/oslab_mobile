@@ -1,6 +1,6 @@
 # G3RQ: M2 + 회전(rothad) 조합을 Hailo에서 평가 (설계, 2026-10-18)
 
-> 상태: **설계만, 실행 전.** 판정 기준(4절)은 결과를 보기 전에 고정한다. 브랜치 `siglip2/g3rq-m2rot` (`siglip2/g3r-regcache` + `origin/siglip2/g3q-rotate` merge), worktree `~/oslab_m2rot`. 담당: 용 (용 요청).
+> 상태: **컴파일까지 완료 (10/18 23:03), AGX 실칩 비교는 용 확인 대기.** 결과는 6절. 판정 기준(4절)은 결과를 보기 전에 고정한다. 브랜치 `siglip2/g3rq-m2rot` (`siglip2/g3r-regcache` + `origin/siglip2/g3q-rotate` merge), worktree `~/oslab_m2rot`. 담당: 용 (용 요청).
 
 ## 1. 질문
 회전 모델 rothad(D-042 Hailo 최종) 위에 G3R의 M2 그래프(sink K·V 캐시 교체 + sink 행 MLP 입력을 u_c로 교체, 잔차 마스크 없음)를 얹으면,
@@ -34,3 +34,36 @@ Hailo 에뮬레이터에서 rothad_D256L1·M2_D256L1보다 좋은가? 좋은 쪽
 ## 5. 공통
 - DFC는 모두 `flock ~/siglip2_work/dfc.lock` 안, 시작 전 `free -g` available ≥ 15 GB. hailo 로그는 저장소 밖 폴더.
 - 새 기능은 기본 꺼진 옵션만. 기본 export sha256이 이전과 같은지 확인한다.
+
+## 6. 결과 (10/18, 연구실 데스크탑 WSL Ubuntu-22.04, DFC 5.4.0 CPU)
+### 사전 확인 (`m2rotcheck.jsonl`, `graph_check.txt`, `parse.log`) — 모두 통과
+| 확인 | 결과 |
+|---|---|
+| (a) M2rot vs M2 FP32 cos 최소 (dev 64장) | **0.9999998** (기록: vs 원래 FP32 0.99940, M2도 0.99940) |
+| (b) 회전 모델 K_c·V_c vs 원래 캐시 최대 상대오차 | K 2.64e-7, V 5.46e-7 (≤ 1e-4) |
+| (c) 그래프 | 잔차 경로 위 새 연산 없음. 연산 개수는 Identity만 달랐다(63 vs 15 — 회전으로 접은 LN γ=1·β=0 상수를 exporter가 합치고 Identity로 이음). 두 파일 모두 `s2_rotate.undedup_initializers`로 풀면 연산 종류·개수가 같다 |
+| (d) sink 행 1/√(분산+ε) ≤ 일반 최대 | 15/15 통과 (sink 최대 1.91) |
+| (e) DFC 파싱 | rc=0, end node `/trunk/Gather`, native cos 0.99993. HAR 324층 (M2 349층 — 회전으로 LN affine `normalization` 층 25개가 빠짐) |
+- 캐시: `regcache_55at5-13at9_rothad_highres256_s0.npz` (`c205e3a0…`), `regcache_uc_55at5-13at9_rothad_highres256_s0.npz` (보정 train 256장 s0). 기본 `--rot none` export sha256은 이전 M2와 같음(`0e60fccc…`·`db66ec35…`).
+- export: `siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad(_b1).onnx` 354.39·354.36 MiB, ORT vs PyTorch 0.9999998.
+
+### Hailo (`hailo/`, `.alls` = `siglip2/hailo/g3r_M2rot_D256L1equiv.alls`, 층 매칭 `layer_matching.csv` — ew_add 57 = 위치 1 + 잔차 25 + 마스크 31, conv 6개 역할 확인)
+| 구성 (같은 PC, dev 6종 × 200장) | 출력 SNR | 고화질 cos | Δtop-1 | 출처 |
+|---|---|---|---|---|
+| rothad_D256L1 (D-042 현재 Hailo 최종) | — | 0.9775 | +0.4 | 회전 세션 `~/siglip2_work/hailo_g3q/screen_rothad_D256L1.log` |
+| M2_D256L1 | 16.41 dB | 0.9803 | +1.1 | `../G3R_regcache/g3b_m2_dl/` |
+| **M2rot_D256L1** | **18.03 dB** | **0.9866** | −0.2 | `hailo/screen.jsonl` (커밋 `0a6aa23`, dirty 아님) |
+- M2rot 데이터셋별 cos: CIFAR A 0.960·Pets 0.990·Flowers 0.988·Cars 0.987·Food 0.984·Caltech 0.985 (rothad: 0.954·0.984·0.981·0.975·0.975·0.974 — 6종 모두 M2rot이 높음).
+- Δtop-1은 200장 표본이라 구간이 ±1%p 정도다. 판정은 4절대로 cos로 한다.
+- **컴파일 대상 판정: M2rot_D256L1** (M2보다 cos +0.0063 ≥ 0.002).
+
+### 컴파일 (`hailo/compile/`)
+| HEF | compile | 크기 | 컨텍스트 | sha256 |
+|---|---|---|---|---|
+| rothad_D256L1 (G3Q) | 25분 19초 | 107,540,480 B (107.5 MB) | 17 | `7243b76c…` |
+| **M2rot_D256L1** | rc=0, 30분 55초 | **110,436,352 B (110.4 MB, +2.9 MB, +2.7%)** | **21 (+4)** | `94fff0976ac43480…` |
+- 컨텍스트가 4개 늘어서 실칩 지연이 늘 수 있다 (추정, 확인 안 함). 다음 단계 실칩 비교에서 지연을 같이 잰다.
+- HEF: `~/siglip2_work/g3b_20261018_215006/comp_M2rot_D256L1equiv/siglip2_m2rot.hef` (커밋하지 않음).
+
+### 다음 (용 확인 뒤)
+- AGX 실칩 dev 전체: rothad_D256L1 vs M2rot_D256L1, 짝 부트스트랩 95% 구간(시드 0, 1000회), 하한 > 0이면 "유의하게 좋음"으로 팀에 제안. 지연(배치 1, monitor 끔)도 같이.
