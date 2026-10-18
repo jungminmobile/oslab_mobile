@@ -164,3 +164,26 @@ python siglip2/hailo/s2_dfc_native_check.py --har <har> --ctx native|fp_optimize
 - (d)(e) 통과 시: parse → B2와 같은 규칙 .alls(잔차 ew_add만 16비트 + conv1·conv4·conv5, 층 이름 매칭 표 저장) → optimize → 출력 SNR < 10 dB면 스크리닝 생략·실패 → 스크리닝(cos ≥ 0.952).
   optimize 뒤 블록 5 fc1·fc2(conv24·conv25) partial SNR을 h_c* B2 HAR과 비교한다.
 - 스크리닝이 기준 미달이면 **진단용 1회만**: 같은 M2 그래프에 D256L1 원래 .alls(16비트 층 그대로)로 optimize → 스크리닝. "M2 그래프 자체가 Hailo에서 D256L1만큼 되는지" 보는 것이고 판정에 쓰지 않는다. 그 뒤 G3R Hailo 종료.
+
+### M2 결과 (사후 변경된 (d)·추가 (e) 적용, 10/18 18:17~19:49)
+| 단계 | 결과 |
+|---|---|
+| 고친 (d) 재판정 (`../g3b_m2/m2check_d_rejudge.json`) | 15/15 통과 (원래 기준으로는 13/15) |
+| (e) 블록 5 var_inv: D256L1 limvals vs M2 FP32(보정 256장, `m2lnrange.jsonl`) | norm1 7.24 vs 7.2411, norm2 5.61 vs 5.5876 (원래 FP32 5.6058) → 2배 이내, 통과 |
+| export·파싱 | ORT vs PyTorch 0.9999998, 354.53 MiB, 파싱 rc=0, native 0.99993. 잔차 Add의 h 입력에 새 연산 없음(그래프 확인), ew_add 57 = 위치 임베딩 1 + 잔차 25 + 마스크 31 (`ew_add_matching.csv`) |
+| optimize (B2 규칙 `g3r_B2m2256L1_nosink16res.alls`, 커밋 `14fe06b`) | rc=0, 40분, **출력 SNR 10.59 dB** (≥ 10 → 스크리닝 진행; h_c* 3.61, 원래 D256L1 16.05) |
+| **스크리닝 (dev 6종 × 200장, dirty 아님)** | **고화질 cos 0.9358, Δtop-1 −5.0%p** (CIFAR A 0.885·Pets 0.957·Flowers 0.956·Cars 0.915·Food 0.921·Caltech 0.930) → **0.952 미달, 판정 실패** |
+| 블록 5 fc1·fc2 partial SNR (`block5_mlp_snr_compare.txt`) | conv24 6.27 dB (h_c* 6.13), conv25 10.85 (10.84) → **좋아지지 않음**. 블록 9 fc2(conv41)는 16.27 → 22.68로 좋아짐. 블록 5 MLP의 8비트 손실은 sink 행이 아니라 일반 토큰 활성값 분포에서 오는 것으로 보인다 (가설) |
+
+### 진단용 (판정 아님): 같은 M2 그래프 + D256L1 16비트 구성 (`../g3b_m2_dl/`, 커밋 `eedd3a3`)
+- D256L1 원래 `.alls`를 글자 그대로 쓰면 `{ew_add*}`가 마스크 덧셈까지 16비트로 만들어 **optimize가 하드웨어 미지원(precision_change14)으로 바로 실패** (`optimize_DLm2_D256L1orig.log`).
+- 같은 의미로 옮긴 판(`g3r_DLm2eq_D256L1equiv.alls`: conv1 + 잔차 ew_add 26 + conv4·5·24·25·41 16비트): optimize rc=0, **출력 SNR 16.41 dB** (원래 D256L1 16.05).
+- 스크리닝: **고화질 cos 0.9803, Δtop-1 +1.1%p** (CIFAR A 0.931·Pets 0.986·Flowers 0.983·Cars 0.980·Food 0.975·Caltech 0.978).
+  같은 PC 참고: 원래 D256L1 0.9666 (Δ −0.5), 회전 rothad_D256L1(D-042 Hailo 최종) 0.9775 (Δ +0.4) — 회전 세션 `~/siglip2_work/hailo_g3q/screen_*.log`. 200장 표본이라 Δ 구간은 ±1%p 정도로, 우열은 말할 수 없다.
+- 블록 5·9 MLP 16비트로 partial SNR conv24 33.0·conv25 42.7·conv41 40.6 dB (`layer_snr_DLm2eq.csv`).
+- 해석: **M2 그래프 자체는 Hailo에서 D256L1 이상으로 동작한다.** 그러나 "16비트 층을 줄인다"는 G3b의 목적은 이루지 못했다 — 16비트 층 수는 D256L1과 같다 (블록 5 fc1·fc2·블록 9 fc2를 8비트로 내리면 cos 0.936).
+
+## G3R Hailo 종료 (10/18 19:50) — 5회 시도의 결론
+- 판정: **G3b 실패** (16비트를 줄인 구성 중 cos ≥ 0.952를 넘은 것이 없다).
+- 왜: ① sink 행을 잔차 위에서 바꾸면 그 연산이 8비트가 되어 잔차를 깎는다(진단). ② 잔차 밖(MLP 입력)으로 옮긴 M2는 이 문제를 풀었지만(SNR 3.6 → 10.6 dB), ③ 블록 5 fc1·fc2는 sink가 없어도 8비트에서 손실이 커서(−4.4 dB) 16비트 층을 줄이지 못했다.
+- 남은 관찰(진단, 판정 아님): M2 그래프 + D256L1 같은 16비트 구성은 스크리닝 cos 0.980으로 원래 D256L1(0.967)·rothad(0.978)와 같은 수준 이상. 이 구성을 후보로 볼지는 팀이 정한다 (dev 전체·컴파일·실칩 확인 전에는 결론 아님).
