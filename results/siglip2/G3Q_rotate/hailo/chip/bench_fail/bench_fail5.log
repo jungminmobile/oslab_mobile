@@ -1,0 +1,3 @@
+start 11:30:57 load=0.03 0.02 0.00
+[HailoRT] [error] Failed to destroy VDevice! status = HAILO_TIMEOUT(4)
+[HailoRT] [error] Failed to destroy Device! status = HAILO_TIMEOUT(4)

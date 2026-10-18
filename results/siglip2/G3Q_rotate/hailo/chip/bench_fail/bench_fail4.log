@@ -1,0 +1,36 @@
+start 11:29:50 load=0.02 0.01 0.00
+[HailoRT] [error] Failed to create vdevice. there are not enough free devices. requested: 1, found: 0
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_OUT_OF_PHYSICAL_DEVICES(74)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_OUT_OF_PHYSICAL_DEVICES(74)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_OUT_OF_PHYSICAL_DEVICES(74)
+Traceback (most recent call last):
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 3235, in _open_vdevice
+    self._vdevice = _pyhailort.VDevice.create(self._params, device_ids)
+hailo_platform.pyhailort._pyhailort.HailoRTStatusException: 74
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/oslab/ssd/junyong/hailo_g3q/s2_hailo_chip.py", line 159, in <module>
+    main()
+  File "/home/oslab/ssd/junyong/hailo_g3q/s2_hailo_chip.py", line 155, in main
+    (cmd_eval if a.cmd == "eval" else cmd_bench)(a, out, models)
+  File "/home/oslab/ssd/junyong/hailo_g3q/s2_hailo_chip.py", line 121, in cmd_bench
+    r = Runner(hef, float_io=False)
+  File "/home/oslab/ssd/junyong/hailo_g3q/s2_hailo_chip.py", line 43, in __init__
+    self.vdevice = hpf.VDevice()
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 3228, in __init__
+    self._open_vdevice()
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 3233, in _open_vdevice
+    with ExceptionWrapper():
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 110, in __exit__
+    self._raise_indicative_status_exception(value)
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 158, in _raise_indicative_status_exception
+    raise self.create_exception_from_status(error_code) from libhailort_exception
+hailo_platform.pyhailort._pyhailort.HailoRTException: libhailort failed with error: 74 (HAILO_OUT_OF_PHYSICAL_DEVICES)
+run2 D_D256L1 round 1 11:29:50
+run2 rothad_D256L1 round 1 11:29:52
+run2 D_D256L1 round 2 11:29:54
+run2 rothad_D256L1 round 2 11:29:56
+siglip2_rothad_b16_224: fps: 22.38
+done 11:30:09 load=0.08 0.03 0.00

@@ -1,0 +1,16 @@
+start 11:50:47 load=0.00 0.00 0.00
+{"round": 1, "model": "D_D256L1", "hef_sha256": "2413dd5b123d3f53", "mean_ms": 45.364, "median_ms": 45.317, "p90_ms": 45.521, "min_ms": 45.234, "max_ms": 45.7, "fps_from_mean": 22.04}
+{"round": 1, "model": "rothad_D256L1", "hef_sha256": "7243b76cb3b1f83b", "mean_ms": 46.209, "median_ms": 46.177, "p90_ms": 46.366, "min_ms": 46.082, "max_ms": 46.676, "fps_from_mean": 21.64}
+{"round": 2, "model": "D_D256L1", "hef_sha256": "2413dd5b123d3f53", "mean_ms": 45.369, "median_ms": 45.349, "p90_ms": 45.548, "min_ms": 45.227, "max_ms": 45.831, "fps_from_mean": 22.04}
+{"round": 2, "model": "rothad_D256L1", "hef_sha256": "7243b76cb3b1f83b", "mean_ms": 46.222, "median_ms": 46.181, "p90_ms": 46.374, "min_ms": 46.11, "max_ms": 46.465, "fps_from_mean": 21.63}
+{"round": 3, "model": "D_D256L1", "hef_sha256": "2413dd5b123d3f53", "mean_ms": 47.418, "median_ms": 45.451, "p90_ms": 51.412, "min_ms": 45.252, "max_ms": 51.818, "fps_from_mean": 21.09}
+{"round": 3, "model": "rothad_D256L1", "hef_sha256": "7243b76cb3b1f83b", "mean_ms": 52.343, "median_ms": 52.348, "p90_ms": 52.464, "min_ms": 52.217, "max_ms": 52.732, "fps_from_mean": 19.1}
+run2 D_D256L1 round 1 11:52:08
+siglip2_b16_224: fps: 19.99
+run2 rothad_D256L1 round 1 11:52:21
+siglip2_rothad_b16_224: fps: 19.68
+run2 D_D256L1 round 2 11:52:34
+siglip2_b16_224: fps: 19.98
+run2 rothad_D256L1 round 2 11:52:47
+siglip2_rothad_b16_224: fps: 19.68
+done 11:52:59 load=0.29 0.08 0.02

@@ -1,0 +1,2 @@
+2413dd5b123d3f531787ec362c91b4f4c82463f8af6f708fbc0a2ffeebdcb292  siglip2_b16_224.hef
+-rw-r--r-- 1 junyong junyong 99831808 Oct 18 11:10 siglip2_b16_224.hef

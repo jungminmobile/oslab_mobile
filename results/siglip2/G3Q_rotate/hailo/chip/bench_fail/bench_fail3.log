@@ -1,0 +1,10 @@
+start 11:28:28 load=0.00 0.01 0.00
+[HailoRT] [error] Failed to destroy VDevice! status = HAILO_TIMEOUT(4)
+[HailoRT] [error] Failed to destroy Device! status = HAILO_TIMEOUT(4)
+Terminated
+run2 D_D256L1 round 1 11:29:44
+siglip2_b16_224: fps: 22.78
+run2 rothad_D256L1 round 1 11:29:57
+run2 D_D256L1 round 2 11:29:59
+run2 rothad_D256L1 round 2 11:30:01
+done 11:30:03 load=0.08 0.03 0.00

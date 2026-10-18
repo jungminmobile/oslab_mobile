@@ -1,0 +1,34 @@
+start 11:14:59 load=0.22 0.05 0.01
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_INVALID_ARGUMENT(2)
+Traceback (most recent call last):
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 2558, in configure
+    configured_infer_model_cpp_obj = self._infer_model.configure()
+hailo_platform.pyhailort._pyhailort.HailoRTStatusException: 2
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/oslab/ssd/junyong/hailo_g3q/s2_hailo_chip.py", line 151, in <module>
+    main()
+  File "/home/oslab/ssd/junyong/hailo_g3q/s2_hailo_chip.py", line 147, in main
+    (cmd_eval if a.cmd == "eval" else cmd_bench)(a, out, models)
+  File "/home/oslab/ssd/junyong/hailo_g3q/s2_hailo_chip.py", line 113, in cmd_bench
+    r = Runner(hef, float_io=False)
+  File "/home/oslab/ssd/junyong/hailo_g3q/s2_hailo_chip.py", line 50, in __init__
+    self.cfg = self.im.configure()
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 2557, in configure
+    with ExceptionWrapper():
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 110, in __exit__
+    self._raise_indicative_status_exception(value)
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 158, in _raise_indicative_status_exception
+    raise self.create_exception_from_status(error_code) from libhailort_exception
+hailo_platform.pyhailort.pyhailort.HailoRTInvalidArgumentException: Invalid argument. See hailort.log for more information
+run2 D_D256L1 round 1 11:15:00
+siglip2_b16_224: fps: 22.78
+run2 rothad_D256L1 round 1 11:15:13
+siglip2_rothad_b16_224: fps: 21.18
+run2 D_D256L1 round 2 11:15:26
+siglip2_b16_224: fps: 19.98
+run2 rothad_D256L1 round 2 11:15:39
+siglip2_rothad_b16_224: fps: 19.68
+done 11:15:52 load=0.16 0.06 0.02
