@@ -1,0 +1,36 @@
+05:23:51 start load=0.07 0.02 0.00 users=0 other_hailo=0 sha_rothad=705c3a81417cae2c sha_m2rot=040a3ae1ebd81d99
+05:23:51 cool eval_rothad2_D256L1 max=62.61
+05:23:51 eval rothad2_D256L1 시작
+rothad2_D256L1 cifar_A (1000, 768) 53s
+rothad2_D256L1 pets_dev (990, 768) 110s
+rothad2_D256L1 flowers_dev (957, 768) 164s
+rothad2_D256L1 cars_dev (967, 768) 219s
+rothad2_D256L1 food_dev (985, 768) 276s
+rothad2_D256L1 caltech_dev (1024, 768) 334s
+05:29:27 eval rothad2_D256L1 끝
+05:34:00 cool eval_M2rot2_D256L1 max=64.23
+05:34:00 eval M2rot2_D256L1 시작
+M2rot2_D256L1 cifar_A (1000, 768) 56s
+M2rot2_D256L1 pets_dev (990, 768) 114s
+M2rot2_D256L1 flowers_dev (957, 768) 171s
+M2rot2_D256L1 cars_dev (967, 768) 227s
+M2rot2_D256L1 food_dev (985, 768) 285s
+M2rot2_D256L1 caltech_dev (1024, 768) 345s
+05:39:47 eval M2rot2_D256L1 끝
+05:44:51 cool bench_s1 max=64.28
+{"round": 1, "model": "rothad2_D256L1", "hef_sha256": "705c3a81417cae2c", "mean_ms": 46.213, "median_ms": 46.171, "p90_ms": 46.362, "min_ms": 46.106, "max_ms": 46.458, "fps_from_mean": 21.64}
+{"round": 1, "model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "mean_ms": 47.944, "median_ms": 47.974, "p90_ms": 48.045, "min_ms": 47.702, "max_ms": 48.695, "fps_from_mean": 20.86}
+05:45:18 bench s1 끝
+05:47:20 cool bench_s2 max=64.58
+{"round": 1, "model": "rothad2_D256L1", "hef_sha256": "705c3a81417cae2c", "mean_ms": 46.215, "median_ms": 46.171, "p90_ms": 46.375, "min_ms": 46.098, "max_ms": 46.484, "fps_from_mean": 21.64}
+{"round": 1, "model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "mean_ms": 47.931, "median_ms": 47.951, "p90_ms": 48.051, "min_ms": 47.74, "max_ms": 48.196, "fps_from_mean": 20.86}
+05:47:48 bench s2 끝
+05:49:49 cool bench_s3 max=64.53
+{"round": 1, "model": "rothad2_D256L1", "hef_sha256": "705c3a81417cae2c", "mean_ms": 46.203, "median_ms": 46.171, "p90_ms": 46.351, "min_ms": 46.087, "max_ms": 46.593, "fps_from_mean": 21.64}
+{"round": 1, "model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "mean_ms": 47.881, "median_ms": 47.868, "p90_ms": 48.021, "min_ms": 47.693, "max_ms": 48.175, "fps_from_mean": 20.89}
+05:50:17 bench s3 끝
+05:52:18 cool run2_rothad2_D256L1 max=64.53
+05:52:29 run2 rothad2_D256L1 siglip2_rothad_b16_224: fps: 22.28
+05:54:01 cool run2_M2rot2_D256L1 max=64.58
+05:54:12 run2 M2rot2_D256L1 siglip2_m2rot: fps: 21.58
+05:54:12 REPRO CHIP DONE load=0.00 0.01 0.00
