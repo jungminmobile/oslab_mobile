@@ -25,6 +25,7 @@ s2_regcache.py — sink 토큰을 지우고 그 K·V를 상수로 캐시해 붙�
   hcache    sink 잔차를 채울 h_c (보정 train 평균, 비-sink 토큰). hccheck: h_c 마스크 사전 확인 (a)(b)(c)
   hcvcache  분산 맞춤 h_c* (G3b 4번째 시도): h_c의 채널 분산을 보정 train 비-sink LN 입력 분산 중앙값으로
   ucache    M2(--mask-site mlp)의 u_c: 원래 모델 norm2 출력의 보정 train 비-sink 평균. m2check: M2 사전 확인 (a)~(d)
+  m2rotcheck G3RQ: --rot 회전 위 M2 사전 확인 (a) vs M2 (b) K·V 캐시 = 원래 (d) LN 1/√
   attn      (기록용) 블록마다 다른 토큰이 sink 패치에 주는 attention 비중 (원래 FP32, dev 사진)
 
 [사용]  (siglip2/ 폴더에서, RN50_RESULTS 지정)
@@ -420,7 +421,7 @@ def build_vtarget(trunk, x, sinks, bs=16):
 
 
 def _uc_path(RC, sinks, calib_n, seed):
-    return RC.ONNX_DIR / f"regcache_uc_{sinks_slug(sinks)}_highres{calib_n}_s{seed}.npz"
+    return RC.ONNX_DIR / f"regcache_uc_{sinks_slug(sinks)}{_rot_tag()}_highres{calib_n}_s{seed}.npz"
 
 
 @torch.no_grad()
@@ -558,15 +559,34 @@ def _setup():
     return S, S.RC, env_info
 
 
+ROT = "none"     # --rot (기본 none = 회전 없음, 이전과 같음). main()에서 정한다 (G3RQ, 10/18)
+
+
+def _rot_tag():
+    return "" if ROT == "none" else f"_{ROT}"
+
+
+def apply_rot(model, rot):
+    """s2_rotate의 회전(LN 접기·중심화·Q)을 FP32 가중치에 적용. Q 파일 sha256을 돌려준다."""
+    sys.path.insert(0, str(HERE))
+    import s2common as S
+    import s2_rotate as SR
+    Q, qsha = SR._load_q(S.RC, rot)
+    SR.rotate_trunk(model.visual.trunk, Q)
+    return qsha
+
+
 def _load_visual(S, threads):
     torch.set_num_threads(threads)
     model, preprocess, _ = S.load_model()
     unfuse(model)
+    if ROT != "none":
+        print(f"회전 적용: {ROT} (Q sha256 {apply_rot(model, ROT)[:16]})")
     return model, preprocess
 
 
 def _cache_path(RC, sinks, calib_n, seed):
-    return RC.ONNX_DIR / f"regcache_{sinks_slug(sinks)}_highres{calib_n}_s{seed}.npz"
+    return RC.ONNX_DIR / f"regcache_{sinks_slug(sinks)}{_rot_tag()}_highres{calib_n}_s{seed}.npz"
 
 
 def _row(env, a, **kw):
@@ -785,7 +805,7 @@ def cmd_export(a):
         assert a.mode == "mean", "--graph mask는 mode=mean만"
         model.visual.trunk = _make_mask_trunk(RC, model, a)
         stem = (f"siglip2_image_fp32_rcmask{'' if a.mask_form == 'full' else 'bc'}{ {'zero': '', 'mean': 'hc', 'meanvar': 'hcv'}[a.hfill] }"
-                f"{'mlp' if a.mask_site == 'mlp' else ''}{sinks_slug(sinks)}")
+                f"{'mlp' if a.mask_site == 'mlp' else ''}{sinks_slug(sinks)}{_rot_tag()}")
     else:
         model.visual.trunk = _make_trunk(S, RC, model, a, a.mode)
         stem = f"siglip2_image_fp32_rc{sinks_slug(sinks)}" + ("" if a.mode == "mean" else f"_{a.mode}")
@@ -1075,6 +1095,68 @@ def cmd_m2lnrange(a):
         print(f"{k:7s} M2 [{res['m2'][k]['min']:.4f}, {res['m2'][k]['max']:.4f}]   원래 [{res['orig'][k]['min']:.4f}, {res['orig'][k]['max']:.4f}]")
 
 
+def cmd_m2rotcheck(a):
+    """G3RQ 사전 확인 (a) M2rot vs M2 FP32 cos (+ vs 원래 FP32 기록) (b) 회전 모델 K_c·V_c = 원래 캐시 (d) sink 행 1/√ ≤ 일반 최대. dev 64장."""
+    global ROT
+    assert a.rot != "none", "--rot 필요"
+    S, RC, env_info = _setup()
+    out = S.require_results_dir()
+    out.mkdir(parents=True, exist_ok=True)
+    env = env_info.collect()
+    env_info.write_env(out, env)
+    sinks = parse_sinks(a.sinks)
+    x = _dev_x(RC, a.n // 2, ["pets_dev", "caltech_dev"])
+    ref = RC.l2n(np.concatenate([np.load(RC.CACHE_DIR / f"{d}_ref_fp32.npy")[:a.n // 2] for d in ["pets_dev", "caltech_dev"]]))
+    ROT = "none"                                                  # M2 (회전 없음)
+    model, _ = _load_visual(S, a.threads)
+    orig = model.visual.trunk
+    c0 = load_cache(_cache_path(RC, sinks, a.calib_n, a.seed))[0]
+    model.visual.trunk = _make_mask_trunk(RC, model, a)
+    m2 = RC.l2n(_feat(model.visual, x, 16))
+    model.visual.trunk = orig
+    del model
+    ROT = a.rot                                                   # M2rot
+    model, _ = _load_visual(S, a.threads)
+    orig = model.visual.trunk
+    c1 = load_cache(_cache_path(RC, sinks, a.calib_n, a.seed))[0]
+    rc = _make_mask_trunk(RC, model, a)
+    model.visual.trunk = rc
+    m2r = RC.l2n(_feat(model.visual, x, 16))
+    model.visual.trunk = orig
+    cos = (m2r * m2).sum(1)
+    relk = {k: float(np.linalg.norm(c1[k][0] - c0[k][0]) / np.linalg.norm(c0[k][0])) for k in c0}
+    relv = {k: float(np.linalg.norm(c1[k][1] - c0[k][1]) / np.linalg.norm(c0[k][1])) for k in c0}
+    # (d) sink 행 1/√(분산+ε) ≤ 일반 최대 (회전 모델의 LN은 γ=1·β=0, ε 그대로)
+    cm = {}
+    for i in range(0, len(x), 16):
+        for k, v in _trace_m2(rc, torch.as_tensor(np.ascontiguousarray(x[i:i + 16]))).items():
+            cm.setdefault(k, []).append(v)
+    cm = {k: torch.cat(v) for k, v in cm.items()}
+    N = orig.patch_embed.num_patches
+    other = [i for i in range(N) if i not in {p for p, _ in sinks}]
+    d = {}
+    for l in range(rc.first, len(orig.blocks)):
+        act = [p for p, s0 in sinks if s0 <= l]
+        for k, eps in ((f"n1_{l}", orig.blocks[l].norm1.eps), (f"n2_{l}", orig.blocks[l].norm2.eps)):
+            inv = 1 / torch.sqrt(cm[k].var(-1, unbiased=False) + eps)
+            d[k] = {"sink_max": round(float(inv[:, act].max()), 4), "other_max": round(float(inv[:, other].max()), 4)}
+    inv = 1 / torch.sqrt(cm["final"].var(-1, unbiased=False) + orig.norm.eps)
+    act = [p for p, _ in sinks]
+    d["final"] = {"sink_max": round(float(inv[:, act].max()), 4), "other_max": round(float(inv[:, other].max()), 4)}
+    for v in d.values():
+        v["pass"] = v["sink_max"] <= v["other_max"]
+    res = {"n": int(len(x)), "a_cos_min_vs_m2": float(cos.min()), "pass_a": bool(cos.min() >= 0.99999),
+           "record_m2rot_vs_fp32ref_cos_min": float((m2r * ref).sum(1).min()), "record_m2_vs_fp32ref_cos_min": float((m2 * ref).sum(1).min()),
+           "b_rel_err_k_max": max(relk.values()), "b_rel_err_v_max": max(relv.values()), "b_rel_err_k": relk, "b_rel_err_v": relv,
+           "pass_b": bool(max(relk.values()) <= 1e-4 and max(relv.values()) <= 1e-4), "d": d, "pass_d": all(v["pass"] for v in d.values())}
+    row = _row(env, a, **res)
+    _append(out, "m2rotcheck.jsonl", row)
+    print("(a) M2rot vs M2 cos 최소", round(res["a_cos_min_vs_m2"], 7), res["pass_a"], " (기록) vs 원래 FP32", round(res["record_m2rot_vs_fp32ref_cos_min"], 6),
+          "/ M2 vs 원래", round(res["record_m2_vs_fp32ref_cos_min"], 6))
+    print("(b) K·V 캐시 최대 상대오차 K", f"{res['b_rel_err_k_max']:.2e}", "V", f"{res['b_rel_err_v_max']:.2e}", res["pass_b"])
+    print("(d)", res["pass_d"], "sink 1/√ 최대", max(v["sink_max"] for v in d.values()), {k: v["pass"] for k, v in d.items() if not v["pass"]} or "모두 통과")
+
+
 @torch.no_grad()
 def _trace_mask(rc, x):
     """MaskRegCacheTrunk.forward와 같은 순서로, 블록 l ≥ first의 norm1·norm2 입력, fc2 입력, 블록 출력과 마지막 norm 입력을 꺼낸다."""
@@ -1206,6 +1288,8 @@ def main():
         if data:
             p.add_argument("--calib-n", type=int, default=256)
             p.add_argument("--seed", type=int, default=0)
+            p.add_argument("--rot", default="none", choices=["none", "rothad", "rotrand0"],
+                           help="(기본 none) s2_rotate 회전을 FP32 가중치에 먼저 적용 (G3RQ). 캐시·ONNX 이름에 _<rot>가 붙는다")
         return p
 
     p = common(sub.add_parser("selftest"), data=False)
@@ -1250,10 +1334,15 @@ def main():
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩)")
     p.set_defaults(func=cmd_m2check, mask_form="bcast", mask_site="mlp", hfill="zero")
     common(sub.add_parser("m2lnrange")).set_defaults(func=cmd_m2lnrange, mask_form="bcast", mask_site="mlp", hfill="zero")
+    p = common(sub.add_parser("m2rotcheck"))
+    p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩)")
+    p.set_defaults(func=cmd_m2rotcheck, mask_form="bcast", mask_site="mlp", hfill="zero")
     p = common(sub.add_parser("attn"))
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩, stats와 같음)")
     p.set_defaults(func=cmd_attn)
     a = ap.parse_args()
+    global ROT
+    ROT = getattr(a, "rot", "none")
     a.func(a)
 
 
