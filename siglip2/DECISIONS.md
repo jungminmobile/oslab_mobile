@@ -315,3 +315,4 @@
 - G2(ORT 채택)는 이 변경과 관계없이 실패로 확정 (README 9절)
 - 결과 (10/18): (a) cos 최소 0.9999998, (b) Concat·Slice·Expand·Where 원래와 같음·196 토큰, (c) `hailo parser --hw-arch hailo10h` 통과 → G3a 통과 (`results/siglip2/G3R_regcache/g3a_mask`). 지시대로 INT8 재평가·G3b·컴파일 전에 멈춤
 - 후속 (10/18, 용 승인): 상수 broadcast(`--mask-form bcast`)로 크기 R1과 같음, ORT INT8은 R1과 동률. G3b(16비트 줄이기)는 실패 — sink 잔차를 0으로 채우면 Hailo LN 분해 1/√ε 이상치, 마지막 시도 h_c 채움은 사전 확인 (c) 실패. **G3R 종료: ORT 미채택(G2), Hailo는 D256L1 유지** (`results/siglip2/G3R_regcache/g3b`)
+- **추가 (10/18, 사용자(용) 요청으로 4번째 시도, 이게 마지막):** 분산 맞춤 채움 벡터 h_c*(보정 train 256장의 비-sink 토큰 LN 입력 분산 중앙값에 맞춤)로 G3b를 1회 더 시도한다. 사전 확인 (a)(b)(c)와 판정(cos ≥ 0.952)은 같고, 실패하면 G3R Hailo는 끝. LN 분해 층 16비트 방법은 하지 않는다 (`results/siglip2/G3R_regcache/g3b/README.md` 4번째 시도)

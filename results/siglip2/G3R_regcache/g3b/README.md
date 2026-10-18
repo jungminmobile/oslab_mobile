@@ -64,3 +64,14 @@ python siglip2/hailo/s2_dfc_native_check.py --har <har> --ctx native|fp_optimize
 - **ORT:** sink 제거 그래프(R1, 또는 같은 계산의 제자리 마스크 bcast)는 FP32와 동치이고, fc2 예외 없이 MatMul 79개 전부 INT8로 R0와 동률 정확도(−0.06 [−0.44, +0.33]), 크기 −12.8%, 4스레드 지연 −4.1%(비공식). 다만 G2 비열등 기준(하한 ≥ −0.3)을 못 넘어 **채택하지 않는다**.
 - **Hailo:** 그래프는 파싱되지만(G3a 통과), sink 토큰을 0이나 평균으로 채우면 Hailo가 LayerNorm을 분해해 8비트로 양자화하는 1/√(분산+ε) 층에 새 이상치가 생겨 16비트 층을 줄인 구성이 무너진다 (cos 0.73~0.78 < 0.952). **Hailo 구성은 현재 D256L1 그대로 둔다.**
 - 보고서용 한 줄: "고정 위치 sink 토큰을 상수 K·V로 대체하면 ORT 정수 커널에서는 fc2 예외 없이 전부 8비트가 가능했지만(정확도 동률), NPU의 LayerNorm 분해 양자화와는 충돌했다."
+
+## 4번째(마지막) 시도: 분산 맞춤 채움 벡터 h_c* (용 직접 요청, 10/18 — D-041)
+### 고정한 정의와 기준 (실행 전)
+- h_c*[l] = μ_l + (h_c[l] − μ_l) · √(v_target[l] / v(h_c[l])). μ_l·v(h_c[l])는 h_c[l](3번째 시도의 보정 평균 벡터, 768차원)의 채널 평균·채널 분산(편향 분산, LayerNorm과 같음).
+- v_target[l] = 보정 구간(train 고화질 256장, 시드 0)에서 원래 FP32 모델의 그 LN 입력(블록 l 입력 = norm1 입력, 마지막은 `trunk.norm` 입력)의 **sink가 아닌 토큰**(194개 × 256장) 토큰별 채널 분산의 **중앙값**. dev는 쓰지 않는다.
+  → var(h_c*[l]) = v_target[l]이 되어, sink 행의 1/√(분산+ε)가 일반 토큰의 중앙값 수준이 된다.
+- 그래프: 3번째 시도와 같은 h + m ⊙ (h_c* − h). K·V는 bcast 캐시 그대로 → R1과 동치.
+- 사전 확인 (a)(b)(c): 3번째 시도와 같은 기준. 셋 다 통과하면 B2 구성(잔차 ew_add 26개만 16비트) optimize → 스크리닝(dev 6종 × 200장), 판정 고화질 cos ≥ 0.952.
+  optimize 뒤 LN 분해 층 limvals를 원래 모델 D256L1 HAR(`~/siglip2_work/hailo_g3q/opt_D_D256L1.har`, 이 PC에서 회전 세션이 팀 `.alls`로 만든 것, 이 PC 스크리닝 hr_cos 0.9666)과 나란히 비교한다.
+- **(c)가 또 실패하거나 스크리닝이 기준 미달이면 G3R Hailo는 끝.** .alls에서 LN 분해 층을 16비트로 두는 방법은 하지 않는다.
+- DFC(optimize·스크리닝)는 `flock ~/siglip2_work/dfc.lock` 안에서, 시작 전 `free -g` available ≥ 15 GB 확인.
