@@ -60,6 +60,7 @@ RN50_RESULTS=../results/siglip2/G3_cumulative/qkv_precision python s2_quantize.p
 ```
 
 - 같은 버전이면 결과 ONNX는 비트 단위로 같다 (새 가상환경에서 확인, `results/siglip2/G3_repro`). 보정에 실제로 쓰인 장수를 assert한다.
+- **재현은 배포한 ONNX 파일로 한다.** 같은 명령이라도 다른 PC에서 다시 양자화하면 활성값 눈금이 아주 조금 달라져 정확도가 0.1~0.2%p 다를 수 있다 (연구실 PC 재양자화 dev −0.62 vs 배포 파일 −0.78, D-042). 배포 파일 자체는 x86 두 세대(AVX-512 VNNI, AVX-VNNI)에서 출력이 비트 단위로 같다 (`results/siglip2/G3_xplat`).
 
 ## 4. 정확도 (dev, 정수 커널)
 
