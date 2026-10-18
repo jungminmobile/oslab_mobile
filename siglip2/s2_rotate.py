@@ -197,6 +197,67 @@ def rotate_trunk(trunk, Q, center=True):
     return trunk
 
 
+R2S = ["had64"]
+
+
+def make_r2(name, d=64, seed=0):
+    """(R2, 기본 꺼짐) 헤드 안쪽 회전 R = diag(s)·H_d/√d, s = ±1 부호 d개 (torch 시드 0). 모든 블록·헤드에 같은 R."""
+    assert name == "had64" and d == 64
+    g = torch.Generator().manual_seed(seed)
+    s = (torch.randint(0, 2, (d,), generator=g, dtype=torch.int64) * 2 - 1).double().numpy()
+    R = np.diag(s) @ hadamard_sylvester(d) / np.sqrt(d)
+    assert np.abs(R.T @ R - np.eye(d)).max() < 1e-12
+    return R
+
+
+@torch.no_grad()
+def rotate_r2(trunk, R):
+    """블록마다 헤드마다 V를 R로 돌리고(qkv의 V 출력 행 W_v,h ← Rᵀ·W_v,h, b_v,h ← Rᵀ·b_v,h) attn.proj 입력 열을 같이 돌린다
+    (W_o[:, h] ← W_o[:, h]·R). (P·V·R)·(W_o,h·R)ᵀ = P·V·W_o,hᵀ로 동치. 풀링 헤드는 건드리지 않는다.
+    timm Attention: qkv 출력 = [q|k|v] × 헤드 × d, attention 출력 = (P·V).transpose(1,2).reshape → proj 입력 열 = 헤드 × d."""
+    Rt = torch.as_tensor(R, dtype=torch.float64)
+    for blk in trunk.blocks:
+        at = blk.attn
+        H, d = at.num_heads, at.head_dim
+        C = H * d
+        assert Rt.shape == (d, d) and at.qkv.out_features == 3 * C and isinstance(at.norm, nn.Identity)
+        assert getattr(at, "gate", None) is None and at.proj.in_features == C
+        Wq, bq = at.qkv.weight.double(), at.qkv.bias.double()
+        Wo = at.proj.weight.double()
+        for h in range(H):
+            r = slice(2 * C + h * d, 2 * C + (h + 1) * d)      # V 헤드 h의 qkv 출력 행
+            Wq[r] = Rt.T @ Wq[r]
+            bq[r] = Rt.T @ bq[r]
+            c = slice(h * d, (h + 1) * d)                      # proj 입력 열 (헤드 h)
+            Wo[:, c] = Wo[:, c] @ Rt
+        at.qkv.weight.copy_(Wq.to(at.qkv.weight.dtype))
+        at.qkv.bias.copy_(bq.to(at.qkv.bias.dtype))
+        at.proj.weight.copy_(Wo.to(at.proj.weight.dtype))
+    return trunk
+
+
+@torch.no_grad()
+def _proj_in_ratios(trunk, x):
+    """(R2 진단) attn proj 입력(헤드 출력 이어붙인 것)의 max/p99.9와 채널별 max 최대/중앙값."""
+    caps, hs = {}, []
+    for l, blk in enumerate(trunk.blocks):
+        hs.append(blk.attn.proj.register_forward_hook(lambda m, i, o, l=l: caps.setdefault(f"proj{l}", []).append(i[0].detach()) and None))
+    try:
+        for i in range(0, len(x), 16):
+            trunk(torch.as_tensor(np.ascontiguousarray(x[i:i + 16]), dtype=torch.float32))
+    finally:
+        for h in hs:
+            h.remove()
+    res = {}
+    for k, v in caps.items():
+        t = torch.cat(v).reshape(-1, 768).abs()
+        flat = t.flatten()
+        q = flat.kthvalue(max(1, int(np.ceil(0.999 * flat.numel())))).values
+        ch = t.max(0).values
+        res[k] = {"max_over_p999": round(float(flat.max() / q), 3), "ch_max_over_median": round(float(ch.max() / ch.median()), 3)}
+    return res
+
+
 def unfuse(module):
     n = 0
     for m in module.modules():
@@ -282,7 +343,59 @@ def _randomize(trunk, gen):
     trunk.blocks[5].mlp.fc2.bias[67] += 20.0          # 거대 채널 흉내 (G3_why 채널 67)
 
 
+def cmd_selftest_r2(a):
+    """(--r2) 무작위 가중치: R2 단독·rothad+R2가 원래와 동치, ORT = PyTorch, 연산·이름 같음."""
+    import timm
+    torch.manual_seed(0)
+    gen = torch.Generator().manual_seed(1)
+    base = timm.create_model("vit_base_patch16_siglip_224", pretrained=False, num_classes=0).eval()
+    unfuse(base)
+    _randomize(base, gen)
+    x = torch.randn(4, 3, 224, 224, generator=gen)
+    R = make_r2(a.r2)
+    with torch.no_grad():
+        ref = base(x)
+    res, checks = {"r2": a.r2}, {}
+    tmp = Path(tempfile.mkdtemp(prefix="s2rot_r2_", dir=a.tmp))
+    try:
+        sig = {}
+        for tag, dyn in (("dyn", True), ("b1", False)):
+            p = tmp / f"orig_{tag}.onnx"
+            export_onnx(base, p, dyn)
+            sig[tag] = graph_sig(p)
+            p.unlink()
+        for name, qn in (("r2", None), ("rothad_r2", "rothad")):
+            m = copy.deepcopy(base)
+            if qn:
+                rotate_trunk(m, make_q(qn))
+            rotate_r2(m, R).eval()
+            with torch.no_grad():
+                y = m(x)
+            r = {"vs_orig_max_abs": float((y - ref).abs().max())}
+            for tag, dyn in (("dyn", True), ("b1", False)):
+                p = tmp / f"{name}_{tag}.onnx"
+                export_onnx(m, p, dyn)
+                ops, names, inits = graph_sig(p)
+                r[f"graph_equal_{tag}"] = ops == sig[tag][0] and names == sig[tag][1] and inits == sig[tag][2]
+                r[f"ort_vs_torch_{tag}"] = float(np.abs(ort_run(p, x.numpy(), 4 if dyn else 1) - y.numpy()).max())
+                p.unlink()
+            res[name] = r
+            checks.update({f"{name}: 회전 = 원래 (< 1e-4)": r["vs_orig_max_abs"] < 1e-4,
+                           f"{name}: ORT = PyTorch (< 1e-4)": max(r["ort_vs_torch_dyn"], r["ort_vs_torch_b1"]) < 1e-4,
+                           f"{name}: 그래프 같음 (dyn·b1)": r["graph_equal_dyn"] and r["graph_equal_b1"]})
+    finally:
+        for p in tmp.glob("*"):
+            p.unlink()
+        tmp.rmdir()
+    res["checks"] = checks
+    print(json.dumps(res, ensure_ascii=False, indent=1))
+    assert all(checks.values()), {k: v for k, v in checks.items() if not v}
+    print("selftest --r2 통과")
+
+
 def cmd_selftest(a):
+    if getattr(a, "r2", ""):
+        return cmd_selftest_r2(a)
     import timm
     import onnxruntime
     torch.manual_seed(0)
@@ -483,20 +596,33 @@ def cmd_fp32(a):
     base = _feat(model.visual, x)
     rows = {"original": {"vs_ref_cos_min": float((l2n(base) * ref).sum(1).min()),
                          "ln_out": _ln_out_ratios(model.visual.trunk, x)}}
+    if a.r2:                                   # (기본 꺼짐) R2 진단: 원래 모델의 attn proj 입력 범위
+        rows["original"]["proj_in"] = _proj_in_ratios(model.visual.trunk, x)
     for qn in a.q:
         t0 = time.time()
-        Q, qsha = _load_q(RC, qn)
+        Q, qsha = _load_q(RC, qn) if qn != "none" else (None, None)
         vis = copy.deepcopy(model.visual)
-        rotate_trunk(vis.trunk, Q)
+        if Q is not None:
+            rotate_trunk(vis.trunk, Q)
+        if a.r2:
+            rows.setdefault(f"{qn}_noR2", {})["proj_in"] = _proj_in_ratios(vis.trunk, x) if Q is not None else rows["original"]["proj_in"]
+            rotate_r2(vis.trunk, make_r2(a.r2))
+            qn = f"{qn}_r2{a.r2}"
         f = _feat(vis, x)
         rows[qn] = {"q_sha256": qsha, "vs_torch_orig_max_abs": float(np.abs(f - base).max()),
                     "vs_torch_orig_cos_min": float((l2n(f) * l2n(base)).sum(1).min()),
                     "vs_ref_cos_min": float((l2n(f) * ref).sum(1).min()),
                     "ln_out": _ln_out_ratios(vis.trunk, x), "sec": round(time.time() - t0, 1)}
+        if a.r2:
+            rows[qn]["proj_in"] = _proj_in_ratios(vis.trunk, x)
         del vis
     row = _row(env, a, n=int(len(x)), result=rows)
     _append(out, "fp32.jsonl", row)
     for k, r in rows.items():
+        if "proj_in" in r:
+            print(f"   {k}: proj 입력 채널max 최대/중앙:", [r["proj_in"][f"proj{l}"]["ch_max_over_median"] for l in range(12)])
+        if "ln_out" not in r:
+            continue
         lo = r["ln_out"]
         print(f"{k:9s} vs ref cos 최소 {r['vs_ref_cos_min']:.7f}"
               + (f"  vs 원래 PyTorch 최대 차이 {r['vs_torch_orig_max_abs']:.2e}" if k != "original" else ""))
@@ -513,8 +639,11 @@ def cmd_export(a):
     env = env_info.collect()
     env_info.write_env(out, env)
     model = _load_visual(S, a.threads)
-    Q, qsha = _load_q(RC, a.q)
+    assert a.q != "none" or a.r2, "--q none은 --r2와 함께만"
+    Q, qsha = _load_q(RC, a.q) if a.q != "none" else (None, None)
     stem = f"siglip2_image_fp32_{a.q}"
+    if a.r2:                                   # (기본 꺼짐) 파일 이름: _<q>_r2<r2>, q 없음이면 _r2<r2>
+        stem = f"siglip2_image_fp32_r2{a.r2}" if a.q == "none" else f"{stem}_r2{a.r2}"
     paths = [RC.ONNX_DIR / f"{stem}.onnx", RC.ONNX_DIR / f"{stem}_b1.onnx"]
     for p in paths:
         if p.exists() and not a.overwrite:
@@ -527,7 +656,10 @@ def cmd_export(a):
         export_onnx(model.visual, pb, False, a.opset)
         sig["b1"] = graph_sig(pb)
     vis = copy.deepcopy(model.visual)
-    rotate_trunk(vis.trunk, Q)
+    if Q is not None:
+        rotate_trunk(vis.trunk, Q)
+    if a.r2:
+        rotate_r2(vis.trunk, make_r2(a.r2))
     del model
     files = {}
     for p, dyn, tag in zip(paths, (True, False), ("dyn", "b1")):
@@ -551,7 +683,7 @@ def cmd_export(a):
                           "max_abs_err_normalized": float(np.abs(e - ref).max()),
                           "pass_q1_cos_ge_0.99999": bool(c.min() >= 0.99999)}
         print(p.name, verify[p.name])
-    row = _row(env, a, q=a.q, q_sha256=qsha, files=files, verify=verify,
+    row = _row(env, a, q=a.q, q_sha256=qsha, files=files, verify=verify, **({"r2": a.r2} if a.r2 else {}),
                ref_onnx={"file": rel.name, "sha256": _sha256(rel)})
     _append(out, "export.jsonl", row)
     assert all(f["ops_equal_orig"] and f["node_names_equal_orig"] for f in files.values()), "그래프가 원래와 다름"
@@ -564,17 +696,20 @@ def main():
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("selftest")
     p.add_argument("--tmp", default=None, help="임시 ONNX 폴더 (기본: 시스템 임시 폴더)")
+    p.add_argument("--r2", default="", choices=["", *R2S], help="(기본 꺼짐) 헤드 안쪽 회전 R2만 검사")
     p.set_defaults(func=cmd_selftest)
     p = sub.add_parser("build")
     p.add_argument("--q", nargs="+", default=QS, choices=QS)
     p.set_defaults(func=cmd_build)
     p = sub.add_parser("fp32")
-    p.add_argument("--q", nargs="+", default=QS, choices=QS)
+    p.add_argument("--q", nargs="+", default=QS, choices=[*QS, "none"])
+    p.add_argument("--r2", default="", choices=["", *R2S], help="(기본 꺼짐) 각 --q 위에 헤드 안쪽 회전 R2를 얹고 attn proj 입력 범위 기록")
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech dev 앞 n/2장씩)")
     p.add_argument("--threads", type=int, default=4)
     p.set_defaults(func=cmd_fp32)
     p = sub.add_parser("export")
-    p.add_argument("--q", required=True, choices=QS)
+    p.add_argument("--q", required=True, choices=[*QS, "none"], help="none = 잔차 회전 없음 (--r2와 함께만)")
+    p.add_argument("--r2", default="", choices=["", *R2S], help="(기본 꺼짐) 헤드 안쪽 회전 R2를 얹는다 (G3Q-R2)")
     p.add_argument("--verify", type=int, default=64, help="Q1 dev 사진 수 (Pets·Caltech dev 앞 n/2장씩)")
     p.add_argument("--opset", type=int, default=17)
     p.add_argument("--threads", type=int, default=4)
