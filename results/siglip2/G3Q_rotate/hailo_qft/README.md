@@ -1,4 +1,6 @@
-# G3Q-QFT: Hailo 미세조정(QFT, GPU)을 Hailo 최종(rothad_D256L1)에 (설계, 2026-10-18 23:3x)
+# G3Q-QFT: Hailo 미세조정(QFT)을 Hailo 최종(rothad_D256L1)에 (설계, 2026-10-18 23:3x)
+
+> **상태 (10/18, 용 결정): GPU 경로는 접는다 (5절). 대신 CPU 미세조정 시험 1회(6절)로 시간만 잰다.**
 
 **1~3절(설계·기준)은 결과 전에 고정한다. 판정용 실험이다. 채택은 팀 결정.** 지금은 0·1단계만 하고 2단계(본 실행)는 rothad_D256L1 vs M2rot_D256L1 실칩 비교 결과를 본 뒤 이긴 쪽에 적용한다 (용 지시).
 
@@ -35,3 +37,14 @@
 - 참고 정보 (읽기만 함): TF 빌드 `cuda_version 12.5.1`, `cuda_compute_capabilities ['sm_60','sm_70','sm_80','sm_89','compute_90']` → sm_120용 바이너리가 없어 compute_90 PTX를 드라이버가 즉석 변환해야 한다. 드라이버 610.57.01 (UMD CUDA 13.3). venv 안에 pip CUDA 라이브러리(`nvidia_cuda_runtime_cu12` 12.8.90, `nvidia_cublas_cu12` 12.8.4.1, `nvidia_cudnn_cu12` 9.10.2.21 등)도 있고 시스템 CUDA 12.5와 함께 있다. `~/.nv/ComputeCache`는 1.3 MB(변환 결과가 거의 쌓이지 않음).
 - 원인 가설 (확인 안 함): (가) compute_90 PTX → sm_120 즉석 변환이 TF 2.19 커널에서 실패 (Blackwell을 TF 2.19가 공식 지원하지 않음) (나) venv의 pip CUDA 12.8 라이브러리와 시스템 CUDA 12.5가 섞여 로드됨.
 - **0단계를 시작하지 않았다** (optimize·잠금 사용 없음). 패키지 설치·venv 변경은 금지라 더 진행하지 않는다.
+
+## 5. GPU 경로 불가: 원인 가설과 확인한 사실 (10/18, 용 결정으로 접음)
+확인한 사실:
+- TF 2.19.1(`~/hailo10_venv`, DFC 5.4.0이 버전을 고정)은 RTX 5060을 장치로는 본다 (GPU:0, compute capability 12.0).
+- 첫 GPU 연산에서 `CUDA_ERROR_INVALID_HANDLE` (`cuLaunchKernel` 실패, elementwise `Mul`). CUDA 변수 넣은 비대화형 셸, `bash -i` 대화형 셸 모두 같다.
+- **CUDA 12.5 설치 전에도 같은 에러가 났다**: 10/18 15:3x, `CUDA_VISIBLE_DEVICES=-1`을 빠뜨린 채 `hailo_model_optimization`을 import했을 때 그 패키지의 첫 TF 연산(`tf.constant(0.0) + 1.0`, `AddV2`)이 같은 `CUDA_ERROR_INVALID_HANDLE`로 실패했다 (G3Q-H 9절 작업 기록). 즉 시스템 CUDA 12.5 설치 여부와 관계없이 같은 지점에서 실패한다.
+- TF 빌드 정보: `cuda_compute_capabilities ['sm_60','sm_70','sm_80','sm_89','compute_90']` — sm_120용 바이너리가 없다. 드라이버 610.57.01 (UMD CUDA 13.3). venv 안에 pip CUDA 12.8 라이브러리, 시스템에 CUDA 12.5. 변환 캐시 `~/.nv/ComputeCache` 1.3 MB.
+원인 가설 (확인 안 함):
+- (가, 유력) TF 2.19의 자체 GPU 커널(compute_90 PTX)이 sm_120에서 실행되지 않는다. 장치 인식·라이브러리 로드는 되지만 커널 실행 단계에서 핸들이 무효다. CUDA 12.5 설치 전후 에러가 같다는 것이 이 가설과 맞는다.
+- (나) venv의 pip CUDA 12.8 라이브러리와 시스템 CUDA가 섞여 로드된다 — 설치 전에도 같은 에러였으므로 시스템 CUDA 12.5가 원인일 가능성은 낮다.
+- DFC가 TF 버전을 고정하고 venv 변경이 금지라 TF를 바꿔 확인할 수 없다 → **GPU QFT는 하지 않는다.**
