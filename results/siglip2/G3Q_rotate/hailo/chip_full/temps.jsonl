@@ -1,0 +1,9 @@
+{"time": "15:28:02", "label": "before_eval", "ts0_c": 60.43, "ts1_c": 59.88}
+{"time": "15:33:31", "label": "after_eval_D_D256L1", "ts0_c": 92.3, "ts1_c": 91.6}
+{"time": "15:39:11", "label": "after_eval_rothad_D256L1", "ts0_c": 95.89, "ts1_c": 95.34}
+{"time": "15:39:16", "label": "before_bench_r1", "ts0_c": 92.0, "ts1_c": 91.19}
+{"time": "15:39:46", "label": "after_bench_r1", "ts0_c": 91.95, "ts1_c": 91.19}
+{"time": "15:39:46", "label": "before_bench_r2", "ts0_c": 91.85, "ts1_c": 90.99}
+{"time": "15:40:16", "label": "after_bench_r2", "ts0_c": 91.24, "ts1_c": 90.74}
+{"time": "15:40:16", "label": "before_bench_r3", "ts0_c": 91.09, "ts1_c": 90.63}
+{"time": "15:40:45", "label": "after_bench_r3", "ts0_c": 90.74, "ts1_c": 90.38}

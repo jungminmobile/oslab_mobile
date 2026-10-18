@@ -1,0 +1,143 @@
+{
+ "date": "2026-10-18T11:14:48",
+ "commit": "774f745",
+ "dirty": false,
+ "chip_dir": "../results/siglip2/G3Q_rotate/hailo/chip",
+ "models": {
+  "D_D256L1": {
+   "cifar_A": {
+    "n": 200,
+    "top1": 66.5,
+    "fp32_top1": 74.5,
+    "cos_mean": 0.9138
+   },
+   "pets_dev": {
+    "n": 200,
+    "top1": 91.5,
+    "fp32_top1": 93.5,
+    "cos_mean": 0.9753
+   },
+   "flowers_dev": {
+    "n": 200,
+    "top1": 84.5,
+    "fp32_top1": 85.0,
+    "cos_mean": 0.9692
+   },
+   "cars_dev": {
+    "n": 200,
+    "top1": 92.5,
+    "fp32_top1": 93.5,
+    "cos_mean": 0.9608
+   },
+   "food_dev": {
+    "n": 200,
+    "top1": 86.5,
+    "fp32_top1": 87.5,
+    "cos_mean": 0.9597
+   },
+   "caltech_dev": {
+    "n": 200,
+    "top1": 96.0,
+    "fp32_top1": 95.0,
+    "cos_mean": 0.9595
+   },
+   "hr_cos": 0.9649,
+   "hr_dtop1": -0.7
+  },
+  "rothad_D256L1": {
+   "cifar_A": {
+    "n": 200,
+    "top1": 69.5,
+    "fp32_top1": 74.5,
+    "cos_mean": 0.9523
+   },
+   "pets_dev": {
+    "n": 200,
+    "top1": 91.5,
+    "fp32_top1": 93.5,
+    "cos_mean": 0.9833
+   },
+   "flowers_dev": {
+    "n": 200,
+    "top1": 87.5,
+    "fp32_top1": 85.0,
+    "cos_mean": 0.9795
+   },
+   "cars_dev": {
+    "n": 200,
+    "top1": 93.5,
+    "fp32_top1": 93.5,
+    "cos_mean": 0.9731
+   },
+   "food_dev": {
+    "n": 200,
+    "top1": 88.5,
+    "fp32_top1": 87.5,
+    "cos_mean": 0.9736
+   },
+   "caltech_dev": {
+    "n": 200,
+    "top1": 95.5,
+    "fp32_top1": 95.0,
+    "cos_mean": 0.9736
+   },
+   "hr_cos": 0.9766,
+   "hr_dtop1": 0.4
+  }
+ },
+ "vs": {
+  "rothad_D256L1-D_D256L1": {
+   "top1_diff": 1.1,
+   "top1_diff_ci95": [
+    -0.1,
+    2.4
+   ],
+   "hr_cos_diff": 0.0117,
+   "cos_better_frac": 0.897,
+   "pred_agree_hr": 0.942,
+   "cifar_A_top1_diff": 3.0
+  }
+ },
+ "emu": {
+  "D_D256L1": {
+   "pred_agree": {
+    "cifar_A": 0.785,
+    "pets_dev": 0.965,
+    "flowers_dev": 0.955,
+    "cars_dev": 0.98,
+    "food_dev": 0.9,
+    "caltech_dev": 0.98
+   },
+   "pred_agree_hr": 0.956,
+   "cos_absdiff_mean_hr": 0.0074828676879405975,
+   "cos_absdiff_max_hr": 0.08840471506118774,
+   "emu_hr_cos": 0.9666,
+   "chip_minus_emu_hr_cos": -0.0017,
+   "chip_minus_emu_top1": -0.2,
+   "chip_minus_emu_top1_ci95": [
+    -1.2,
+    0.9
+   ]
+  },
+  "rothad_D256L1": {
+   "pred_agree": {
+    "cifar_A": 0.84,
+    "pets_dev": 0.97,
+    "flowers_dev": 0.97,
+    "cars_dev": 0.98,
+    "food_dev": 0.97,
+    "caltech_dev": 0.985
+   },
+   "pred_agree_hr": 0.975,
+   "cos_absdiff_mean_hr": 0.005225961562246084,
+   "cos_absdiff_max_hr": 0.06288498640060425,
+   "emu_hr_cos": 0.9775,
+   "chip_minus_emu_hr_cos": -0.0009,
+   "chip_minus_emu_top1": 0.0,
+   "chip_minus_emu_top1_ci95": [
+    -0.8,
+    0.9
+   ]
+  }
+ }
+}

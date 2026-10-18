@@ -1,0 +1,102 @@
+{
+ "date": "2026-10-18T15:41:18",
+ "commit": "7b964b9",
+ "dirty": false,
+ "chip_dir": "/home/junyong/siglip2_work/hailo_g3q/chip_full",
+ "models": {
+  "D_D256L1": {
+   "cifar_A": {
+    "n": 1000,
+    "top1": 71.1,
+    "fp32_top1": 76.9,
+    "cos_mean": 0.915
+   },
+   "pets_dev": {
+    "n": 990,
+    "top1": 91.82,
+    "fp32_top1": 93.33,
+    "cos_mean": 0.9746
+   },
+   "flowers_dev": {
+    "n": 957,
+    "top1": 84.01,
+    "fp32_top1": 86.73,
+    "cos_mean": 0.969
+   },
+   "cars_dev": {
+    "n": 967,
+    "top1": 92.24,
+    "fp32_top1": 93.8,
+    "cos_mean": 0.9612
+   },
+   "food_dev": {
+    "n": 985,
+    "top1": 86.19,
+    "fp32_top1": 89.44,
+    "cos_mean": 0.9607
+   },
+   "caltech_dev": {
+    "n": 1024,
+    "top1": 95.12,
+    "fp32_top1": 95.02,
+    "cos_mean": 0.9616
+   },
+   "hr_cos": 0.9654,
+   "hr_dtop1": -1.79
+  },
+  "rothad_D256L1": {
+   "cifar_A": {
+    "n": 1000,
+    "top1": 72.9,
+    "fp32_top1": 76.9,
+    "cos_mean": 0.9524
+   },
+   "pets_dev": {
+    "n": 990,
+    "top1": 92.22,
+    "fp32_top1": 93.33,
+    "cos_mean": 0.9826
+   },
+   "flowers_dev": {
+    "n": 957,
+    "top1": 85.79,
+    "fp32_top1": 86.73,
+    "cos_mean": 0.9795
+   },
+   "cars_dev": {
+    "n": 967,
+    "top1": 92.76,
+    "fp32_top1": 93.8,
+    "cos_mean": 0.9741
+   },
+   "food_dev": {
+    "n": 985,
+    "top1": 87.92,
+    "fp32_top1": 89.44,
+    "cos_mean": 0.9733
+   },
+   "caltech_dev": {
+    "n": 1024,
+    "top1": 94.92,
+    "fp32_top1": 95.02,
+    "cos_mean": 0.9735
+   },
+   "hr_cos": 0.9766,
+   "hr_dtop1": -0.94
+  }
+ },
+ "vs": {
+  "rothad_D256L1-D_D256L1": {
+   "top1_diff": 0.85,
+   "top1_diff_ci95": [
+    0.27,
+    1.45
+   ],
+   "hr_cos_diff": 0.0112,
+   "cos_better_frac": 0.904,
+   "pred_agree_hr": 0.9395,
+   "cifar_A_top1_diff": 1.8
+  }
+ },
+ "emu": {}
+}
