@@ -219,3 +219,4 @@
 - 막힌 것·이상: 코드 버그 2개(stats hook, fp32 이중 감싸기) 수정 후 재실행. 1차 지연 측정이 DFC 로그 파일로 dirty → 재측정. WMI LoadPercentage 게이트 부정확 → 프로세스 합 게이트로 교체. DFC 스크리닝 RSS 18 GB로 WSL available 1 GB까지 → 중단, 이후 flock 공유
 - 다음 할 일: PR 전 `siglip2/g3-sensitivity` 최신으로 rebase, 3중 확인(독립 검토) 후 PR (용 확인)
 - (추가 17:30) 용 요청 4번째 Hailo 시도(분산 맞춤 h_c*): 사전 확인 통과·LN 이상치 제거됐으나 스크리닝 cos 0.733으로 실패 → G3R Hailo 종료. 다음: rebase·독립 검토·PR
+- (추가 저녁) 용 요청 5번째(진짜 마지막) Hailo 시도: 진단(층별 정밀도·optimize 저장 SNR·limvals) → 주원인 잔차 위 8비트 마스크 연산 확인 → M2 처방. M2 사전 확인 (d) 실패(블록 5의 55번 행 1/√가 일반 범위 아래)로 optimize 안 함 → G3R Hailo 종료. `hailo analyze-noise`는 원래 D256L1에서도 DFC 내부 오류(768 vs 780)
