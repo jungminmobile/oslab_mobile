@@ -1,0 +1,7 @@
+05:56:57 commit=9d77155 dirty=0 siglip2_m2rot.har=ab7b324a16585071 g3rq_m2rot_qft.alls=62f21ca41105906a /home/junyong/siglip2_work/artifacts/dfc/calib_highres256_s0_nhwc.npy=91f551e312271d1a 
+05:56:57 optimize 잠금·메모리 OK free=29G load=0.05
+06:41:58 optimize rc=0 sec=2701 maxrss_kb=30292252 [info] siglip2_m2rot/output_layer1 SNR: 17.45 dB
+06:42:02 screen 잠금·메모리 OK free=29G load=2.94
+06:50:58 screen rc=0 sec=536 {"tag": "M2rot_D256L1_qft", "hr_cos": 0.9785, "hr_dtop1": -0.3, "sec": 506}
+06:50:58 hr_cos 0.9785 < 0.9896 → 개선 없음 (끝)
+06:50:58 G3RQ QFT DONE
