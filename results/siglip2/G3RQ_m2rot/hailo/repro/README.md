@@ -21,7 +21,7 @@
 
 ## 4. 보고서용 메모
 - **회전은 수학적 동치**다: 회전 FP32 ONNX vs 원래 FP32 임베딩 cos 최소 0.99999988 (dev 64장, G3Q 8절).
-- **M2는 상수 캐시 근사**다: 원래 대비 cos 최소 0.9994 (`../../../G3R_regcache/g3a_mask/maskcheck.jsonl`), FP32 dev 전체 Δtop-1 +0.10 [0.00, +0.22]%p (G3R R1 FP32, `../../../G3R_regcache/fp32_full`).
+- **M2는 상수 캐시 근사**다: 원래 대비 cos 최소 0.9994 (dev 64장) / 0.9984 (dev 6×200) (`../../../G3R_regcache/g3a_mask/maskcheck.jsonl`), FP32 dev 전체 Δtop-1 +0.10 [0.00, +0.22]%p (G3R R1 FP32, `../../../G3R_regcache/fp32_full`).
 
 ## 5. 결과 (10/19 03:38~05:54)
 ### 2차 빌드 (데스크탑, 커밋 `8342996` dirty 0, `run_info.txt`)

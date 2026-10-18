@@ -39,7 +39,7 @@ Hailo 에뮬레이터에서 rothad_D256L1·M2_D256L1보다 좋은가? 좋은 쪽
 ### 사전 확인 (`m2rotcheck.jsonl`, `graph_check.txt`, `parse.log`) — 모두 통과
 | 확인 | 결과 |
 |---|---|
-| (a) M2rot vs M2 FP32 cos 최소 (dev 64장) | **0.9999998** (기록: vs 원래 FP32 0.99940, M2도 0.99940) |
+| (a) M2rot vs M2 FP32 cos 최소 (dev 64장) | **0.9999998** (기록: vs 원래 FP32 0.9994 (dev 64장) / 0.9984 (dev 6×200, 10/19 `ort/m2approx.jsonl`), M2도 0.99940 (64장)) |
 | (b) 회전 모델 K_c·V_c vs 원래 캐시 최대 상대오차 | K 2.64e-7, V 5.46e-7 (≤ 1e-4) |
 | (c) 그래프 | 잔차 경로 위 새 연산 없음. 연산 개수는 Identity만 달랐다(63 vs 15 — 회전으로 접은 LN γ=1·β=0 상수를 exporter가 합치고 Identity로 이음). 두 파일 모두 `s2_rotate.undedup_initializers`로 풀면 연산 종류·개수가 같다 |
 | (d) sink 행 1/√(분산+ε) ≤ 일반 최대 | 15/15 통과 (sink 최대 1.91) |
@@ -67,3 +67,6 @@ Hailo 에뮬레이터에서 rothad_D256L1·M2_D256L1보다 좋은가? 좋은 쪽
 
 ### 다음 (용 확인 뒤)
 - AGX 실칩 dev 전체: rothad_D256L1 vs M2rot_D256L1, 짝 부트스트랩 95% 구간(시드 0, 1000회), 하한 > 0이면 "유의하게 좋음"으로 팀에 제안. 지연(배치 1, monitor 끔)도 같이.
+
+## 메모 (10/19): M2 근사 cos 최소
+- M2rot FP32 vs 원래 FP32 임베딩 cos 최소는 **0.9994 (dev 64장) / 0.9984 (dev 6×200)** 둘 다 적는다 (`ort/m2approx.jsonl`). 64장만 보고 정한 0.999 기준은 1200장에는 너무 빡빡했다 (ORT 예선 후보 확인 a단계 사후 변경, 용 승인, `ort/README.md` 5절). FP32 dev 전체 Δtop-1은 +0.10 [0.00, +0.22]%p로 손실 없음.
