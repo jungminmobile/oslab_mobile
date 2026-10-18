@@ -63,13 +63,16 @@ class Runner:
         self.b.output().set_buffer(self.ob)
 
     def run(self, x):
-        self.b.input().set_buffer(np.ascontiguousarray(x, dtype=self.dtype))
+        # 입력 버퍼를 self에 붙잡아 둔다: 연속 배열이 아니면 ascontiguousarray가 임시 복사본을 만들고, 참조가 없으면
+        # 비동기 실행 중에 해제되어 장치가 멈춘다 (10/18 bench에서 HAILO_TIMEOUT으로 발견)
+        self.ib = np.ascontiguousarray(x, dtype=self.dtype)
+        self.b.input().set_buffer(self.ib)
         self.cfg.wait_for_async_ready(10000, 1)
         self.cfg.run_async([self.b]).wait(10000)
         return self.ob
 
     def close(self):
-        for a in ("b", "cfg", "im"):
+        for a in ("b", "ib", "cfg", "im"):
             try:
                 delattr(self, a)
             except Exception:
