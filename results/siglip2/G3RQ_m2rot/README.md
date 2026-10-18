@@ -1,6 +1,6 @@
 # G3RQ: M2 + 회전(rothad) 조합을 Hailo에서 평가 (설계, 2026-10-18)
 
-> 상태: **컴파일까지 완료 (10/18 23:03), AGX 실칩 비교는 용 확인 대기.** 결과는 6절. 판정 기준(4절)은 결과를 보기 전에 고정한다. 브랜치 `siglip2/g3rq-m2rot` (`siglip2/g3r-regcache` + `origin/siglip2/g3q-rotate` merge), worktree `~/oslab_m2rot`. 담당: 용 (용 요청).
+> 상태: **실칩 비교까지 완료 (10/18 23:52).** 실칩 dev 전체 M2rot − rothad +0.53 [+0.03, +1.02]%p (유의), 지연 +3.6% → Hailo 최종 교체를 팀에 제안 (`hailo/README.md` 6절, D-043 제안). 판정 기준(4절)은 결과를 보기 전에 고정한다. 브랜치 `siglip2/g3rq-m2rot` (`siglip2/g3r-regcache` + `origin/siglip2/g3q-rotate` merge), worktree `~/oslab_m2rot`. 담당: 용 (용 요청).
 
 ## 1. 질문
 회전 모델 rothad(D-042 Hailo 최종) 위에 G3R의 M2 그래프(sink K·V 캐시 교체 + sink 행 MLP 입력을 u_c로 교체, 잔차 마스크 없음)를 얹으면,

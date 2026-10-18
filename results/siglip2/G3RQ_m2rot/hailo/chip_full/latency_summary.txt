@@ -1,0 +1,6 @@
+세션별 지연 중앙값 ms (시작 온도 → 끝 온도, max(ts0,ts1) °C)
+  세션 1: 시작 64.3 → 끝 74.8   rothad 46.192  M2rot 47.851
+  세션 2: 시작 64.6 → 끝 75.0   rothad 46.178  M2rot 47.930
+  세션 3: 시작 64.2 → 끝 74.7   rothad 46.176  M2rot 47.855
+3세션 중앙값: rothad 46.178 ms, M2rot 47.855 ms → 증가율 +3.63%
+eval 전후 온도: {'wait_eval_rothad_D256L1': '62.5', 'after_eval_rothad_D256L1': '93.5', 'wait_eval_M2rot_D256L1': '64.5', 'after_eval_M2rot_D256L1': '95.0'}
