@@ -28,3 +28,15 @@
 | c | dev 전체 짝 비교 (FP32, R0, M2rot_ort) | 3절 ① |
 | d | 지연·크기·메모리: FP32·R0·M2rot_ort를 같은 세션에서 번갈아 (`s2_bench_speed.py --warmup 20 --n 200 --repeats 3`, 배치 1, 스레드 1·2·4 × 3세션, WSL 안 게이트: 다른 python·hailo 0 + 1분 평균 부하 < 2, Windows 부하 확인 못 함), peak 메모리 `s2_model_stats.py` | 3절 ②. **비공식** (이 PC) |
 - 모든 결과 행에 커밋 해시·dirty를 남긴다.
+
+## 5. 진행 기록
+### 0단계: 코드 동일성 — 통과 (10/19 08:3x, 커밋 `f2d17ac`, `identity/quantize_log.jsonl`)
+- 옵션을 끈 기본 경로(`--src` 없음)로 R0 재생성 (태그 `idcheck_ort`): sha256 **`410d7483…`** = 이 PC의 기존 재생성 파일(`…_idcheck_fc2L2.onnx`, G3R identity)과 같다 → 코드 동일성 통과. 보정 실제 장수 256.
+- Release `5eee7839…`와는 다르다 (이 PC에서 원래 다름, G3R identity: CPU 차이로 활성 눈금이 미세하게 다름). 비교 기준 R0로는 Release 파일 자체(`5eee…`, sha256 확인)를 쓴다.
+
+### a단계: M2 근사 확인 — **dev 6×200에서 미달 → 멈춤** (10/19 08:42, 커밋 `f2d17ac` dirty 아님, `m2approx.jsonl`)
+| 사진 | M2rot FP32 vs 원래 FP32 임베딩 cos 최소 (ORT) |
+|---|---|
+| dev 64장 (Pets·Caltech 앞 32장씩, 기존 확인과 같은 구성) | **0.99940** (≥ 0.999 통과, G3R 기록 0.9994와 같음) |
+| dev 6×200 | **0.99840** (미달) — CIFAR A 0.99840, Pets 0.99940, Flowers 0.99947, Cars 0.99854, Food 0.99937, Caltech 0.99909 |
+- 4절 관문을 "dev 64장 + dev 6×200 모두 ≥ 0.999"로 고정했으므로 여기서 멈추고 보고한다 (b단계 이후 하지 않음).
