@@ -219,3 +219,27 @@ dev 전체 짝 비교 (`full/paired_ci.jsonl`, 층화 짝 부트스트랩 1000�
 - **D1 또는 D3가 R0 대비 고화질 Δtop-1을 +0.3%p 이상 회복하면 "attention 확률이 주원인 후보"** → dev 전체 짝 비교 1회 (R0 vs 가장 좋은 D, 고화질 Δtop-1 기준, 같으면 cos가 높은 쪽). 아니면 **"attention 행렬곱은 주원인 아님"**으로 기록하고 끝.
 - rothad_D1~D3는 같은 규칙을 rothad 대비로 적용해 기록만 한다 (dev 전체 비교는 R0 쪽 규칙으로만 결정).
 - 지연은 재지 않는다. 양자화·스크리닝 전 `free -g` 여유 ≥ 10 GB 확인 (G3R 세션 DFC와 공유).
+
+### 10-5. 결과 (10/18 18:28~18:44, 커밋 `c13e575`, dirty 아님, `diag/quantize_log.jsonl`·`diag/screen/screen.jsonl`, 실행 `scripts/g3q_diag_attn.sh`)
+- 보정 실제 장수 256 (6개 모두). 다른 세션과 메모리 공유: 시작 시 여유 20 GB, 대기 없음.
+
+| 구성 | 정수 MatMul (QLinearMatMul) | float attention 행렬곱 | 블록 softmax | 고화질 cos | 고화질 Δtop-1 (FP32 대비) | CIFAR A Δ |
+|---|---|---|---|---|---|---|
+| R0 | 77 | 0 | QLinearSoftmax 12 | 0.9547 | −0.1 | −4.0 |
+| D1 (확률×V float) | 65 | MatMul 12 | float Softmax 12 | 0.9555 | 0.0 | −4.0 |
+| D2 (Q×Kᵀ float) | 65 | FusedMatMul 12 | float Softmax 12 | 0.9546 | −0.3 | −5.0 |
+| D3 (둘 다 float) | 53 | 24 | float Softmax 12 | 0.9553 | +0.1 | −5.5 |
+| rothad | 77 | 0 | QLinearSoftmax 12 | 0.9684 | +0.3 | −6.0 |
+| rothad_D1 | 65 | 12 | float 12 | 0.9696 | +0.1 | −8.0 |
+| rothad_D2 | 65 | 12 | float 12 | 0.9684 | +0.3 | −6.5 |
+| rothad_D3 | 53 | 24 | float 12 | 0.9697 | −0.5 | −6.5 |
+
+- dev 6종 × 앞 200장, 정수 커널 ORT 1.25.0 4스레드. R0·rothad 값은 Q2(8절)와 같다 (재현).
+- D2의 Q×Kᵀ 12개는 ORT가 scale·transpose와 합쳐 `com.microsoft.FusedMatMul`(float)로 돌렸다. D1~D3 모두 블록 softmax 12개가 QLinearSoftmax에서 float Softmax로 바뀌었다 (softmax 입력이나 출력 쪽 행렬곱이 float가 되면 ORT가 softmax를 정수로 합치지 않음). 풀링 헤드 softmax 1개는 정수 그대로.
+
+### 10-6. 해석 (10-4 규칙 그대로)
+- R0 대비 고화질 Δtop-1 회복: **D1 +0.1%p, D3 +0.2%p** → 둘 다 +0.3%p 미만 → **"attention 행렬곱은 주원인 아님".** dev 전체 비교는 하지 않는다.
+- cos도 거의 그대로다 (D1 +0.0008, D3 +0.0006). rothad 위에서도 같다 (cos +0.0012~+0.0013, Δtop-1은 −0.8~0.0으로 오히려 흔들림 범위 안).
+- 즉 attention 확률·Q×Kᵀ를 FP32로 되돌려도 FP32 대비 cos 손실(약 0.045)의 2% 정도만 회복된다. 10-2 가설(attention 확률의 U8 눈금)은 이 표본에서 지지되지 않는다.
+- 남은 후보 (확인 안 함, 기록만): ORT에서 정수로 도는 나머지 MatMul 53개 — QKV·proj·fc1·fc2(블록 5·9 제외)와 풀링 헤드. D-031은 QKV 정수 경로가 S8 대비 손실의 원인이라고 했지만, 회전으로 QKV 입력 채널 쏠림을 없앤 rothad도 FP32 대비 손실이 비슷했다(8절) → 채널 쏠림 아닌 다른 원인(토큰 쏠림에 따른 텐서별 눈금, fc1·fc2 활성값 등)이 남아 있을 수 있다.
+- 지연은 재지 않았다.
