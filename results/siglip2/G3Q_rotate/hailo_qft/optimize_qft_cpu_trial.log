@@ -1,0 +1,65 @@
+[info] Current Time: 23:18:20, 10/18/26
+[info] CPU: Architecture: x86_64, Model: Intel(R) Core(TM) Ultra 9 285K, Number Of Cores: 24, Utilization: 0.1%
+[info] Memory: Total: 30GB, Available: 29GB
+[info] System info: OS: Linux, Kernel: 6.6.114.1-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo optimize siglip2_rothad_b16_224.har --hw-arch hailo10h --model-script g3q_qft_cpu_trial.alls --calib-set-path /home/junyong/siglip2_work/artifacts/dfc/calib_highres256_s0_nhwc.npy --output-har-path opt_rothad_D256L1_qft_cpu_trial.har`
+[info] Hailo HW architecture: hailo10h
+[info] Loading model script commands to siglip2_rothad_b16_224 from g3q_qft_cpu_trial.alls
+[info] Starting Model Optimization
+[info] Model received quantization params from the hn
+[info] Notice: For optimal performance, if your model has more than 10M parameters, it is recommended to set the compression level to 4. (Current model has 92.27M parameters.)
+[info] Notice: For optimal accuracy with compressed models, it is recommended to set the optimization level to 4.
+[info] MatmulDecompose skipped
+[info] Starting Mixed Precision
+[info] Model Optimization Algorithm Mixed Precision is done (completion time is 00:00:00.65)
+[info] Starting LayerNorm Decomposition
+[info] Using dataset with 256 entries for calibration
+[info] Model Optimization Algorithm LayerNorm Decomposition is done (completion time is 00:00:21.62)
+[info] Starting Statistics Collector
+[info] Using dataset with 256 entries for calibration
+[info] Model Optimization Algorithm Statistics Collector is done (completion time is 00:01:21.16)
+[info] Using dataset with 256 entries for calibration
+[info] Starting Fix zp_comp Encoding
+[info] Model Optimization Algorithm Fix zp_comp Encoding is done (completion time is 00:00:00.00)
+[info] Starting Matmul Equalization
+[info] Model Optimization Algorithm Matmul Equalization is done (completion time is 00:00:00.50)
+[info] Starting MatmulDecomposeFix
+[info] Model Optimization Algorithm MatmulDecomposeFix is done (completion time is 00:00:00.00)
+[info] Starting Translate Parameters
+[warning] Reducing output bits of siglip2_rothad_b16_224/reduce_mean1_layer_normalization1 by 8.0 bits (More than half)
+[warning] Reducing output bits of siglip2_rothad_b16_224/reduce_mean1_layer_normalization2 by 8.0 bits (More than half)
+[warning] Reducing output bits of siglip2_rothad_b16_224/reduce_mean1_layer_normalization13 by 8.0 bits (More than half)
+[warning] Reducing output bits of siglip2_rothad_b16_224/reduce_mean1_layer_normalization14 by 8.0 bits (More than half)
+[warning] Reducing output bits of siglip2_rothad_b16_224/reduce_mean1_layer_normalization15 by 8.0 bits (More than half)
+[warning] Reducing output bits of siglip2_rothad_b16_224/reduce_mean1_layer_normalization16 by 8.0 bits (More than half)
+[warning] Reducing output bits of siglip2_rothad_b16_224/reduce_mean1_layer_normalization17 by 8.0 bits (More than half)
+[warning] Reducing output bits of siglip2_rothad_b16_224/reduce_mean1_layer_normalization21 by 9.0 bits (More than half)
+[warning] Reducing output bits of siglip2_rothad_b16_224/reduce_mean1_layer_normalization22 by 8.0 bits (More than half)
+[warning] Reducing output bits of siglip2_rothad_b16_224/reduce_mean1_layer_normalization23 by 9.0 bits (More than half)
+[warning] Reducing output bits of siglip2_rothad_b16_224/reduce_mean1_layer_normalization24 by 8.0 bits (More than half)
+[warning] Reducing output bits of siglip2_rothad_b16_224/reduce_mean1_layer_normalization25 by 9.0 bits (More than half)
+[info] Model Optimization Algorithm Translate Parameters is done (completion time is 00:00:08.42)
+[info] Finetune encoding skipped
+[info] Starting Bias Correction
+[info] The algorithm Bias Correction will use up to 4.32 GB of storage space
+[info] Using dataset with 256 entries for Bias Correction
+[info] Model Optimization Algorithm Bias Correction is done (completion time is 00:15:26.89)
+[info] Adaround skipped
+[info] Starting Quantization-Aware Fine-Tuning
+[warning] Dataset is larger than expected size. Increasing the algorithm dataset size might improve the results
+[info] Using dataset with 32 entries for finetune
+[1m 1/16[0m [32m━[0m[37m━━━━━━━━━━━━━━━━━━━[0m [1m46:10[0m 185s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1519 - total_distill_loss: 0.1519[1m 2/16[0m [32m━━[0m[37m━━━━━━━━━━━━━━━━━━[0m [1m22s[0m 2s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1446 - total_distill_loss: 0.1446    [1m 3/16[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m19s[0m 2s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1437 - total_distill_loss: 0.1437[1m 4/16[0m [32m━━━━━[0m[37m━━━━━━━━━━━━━━━[0m [1m17s[0m 1s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1460 - total_distill_loss: 0.1460[1m 5/16[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m16s[0m 1s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1517 - total_distill_loss: 0.1517[1m 6/16[0m [32m━━━━━━━[0m[37m━━━━━━━━━━━━━[0m [1m14s[0m 1s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1490 - total_distill_loss: 0.1490[1m 7/16[0m [32m━━━━━━━━[0m[37m━━━━━━━━━━━━[0m [1m13s[0m 1s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1532 - total_distill_loss: 0.1532[1m 8/16[0m [32m━━━━━━━━━━[0m[37m━━━━━━━━━━[0m [1m11s[0m 1s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1509 - total_distill_loss: 0.1509[1m 9/16[0m [32m━━━━━━━━━━━[0m[37m━━━━━━━━━[0m [1m10s[0m 1s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1557 - total_distill_loss: 0.1557[1m10/16[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m8s[0m 1s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1522 - total_distill_loss: 0.1522 [1m11/16[0m [32m━━━━━━━━━━━━━[0m[37m━━━━━━━[0m [1m7s[0m 1s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1498 - total_distill_loss: 0.1498[1m12/16[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m6s[0m 2s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1536 - total_distill_loss: 0.1536[1m13/16[0m [32m━━━━━━━━━━━━━━━━[0m[37m━━━━[0m [1m4s[0m 2s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1613 - total_distill_loss: 0.1613[1m14/16[0m [32m━━━━━━━━━━━━━━━━━[0m[37m━━━[0m [1m3s[0m 2s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1615 - total_distill_loss: 0.1615[1m15/16[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m1s[0m 2s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1607 - total_distill_loss: 0.1607[1m16/16[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 2s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1582 - total_distill_loss: 0.1582[1m16/16[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m207s[0m 2s/step - _distill_loss_siglip2_rothad_b16_224/ew_add26: 0.1561 - total_distill_loss: 0.1561
+[info] Model Optimization Algorithm Quantization-Aware Fine-Tuning is done (completion time is 00:03:30.91)
+[info] Starting Layer Noise Analysis
+[info] Model Optimization Algorithm Layer Noise Analysis is done (completion time is 00:02:55.22)
+[info] Output layers signal-to-noise ratio (SNR): measures the quantization noise (higher is better)
+[info] 	siglip2_rothad_b16_224/output_layer1 SNR:	17.34 dB
+[info] The calibration set seems to not be normalized, because the values range is [(-1.0, 1.0), (-1.0, 1.0), (-1.0, 1.0)].
+Since the neural core works in 8-bit (between 0 to 255), a quantization will occur on the CPU of the runtime platform.
+Add a normalization layer to the model to offload the normalization to the neural core.
+Refer to the user guide Hailo Dataflow Compiler user guide / Model Optimization / Optimization Related Model Script Commands / model_modification_commands / normalization for details.
+[info] Model Optimization is done
+[info] Saved HAR to: /home/junyong/siglip2_work/hailo_g3q/opt_rothad_D256L1_qft_cpu_trial.har

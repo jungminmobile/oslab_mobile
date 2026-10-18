@@ -48,3 +48,18 @@
 - (가, 유력) TF 2.19의 자체 GPU 커널(compute_90 PTX)이 sm_120에서 실행되지 않는다. 장치 인식·라이브러리 로드는 되지만 커널 실행 단계에서 핸들이 무효다. CUDA 12.5 설치 전후 에러가 같다는 것이 이 가설과 맞는다.
 - (나) venv의 pip CUDA 12.8 라이브러리와 시스템 CUDA가 섞여 로드된다 — 설치 전에도 같은 에러였으므로 시스템 CUDA 12.5가 원인일 가능성은 낮다.
 - DFC가 TF 버전을 고정하고 venv 변경이 금지라 TF를 바꿔 확인할 수 없다 → **GPU QFT는 하지 않는다.**
+
+## 6. CPU 미세조정 시험 1회 (10/18 23:18~23:45, `CUDA_VISIBLE_DEVICES=-1`, 잠금 안, 커밋 `65c789c` dirty 0)
+- `.alls`: `siglip2/hailo/g3q_qft_cpu_trial.alls` = D256L1 `.alls` + `post_quantization_optimization(finetune, policy=enabled, dataset_size=32, epochs=1, batch_size=2)`. 입력 rothad 파싱 HAR, 보정 256장 그대로. 스크립트 `siglip2/hailo/g3q_qft_cpu_trial.sh`. 시작 시 메모리 여유 29 GB, 부하 0.04.
+- **결과: 에러 없이 끝남 (rc=0).** 전체 26분 52초, 최대 RSS 25.0 GB (`/usr/bin/time -v`). 로그 `optimize_qft_cpu_trial.log`.
+
+| 단계 | 시간 |
+|---|---|
+| LN 분해 · 통계 수집 · 기타 | 약 2분 |
+| 바이어스 보정 (256장) | 15분 27초 |
+| **미세조정 (32장, 1 epoch, batch 2 = 16 스텝)** | **3분 31초** = 첫 스텝 185초 (그래프 준비) + 나머지 15스텝 약 1.4초/스텝 |
+| 층 노이즈 분석 | 2분 55초 |
+
+- 손실(`l2rel`, 출력 `ew_add26`): 0.152 → 0.156. 16스텝은 전부 warmup 구간(`warmup_epochs=1`)이라 의미 없음. 출력 SNR 17.34 dB (미세조정 없음 16.63 dB) — **판정·스크리닝은 하지 않았다** (기록만).
+- **256장 × 4 epoch (DFC 기본 epochs) 환산:** 256 × 4 ÷ batch 2 = 512 스텝 × 1.4초 ≈ 12분 + 첫 스텝 3분 → **미세조정 약 15분**, 나머지 optimize 약 23분 → **optimize 1회 약 40분** (여유를 잡아 1시간 이내). 3시간 기준보다 짧다. batch를 보정 기본값(더 큰 값)으로 하면 스텝 수는 줄고 스텝당 시간·메모리는 늘어난다 (재지 않음).
+- 2단계(본 실행)는 용 지시대로 하지 않았다 (rothad_D256L1 vs M2rot_D256L1 실칩 비교 뒤 결정).

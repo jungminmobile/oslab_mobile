@@ -1,0 +1,4 @@
+23:18:18 commit=65c789c dirty=0 잠금 대기
+23:18:18 시작 free=29G load=0.04 0.38 1.51
+23:45:10 rc=0 sec=1612 maxrss_kb=26250088
+QFT CPU TRIAL DONE 23:45:10
