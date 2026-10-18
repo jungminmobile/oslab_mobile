@@ -215,7 +215,7 @@
 ## 2026-10-18 (G3R 레지스터 캐시 판별, 용 — 연구실 데스크탑 WSL Ubuntu-22.04, 브랜치 `siglip2/g3r-regcache`)
 - 환경: uv Python 3.11 venv, dev 7종 재구축(준혁 G2와 장수·top-1 동일), FP32 직접 export가 Release `333cad08…`와 비트 단위 동일. identity는 5eee 불일치(AVX2 vs AVX-512 보정 눈금 차이) → c887a42 코드와 같아 코드 동일성 통과
 - 결과: G1a·G1b 통과 (R1 FP32 Δ +0.10 [0.00, +0.22]). **G2 실패** (R1-INT8 − R0 −0.06 [−0.44, +0.33], 크기 −12.8%, t4 −4.1% 비공식). G3a는 토큰 축 Concat 미지원 → 제자리 마스크(D-041)로 파싱 통과, ORT INT8은 R1과 동률. **G3b 실패** (sink 잔차 0 → Hailo LN 분해 1/√ε 이상치, 마지막 시도 h_c 채움은 사전 확인 (c) 실패)
-- 결론: G3R 종료. ORT 최종(D-030)·Hailo D256L1(D-032) 그대로. 원인 가설(공통 −0.6~0.7%p는 QKV/LN, D-031)은 `siglip2/g3q-rotate`에서
+- 결론: G3R 종료. ORT 최종(D-030) 그대로, G3R은 Hailo에도 쓰지 않음 (Hailo 최종은 같은 날 D-042에서 rothad_D256L1로 바뀜). 원인 가설(공통 −0.6~0.7%p는 QKV/LN, D-031)은 `siglip2/g3q-rotate`에서
 - 막힌 것·이상: 코드 버그 2개(stats hook, fp32 이중 감싸기) 수정 후 재실행. 1차 지연 측정이 DFC 로그 파일로 dirty → 재측정. WMI LoadPercentage 게이트 부정확 → 프로세스 합 게이트로 교체. DFC 스크리닝 RSS 18 GB로 WSL available 1 GB까지 → 중단, 이후 flock 공유
 - 다음 할 일: PR 전 `siglip2/g3-sensitivity` 최신으로 rebase, 3중 확인(독립 검토) 후 PR (용 확인)
 - (추가 17:30) 용 요청 4번째 Hailo 시도(분산 맞춤 h_c*): 사전 확인 통과·LN 이상치 제거됐으나 스크리닝 cos 0.733으로 실패 → G3R Hailo 종료. 다음: rebase·독립 검토·PR

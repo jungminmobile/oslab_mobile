@@ -1,0 +1,158 @@
+{
+ "date": "2026-10-18T02:56:33",
+ "commit": "c33b37f",
+ "dirty": false,
+ "runs": {
+  "i7_avx512": "..\\results\\siglip2\\G3_xplat\\x86_i7-1165G7",
+  "x86_285k": "C:\\Users\\qaz43\\AppData\\Local\\Temp\\claude\\D--mokerton-oslab-mobile-siglip2\\fbca7eb2-c5e0-40dc-bc37-6187ad7f3803\\scratchpad\\pr8\\results\\xplat\\2026-10-16_siglip2_candidates\\out_labpc_ort1232",
+  "arm_orin": "C:\\Users\\qaz43\\AppData\\Local\\Temp\\claude\\D--mokerton-oslab-mobile-siglip2\\fbca7eb2-c5e0-40dc-bc37-6187ad7f3803\\scratchpad\\pr8\\results\\xplat\\2026-10-16_siglip2_candidates\\out_orin_a78ae"
+ },
+ "per_run": {
+  "i7_avx512": {
+   "s8": {
+    "hr_dtop1": 0.3,
+    "hr_dtop1_ci95": [
+     -0.6,
+     1.2
+    ],
+    "hr_cos": 0.9557
+   },
+   "u8rr": {
+    "hr_dtop1": 0.1,
+    "hr_dtop1_ci95": [
+     -0.9,
+     1.0
+    ],
+    "hr_cos": 0.9545
+   }
+  },
+  "x86_285k": {
+   "s8": {
+    "hr_dtop1": 0.3,
+    "hr_dtop1_ci95": [
+     -0.6,
+     1.2
+    ],
+    "hr_cos": 0.9557
+   },
+   "u8rr": {
+    "hr_dtop1": 0.1,
+    "hr_dtop1_ci95": [
+     -0.9,
+     1.0
+    ],
+    "hr_cos": 0.9545
+   }
+  },
+  "arm_orin": {
+   "s8": {
+    "hr_dtop1": 0.6,
+    "hr_dtop1_ci95": [
+     -0.2,
+     1.4
+    ],
+    "hr_cos": 0.9519
+   },
+   "u8rr": {
+    "hr_dtop1": 0.1,
+    "hr_dtop1_ci95": [
+     -0.9,
+     1.1
+    ],
+    "hr_cos": 0.9548
+   }
+  }
+ },
+ "pairs": {
+  "i7_avx512->x86_285k:fp32": {
+   "pred_agree": 1.0,
+   "cos_absdiff_mean": 4.9114227351765294e-08,
+   "cos_absdiff_max": 2.384185791015625e-07,
+   "top1_diff": 0.0,
+   "top1_diff_ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "i7_avx512->x86_285k:s8": {
+   "pred_agree": 1.0,
+   "cos_absdiff_mean": 0.0,
+   "cos_absdiff_max": 0.0,
+   "top1_diff": 0.0,
+   "top1_diff_ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "i7_avx512->x86_285k:u8rr": {
+   "pred_agree": 1.0,
+   "cos_absdiff_mean": 0.0,
+   "cos_absdiff_max": 0.0,
+   "top1_diff": 0.0,
+   "top1_diff_ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "i7_avx512->arm_orin:fp32": {
+   "pred_agree": 1.0,
+   "cos_absdiff_mean": 4.98890884159664e-08,
+   "cos_absdiff_max": 2.980232238769531e-07,
+   "top1_diff": 0.0,
+   "top1_diff_ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "i7_avx512->arm_orin:s8": {
+   "pred_agree": 0.973,
+   "cos_absdiff_mean": 0.0072411708533763885,
+   "cos_absdiff_max": 0.04054158926010132,
+   "top1_diff": 0.3,
+   "top1_diff_ci95": [
+    -0.5,
+    1.2
+   ]
+  },
+  "i7_avx512->arm_orin:u8rr": {
+   "pred_agree": 0.981,
+   "cos_absdiff_mean": 0.0040050228126347065,
+   "cos_absdiff_max": 0.02179574966430664,
+   "top1_diff": 0.0,
+   "top1_diff_ci95": [
+    -0.6,
+    0.5
+   ]
+  },
+  "x86_285k->arm_orin:fp32": {
+   "pred_agree": 1.0,
+   "cos_absdiff_mean": 4.7981739470515095e-08,
+   "cos_absdiff_max": 3.5762786865234375e-07,
+   "top1_diff": 0.0,
+   "top1_diff_ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "x86_285k->arm_orin:s8": {
+   "pred_agree": 0.973,
+   "cos_absdiff_mean": 0.0072411708533763885,
+   "cos_absdiff_max": 0.04054158926010132,
+   "top1_diff": 0.3,
+   "top1_diff_ci95": [
+    -0.5,
+    1.2
+   ]
+  },
+  "x86_285k->arm_orin:u8rr": {
+   "pred_agree": 0.981,
+   "cos_absdiff_mean": 0.0040050228126347065,
+   "cos_absdiff_max": 0.02179574966430664,
+   "top1_diff": 0.0,
+   "top1_diff_ci95": [
+    -0.6,
+    0.5
+   ]
+  }
+ }
+}
