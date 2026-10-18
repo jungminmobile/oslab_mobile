@@ -218,3 +218,4 @@
 - 결론: G3R 종료. ORT 최종(D-030)·Hailo D256L1(D-032) 그대로. 원인 가설(공통 −0.6~0.7%p는 QKV/LN, D-031)은 `siglip2/g3q-rotate`에서
 - 막힌 것·이상: 코드 버그 2개(stats hook, fp32 이중 감싸기) 수정 후 재실행. 1차 지연 측정이 DFC 로그 파일로 dirty → 재측정. WMI LoadPercentage 게이트 부정확 → 프로세스 합 게이트로 교체. DFC 스크리닝 RSS 18 GB로 WSL available 1 GB까지 → 중단, 이후 flock 공유
 - 다음 할 일: PR 전 `siglip2/g3-sensitivity` 최신으로 rebase, 3중 확인(독립 검토) 후 PR (용 확인)
+- (추가 17:30) 용 요청 4번째 Hailo 시도(분산 맞춤 h_c*): 사전 확인 통과·LN 이상치 제거됐으나 스크리닝 cos 0.733으로 실패 → G3R Hailo 종료. 다음: rebase·독립 검토·PR
