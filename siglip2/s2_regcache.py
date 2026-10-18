@@ -1044,6 +1044,37 @@ def cmd_m2check(a):
           " (d)", res["pass_d"], "sink 1/√ 최대", max(v["sink_max"] for v in d.values()), "일반 최대", max(v["other_max"] for v in d.values()))
 
 
+def cmd_m2lnrange(a):
+    """M2 확인 (e): 보정 구간(train 고화질 calib_n장, seed — DFC limvals와 같은 사진)에서 M2 FP32와 원래 FP32의 LayerNorm 1/√(분산+ε)
+    전체 토큰 범위 (블록 first~11 norm1·norm2, 마지막 norm). DFC `conv_var_inv_layer_normalization*` limvals와 대조한다."""
+    S, RC, env_info = _setup()
+    out = S.require_results_dir()
+    out.mkdir(parents=True, exist_ok=True)
+    env = env_info.collect()
+    env_info.write_env(out, env)
+    model, _ = _load_visual(S, a.threads)
+    orig = model.visual.trunk
+    rc = _make_mask_trunk(RC, model, a)
+    from s2_quantize import calib_images                 # s2_quantize와 같은 보정 사진 (train, dev 제외)
+    x = calib_images("highres", a.calib_n, a.seed)
+    acc = {}
+    for i in range(0, len(x), 16):
+        xb = torch.as_tensor(np.ascontiguousarray(x[i:i + 16]))
+        for tag, o in (("m2", False), ("orig", True)):
+            cap = _trace_m2(rc, xb, orig=o)
+            for k in [k for k in cap if k.startswith(("n1_", "n2_"))] + ["final"]:
+                l = k.split("_")[-1]
+                eps = orig.norm.eps if k == "final" else (orig.blocks[int(l)].norm1.eps if k.startswith("n1") else orig.blocks[int(l)].norm2.eps)
+                inv = 1 / torch.sqrt(cap[k].var(-1, unbiased=False) + eps)
+                d = acc.setdefault(tag, {}).setdefault(k, [float("inf"), 0.0])
+                d[0], d[1] = min(d[0], float(inv.min())), max(d[1], float(inv.max()))
+    res = {tag: {k: {"min": round(v[0], 4), "max": round(v[1], 4)} for k, v in d.items()} for tag, d in acc.items()}
+    row = _row(env, a, n=int(len(x)), inv_sqrt_range=res)
+    _append(out, "m2lnrange.jsonl", row)
+    for k in res["m2"]:
+        print(f"{k:7s} M2 [{res['m2'][k]['min']:.4f}, {res['m2'][k]['max']:.4f}]   원래 [{res['orig'][k]['min']:.4f}, {res['orig'][k]['max']:.4f}]")
+
+
 @torch.no_grad()
 def _trace_mask(rc, x):
     """MaskRegCacheTrunk.forward와 같은 순서로, 블록 l ≥ first의 norm1·norm2 입력, fc2 입력, 블록 출력과 마지막 norm 입력을 꺼낸다."""
@@ -1218,6 +1249,7 @@ def main():
     p = common(sub.add_parser("m2check"))
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩)")
     p.set_defaults(func=cmd_m2check, mask_form="bcast", mask_site="mlp", hfill="zero")
+    common(sub.add_parser("m2lnrange")).set_defaults(func=cmd_m2lnrange, mask_form="bcast", mask_site="mlp", hfill="zero")
     p = common(sub.add_parser("attn"))
     p.add_argument("--n", type=int, default=64, help="dev 사진 수 (Pets·Caltech 반씩, stats와 같음)")
     p.set_defaults(func=cmd_attn)
