@@ -243,3 +243,17 @@ dev 전체 짝 비교 (`full/paired_ci.jsonl`, 층화 짝 부트스트랩 1000�
 - 즉 attention 확률·Q×Kᵀ를 FP32로 되돌려도 FP32 대비 cos 손실(약 0.045)의 2% 정도만 회복된다. 10-2 가설(attention 확률의 U8 눈금)은 이 표본에서 지지되지 않는다.
 - 남은 후보 (확인 안 함, 기록만): ORT에서 정수로 도는 나머지 MatMul 53개 — QKV·proj·fc1·fc2(블록 5·9 제외)와 풀링 헤드. D-031은 QKV 정수 경로가 S8 대비 손실의 원인이라고 했지만, 회전으로 QKV 입력 채널 쏠림을 없앤 rothad도 FP32 대비 손실이 비슷했다(8절) → 채널 쏠림 아닌 다른 원인(토큰 쏠림에 따른 텐서별 눈금, fc1·fc2 활성값 등)이 남아 있을 수 있다.
 - 지연은 재지 않았다.
+
+### 10-7. 진단 2 (판정용 아님): 연산 묶음 하나씩만 FP32로 되돌리기 (설계, 10/18 — 실행 전에 고정)
+- R0 조건 그대로(fc2L2 U8+rr, percentile 99.999, highres 256 s0, hc16), 기본 exclude `/blocks.5/mlp/fc2/,/blocks.9/mlp/fc2/`에 한 묶음씩만 추가:
+
+| 이름 | 추가 exclude 패턴 | FP32로 남는 MatMul (기본 fc2 2개 포함) |
+|---|---|---|
+| E1 | `/attn_pool/` | 9 = 풀링 헤드 7 (q, kv, attention 2, proj, mlp fc1, mlp fc2) + 2 |
+| E2 | `/attn/qkv/` | 14 = 블록 qkv 12 + 2 |
+| E3 | `/attn/proj/` | 14 = 블록 attn proj 12 + 2 (풀링 헤드 `/attn_pool/proj/`는 안 걸림) |
+| E4 | `/blocks.N/mlp/fc1/` × 12 (N = 0~11) | 14 = 블록 fc1 12 + 2 (`/mlp/fc1/`로 쓰면 풀링 헤드 fc1도 걸리므로 블록 번호를 넣음) |
+| E5 | `/blocks.N/mlp/fc2/` × 10 (N ≠ 5, 9) | 12 = 블록 fc2 전부 |
+- 노드 목록 `diag/group_exclude_nodes.csv`, 패턴 `diag/group_exclude_patterns.json` (양자화 전 `select_excluded` 시험 실행으로 확인, `/blocks.1/`이 `/blocks.10/`을 잡지 않음 확인).
+- 측정: dev 6×200 스크리닝 (정수 커널, 4스레드), R0를 같은 실행에 넣는다. 표: 구성 / 정수 MatMul 수 / 고화질 cos / Δtop-1 / CIFAR A Δ.
+- **해석 규칙:** R0 대비 **cos +0.0135 이상**(남은 손실 약 0.045의 30%) 이거나 **고화질 Δtop-1 +0.3%p 이상**인 묶음이 있으면 **"주원인 묶음"** → 그 묶음만 FP32로 둔 모델로 (a) dev 전체 짝 비교 1회 (R0 대비, `s2_paired_ci.py`) (b) 4스레드 지연 3세션 (`s2_bench_speed.py`, R0와 번갈아, 시작 전 `ps`로 다른 python·hailo 작업 없음 확인, 있으면 대기). 둘 이상이면 cos 회복이 가장 큰 하나. 없으면 **"특정 묶음에 몰리지 않음(손실이 고르게 퍼짐)"**으로 기록하고 끝.

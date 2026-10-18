@@ -1,0 +1,27 @@
+{
+ "E1": {
+  "exclude": "/blocks.5/mlp/fc2/,/blocks.9/mlp/fc2/,/attn_pool/",
+  "n_fp32_nodes": 49,
+  "n_fp32_matmul": 9
+ },
+ "E2": {
+  "exclude": "/blocks.5/mlp/fc2/,/blocks.9/mlp/fc2/,/attn/qkv/",
+  "n_fp32_nodes": 28,
+  "n_fp32_matmul": 14
+ },
+ "E3": {
+  "exclude": "/blocks.5/mlp/fc2/,/blocks.9/mlp/fc2/,/attn/proj/",
+  "n_fp32_nodes": 28,
+  "n_fp32_matmul": 14
+ },
+ "E4": {
+  "exclude": "/blocks.5/mlp/fc2/,/blocks.9/mlp/fc2/,/blocks.0/mlp/fc1/,/blocks.1/mlp/fc1/,/blocks.2/mlp/fc1/,/blocks.3/mlp/fc1/,/blocks.4/mlp/fc1/,/blocks.5/mlp/fc1/,/blocks.6/mlp/fc1/,/blocks.7/mlp/fc1/,/blocks.8/mlp/fc1/,/blocks.9/mlp/fc1/,/blocks.10/mlp/fc1/,/blocks.11/mlp/fc1/",
+  "n_fp32_nodes": 28,
+  "n_fp32_matmul": 14
+ },
+ "E5": {
+  "exclude": "/blocks.5/mlp/fc2/,/blocks.9/mlp/fc2/,/blocks.0/mlp/fc2/,/blocks.1/mlp/fc2/,/blocks.2/mlp/fc2/,/blocks.3/mlp/fc2/,/blocks.4/mlp/fc2/,/blocks.6/mlp/fc2/,/blocks.7/mlp/fc2/,/blocks.8/mlp/fc2/,/blocks.10/mlp/fc2/,/blocks.11/mlp/fc2/",
+  "n_fp32_nodes": 24,
+  "n_fp32_matmul": 12
+ }
+}
