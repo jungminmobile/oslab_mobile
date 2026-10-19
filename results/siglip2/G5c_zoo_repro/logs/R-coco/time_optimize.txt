@@ -1,0 +1,23 @@
+	Command being timed: "hailo optimize siglip_b_16_image_encoder.har --hw-arch hailo10h --model-script zoo_v540_siglip_b_16_image_encoder.alls --calib-set-path calib.npy --output-har-path siglip_b_16_image_encoder_optimized.har"
+	User time (seconds): 367.69
+	System time (seconds): 35.37
+	Percent of CPU this job got: 176%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 3:48.87
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 9949344
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 104
+	Minor (reclaiming a frame) page faults: 3408558
+	Voluntary context switches: 6000794
+	Involuntary context switches: 20499
+	Swaps: 0
+	File system inputs: 11320
+	File system outputs: 3928320
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

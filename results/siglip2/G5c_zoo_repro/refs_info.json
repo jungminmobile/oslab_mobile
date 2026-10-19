@@ -1,0 +1,41 @@
+{
+ "commit": "1de7bf9",
+ "dirty": false,
+ "onnx_sha256": "d95f3e5f0240d6776ba6338b4cb2f6bbc856287c570255d94c0f195a600000a0",
+ "k": 200,
+ "model": "google/siglip-base-patch16-224",
+ "sets": {
+  "cifar_A": {
+   "classes": 100,
+   "n_templates": 18,
+   "fp32_top1": 72.5
+  },
+  "pets_dev": {
+   "classes": 37,
+   "n_templates": 1,
+   "fp32_top1": 95.0
+  },
+  "flowers_dev": {
+   "classes": 102,
+   "n_templates": 1,
+   "fp32_top1": 87.0
+  },
+  "cars_dev": {
+   "classes": 196,
+   "n_templates": 8,
+   "fp32_top1": 92.5
+  },
+  "food_dev": {
+   "classes": 101,
+   "n_templates": 1,
+   "fp32_top1": 83.5
+  },
+  "caltech_dev": {
+   "classes": 102,
+   "n_templates": 34,
+   "fp32_top1": 94.5
+  }
+ },
+ "ort": "1.25.0",
+ "transformers": "5.19.0"
+}

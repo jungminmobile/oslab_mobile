@@ -1,0 +1,16 @@
+20:19:34 tag=R-coco commit=1de7bf9 dirty=0 dfc=5.4.0 onnx_sha256=d95f3e5f0240d6776ba6338b4cb2f6bbc856287c570255d94c0f195a600000a0 alls_sha256=8e31c5fb23e747de71c6cf007ac8b3432e566e7e5d3ae37a543d95c0cbc45a73 calib=/home/junyong/siglip2_work/g5c/coco/coco_calib64_nhwc.npy calib_sha256=f3be15bfc2724897f9ea273dc6bac00d83093b0b19b294344775c61d63ead8ea
+20:19:34 parse 잠금 대기
+21:02:39 parse 잠금 잡음 free=29G
+21:02:52 parse rc=0 sec=13 maxrss_kb=4185884
+21:02:52 optimize 잠금 대기
+21:02:52 optimize 잠금 잡음 free=29G
+21:06:41 optimize rc=0 sec=229 maxrss_kb=9949344
+[info] Using dataset with 64 entries for calibration
+[info] Using dataset with 64 entries for calibration
+[info] Using dataset with 64 entries for calibration
+21:06:41 calib assert OK (64)
+21:06:41 compile 잠금 대기
+21:06:41 compile 잠금 잡음 free=29G
+22:00:08 compile rc=0 sec=3207 maxrss_kb=7780068
+22:00:08 hef=comp/siglip_b_16_image_encoder.hef bytes=98922496 sha256=f16b9355bce9f3ed19e46dd68fe1ffc9ada613c03c128d14658d8112875cccd3
+22:00:08 G5C DFC DONE R-coco

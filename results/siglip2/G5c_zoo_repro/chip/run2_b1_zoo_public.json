@@ -1,0 +1,12 @@
+{
+    "time": "Mon Oct 19 22:38:21 2026",
+    "inference_mode": "full_async",
+    "network_groups": [
+        {
+            "name": "siglip_b_16_image_encoder",
+            "full_hef_path": "zoo_public.hef",
+            "FPS": "32.866630"
+        }
+    ],
+    "time_to_run": "10.00 seconds"
+}

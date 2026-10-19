@@ -1,0 +1,76 @@
+{
+ "date": "2026-10-19T22:31:46",
+ "machine": "aarch64",
+ "platform": "Linux-5.15.148-tegra-aarch64-with-glibc2.35",
+ "python": "3.10.12",
+ "hailortcli": "HailoRT-CLI version 5.3.0",
+ "label": "b8_s3",
+ "batch": 8,
+ "warmup": 20,
+ "n": 200,
+ "runs": [
+  {
+   "model": "zoo_public",
+   "hef_sha256": "e2198ed5975da551",
+   "batch": 8,
+   "input_domain": "pixel_0_255",
+   "qin": [
+    1.0,
+    0.0
+   ],
+   "in_shape": [
+    224,
+    224,
+    3
+   ],
+   "mean_ms": 137.349,
+   "median_ms": 141.99,
+   "p90_ms": 142.078,
+   "min_ms": 123.818,
+   "max_ms": 143.017,
+   "img_per_s_from_mean": 58.25
+  },
+  {
+   "model": "R_our",
+   "hef_sha256": "e21fbb12fc8bdb20",
+   "batch": 8,
+   "input_domain": "pixel_0_255",
+   "qin": [
+    1.0,
+    0.0
+   ],
+   "in_shape": [
+    224,
+    224,
+    3
+   ],
+   "mean_ms": 147.618,
+   "median_ms": 142.027,
+   "p90_ms": 164.022,
+   "min_ms": 140.862,
+   "max_ms": 164.415,
+   "img_per_s_from_mean": 54.19
+  },
+  {
+   "model": "R_coco",
+   "hef_sha256": "f16b9355bce9f3ed",
+   "batch": 8,
+   "input_domain": "pixel_0_255",
+   "qin": [
+    1.0,
+    0.0
+   ],
+   "in_shape": [
+    224,
+    224,
+    3
+   ],
+   "mean_ms": 183.652,
+   "median_ms": 164.91,
+   "p90_ms": 241.982,
+   "min_ms": 163.0,
+   "max_ms": 246.406,
+   "img_per_s_from_mean": 43.56
+  }
+ ]
+}

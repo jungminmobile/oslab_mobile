@@ -1,0 +1,16 @@
+20:04:35 tag=R-our commit=3df20d9 dirty=0 dfc=5.4.0 onnx_sha256=d95f3e5f0240d6776ba6338b4cb2f6bbc856287c570255d94c0f195a600000a0 alls_sha256=8e31c5fb23e747de71c6cf007ac8b3432e566e7e5d3ae37a543d95c0cbc45a73 calib=/home/junyong/siglip2_work/g5b/calib_pix64_s0_nhwc.npy calib_sha256=cf73051faf354ff222266c836b56dbf1a5890d29ec76d21149ebcce36e7d8212
+20:04:35 parse 잠금 대기
+20:04:35 parse 잠금 잡음 free=29G
+20:04:51 parse rc=0 sec=16 maxrss_kb=4178168
+20:04:51 optimize 잠금 대기
+20:04:51 optimize 잠금 잡음 free=29G
+20:08:53 optimize rc=0 sec=242 maxrss_kb=9954392
+[info] Using dataset with 64 entries for calibration
+[info] Using dataset with 64 entries for calibration
+[info] Using dataset with 64 entries for calibration
+20:08:53 calib assert OK (64)
+20:08:53 compile 잠금 대기
+20:08:53 compile 잠금 잡음 free=28G
+21:02:39 compile rc=0 sec=3226 maxrss_kb=8215952
+21:02:40 hef=comp/siglip_b_16_image_encoder.hef bytes=99168256 sha256=e21fbb12fc8bdb209d021ea364a79ce4d4614f011c53e4df6711cdc024a86c4a
+21:02:40 G5C DFC DONE R-our

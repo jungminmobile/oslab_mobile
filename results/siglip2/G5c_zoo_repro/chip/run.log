@@ -1,0 +1,77 @@
+22:00:25 start commit=98c6ffa hailort=HailoRT-CLI version 5.3.0 script_sha=2a80625811e3cc89 4cea4d2960350e2c d486336bf915b311 load=0.00 0.00 0.00 users=0 other_hailo=0 zoo_public=e2198ed5975da551 R_our=e21fbb12fc8bdb20 R_coco=f16b9355bce9f3ed 
+22:00:25 cool eval_zoo_public max=62.15
+22:00:25 other_hailo=0 eval zoo_public 시작
+zoo_public cifar_A (200, 768) 8s
+zoo_public pets_dev (200, 768) 14s
+zoo_public flowers_dev (200, 768) 21s
+zoo_public cars_dev (200, 768) 29s
+zoo_public food_dev (200, 768) 36s
+zoo_public caltech_dev (200, 768) 44s
+22:01:10 eval zoo_public 끝
+22:03:42 cool eval_R_our max=64.13
+22:03:42 other_hailo=0 eval R_our 시작
+R_our cifar_A (200, 768) 8s
+R_our pets_dev (200, 768) 14s
+R_our flowers_dev (200, 768) 21s
+R_our cars_dev (200, 768) 29s
+R_our food_dev (200, 768) 37s
+R_our caltech_dev (200, 768) 44s
+22:04:28 eval R_our 끝
+22:07:00 cool eval_R_coco max=64.53
+22:07:00 other_hailo=0 eval R_coco 시작
+R_coco cifar_A (200, 768) 8s
+R_coco pets_dev (200, 768) 14s
+R_coco flowers_dev (200, 768) 22s
+R_coco cars_dev (200, 768) 29s
+R_coco food_dev (200, 768) 37s
+R_coco caltech_dev (200, 768) 45s
+22:07:46 eval R_coco 끝
+22:10:48 cool bench_b1_s1 max=64.23
+22:10:48 other_hailo=0 bench b1 s1 시작
+{"model": "zoo_public", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 31.518, "median_ms": 31.453, "p90_ms": 31.87, "min_ms": 31.231, "max_ms": 32.434, "img_per_s_from_mean": 31.73}
+{"model": "R_our", "hef_sha256": "e21fbb12fc8bdb20", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 31.468, "median_ms": 31.412, "p90_ms": 31.784, "min_ms": 31.164, "max_ms": 32.062, "img_per_s_from_mean": 31.78}
+{"model": "R_coco", "hef_sha256": "f16b9355bce9f3ed", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 32.033, "median_ms": 31.538, "p90_ms": 35.404, "min_ms": 31.359, "max_ms": 36.351, "img_per_s_from_mean": 31.22}
+22:11:19 bench b1 s1 끝
+22:13:21 cool bench_b1_s2 max=64.43
+22:13:21 other_hailo=0 bench b1 s2 시작
+{"model": "zoo_public", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 31.518, "median_ms": 31.437, "p90_ms": 31.897, "min_ms": 31.218, "max_ms": 32.45, "img_per_s_from_mean": 31.73}
+{"model": "R_our", "hef_sha256": "e21fbb12fc8bdb20", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 31.504, "median_ms": 31.437, "p90_ms": 31.787, "min_ms": 31.23, "max_ms": 32.435, "img_per_s_from_mean": 31.74}
+{"model": "R_coco", "hef_sha256": "f16b9355bce9f3ed", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 32.262, "median_ms": 31.548, "p90_ms": 35.619, "min_ms": 31.367, "max_ms": 36.724, "img_per_s_from_mean": 31.0}
+22:13:51 bench b1 s2 끝
+22:15:53 cool bench_b1_s3 max=64.48
+22:15:53 other_hailo=0 bench b1 s3 시작
+{"model": "zoo_public", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 31.515, "median_ms": 31.454, "p90_ms": 31.815, "min_ms": 31.203, "max_ms": 32.499, "img_per_s_from_mean": 31.73}
+{"model": "R_our", "hef_sha256": "e21fbb12fc8bdb20", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 31.51, "median_ms": 31.441, "p90_ms": 31.875, "min_ms": 31.21, "max_ms": 32.423, "img_per_s_from_mean": 31.74}
+{"model": "R_coco", "hef_sha256": "f16b9355bce9f3ed", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 32.564, "median_ms": 31.583, "p90_ms": 35.992, "min_ms": 31.342, "max_ms": 36.253, "img_per_s_from_mean": 30.71}
+22:16:24 bench b1 s3 끝
+22:18:56 cool bench_b8_s1 max=64.18
+22:18:56 other_hailo=0 bench b8 s1 시작
+{"model": "zoo_public", "hef_sha256": "e2198ed5975da551", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 137.667, "median_ms": 141.978, "p90_ms": 142.035, "min_ms": 123.964, "max_ms": 143.016, "img_per_s_from_mean": 58.11}
+{"model": "R_our", "hef_sha256": "e21fbb12fc8bdb20", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 146.415, "median_ms": 142.007, "p90_ms": 164.002, "min_ms": 140.991, "max_ms": 164.666, "img_per_s_from_mean": 54.64}
+{"model": "R_coco", "hef_sha256": "f16b9355bce9f3ed", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 180.603, "median_ms": 164.994, "p90_ms": 242.007, "min_ms": 163.181, "max_ms": 242.676, "img_per_s_from_mean": 44.3}
+22:20:47 bench b8 s1 끝
+22:25:21 cool bench_b8_s2 max=64.28
+22:25:21 other_hailo=0 bench b8 s2 시작
+{"model": "zoo_public", "hef_sha256": "e2198ed5975da551", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 138.113, "median_ms": 141.976, "p90_ms": 142.11, "min_ms": 123.932, "max_ms": 142.994, "img_per_s_from_mean": 57.92}
+{"model": "R_our", "hef_sha256": "e21fbb12fc8bdb20", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 147.048, "median_ms": 142.005, "p90_ms": 164.002, "min_ms": 139.098, "max_ms": 165.622, "img_per_s_from_mean": 54.4}
+{"model": "R_coco", "hef_sha256": "f16b9355bce9f3ed", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 180.711, "median_ms": 164.989, "p90_ms": 241.99, "min_ms": 163.622, "max_ms": 242.423, "img_per_s_from_mean": 44.27}
+22:27:12 bench b8 s2 끝
+22:31:45 cool bench_b8_s3 max=64.48
+22:31:45 other_hailo=0 bench b8 s3 시작
+{"model": "zoo_public", "hef_sha256": "e2198ed5975da551", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 137.349, "median_ms": 141.99, "p90_ms": 142.078, "min_ms": 123.818, "max_ms": 143.017, "img_per_s_from_mean": 58.25}
+{"model": "R_our", "hef_sha256": "e21fbb12fc8bdb20", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 147.618, "median_ms": 142.027, "p90_ms": 164.022, "min_ms": 140.862, "max_ms": 164.415, "img_per_s_from_mean": 54.19}
+{"model": "R_coco", "hef_sha256": "f16b9355bce9f3ed", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 183.652, "median_ms": 164.91, "p90_ms": 241.982, "min_ms": 163.0, "max_ms": 246.406, "img_per_s_from_mean": 43.56}
+22:33:38 bench b8 s3 끝
+22:38:11 cool run2_b1_zoo_public max=64.43
+22:38:22 run2 b1 zoo_public siglip_b_16_image_encoder: fps: 32.87
+22:39:53 cool run2_b1_R_our max=64.53
+22:40:04 run2 b1 R_our siglip_b_16_image_encoder: fps: 32.87
+22:41:36 cool run2_b1_R_coco max=64.58
+22:41:46 run2 b1 R_coco siglip_b_16_image_encoder: fps: 32.77
+22:43:18 cool run2_b8_zoo_public max=64.53
+22:43:29 run2 b8 zoo_public siglip_b_16_image_encoder: fps: 77.63
+22:45:31 cool run2_b8_R_our max=64.58
+22:45:41 run2 b8 R_our siglip_b_16_image_encoder: fps: 76.82
+22:47:43 cool run2_b8_R_coco max=64.58
+22:47:54 run2 b8 R_coco siglip_b_16_image_encoder: fps: 76.02
+22:47:54 G5C CHIP DONE load=0.00 0.00 0.00

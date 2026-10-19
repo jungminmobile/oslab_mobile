@@ -1,0 +1,23 @@
+	Command being timed: "bash -c cd comp && hailo compiler ../siglip_b_16_image_encoder_optimized.har --hw-arch hailo10h --output-dir . --output-har-path siglip_b_16_image_encoder_compiled.har"
+	User time (seconds): 9271.09
+	System time (seconds): 856.40
+	Percent of CPU this job got: 313%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 53:46.14
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 8215952
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1036
+	Minor (reclaiming a frame) page faults: 534714832
+	Voluntary context switches: 2950181
+	Involuntary context switches: 266955
+	Swaps: 0
+	File system inputs: 112888
+	File system outputs: 5958800
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
