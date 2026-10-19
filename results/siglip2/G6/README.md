@@ -117,8 +117,30 @@ D256L1(`siglip2/hailo/g4_D256L1_official_b9fc2.alls`, M2rot은 `g3r_M2rot_D256L1
 ### 6-1. HEF 표 (sha256·크기·컨텍스트·입출력 형식)
 (측정 후)
 
-### 6-2. .alls 층 대응표
-(DFC parse 후)
+### 6-2. .alls 층 대응표 (DFC parse 뒤, optimize 전에 커밋)
+
+도구: `g6_alls.py`. 층 이름이 아니라 그래프 구조와 원래 ONNX 노드 이름으로 정한다.
+- fc1·fc2: `mlp/fc1|fc2(_n)/MatMul` conv를 위상 순서로 센 블록 번호
+- 잔차 덧셈: 입력이 attention 출력 투영이나 fc2인 ew_add, 그리고 위치 임베딩 덧셈
+- 근거 표: `alls/map_<구성>.csv` (역할, DFC 층, ONNX 노드)
+
+**도구 검증 (결과 전):**
+- 같은 규칙을 기존 M2rot 그래프(`siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad_b1.onnx`)에 적용하면 16비트 목록이 `siglip2/hailo/g3r_M2rot_D256L1equiv.alls`와 **정확히 같다** (conv 6개, 잔차 ew_add 26개 — `--check`).
+- rothad 그래프에서는 ew_add 전체가 26개로 잔차 덧셈과 같다. 그래서 D256L1의 `{ew_add*}`와 같은 뜻이다.
+
+| 역할 (D256L1 원래 층) | B32 D·R | B32 M | S1B16 R·D | 근거 ONNX 노드 (B32 M 예) |
+|---|---|---|---|---|
+| 입력 정규화 (없음 → 추가) | norm1 | norm1 | norm1 | `.alls` normalization |
+| 패치 임베딩 (`conv1`) | conv1 | conv1 | conv1 | `/trunk/patch_embed/proj/Conv` |
+| 입력 경로 층 (Zoo .alls 기준) | format_conversion1 | format_conversion1 | conv1_s2d (optimize 때 생김, Zoo S1B16 .alls와 같음) | `/trunk/patch_embed/Reshape;Transpose` |
+| 블록 0 fc1·fc2 (`conv4, conv5`) | conv4, conv5 | conv4, conv5 | conv4, conv5 | `/trunk/blocks.0/mlp/fc1·fc2/MatMul` |
+| 블록 5 fc1·fc2 (`conv24, conv25`) | conv24, conv25 | conv24, conv25 | conv24, conv25 | `/trunk/mlp/fc1·fc2/MatMul` (M 그래프의 블록 5) |
+| 블록 9 fc2 (`conv41`) | conv41 | conv41 | conv41 | `/trunk/mlp/fc2_4/MatMul` (M 그래프의 블록 9) |
+| 잔차 ew_add 26개 | ew_add1~26 (전체) | ew_add1~12, 14, 17, 19, 22, 24, 27, 29, 32, 34, 39, 41, 46, 48, 53 | ew_add1~26 (전체) | `/trunk/Add`, `blocks.N/Add(_1)`, M 블록의 잔차 Add |
+
+- 만들어진 `.alls`: `alls/g6_b32_D.alls`, `g6_b32_R.alls`, `g6_b32_M.alls`, `g6_s1b16_R.alls`, `g6_s1b16_D.alls`
+- Zoo 그대로: `alls/zoo_v540_b32.alls`, `zoo_v540_s1b16.alls` (S1B16은 G5c의 파일과 같다)
+- B32 M에서 ew_add12는 블록 5 attention 잔차다. 통일 규칙에서는 블록 5의 K/V를 바꾸지 않으므로 보통 잔차 덧셈과 같다.
 
 ## 7. 결과
 (측정 후)
