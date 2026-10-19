@@ -95,3 +95,5 @@
 - **판정: 예선 후보 조건 ①② 모두 만족 → "예선 후보".** 교체 여부는 팀(준혁) 결정이다. 교체하면 최종 test 평가를 다시 해야 한다 (이번에는 test를 쓰지 않았다).
 - 기록 (판정에 안 씀): M2rot_ort는 R0보다 크기·지연·메모리가 모두 작고, dev 전체 정확도도 유의하게 높다 (+0.56 [+0.10, +1.01]). FP32와는 구분되지 않는다. 안전장치 관문 두 개(a·b)는 결과 뒤 사후 변경했다 (5절, 용 승인). M2 근사 cos 최소 0.9994 (dev 64장) / 0.9984 (dev 6×200).
 - 재현에 필요한 것: `s2_rotate.py`(rothad Q), `s2_regcache.py`(M2 그래프·보정 평균 캐시 3개), `s2_quantize.py --src`. 예선 ONNX와 Hailo 최종(D-043)이 같은 M2rot 그래프가 된다.
+- **M2rot_ort 파일 sha256: `e84c3727f51e3b97cd59d9ab9604e01acc78f81493926a0696fbf96dc9c60f9e`** (96,180,230 B). 측정 당시 sha 미기록 → 10/19 수정 시각(08:49, 양자화 기록 시각과 같고 c·d단계보다 앞섬)·200장 재실행 일치(Pets·Caltech 각 100장, 예측 같음, cos 차이 ≤ 2.4e-7)·`cmp`로 동일 파일 확인.
+- 교차 측정용 pre-release `siglip2-m2rot-ort-20261019` (target `66c04e4`, 팀 결정 전): https://github.com/jungminmobile/oslab_mobile/releases/tag/siglip2-m2rot-ort-20261019 — 내려받은 파일 sha256도 위 값과 같다.
