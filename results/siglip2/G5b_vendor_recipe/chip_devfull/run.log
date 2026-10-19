@@ -1,0 +1,21 @@
+18:39:21 다른 Hailo 작업 대기 1개
+18:41:22 start commit=9a61ba1 hailort=HailoRT-CLI version 5.3.0 script_sha=2a80625811e3cc89 66c4332b9b28c11a load=0.00 0.00 0.00 users=0 other_hailo=0 data_sha=b2f6646140d3 9a82e46be3ea 03b1c676a26e c5861be95791 4c7db75aa480 01abfa6ed9e1 M2rot2_D256L1=040a3ae1ebd81d99 vendor_v500=afa356b5bc4a904c 
+18:41:22 cool eval_M2rot2_D256L1 max=62.41
+18:41:22 other_hailo=0 eval M2rot2_D256L1 시작
+M2rot2_D256L1 cifar_A (1000, 768) 55s
+M2rot2_D256L1 pets_dev (990, 768) 114s
+M2rot2_D256L1 flowers_dev (957, 768) 170s
+M2rot2_D256L1 cars_dev (967, 768) 227s
+M2rot2_D256L1 food_dev (985, 768) 284s
+M2rot2_D256L1 caltech_dev (1024, 768) 345s
+18:47:09 eval M2rot2_D256L1 끝
+18:51:42 cool eval_vendor_v500 max=64.28
+18:51:42 other_hailo=0 eval vendor_v500 시작
+vendor_v500 cifar_A (1000, 768) 109s
+vendor_v500 pets_dev (990, 768) 220s
+vendor_v500 flowers_dev (957, 768) 327s
+vendor_v500 cars_dev (967, 768) 435s
+vendor_v500 food_dev (985, 768) 545s
+vendor_v500 caltech_dev (1024, 768) 660s
+19:02:43 eval vendor_v500 끝
+19:02:43 G5B DEVFULL DONE load=0.00 0.00 0.00

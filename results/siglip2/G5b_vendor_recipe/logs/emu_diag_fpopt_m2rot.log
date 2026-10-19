@@ -1,0 +1,3 @@
+M2rot2_D256L1 fp_optimized cifar_A {"n": 200, "top1": 74.5, "fp32_top1": 74.5, "dtop1": 0.0, "cos_vs_fp32_mean": 0.99956, "cos_vs_fp32_min": 0.9984, "vs_chip_pred_agree": 0.825, "vs_chip_emb_cos_mean": 0.96058, "vs_chip_emb_cos_min": 0.85616, "chip_top1": 74.0} 16s
+M2rot2_D256L1 fp_optimized pets_dev {"n": 200, "top1": 93.5, "fp32_top1": 93.5, "dtop1": 0.0, "cos_vs_fp32_mean": 0.99994, "cos_vs_fp32_min": 0.9994, "vs_chip_pred_agree": 0.97, "vs_chip_emb_cos_mean": 0.98993, "vs_chip_emb_cos_min": 0.97484, "chip_top1": 91.5} 27s
+DONE M2rot2_D256L1

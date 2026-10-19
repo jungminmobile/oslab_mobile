@@ -1,0 +1,7 @@
+cifar_A 반올림 전후 최대 차이 0.0
+pets_dev 반올림 전후 최대 차이 0.0
+vendor_v500 native cifar_A {"n": 200, "top1": 1.5, "fp32_top1": 74.5, "dtop1": -73.0, "cos_vs_fp32_mean": 0.32236, "cos_vs_fp32_min": 0.24426, "vs_chip_pred_agree": 0.01, "vs_chip_emb_cos_mean": 0.30282, "vs_chip_emb_cos_min": 0.07663, "chip_top1": 56.5} 15s
+vendor_v500 native pets_dev {"n": 200, "top1": 1.0, "fp32_top1": 93.5, "dtop1": -92.5, "cos_vs_fp32_mean": 0.35202, "cos_vs_fp32_min": 0.27785, "vs_chip_pred_agree": 0.01, "vs_chip_emb_cos_mean": 0.33598, "vs_chip_emb_cos_min": 0.24928, "chip_top1": 93.0} 27s
+vendor_v500 quantized cifar_A {"n": 200, "top1": 49.5, "fp32_top1": 74.5, "dtop1": -25.0, "cos_vs_fp32_mean": 0.853, "cos_vs_fp32_min": 0.29028, "vs_chip_pred_agree": 0.695, "vs_chip_emb_cos_mean": 0.94678, "vs_chip_emb_cos_min": 0.25792, "chip_top1": 56.5} 59s
+vendor_v500 quantized pets_dev {"n": 200, "top1": 93.0, "fp32_top1": 93.5, "dtop1": -0.5, "cos_vs_fp32_mean": 0.96004, "cos_vs_fp32_min": 0.8506, "vs_chip_pred_agree": 0.975, "vs_chip_emb_cos_mean": 0.97891, "vs_chip_emb_cos_min": 0.94931, "chip_top1": 93.0} 108s
+DONE vendor_v500

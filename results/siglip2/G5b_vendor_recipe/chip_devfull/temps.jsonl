@@ -1,0 +1,13 @@
+{"time": "18:41:22", "label": "wait_eval_M2rot2_D256L1", "ts0_c": 62.41, "ts1_c": 61.85}
+{"time": "18:47:08", "label": "after_eval_M2rot2_D256L1", "ts0_c": 94.18, "ts1_c": 93.62}
+{"time": "18:47:09", "label": "wait_eval_vendor_v500", "ts0_c": 93.97, "ts1_c": 93.36}
+{"time": "18:47:39", "label": "wait_eval_vendor_v500", "ts0_c": 80.21, "ts1_c": 79.71}
+{"time": "18:48:09", "label": "wait_eval_vendor_v500", "ts0_c": 74.24, "ts1_c": 73.69}
+{"time": "18:48:40", "label": "wait_eval_vendor_v500", "ts0_c": 71.11, "ts1_c": 70.5}
+{"time": "18:49:10", "label": "wait_eval_vendor_v500", "ts0_c": 68.88, "ts1_c": 68.27}
+{"time": "18:49:40", "label": "wait_eval_vendor_v500", "ts0_c": 67.36, "ts1_c": 66.81}
+{"time": "18:50:11", "label": "wait_eval_vendor_v500", "ts0_c": 66.25, "ts1_c": 65.69}
+{"time": "18:50:41", "label": "wait_eval_vendor_v500", "ts0_c": 65.29, "ts1_c": 64.83}
+{"time": "18:51:11", "label": "wait_eval_vendor_v500", "ts0_c": 64.78, "ts1_c": 64.18}
+{"time": "18:51:42", "label": "wait_eval_vendor_v500", "ts0_c": 64.28, "ts1_c": 63.82}
+{"time": "19:02:43", "label": "after_eval_vendor_v500", "ts0_c": 96.55, "ts1_c": 96.0}

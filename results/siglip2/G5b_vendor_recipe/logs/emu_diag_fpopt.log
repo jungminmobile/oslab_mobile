@@ -1,0 +1,5 @@
+cifar_A 반올림 전후 최대 차이 0.0
+pets_dev 반올림 전후 최대 차이 0.0
+vendor_v500 fp_optimized cifar_A {"n": 200, "top1": 74.5, "fp32_top1": 74.5, "dtop1": 0.0, "cos_vs_fp32_mean": 1.0, "cos_vs_fp32_min": 1.0, "vs_chip_pred_agree": 0.655, "vs_chip_emb_cos_mean": 0.84747, "vs_chip_emb_cos_min": 0.20188, "chip_top1": 56.5} 14s
+vendor_v500 fp_optimized pets_dev {"n": 200, "top1": 93.5, "fp32_top1": 93.5, "dtop1": 0.0, "cos_vs_fp32_mean": 1.0, "cos_vs_fp32_min": 1.0, "vs_chip_pred_agree": 0.965, "vs_chip_emb_cos_mean": 0.96361, "vs_chip_emb_cos_min": 0.87608, "chip_top1": 93.0} 24s
+DONE vendor_v500

@@ -1,0 +1,5 @@
+M2rot2_D256L1 native cifar_A {"n": 200, "top1": 74.5, "fp32_top1": 74.5, "dtop1": 0.0, "cos_vs_fp32_mean": 0.99956, "cos_vs_fp32_min": 0.9984, "vs_chip_pred_agree": 0.825, "vs_chip_emb_cos_mean": 0.96058, "vs_chip_emb_cos_min": 0.85616, "chip_top1": 74.0} 16s
+M2rot2_D256L1 native pets_dev {"n": 200, "top1": 93.5, "fp32_top1": 93.5, "dtop1": 0.0, "cos_vs_fp32_mean": 0.99994, "cos_vs_fp32_min": 0.9994, "vs_chip_pred_agree": 0.97, "vs_chip_emb_cos_mean": 0.98993, "vs_chip_emb_cos_min": 0.97484, "chip_top1": 91.5} 29s
+M2rot2_D256L1 quantized cifar_A {"n": 200, "top1": 70.5, "fp32_top1": 74.5, "dtop1": -4.0, "cos_vs_fp32_mean": 0.96019, "cos_vs_fp32_min": 0.54244, "vs_chip_pred_agree": 0.855, "vs_chip_emb_cos_mean": 0.97757, "vs_chip_emb_cos_min": 0.55495, "chip_top1": 74.0} 97s
+M2rot2_D256L1 quantized pets_dev {"n": 200, "top1": 91.5, "fp32_top1": 93.5, "dtop1": -2.0, "cos_vs_fp32_mean": 0.98968, "cos_vs_fp32_min": 0.97723, "vs_chip_pred_agree": 0.975, "vs_chip_emb_cos_mean": 0.99098, "vs_chip_emb_cos_min": 0.97101, "chip_top1": 91.5} 181s
+DONE M2rot2_D256L1
