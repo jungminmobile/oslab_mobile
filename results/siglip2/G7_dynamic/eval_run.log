@@ -1,0 +1,59 @@
+21:55:12 screen start commit=3bbcdc3
+{"model": "siglip2_image_fp32.onnx", "MiB": 354.45, "hr_cos": 1.0, "hr_dtop1": 0.0, "sec": 103}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx", "MiB": 91.72, "hr_cos": 0.9756, "hr_dtop1": 0.3, "sec": 49}
+{"model": "siglip2_image_int8_dynamic_ws8_pt_ops-MatMul.onnx", "MiB": 91.33, "hr_cos": 0.7606, "hr_dtop1": -41.3, "sec": 39}
+{"model": "siglip2_image_int8_dynamic_ws8_pc_ops-MatMul_rr.onnx", "MiB": 91.75, "hr_cos": 0.7574, "hr_dtop1": -40.9, "sec": 41}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8_pc_ops-MatMul_rr.onnx", "MiB": 91.68, "hr_cos": 0.9748, "hr_dtop1": -0.8, "sec": 42}
+21:59:47 full start
+  fp32 cifar_A top1=76.90
+  fp32 pets_dev top1=93.33
+  fp32 flowers_dev top1=86.73
+  fp32 cars_dev top1=93.80
+  fp32 food_dev top1=89.44
+  fp32 caltech_dev top1=95.02
+  siglip2_image_fp32.onnx cifar_A top1=76.90
+  siglip2_image_fp32.onnx pets_dev top1=93.33
+  siglip2_image_fp32.onnx flowers_dev top1=86.73
+  siglip2_image_fp32.onnx cars_dev top1=93.80
+  siglip2_image_fp32.onnx food_dev top1=89.44
+  siglip2_image_fp32.onnx caltech_dev top1=95.02
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 cifar_A top1=72.60
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 pets_dev top1=92.93
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 flowers_dev top1=86.31
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 cars_dev top1=93.80
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 food_dev top1=89.04
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 caltech_dev top1=95.12
+  siglip2_image_int8_dynamic_ws8_pt_ops-MatMul.onnx cifar_A top1=22.60
+  siglip2_image_int8_dynamic_ws8_pt_ops-MatMul.onnx pets_dev top1=69.49
+  siglip2_image_int8_dynamic_ws8_pt_ops-MatMul.onnx flowers_dev top1=34.27
+  siglip2_image_int8_dynamic_ws8_pt_ops-MatMul.onnx cars_dev top1=50.47
+  siglip2_image_int8_dynamic_ws8_pt_ops-MatMul.onnx food_dev top1=40.91
+  siglip2_image_int8_dynamic_ws8_pt_ops-MatMul.onnx caltech_dev top1=67.19
+  siglip2_image_int8_dynamic_ws8_pc_ops-MatMul_rr.onnx cifar_A top1=22.00
+  siglip2_image_int8_dynamic_ws8_pc_ops-MatMul_rr.onnx pets_dev top1=71.11
+  siglip2_image_int8_dynamic_ws8_pc_ops-MatMul_rr.onnx flowers_dev top1=35.53
+  siglip2_image_int8_dynamic_ws8_pc_ops-MatMul_rr.onnx cars_dev top1=50.67
+  siglip2_image_int8_dynamic_ws8_pc_ops-MatMul_rr.onnx food_dev top1=38.78
+  siglip2_image_int8_dynamic_ws8_pc_ops-MatMul_rr.onnx caltech_dev top1=66.70
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8 cifar_A top1=49.70
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8 pets_dev top1=93.13
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8 flowers_dev top1=87.15
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8 cars_dev top1=93.80
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8 food_dev top1=89.14
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8 caltech_dev top1=92.97
+{"model": "siglip2_image_fp32.onnx", "hr_dtop1": 0.0, "hr_dtop1_ci95": [0.0, 0.0], "hr_cos": 1.0, "baseline_class": "≤0.5%p"}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx", "hr_dtop1": -0.23, "hr_dtop1_ci95": [-0.64, 0.18], "hr_cos": 0.9757, "baseline_class": "≤0.5%p"}
+{"model": "siglip2_image_int8_dynamic_ws8_pt_ops-MatMul.onnx", "hr_dtop1": -39.2, "hr_dtop1_ci95": [-40.55, -37.86], "hr_cos": 0.7634, "baseline_class": ">2.0%p"}
+{"model": "siglip2_image_int8_dynamic_ws8_pc_ops-MatMul_rr.onnx", "hr_dtop1": -39.11, "hr_dtop1_ci95": [-40.46, -37.79], "hr_cos": 0.7612, "baseline_class": ">2.0%p"}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8_pc_ops-MatMul_rr.onnx", "hr_dtop1": -0.43, "hr_dtop1_ci95": [-0.88, 0.03], "hr_cos": 0.9802, "baseline_class": "≤0.5%p"}
+pair siglip2_image_fp32 s-MatMul_hc16_rr_all -0.23 [-0.64, 0.18]
+pair siglip2_image_fp32 ic_ws8_pt_ops-MatMul -39.2 [-40.55, -37.86]
+pair siglip2_image_fp32 ws8_pc_ops-MatMul_rr -39.11 [-40.46, -37.79]
+pair siglip2_image_fp32 ws8_pc_ops-MatMul_rr -0.43 [-0.88, 0.03]
+pair s-MatMul_hc16_rr_all ic_ws8_pt_ops-MatMul -38.97 [-40.38, -37.63]
+pair s-MatMul_hc16_rr_all ws8_pc_ops-MatMul_rr -38.88 [-40.22, -37.5]
+pair s-MatMul_hc16_rr_all ws8_pc_ops-MatMul_rr -0.2 [-0.65, 0.25]
+pair ic_ws8_pt_ops-MatMul ws8_pc_ops-MatMul_rr 0.09 [-0.82, 0.95]
+pair ic_ws8_pt_ops-MatMul ws8_pc_ops-MatMul_rr 38.77 [37.45, 40.22]
+pair ws8_pc_ops-MatMul_rr ws8_pc_ops-MatMul_rr 38.68 [37.31, 40.09]
+G7_EVAL_DONE 22:19:49
