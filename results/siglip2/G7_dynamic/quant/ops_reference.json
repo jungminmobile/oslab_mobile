@@ -1,0 +1,61 @@
+{
+ "M2rot_ort": {
+  "ops": {
+   "Add": 96,
+   "QuantizeLinear": 79,
+   "QLinearMatMul": 79,
+   "DequantizeLinear": 66,
+   "Transpose": 53,
+   "Mul": 44,
+   "Squeeze": 38,
+   "Sub": 31,
+   "Reshape": 29,
+   "Concat": 28,
+   "Gather": 28,
+   "Unsqueeze": 27,
+   "LayerNormalization": 25,
+   "Shape": 14,
+   "Split": 13,
+   "com.microsoft.QLinearSoftmax": 13,
+   "com.microsoft.BiasGelu": 13,
+   "com.microsoft.nchwc.Conv": 1,
+   "com.microsoft.nchwc.ReorderOutput": 1,
+   "Slice": 1,
+   "com.microsoft.SkipLayerNormalization": 1,
+   "Equal": 1,
+   "Where": 1,
+   "Expand": 1
+  },
+  "int_kernel_ops": {
+   "QLinearMatMul": 79,
+   "com.microsoft.QLinearSoftmax": 13
+  },
+  "qdq_ops": {
+   "QuantizeLinear": 79,
+   "DequantizeLinear": 66
+  },
+  "float_compute_ops": {
+   "LayerNormalization": 25
+  }
+ },
+ "siglip2_image_fp32.onnx": {
+  "nodes": 791,
+  "MatMul": 79,
+  "MatMul_const_weight": 53
+ },
+ "siglip2_image_fp32_pre.onnx": {
+  "nodes": 510,
+  "MatMul": 79,
+  "MatMul_const_weight": 53
+ },
+ "siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad.onnx": {
+  "nodes": 947,
+  "MatMul": 79,
+  "MatMul_const_weight": 53
+ },
+ "siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad_pre.onnx": {
+  "nodes": 603,
+  "MatMul": 79,
+  "MatMul_const_weight": 53
+ }
+}
