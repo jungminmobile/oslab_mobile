@@ -84,7 +84,7 @@ done
 
 - test 7종: CIFAR-100 test(1만), ImageNetV2 matched-frequency(1만), Oxford Pets·Flowers-102·Stanford Cars·Food-101·Caltech-101 공식 test 전체. 사진·클래스 이름·프롬프트는 `rn50/datasets.py`와 같고, 전처리·텍스트 분류기는 dev와 같은 SigLIP2 것이다.
 - 출력: `test.jsonl`(top-1·top-5·FP32 cos), `test_<set>.npz`(사진별 예측). 요약: `RN50_RESULTS=../results/siglip2/G6_test python s2_test_summary.py`
-- 기대값 (10/17, `results/siglip2/G6_test`): 고화질 5종 평균 FP32 90.34% → 최종 89.51%, Δ −0.83 [−1.01, −0.66]%p. CIFAR-100 −4.71, ImageNetV2 −1.95%p
+- 기대값 (10/20, 최종 M2rot_ort, `results/siglip2/G6_m2rot_ort`): 고화질 5종 평균 FP32 90.34% → 90.00%, Δ −0.34 [−0.50, −0.18]%p. CIFAR-100 −4.09, ImageNetV2 −0.72%p (이전 후보 R0: −0.83, `results/siglip2/G6_test`)
 
 ## 6. 속도·메모리·크기
 
