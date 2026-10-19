@@ -25,7 +25,8 @@ log "start commit=$(cat COMMIT 2>/dev/null) hailort=$(hailortcli --version | tai
 for m in $H; do
   wait_cool "eval_$m"
   log "other_hailo=$(others) eval $m 시작"
-  python3 -u g5b_hailo_chip.py eval --x-npy --k 200 --pixel-models vendor_v500 --data ../hailo_repro/devfull --out out/eval_$m --models $m=$m.hef >> $L 2>&1 || log "EVAL FAIL $m"
+  PIX=""; [ "$m" = vendor_v500 ] && PIX="--pixel-models vendor_v500"   # 벤더 HEF만 원본 픽셀 입력
+  python3 -u g5b_hailo_chip.py eval --x-npy --k 200 $PIX --data ../hailo_repro/devfull --out out/eval_$m --models $m=$m.hef >> $L 2>&1 || log "EVAL FAIL $m"
   temp "after_eval_$m" > /dev/null; log "eval $m 끝"
 done
 # 2) 지연: 세션 = 두 HEF를 M2rot2 → 벤더 순서로 한 번씩. 배치 1 세션 1~3, 배치 8 세션 1~3 (세션마다 냉각)
