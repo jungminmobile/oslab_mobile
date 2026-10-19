@@ -1,0 +1,34 @@
+2026-10-19 22:20:09 start commit=64fa3f1 dirty=0 gate=WSL(others=0, load1<2, 5분 간격) windows=확인못함(interop 꺼짐)
+2026-10-19 22:20:09 s=1 t=1 대기#1 others=0 load1=2.93
+2026-10-19 22:25:09 s=1 t=1 pre others=0 load=0.05 1.42 3.03
+2026-10-19 22:31:48 s=1 t=1 done post others=0 load=1.00 1.11 2.31
+2026-10-19 22:31:48 s=1 t=2 pre others=0 load=1.00 1.11 2.31
+2026-10-19 22:35:26 s=1 t=2 done post others=0 load=1.99 1.61 2.25
+2026-10-19 22:35:26 s=1 t=4 pre others=0 load=1.99 1.61 2.25
+2026-10-19 22:37:28 s=1 t=4 done post others=0 load=3.85 2.45 2.48
+2026-10-19 22:37:28 s=2 t=1 대기#2 others=0 load1=3.85
+2026-10-19 22:42:28 s=2 t=1 pre others=0 load=0.02 0.89 1.78
+2026-10-19 22:49:10 s=2 t=1 done post others=1 load=1.71 1.53 1.74
+2026-10-19 22:49:10 s=2 t=2 대기#3 others=1 load1=1.71
+2026-10-19 22:54:10 s=2 t=2 pre others=0 load=0.04 0.59 1.27
+2026-10-19 22:57:51 s=2 t=2 done post others=2 load=2.34 1.45 1.47
+2026-10-19 22:57:51 s=2 t=4 대기#4 others=2 load1=2.34
+2026-10-19 23:02:51 s=2 t=4 대기#5 others=1 load1=4.50
+2026-10-19 23:07:51 s=2 t=4 대기#6 others=1 load1=6.18
+2026-10-19 23:12:51 s=2 t=4 대기#7 others=2 load1=5.05
+2026-10-19 23:17:51 s=2 t=4 대기#8 others=0 load1=2.32
+2026-10-19 23:22:51 s=2 t=4 대기#9 others=2 load1=5.04
+2026-10-19 23:27:51 s=2 t=4 대기#10 others=2 load1=5.62
+2026-10-19 23:32:51 s=2 t=4 대기#11 others=2 load1=5.48
+2026-10-19 23:37:51 s=2 t=4 pre others=0 load=0.15 2.18 3.63
+2026-10-19 23:39:52 s=2 t=4 done post others=0 load=3.55 2.82 3.69
+2026-10-19 23:39:52 s=3 t=1 대기#12 others=0 load1=3.55
+2026-10-19 23:44:53 s=3 t=1 pre others=0 load=0.02 1.04 2.67
+2026-10-19 23:50:56 s=3 t=1 done post others=0 load=1.01 1.02 2.12
+2026-10-19 23:50:56 s=3 t=2 pre others=0 load=1.01 1.02 2.12
+2026-10-19 23:54:19 s=3 t=2 done post others=0 load=1.89 1.49 2.08
+2026-10-19 23:54:19 s=3 t=4 pre others=0 load=1.89 1.49 2.08
+2026-10-19 23:56:15 s=3 t=4 done post others=0 load=3.70 2.30 2.31
+2026-10-19 23:56:15 mem 대기#13 others=0 load1=3.70
+2026-10-20 00:01:15 peak memory pre others=0 load=0.06 0.85 1.66
+2026-10-20 00:01:34 G7_SPEED_DONE waits=13
