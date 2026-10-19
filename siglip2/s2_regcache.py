@@ -264,7 +264,9 @@ class MaskRegCacheTrunk(nn.Module):
     sink 토큰의 잔차는 시작 블록 입력부터 매 블록 입출력에서 h·(1−m)으로 0 → 거대 값이 생기지 않는다.
     다른 토큰이 보는 key·value 집합이 RegCacheTrunk(mean)와 같으므로 수학적으로 같다. ONNX에는 상수 Mul·Add만 늘어난다 (Concat·Slice 없음)."""
 
-    def __init__(self, trunk, sinks, cache, form="full", hc=None, uc=None):
+    def __init__(self, trunk, sinks, cache, form="full", hc=None, uc=None, u_starts=None):
+        """u_starts (기본 None = 꺼짐, 이전과 같음): sink마다 u_c(MLP 입력 바꿔 끼우기)를 시작할 블록. None이면 K·V 시작 블록 b와 같다.
+        G6 통일 규칙(results/siglip2/G6_pre 12-2): K·V는 b(= 입력이 이미 high-norm인 첫 블록)부터, u_c는 u(= high-norm이 되는 블록)부터."""
         super().__init__()
         _check_trunk(trunk)
         assert form in ("full", "bcast"), form
@@ -276,12 +278,17 @@ class MaskRegCacheTrunk(nn.Module):
         N = trunk.patch_embed.num_patches
         assert all(0 <= p < N and 0 < b < len(trunk.blocks) for p, b in self.sinks), self.sinks
         self.first = min(b for _, b in self.sinks)
+        if u_starts is not None:
+            assert uc is not None and len(u_starts) == len(self.sinks), "u_starts는 --mask-site mlp(uc)에서 sink마다 하나"
+            assert all(0 < u < len(trunk.blocks) for u in u_starts), u_starts
+        self.u_starts = [b for _, b in self.sinks] if u_starts is None else [int(u) for u in u_starts]
+        self.first_u = min(self.u_starts)
         H, d = trunk.blocks[0].attn.num_heads, trunk.blocks[0].attn.head_dim
         keys = [(f"b{l}", [p for p, b in self.sinks if b <= l]) for l in range(self.first, len(trunk.blocks))]
         keys.append(("pool", [p for p, _ in self.sinks]))
         if self.mlp_site:
-            for l in range(self.first, len(trunk.blocks)):
-                act = [p for p, b in self.sinks if b <= l]
+            for l in range(self.first_u, len(trunk.blocks)):
+                act = [p for (p, _), u in zip(self.sinks, self.u_starts) if u <= l]
                 m = torch.zeros(1, N, 1)
                 m[0, act] = 1
                 self.register_buffer(f"zm_b{l}", m)                                       # MLP 입력을 바꿀 위치 m
@@ -319,7 +326,7 @@ class MaskRegCacheTrunk(nn.Module):
 
     def _mlp_in(self, z, l):
         """M2: z + m ⊙ (u_c − z) (sink 행의 MLP 입력만 u_c로). mlp_site가 아니면 그대로."""
-        if not self.mlp_site:
+        if not self.mlp_site or not hasattr(self, f"zm_b{l}"):
             return z
         m = getattr(self, f"zm_b{l}")
         return z + m * (getattr(self, f"uc_b{l}") - z)
@@ -342,12 +349,15 @@ class MaskRegCacheTrunk(nn.Module):
         trunk = self.t
         h = _embed_tokens(trunk, x)
         for l, blk in enumerate(trunk.blocks):
-            if l < self.first:
+            if l < min(self.first, self.first_u):
                 h = blk(h)
                 continue
             if not self.mlp_site:
                 h = self._fill(h, f"b{l}")                                              # 시작 블록 입력부터 sink 잔차 0 (또는 h_c)
-            h = h + blk.drop_path1(blk.ls1(attn_forward_mask(blk.attn, blk.norm1(h), *self._kv(f"b{l}"))))
+            if l >= self.first:
+                h = h + blk.drop_path1(blk.ls1(attn_forward_mask(blk.attn, blk.norm1(h), *self._kv(f"b{l}"))))
+            else:                                                                       # u_starts: u_c만 시작하고 K·V는 아직 (l < b)
+                h = h + blk.drop_path1(blk.ls1(attn_forward(blk.attn, blk.norm1(h))))
             h = h + blk.drop_path2(blk.ls2(blk.mlp(self._mlp_in(blk.norm2(h), l))))
             if not self.hfill and not self.mlp_site:
                 h = h * getattr(self, f"hm_b{l}")                                       # 블록 출력에서도 0
@@ -811,7 +821,7 @@ def cmd_export(a):
         stem = f"siglip2_image_fp32_rc{sinks_slug(sinks)}" + ("" if a.mode == "mean" else f"_{a.mode}")
     paths = [RC.ONNX_DIR / f"{stem}.onnx", RC.ONNX_DIR / f"{stem}_b1.onnx"]
     import onnx
-    x1 = torch.randn(1, 3, 224, 224)
+    x1 = torch.randn(1, 3, *model.visual.trunk.patch_embed.img_size)    # 기존 모델은 224 (G6: 다른 크기 모델)
     files = {}
     for p, dyn in zip(paths, (True, False)):
         if p.exists() and not a.overwrite:
