@@ -4,7 +4,9 @@
 
 ## 1. 정민 노트북 교차 측정 (10/19, 용 요청, 정민 실행)
 - 환경: Intel Core Ultra 7 258V (AVX-VNNI), Windows 11, ORT 1.25.0, 충전 중. worktree `43cc1b8`(dirty 없음), 세션 전 CPU 부하 9~19%. 파일 sha256 세 개 모두 일치(Release SHA256SUMS·복사본까지), 모델 재생성 없음
-- **출처: 정민 보고 메시지 값** (raw zip `xcheck_jungmin_20261019.zip`은 용이 받아 정리 — 받으면 이 폴더에 대조 기록)
+- raw: `xcheck_jungmin/` (정민 zip 전체, 82 KB — 예측 npz, result.json, 지연 json 9개·runs.jsonl·env.json·gate.log, sha256 확인 로그 `VERIFY PASS`, 실행 스크립트). 준용은 같은 내용을 `results/siglip2/G3RQ_m2rot/ort/xcheck_jungmin/`에 PR로 받을 예정
+- **원본 대조 (10/19 쭈리 PC)**: 지연 9개 json에서 다시 낸 3세션 중앙값과 감소율이 아래 표와 같다. 환경 json: Ultra 7 258V, ORT 1.25.0, 충전 중 98%, 커밋 `43cc1b8` dirty 없음
+- **R0 사진별 비교**: 정민 노트북 R0 예측·cos가 쭈리 PC(i7, `../G3_xplat/x86_i7-1165G7/pred_u8rr.npz`)와 **비트 단위로 같다** (Pets·Food·CIFAR A 예측 100% 일치, cos 차이 0) → R0는 x86 세 세대(AVX-512 VNNI·AVX-VNNI 285K·258V)에서 출력이 같다
 
 정확도 (portable_eval, dev 6×200, 4스레드)
 | 모델 | 고화질 cos (정민 / 연구실 285K) | 고화질 Δtop-1 | CIFAR A Δ |
