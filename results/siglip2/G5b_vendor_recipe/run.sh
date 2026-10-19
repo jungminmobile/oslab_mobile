@@ -20,7 +20,7 @@ others() { ps aux | grep -iE "hailortcli|hailo_chip|hailo_bench|hailo_platform" 
 t0w=$(date +%s); while [ "$(others)" -gt 0 ]; do log "다른 Hailo 작업 대기 $(others)개"; [ $(( $(date +%s) - t0w )) -gt 10800 ] && { log "BUSY 3시간 넘김 — 멈춤"; exit 1; }; sleep 120; done
 H="M2rot2_D256L1 vendor_v500"
 MODELS=""; for h in $H; do MODELS="$MODELS $h=$h.hef"; done
-log "start commit=$(cat COMMIT 2>/dev/null) hailort=$(hailortcli --version | tail -1) script_sha=$(sha256sum g5b_hailo_chip.py g5_hailo_bench.py run.sh | cut -c1-16 | tr '\n' ' ')load=$(cut -d' ' -f1-3 /proc/loadavg) users=$(who | wc -l) other_hailo=$(others) $(for h in $H; do echo -n "$h=$(sha256sum -L $h.hef | cut -c1-16) "; done)"
+log "start commit=$(cat COMMIT 2>/dev/null) hailort=$(hailortcli --version | tail -1) script_sha=$(sha256sum g5b_hailo_chip.py g5_hailo_bench.py run.sh | cut -c1-16 | tr '\n' ' ')load=$(cut -d' ' -f1-3 /proc/loadavg) users=$(who | wc -l) other_hailo=$(others) $(for h in $H; do echo -n "$h=$(sha256sum $h.hef | cut -c1-16) "; done)"
 # 1) 정확도: dev 스크리닝 6×200 (devfull x.npy 앞 200장), 같은 실행에서 두 HEF
 for m in $H; do
   wait_cool "eval_$m"
