@@ -31,6 +31,10 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--har", required=True); ap.add_argument("--tag", required=True)
 ap.add_argument("--cache", required=True); ap.add_argument("--out", required=True)
 ap.add_argument("--chip-emb", default="", help="같은 HEF의 실칩 임베딩 npz (<set>_emb, 앞 k장 이상)")
+ap.add_argument("--modes", nargs="+", default=["native", "quantized"], choices=["native", "fp_optimized", "quantized"],
+                help="(기본 native quantized) 돌릴 에뮬레이터 모드. fp_optimized = SDK_FP_OPTIMIZED (.alls 수정을 반영한 float)")
+ap.add_argument("--native-normalized", action="store_true",
+                help="(기본 꺼짐) native 모드에만 정규화 값 입력 (--pixel이어도). NATIVE가 .alls normalization 전 원래 모델인지 확인용")
 ap.add_argument("--pixel", action="store_true"); ap.add_argument("--k", type=int, default=200); ap.add_argument("--bs", type=int, default=8)
 a = ap.parse_args()
 from hailo_sdk_client import ClientRunner, InferenceContext
@@ -42,9 +46,10 @@ row = {"what": "g5b_emu", "date": datetime.now().isoformat(timespec="seconds"), 
        "dirty": bool(git("status", "--porcelain", "--untracked-files=no")), "dfc": getattr(hailo_sdk_client, "__version__", "?"),
        "tag": a.tag, "har": Path(a.har).name, "har_sha256": sha256(a.har), "script_sha256": sha256(__file__),
        "input_domain": "pixel_0_255_rounded" if a.pixel else "normalized", "k": a.k, "bs": a.bs, "chip_emb": a.chip_emb, "modes": {}}
-X, data = {}, {}
+X, XN, data = {}, {}, {}
 for d in SETS:
     x = np.load(C / f"{d}_x.npy", mmap_mode="r")[: a.k].astype(np.float32).transpose(0, 2, 3, 1)
+    XN[d] = np.ascontiguousarray(x)
     if a.pixel:
         p = x * 127.5 + 127.5
         q = np.clip(np.round(p), 0, 255)
@@ -56,12 +61,15 @@ for d in SETS:
 chip = np.load(a.chip_emb) if a.chip_emb else None
 runner = ClientRunner(har=a.har)
 embs = {}
-for mode, ctxk in [("native", InferenceContext.SDK_NATIVE), ("quantized", InferenceContext.SDK_QUANTIZED)]:
+row["modes_run"], row["native_normalized"] = a.modes, a.native_normalized
+CTX = {"native": InferenceContext.SDK_NATIVE, "fp_optimized": InferenceContext.SDK_FP_OPTIMIZED, "quantized": InferenceContext.SDK_QUANTIZED}
+for mode, ctxk in [(m, CTX[m]) for m in a.modes]:
     t0, r = time.time(), {}
     with runner.infer_context(ctxk) as ctx:
         for d in SETS:
             y, W, ref = data[d]
-            e = l2n(np.asarray(runner.infer(ctx, X[d], batch_size=a.bs)).reshape(len(y), -1).astype(np.float32))
+            xin = XN[d] if (mode == "native" and a.native_normalized) else X[d]
+            e = l2n(np.asarray(runner.infer(ctx, xin, batch_size=a.bs)).reshape(len(y), -1).astype(np.float32))
             embs[f"{mode}_{d}"] = e
             cos = (e * ref).sum(1)
             pred, fp = np.argmax(e @ W, 1), np.argmax(ref @ W, 1)
@@ -79,7 +87,7 @@ for mode, ctxk in [("native", InferenceContext.SDK_NATIVE), ("quantized", Infere
             print(a.tag, mode, d, json.dumps(r[d]), f"{time.time() - t0:.0f}s", flush=True)
     r["sec"] = round(time.time() - t0)
     row["modes"][mode] = r
-np.savez_compressed(out / f"emu_{a.tag}.npz", **embs)
+np.savez_compressed(out / f"emu_{a.tag}{'_' + '_'.join(a.modes) if a.modes != ['native', 'quantized'] else ''}{'_nn' if a.native_normalized else ''}.npz", **embs)
 with open(out / "emu.jsonl", "a") as f:
     f.write(json.dumps(row, ensure_ascii=False) + "\n")
 print("DONE", a.tag)
