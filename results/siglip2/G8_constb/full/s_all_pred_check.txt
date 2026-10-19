@@ -1,0 +1,2 @@
+keys same: True
+모든 배열 비트 동일: True []

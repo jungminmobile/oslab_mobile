@@ -1,0 +1,48 @@
+01:33:03 commit=757fb2d
+2026-10-20 01:33:03 screen 시작 (측정 프로세스 0)
+{"model": "siglip2_image_fp32.onnx", "MiB": 354.45, "hr_cos": 1.0, "hr_dtop1": 0.0, "sec": 88}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx", "MiB": 91.72, "hr_cos": 0.9756, "hr_dtop1": 0.3, "sec": 45}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_cbo_all.onnx", "MiB": 91.68, "hr_cos": 0.9785, "hr_dtop1": -0.3, "sec": 45}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8_pc_ops-MatMul_rr.onnx", "MiB": 91.68, "hr_cos": 0.9748, "hr_dtop1": -0.8, "sec": 35}
+2026-10-20 01:36:37 full 시작 (측정 프로세스 0)
+  fp32 cifar_A top1=76.90
+  fp32 pets_dev top1=93.33
+  fp32 flowers_dev top1=86.73
+  fp32 cars_dev top1=93.80
+  fp32 food_dev top1=89.44
+  fp32 caltech_dev top1=95.02
+  siglip2_image_fp32.onnx cifar_A top1=76.90
+  siglip2_image_fp32.onnx pets_dev top1=93.33
+  siglip2_image_fp32.onnx flowers_dev top1=86.73
+  siglip2_image_fp32.onnx cars_dev top1=93.80
+  siglip2_image_fp32.onnx food_dev top1=89.44
+  siglip2_image_fp32.onnx caltech_dev top1=95.02
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 cifar_A top1=72.60
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 pets_dev top1=92.93
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 flowers_dev top1=86.31
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 cars_dev top1=93.80
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 food_dev top1=89.04
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 caltech_dev top1=95.12
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 cifar_A top1=72.00
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 pets_dev top1=92.32
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 flowers_dev top1=86.62
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 cars_dev top1=93.59
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 food_dev top1=88.43
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 caltech_dev top1=95.02
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8 cifar_A top1=49.70
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8 pets_dev top1=93.13
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8 flowers_dev top1=87.15
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8 cars_dev top1=93.80
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8 food_dev top1=89.14
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8 caltech_dev top1=92.97
+{"model": "siglip2_image_fp32.onnx", "hr_dtop1": 0.0, "hr_dtop1_ci95": [0.0, 0.0], "hr_cos": 1.0, "baseline_class": "≤0.5%p"}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx", "hr_dtop1": -0.23, "hr_dtop1_ci95": [-0.64, 0.18], "hr_cos": 0.9757, "baseline_class": "≤0.5%p"}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_cbo_all.onnx", "hr_dtop1": -0.47, "hr_dtop1_ci95": [-0.88, -0.08], "hr_cos": 0.9787, "baseline_class": "≤0.5%p"}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8_pc_ops-MatMul_rr.onnx", "hr_dtop1": -0.43, "hr_dtop1_ci95": [-0.88, 0.03], "hr_cos": 0.9802, "baseline_class": "≤0.5%p"}
+pair siglip2_image_fp32 s-MatMul_hc16_rr_all -0.23 [-0.64, 0.18]
+pair siglip2_image_fp32 tMul_hc16_rr_cbo_all -0.47 [-0.88, -0.08]
+pair siglip2_image_fp32 ws8_pc_ops-MatMul_rr -0.43 [-0.88, 0.03]
+pair s-MatMul_hc16_rr_all tMul_hc16_rr_cbo_all -0.24 [-0.58, 0.1]
+pair s-MatMul_hc16_rr_all ws8_pc_ops-MatMul_rr -0.2 [-0.65, 0.25]
+pair tMul_hc16_rr_cbo_all ws8_pc_ops-MatMul_rr 0.04 [-0.39, 0.51]
+G8_EVAL_DONE 01:53:41
