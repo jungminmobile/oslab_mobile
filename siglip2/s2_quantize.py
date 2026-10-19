@@ -209,6 +209,13 @@ def main():
     ap.add_argument("--src", default="",
                     help="(기본 꺼짐) 양자화할 FP32 ONNX 파일 이름($RN50_ONNX 아래). 비우면 siglip2_image_fp32.onnx. "
                          "예: s2_regcache.py export가 만든 siglip2_image_fp32_rc55at5-13at9.onnx (G3R). 출력 이름에 src 표시가 붙는다")
+    ap.add_argument("--const-b-only", action="store_true",
+                    help="(기본 꺼짐, G8) 두 번째 입력(B)이 initializer가 아닌 MatMul(attention QKᵀ·AV)을 nodes_to_exclude에 자동으로 넣어 "
+                         "가중치 MatMul만 정적 INT8로. ORT 1.25의 extra_options MatMulConstBOnly는 QDQ 형식에서 읽히지 않아 직접 구현. "
+                         "제외 개수가 --const-b-only-n과 다르거나, 제외된 MatMul의 B가 상수 경로(그래프 입력과 무관)면 멈춘다. 파일 이름에 _cbo")
+    ap.add_argument("--const-b-only-n", type=int, default=26, help="--const-b-only로 제외될 MatMul 개수 (SigLIP2 B/16: QKᵀ 13 + AV 13)")
+    ap.add_argument("--ort-const-b-only", action="store_true",
+                    help="(기본 꺼짐, G8 대조용) extra_options에 MatMulConstBOnly=True만 넣는다 (QDQ에서 무시되는지 확인). 파일 이름에 _ortcbo")
     ap.add_argument("--dynamic", action="store_true",
                     help="(기본 꺼짐) 보정 없이 ORT quantize_dynamic으로 양자화 (G7 기준선, Hailo 불가라 예선 후보 아님). "
                          "입력은 --src FP32 ONNX 원본 그대로 (quant_pre_process 안 함, '한 줄' 기준선). "
@@ -247,6 +254,19 @@ def main():
     if dst.exists() and not a.overwrite:
         raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
     excl = RQ.select_excluded(str(pre), a)
+    cbo_nodes = []
+    if a.const_b_only:
+        cbo_nodes = const_b_excluded(pre, excl, a.const_b_only_n)
+        excl = sorted(set(excl) | set(cbo_nodes))
+        ops_tag += "_cbo"
+    if a.ort_const_b_only:
+        assert not a.const_b_only, "--ort-const-b-only는 대조용이라 --const-b-only와 함께 쓰지 않음"
+        ops_tag += "_ortcbo"
+    if a.const_b_only or a.ort_const_b_only:
+        cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
+        dst = RC.ONNX_DIR / f"{_p}{cal}{'_' + a.tag if a.tag else ''}.onnx"
+        if dst.exists() and not a.overwrite:
+            raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
     w4_nodes = []
     if a.w4_regex:
         import re
@@ -301,6 +321,8 @@ def main():
     if a.method == "percentile":
         # ORT 1.25 Percentile 보정기 기본은 대칭 범위(−t~t)라 한쪽으로 치우친 활성값에서 눈금 절반을 버린다 → 비대칭으로 (PRD 3절)
         extra.update({"CalibPercentile": a.percentile, "CalibTensorRangeSymmetric": False})
+    if a.ort_const_b_only:
+        extra["MatMulConstBOnly"] = True
     assert "CalibMaxIntermediateOutputs" not in extra, "보정 결과를 버리는 옵션 금지 (RN50 16장 버그)"
     if a.u8_match:
         import onnx
@@ -330,7 +352,7 @@ def main():
     seen = reader.counts()
     tmp.replace(dst)
     print(f"saved {dst.name}  {dst.stat().st_size / 2**20:.1f} MiB  ({time.time() - t0:.0f}s), calib seen per pass={seen}")
-    _log(a, dst, seen, pool_n, excl, attn_tensors, w4_nodes, t0, log_path)
+    _log(a, dst, seen, pool_n, excl, attn_tensors, w4_nodes, t0, log_path, cbo_nodes)
 
 
 def _quantize_static_checked(quantize_static, pre, tmp, reader, a, excl, extra, QuantFormat, QuantType):
@@ -345,6 +367,26 @@ def _quantize_static_checked(quantize_static, pre, tmp, reader, a, excl, extra, 
     if not (seen and all(c == a.calib_n for c in seen)):
         tmp.unlink()
         raise AssertionError(f"보정에 쓰인 사진 {seen} ≠ 요청 {a.calib_n}장 — 모델 파일을 지웠음")
+
+
+def const_b_excluded(pre, excl, expect_n):
+    """G8 --const-b-only: B(input[1])가 initializer가 아닌 MatMul 이름 목록 (ORT QOpMatMul의 MatMulConstBOnly 규칙과 같음).
+    안전장치: 제외된 MatMul의 B가 그래프 입력과 무관한 상수 경로(Constant·Transpose된 가중치 등)면 잘못 빠진 것이라 멈춘다.
+    M2의 상수 K/V 캐시가 Concat으로 붙는 QKᵀ·AV는 B가 토큰 활성값에 의존하므로 제외되는 것이 맞다."""
+    import onnx
+    g = onnx.load(str(pre), load_external_data=False).graph
+    inits = {i.name for i in g.initializer}
+    dyn = {i.name for i in g.input if i.name not in inits}          # 그래프 입력에 의존하는 텐서
+    for n in g.node:                                                # 노드는 위상 순서
+        if any(i in dyn for i in n.input):
+            dyn.update(n.output)
+    mm = [n for n in g.node if n.op_type == "MatMul" and n.name not in set(excl)]
+    out = [n.name for n in mm if n.input[1] not in inits]
+    const_path = [n.name for n in mm if n.input[1] not in inits and n.input[1] not in dyn]
+    assert not const_path, f"B가 상수 경로인데 initializer가 아니라 잘못 빠질 MatMul: {const_path}"
+    assert len(out) == expect_n, f"--const-b-only 제외 {len(out)}개 ≠ 예상 {expect_n}개: {out}"
+    print(f"--const-b-only: B가 활성값인 MatMul {len(out)}개 제외 (가중치 MatMul {len(mm) - len(out)}개만 INT8)")
+    return out
 
 
 def _quantize_dynamic(a, src, _p):
@@ -380,7 +422,7 @@ def _quantize_dynamic(a, src, _p):
         f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
-def _log(a, dst, seen, pool_n, excl, attn_tensors, w4_nodes, t0, log_path):
+def _log(a, dst, seen, pool_n, excl, attn_tensors, w4_nodes, t0, log_path, cbo_nodes=()):
     env = env_info.collect()
     row = {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"],
            "dirty": env["git"]["dirty"], "options": vars(a), "model": dst.name,
@@ -391,6 +433,8 @@ def _log(a, dst, seen, pool_n, excl, attn_tensors, w4_nodes, t0, log_path):
         row["u8_override_tensors"] = len(attn_tensors)
     if w4_nodes:
         row["w4_nodes"] = w4_nodes
+    if cbo_nodes:
+        row["const_b_only_excluded"] = list(cbo_nodes)
     if a.dump_ops:
         row["ort_optimized_graph"] = dump_ops(dst, a.threads)
         print(json.dumps(row["ort_optimized_graph"], ensure_ascii=False))
