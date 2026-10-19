@@ -1,0 +1,68 @@
+10:31:08 start commit=9c1ff74 dirty=0 script_sha=4cea4d2960350e2c e10c08e4bb89c111 load=0.00 0.01 0.00 users=0 other_hailo=0 M2rot2_D256L1= rothad2_D256L1= siglip_b_16_image_encoder= siglip2_b_32_256_image_encoder= 
+10:31:08 cool bench_b1_s1 max=64.58
+10:31:08 other_hailo=0 bench b1 s1 시작
+{"model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "batch": 1, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 47.561, "median_ms": 47.553, "p90_ms": 47.745, "min_ms": 47.364, "max_ms": 47.971, "img_per_s_from_mean": 21.03}
+{"model": "rothad2_D256L1", "hef_sha256": "705c3a81417cae2c", "batch": 1, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 45.908, "median_ms": 45.906, "p90_ms": 46.034, "min_ms": 45.748, "max_ms": 46.234, "img_per_s_from_mean": 21.78}
+{"model": "siglip_b_16_image_encoder", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 32.636, "median_ms": 31.594, "p90_ms": 35.854, "min_ms": 31.243, "max_ms": 36.419, "img_per_s_from_mean": 30.64}
+10:31:46 bench b1 s1 끝
+10:33:48 cool bench_b1_s2 max=64.58
+10:33:48 other_hailo=0 bench b1 s2 시작
+{"model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "batch": 1, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 47.545, "median_ms": 47.539, "p90_ms": 47.691, "min_ms": 47.397, "max_ms": 47.966, "img_per_s_from_mean": 21.03}
+{"model": "rothad2_D256L1", "hef_sha256": "705c3a81417cae2c", "batch": 1, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 45.929, "median_ms": 45.934, "p90_ms": 46.057, "min_ms": 45.776, "max_ms": 46.423, "img_per_s_from_mean": 21.77}
+{"model": "siglip_b_16_image_encoder", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 33.416, "median_ms": 31.901, "p90_ms": 35.975, "min_ms": 31.245, "max_ms": 36.199, "img_per_s_from_mean": 29.93}
+10:34:25 bench b1 s2 끝
+10:36:57 cool bench_b1_s3 max=64.38
+10:36:57 other_hailo=0 bench b1 s3 시작
+{"model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "batch": 1, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 47.583, "median_ms": 47.571, "p90_ms": 47.759, "min_ms": 47.392, "max_ms": 47.873, "img_per_s_from_mean": 21.02}
+{"model": "rothad2_D256L1", "hef_sha256": "705c3a81417cae2c", "batch": 1, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 45.957, "median_ms": 45.958, "p90_ms": 46.072, "min_ms": 45.776, "max_ms": 46.202, "img_per_s_from_mean": 21.76}
+{"model": "siglip_b_16_image_encoder", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 33.34, "median_ms": 31.781, "p90_ms": 35.996, "min_ms": 31.261, "max_ms": 36.531, "img_per_s_from_mean": 29.99}
+10:37:35 bench b1 s3 끝
+10:40:07 cool bench_b8_s1 max=64.58
+10:40:07 other_hailo=0 bench b8 s1 시작
+{"model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "batch": 8, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 242.661, "median_ms": 249.956, "p90_ms": 250.029, "min_ms": 218.788, "max_ms": 251.019, "img_per_s_from_mean": 32.97}
+{"model": "rothad2_D256L1", "hef_sha256": "705c3a81417cae2c", "batch": 8, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 235.096, "median_ms": 234.997, "p90_ms": 235.508, "min_ms": 232.955, "max_ms": 237.872, "img_per_s_from_mean": 34.03}
+{"model": "siglip_b_16_image_encoder", "hef_sha256": "e2198ed5975da551", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 179.21, "median_ms": 163.999, "p90_ms": 240.012, "min_ms": 140.862, "max_ms": 240.986, "img_per_s_from_mean": 44.64}
+10:42:41 bench b8 s1 끝
+10:48:14 cool bench_b8_s2 max=64.38
+10:48:14 other_hailo=0 bench b8 s2 시작
+{"model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "batch": 8, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 243.51, "median_ms": 249.965, "p90_ms": 250.01, "min_ms": 218.98, "max_ms": 252.849, "img_per_s_from_mean": 32.85}
+{"model": "rothad2_D256L1", "hef_sha256": "705c3a81417cae2c", "batch": 8, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 235.043, "median_ms": 234.97, "p90_ms": 235.101, "min_ms": 232.923, "max_ms": 237.885, "img_per_s_from_mean": 34.04}
+{"model": "siglip_b_16_image_encoder", "hef_sha256": "e2198ed5975da551", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 179.427, "median_ms": 164.048, "p90_ms": 240.008, "min_ms": 140.984, "max_ms": 242.967, "img_per_s_from_mean": 44.59}
+10:50:48 bench b8 s2 끝
+10:56:22 cool bench_b8_s3 max=64.58
+10:56:22 other_hailo=0 bench b8 s3 시작
+{"model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "batch": 8, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 243.152, "median_ms": 249.989, "p90_ms": 250.008, "min_ms": 218.995, "max_ms": 252.973, "img_per_s_from_mean": 32.9}
+{"model": "rothad2_D256L1", "hef_sha256": "705c3a81417cae2c", "batch": 8, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 235.26, "median_ms": 235.007, "p90_ms": 235.989, "min_ms": 232.988, "max_ms": 238.841, "img_per_s_from_mean": 34.0}
+{"model": "siglip_b_16_image_encoder", "hef_sha256": "e2198ed5975da551", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 179.225, "median_ms": 164.027, "p90_ms": 240.01, "min_ms": 140.968, "max_ms": 241.066, "img_per_s_from_mean": 44.64}
+10:58:55 bench b8 s3 끝
+11:04:59 cool run2_b1_M2rot2_D256L1 max=64.28
+11:05:10 run2 b1 M2rot2_D256L1 siglip2_m2rot: fps: 21.58
+11:07:12 cool run2_b1_rothad2_D256L1 max=64.48
+11:07:23 run2 b1 rothad2_D256L1 siglip2_rothad_b16_224: fps: 22.38
+11:09:55 cool run2_b1_siglip_b_16_image_encoder max=64.18
+11:10:06 run2 b1 siglip_b_16_image_encoder siglip_b_16_image_encoder: fps: 32.87
+11:12:08 cool run2_b8_M2rot2_D256L1 max=64.48
+11:12:19 run2 b8 M2rot2_D256L1 siglip2_m2rot: fps: 41.66
+11:14:51 cool run2_b8_rothad2_D256L1 max=64.33
+11:15:02 run2 b8 rothad2_D256L1 siglip2_rothad_b16_224: fps: 44.85
+11:17:03 cool run2_b8_siglip_b_16_image_encoder max=64.58
+11:17:14 run2 b8 siglip_b_16_image_encoder siglip_b_16_image_encoder: fps: 76.02
+11:19:46 cool benchmark_M2rot2_D256L1 max=64.53
+11:19:46 benchmark M2rot2_D256L1 시작
+11:20:02 benchmark M2rot2_D256L1 rc=0
+11:22:04 cool benchmark_rothad2_D256L1 max=64.53
+11:22:04 benchmark rothad2_D256L1 시작
+11:22:20 benchmark rothad2_D256L1 rc=0
+11:24:52 cool benchmark_siglip_b_16_image_encoder max=64.33
+11:24:52 benchmark siglip_b_16_image_encoder 시작
+11:25:08 benchmark siglip_b_16_image_encoder rc=0
+11:27:40 cool benchmark_siglip2_b_32_256_image_encoder max=64.58
+11:27:40 benchmark siglip2_b_32_256_image_encoder 시작
+11:27:56 benchmark siglip2_b_32_256_image_encoder rc=0
+11:29:58 cool rtdata_M2rot2_D256L1 max=64.58
+11:29:58 rtdata M2rot2_D256L1 rc=111
+11:30:29 cool rtdata_rothad2_D256L1 max=64.28
+11:30:29 rtdata rothad2_D256L1 rc=111
+11:30:30 cool rtdata_siglip_b_16_image_encoder max=64.43
+11:30:30 rtdata siglip_b_16_image_encoder rc=111
+11:30:30 G5 CHIP DONE load=0.08 0.02 0.01

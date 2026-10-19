@@ -1,0 +1,43 @@
+{
+ "html": "../zoo/siglip_b_16_image_encoder_profiler_results_compiled_runtime_data.html",
+ "model_name": "siglip_b_16_image_encoder",
+ "hw_arch": "hailo15h",
+ "number_of_contexts": "17",
+ "layers": 346,
+ "profiler_fps": "33.24",
+ "profiler_latency": "N/A",
+ "optimization_level": "0",
+ "normalization": "True",
+ "has_runtime_data": true,
+ "n_16bit_layers": 210,
+ "rt_batch_size": 1,
+ "rt_sum_context_ms": 29.99,
+ "rt_n_contexts": 17,
+ "rt_sum_overhead_ms": 1.005,
+ "rt_preliminary_ms": 0.639,
+ "rt_runtime_percentages": {
+  "infer": 28.63920091855282,
+  "drain": 57.850671603843,
+  "sequencers": 4.560779742069503,
+  "configs": 5.550993070281733,
+  "overhead": 3.3983546652529535,
+  "bw_configs": 81.19414572783536,
+  "bw_ddr": 1.442492894617086,
+  "bw_inter": 17.268333940973303,
+  "bw_boundary": 0.09502743657424241
+ },
+ "stats_performance_details": [
+  {
+   "batch_size": 1,
+   "fps": 33.24316225482855,
+   "latency": 30.081374098360655,
+   "power": "N/A",
+   "number_of_contexts": 17,
+   "input_bw": 390718055.6835175,
+   "output_bw": 345732876.6296875,
+   "ops_per_second": 1289860844193.1025,
+   "measured_mac_util": 24.385546898559735,
+   "stream_fps": "N/A"
+  }
+ ]
+}

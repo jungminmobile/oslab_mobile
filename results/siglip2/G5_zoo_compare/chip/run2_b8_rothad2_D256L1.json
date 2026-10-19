@@ -1,0 +1,12 @@
+{
+    "time": "Mon Oct 19 11:15:01 2026",
+    "inference_mode": "full_async",
+    "network_groups": [
+        {
+            "name": "siglip2_rothad_b16_224",
+            "full_hef_path": "rothad2_D256L1.hef",
+            "FPS": "44.854407"
+        }
+    ],
+    "time_to_run": "10.00 seconds"
+}

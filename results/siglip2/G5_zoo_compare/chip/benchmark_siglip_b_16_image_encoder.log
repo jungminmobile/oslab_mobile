@@ -1,0 +1,9 @@
+Measurement power is not supported
+Measurement current is not supported
+
+=======
+Summary
+=======
+siglip_b_16_image_encoder: FPS: 32.97
+0005:01:00.0:
+  temperature: mean=74.02 min=65.54 max=79.56

@@ -1,0 +1,7 @@
+HEF Compatible for: HAILO15H, HAILO10H
+HEF Compiler Version: 5.4.0
+Network group name: siglip2_rothad_b16_224, Multi Context - Number of contexts: 17
+    Network name: siglip2_rothad_b16_224/siglip2_rothad_b16_224
+        VStream infos:
+            Input  siglip2_rothad_b16_224/input_layer1 UINT8, NHWC(224x224x3)
+            Output siglip2_rothad_b16_224/ew_add26 UINT16, NHWC(1x1x768)

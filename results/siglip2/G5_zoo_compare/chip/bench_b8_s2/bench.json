@@ -1,0 +1,76 @@
+{
+ "date": "2026-10-19T10:48:15",
+ "machine": "aarch64",
+ "platform": "Linux-5.15.148-tegra-aarch64-with-glibc2.35",
+ "python": "3.10.12",
+ "hailortcli": "HailoRT-CLI version 5.3.0",
+ "label": "b8_s2",
+ "batch": 8,
+ "warmup": 20,
+ "n": 200,
+ "runs": [
+  {
+   "model": "M2rot2_D256L1",
+   "hef_sha256": "040a3ae1ebd81d99",
+   "batch": 8,
+   "input_domain": "normalized",
+   "qin": [
+    0.007874015718698502,
+    128.0
+   ],
+   "in_shape": [
+    224,
+    224,
+    3
+   ],
+   "mean_ms": 243.51,
+   "median_ms": 249.965,
+   "p90_ms": 250.01,
+   "min_ms": 218.98,
+   "max_ms": 252.849,
+   "img_per_s_from_mean": 32.85
+  },
+  {
+   "model": "rothad2_D256L1",
+   "hef_sha256": "705c3a81417cae2c",
+   "batch": 8,
+   "input_domain": "normalized",
+   "qin": [
+    0.007874015718698502,
+    128.0
+   ],
+   "in_shape": [
+    224,
+    224,
+    3
+   ],
+   "mean_ms": 235.043,
+   "median_ms": 234.97,
+   "p90_ms": 235.101,
+   "min_ms": 232.923,
+   "max_ms": 237.885,
+   "img_per_s_from_mean": 34.04
+  },
+  {
+   "model": "siglip_b_16_image_encoder",
+   "hef_sha256": "e2198ed5975da551",
+   "batch": 8,
+   "input_domain": "pixel_0_255",
+   "qin": [
+    1.0,
+    0.0
+   ],
+   "in_shape": [
+    224,
+    224,
+    3
+   ],
+   "mean_ms": 179.427,
+   "median_ms": 164.048,
+   "p90_ms": 240.008,
+   "min_ms": 140.984,
+   "max_ms": 242.967,
+   "img_per_s_from_mean": 44.59
+  }
+ ]
+}

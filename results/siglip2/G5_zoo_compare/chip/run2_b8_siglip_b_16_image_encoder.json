@@ -1,0 +1,12 @@
+{
+    "time": "Mon Oct 19 11:17:14 2026",
+    "inference_mode": "full_async",
+    "network_groups": [
+        {
+            "name": "siglip_b_16_image_encoder",
+            "full_hef_path": "siglip_b_16_image_encoder.hef",
+            "FPS": "76.022659"
+        }
+    ],
+    "time_to_run": "10.00 seconds"
+}

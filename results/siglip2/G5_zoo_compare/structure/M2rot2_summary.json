@@ -1,0 +1,13 @@
+{
+ "html": "/home/junyong/siglip2_work/hailo_repro/comp2_M2rot/profiler.html",
+ "model_name": "siglip2_m2rot",
+ "hw_arch": "hailo10h",
+ "number_of_contexts": "21",
+ "layers": 501,
+ "profiler_fps": "N/A",
+ "profiler_latency": "N/A",
+ "optimization_level": "1",
+ "normalization": "False",
+ "has_runtime_data": false,
+ "n_16bit_layers": 215
+}
