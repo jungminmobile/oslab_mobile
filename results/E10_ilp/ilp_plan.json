@@ -1,0 +1,262 @@
+{
+ "b0_4T_ms": 23.93,
+ "b0_cos": 0.8864000000000001,
+ "b0_MiB": 37.410826683044434,
+ "step_ms": 0.05,
+ "budgets_r": [
+  1.013,
+  1.052,
+  1.091,
+  1.13,
+  1.169,
+  1.247,
+  1.325
+ ],
+ "plans": [
+  {
+   "r": 1.013,
+   "budget_ms": 0.311,
+   "W": 6,
+   "config": "P1",
+   "fp32_units": [
+    "AP.c",
+    "L2.3",
+    "L3.1",
+    "L3.5"
+   ],
+   "pred_dt_ms": 0,
+   "pred_dt_ms_raw": -3.07,
+   "pred_4T_ms": 23.93,
+   "pred_cos_gain": 0.0022999999999995246,
+   "pred_cos": 0.8886999999999996,
+   "pred_MiB": 50.51,
+   "brute_best": 0.0022999999999995246,
+   "brute_n": 42467328,
+   "brute_match": true
+  },
+  {
+   "r": 1.052,
+   "budget_ms": 1.244,
+   "W": 24,
+   "config": "P2",
+   "fp32_units": [
+    "AP.c",
+    "L2.3",
+    "L3.1",
+    "L3.5",
+    "L4.0.ds",
+    "stem.c1"
+   ],
+   "pred_dt_ms": 1.04,
+   "pred_dt_ms_raw": -2.03,
+   "pred_4T_ms": 24.97,
+   "pred_cos_gain": 0.02284999999999937,
+   "pred_cos": 0.9092499999999994,
+   "pred_MiB": 56.49,
+   "brute_best": 0.02284999999999937,
+   "brute_n": 42467328,
+   "brute_match": true
+  },
+  {
+   "r": 1.091,
+   "budget_ms": 2.178,
+   "W": 43,
+   "config": "P3",
+   "fp32_units": [
+    "AP.c",
+    "L2.0.ds",
+    "L2.3",
+    "L3.1",
+    "L3.5",
+    "L4.0.ds",
+    "stem.c1"
+   ],
+   "pred_dt_ms": 2.11,
+   "pred_dt_ms_raw": -0.96,
+   "pred_4T_ms": 26.04,
+   "pred_cos_gain": 0.03109999999999924,
+   "pred_cos": 0.9174999999999993,
+   "pred_MiB": 56.85,
+   "brute_best": 0.03109999999999924,
+   "brute_n": 42467328,
+   "brute_match": true
+  },
+  {
+   "r": 1.13,
+   "budget_ms": 3.111,
+   "W": 62,
+   "config": "P4",
+   "fp32_units": [
+    "AP.c",
+    "AP.v",
+    "L2.0.ds",
+    "L2.3",
+    "L3.1",
+    "L3.5",
+    "L4.0.ds",
+    "stem.c1"
+   ],
+   "pred_dt_ms": 3.08,
+   "pred_dt_ms_raw": 0.01,
+   "pred_4T_ms": 27.01,
+   "pred_cos_gain": 0.035149999999999126,
+   "pred_cos": 0.9215499999999992,
+   "pred_MiB": 68.84,
+   "brute_best": 0.035149999999999126,
+   "brute_n": 42467328,
+   "brute_match": true
+  },
+  {
+   "r": 1.169,
+   "budget_ms": 4.044,
+   "W": 80,
+   "config": "P5",
+   "fp32_units": [
+    "AP.c",
+    "AP.v",
+    "L2.0.ds",
+    "L2.3",
+    "L3.0.ds",
+    "L3.1",
+    "L3.5",
+    "L4.0.ds",
+    "stem.c1"
+   ],
+   "pred_dt_ms": 3.99,
+   "pred_dt_ms_raw": 0.92,
+   "pred_4T_ms": 27.92,
+   "pred_cos_gain": 0.03874999999999906,
+   "pred_cos": 0.9251499999999991,
+   "pred_MiB": 70.33,
+   "brute_best": 0.03874999999999906,
+   "brute_n": 42467328,
+   "brute_match": true
+  },
+  {
+   "r": 1.247,
+   "budget_ms": 5.911,
+   "W": 118,
+   "config": "P6",
+   "fp32_units": [
+    "AP.c",
+    "AP.v",
+    "L2.0.ds",
+    "L2.2",
+    "L2.3",
+    "L3.0.ds",
+    "L3.1",
+    "L3.2",
+    "L3.5",
+    "L4.0.ds",
+    "stem.c1"
+   ],
+   "pred_dt_ms": 5.86,
+   "pred_dt_ms_raw": 2.79,
+   "pred_4T_ms": 29.79,
+   "pred_cos_gain": 0.04194999999999893,
+   "pred_cos": 0.928349999999999,
+   "pred_MiB": 74.28,
+   "brute_best": 0.04194999999999893,
+   "brute_n": 42467328,
+   "brute_match": true
+  },
+  {
+   "r": 1.325,
+   "budget_ms": 7.777,
+   "W": 155,
+   "config": "P7",
+   "fp32_units": [
+    "AP.c",
+    "AP.v",
+    "L2.0.full",
+    "L2.3",
+    "L3.0.ds",
+    "L3.1",
+    "L3.2",
+    "L3.5",
+    "L4.0.ds",
+    "stem.c1"
+   ],
+   "pred_dt_ms": 7.56,
+   "pred_dt_ms_raw": 4.49,
+   "pred_4T_ms": 31.49,
+   "pred_cos_gain": 0.04344999999999899,
+   "pred_cos": 0.9298499999999991,
+   "pred_MiB": 74.18,
+   "brute_best": 0.04344999999999899,
+   "brute_n": 42467328,
+   "brute_match": true
+  }
+ ],
+ "configs": {
+  "P1": [
+   "AP.c",
+   "L2.3",
+   "L3.1",
+   "L3.5"
+  ],
+  "P2": [
+   "AP.c",
+   "L2.3",
+   "L3.1",
+   "L3.5",
+   "L4.0.ds",
+   "stem.c1"
+  ],
+  "P3": [
+   "AP.c",
+   "L2.0.ds",
+   "L2.3",
+   "L3.1",
+   "L3.5",
+   "L4.0.ds",
+   "stem.c1"
+  ],
+  "P4": [
+   "AP.c",
+   "AP.v",
+   "L2.0.ds",
+   "L2.3",
+   "L3.1",
+   "L3.5",
+   "L4.0.ds",
+   "stem.c1"
+  ],
+  "P5": [
+   "AP.c",
+   "AP.v",
+   "L2.0.ds",
+   "L2.3",
+   "L3.0.ds",
+   "L3.1",
+   "L3.5",
+   "L4.0.ds",
+   "stem.c1"
+  ],
+  "P6": [
+   "AP.c",
+   "AP.v",
+   "L2.0.ds",
+   "L2.2",
+   "L2.3",
+   "L3.0.ds",
+   "L3.1",
+   "L3.2",
+   "L3.5",
+   "L4.0.ds",
+   "stem.c1"
+  ],
+  "P7": [
+   "AP.c",
+   "AP.v",
+   "L2.0.full",
+   "L2.3",
+   "L3.0.ds",
+   "L3.1",
+   "L3.2",
+   "L3.5",
+   "L4.0.ds",
+   "stem.c1"
+  ]
+ }
+}

@@ -1,0 +1,111 @@
+2026-10-19 23:58:29.03 start 
+전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)B2 sha 687097928a9d82146d486f440e9956ab51d0ebacfffdf34c37e2c432dd3f19cd MATCH
+2026-10-19 23:58:29.69 cost start 
+B0 ['quantize 134 / 201 nodes (FP32 유지 67)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_B0.onnx  37.4 MiB  (113s)']
+stem.c1 ['quantize 132 / 201 nodes (FP32 유지 69)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_stem.c1.onnx  37.4 MiB  (112s)']
+stem.c2 ['quantize 132 / 201 nodes (FP32 유지 69)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_stem.c2.onnx  37.4 MiB  (110s)']
+stem.c3 ['quantize 131 / 201 nodes (FP32 유지 70)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_stem.c3.onnx  37.5 MiB  (112s)']
+L1.0.ds ['quantize 131 / 201 nodes (FP32 유지 70)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L1.0.ds.onnx  37.5 MiB  (114s)']
+L1.0.full ['quantize 125 / 201 nodes (FP32 유지 76)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L1.0.full.onnx  37.6 MiB  (110s)']
+L2.0.ds ['quantize 131 / 201 nodes (FP32 유지 70)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L2.0.ds.onnx  37.8 MiB  (110s)']
+L2.0.full ['quantize 124 / 201 nodes (FP32 유지 77)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L2.0.full.onnx  38.5 MiB  (108s)']
+L3.0.ds ['quantize 131 / 201 nodes (FP32 유지 70)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L3.0.ds.onnx  38.9 MiB  (110s)']
+L3.0.full ['quantize 124 / 201 nodes (FP32 유지 77)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L3.0.full.onnx  41.7 MiB  (110s)']
+L4.0.ds ['quantize 131 / 201 nodes (FP32 유지 70)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L4.0.ds.onnx  43.4 MiB  (111s)']
+L4.0.full ['quantize 124 / 201 nodes (FP32 유지 77)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L4.0.full.onnx  54.6 MiB  (110s)']
+L1.1 ['quantize 127 / 201 nodes (FP32 유지 74)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L1.1.onnx  37.6 MiB  (111s)']
+L1.2 ['quantize 127 / 201 nodes (FP32 유지 74)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L1.2.onnx  37.6 MiB  (112s)']
+L2.1 ['quantize 127 / 201 nodes (FP32 유지 74)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L2.1.onnx  38.2 MiB  (110s)']
+L2.2 ['quantize 127 / 201 nodes (FP32 유지 74)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L2.2.onnx  38.2 MiB  (110s)']
+L2.3 ['quantize 127 / 201 nodes (FP32 유지 74)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L2.3.onnx  38.2 MiB  (109s)']
+L3.1 ['quantize 127 / 201 nodes (FP32 유지 74)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L3.1.onnx  40.6 MiB  (109s)']
+L3.2 ['quantize 127 / 201 nodes (FP32 유지 74)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L3.2.onnx  40.6 MiB  (110s)']
+L3.3 ['quantize 127 / 201 nodes (FP32 유지 74)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L3.3.onnx  40.6 MiB  (111s)']
+L3.4 ['quantize 127 / 201 nodes (FP32 유지 74)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L3.4.onnx  40.6 MiB  (111s)']
+L3.5 ['quantize 127 / 201 nodes (FP32 유지 74)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L3.5.onnx  40.6 MiB  (123s)']
+L4.1 ['quantize 127 / 201 nodes (FP32 유지 74)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L4.1.onnx  50.1 MiB  (113s)']
+L4.2 ['quantize 127 / 201 nodes (FP32 유지 74)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_L4.2.onnx  50.1 MiB  (109s)']
+AP.q ['quantize 133 / 201 nodes (FP32 유지 68)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_AP.q.onnx  49.4 MiB  (112s)']
+AP.k ['quantize 133 / 201 nodes (FP32 유지 68)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_AP.k.onnx  49.4 MiB  (129s)']
+AP.v ['quantize 133 / 201 nodes (FP32 유지 68)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_AP.v.onnx  49.4 MiB  (115s)']
+AP.c ['quantize 133 / 201 nodes (FP32 유지 68)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_AP.c.onnx  43.4 MiB  (119s)']
+B0 4T runs ['22.76', '24.04', '23.82', '24.62'] spread 1.86 ms vs median |t_u| 1.12 ms
+stem.c1      s_u +0.0103  t_u -0.91 ms  m_u +0.0 MiB
+stem.c2      s_u -0.0730  t_u +0.27 ms  m_u +0.0 MiB
+stem.c3      s_u -0.0041  t_u +0.39 ms  m_u +0.1 MiB
+L1.0.ds      s_u -0.0087  t_u +0.88 ms  m_u +0.0 MiB
+L1.0.full    s_u -0.0028  t_u +0.96 ms  m_u +0.2 MiB
+L2.0.ds      s_u +0.0082  t_u +0.76 ms  m_u +0.4 MiB
+L2.0.full    s_u +0.0113  t_u +3.57 ms  m_u +1.1 MiB
+L3.0.ds      s_u +0.0036  t_u +1.04 ms  m_u +1.5 MiB
+L3.0.full    s_u +0.0034  t_u +2.54 ms  m_u +4.3 MiB
+L4.0.ds      s_u +0.0102  t_u -0.47 ms  m_u +6.0 MiB
+L4.0.full    s_u +0.0102  t_u +3.13 ms  m_u +17.2 MiB
+L1.1         s_u +0.0020  t_u +4.42 ms  m_u +0.2 MiB
+L1.2         s_u +0.0024  t_u +3.10 ms  m_u +0.2 MiB
+L2.1         s_u -0.0001  t_u +1.91 ms  m_u +0.8 MiB
+L2.2         s_u +0.0015  t_u +2.72 ms  m_u +0.8 MiB
+L2.3         s_u +0.0010  t_u +3.12 ms  m_u +0.8 MiB
+L3.1         s_u +0.0001  t_u +1.69 ms  m_u +3.2 MiB
+L3.2         s_u +0.0016  t_u +1.50 ms  m_u +3.2 MiB
+L3.3         s_u +0.0001  t_u +1.81 ms  m_u +3.2 MiB
+L3.4         s_u +0.0000  t_u +1.02 ms  m_u +3.2 MiB
+L3.5         s_u +0.0000  t_u +1.53 ms  m_u +3.2 MiB
+L4.1         s_u -0.0006  t_u +0.17 ms  m_u +12.7 MiB
+L4.2         s_u +0.0002  t_u +0.37 ms  m_u +12.7 MiB
+AP.q         s_u -0.0006  t_u -1.90 ms  m_u +12.0 MiB
+AP.k         s_u -0.0002  t_u -0.96 ms  m_u +12.0 MiB
+AP.v         s_u +0.0040  t_u -1.12 ms  m_u +12.0 MiB
+AP.c         s_u +0.0011  t_u -0.53 ms  m_u +6.0 MiB
+2026-10-20  1:09:44.90 COST DONE rc=0 
+retime rep 1/3 done
+retime rep 2/3 done
+retime rep 3/3 done
+stem.c1      t_u first -0.91 -> median +0.53  reps ['+0.53', '-0.02', '+0.60']
+stem.c2      t_u first +0.27 -> median +0.48  reps ['+0.50', '+0.48', '+0.05']
+stem.c3      t_u first +0.39 -> median +0.91  reps ['+0.86', '+1.40', '+0.91']
+L1.0.ds      t_u first +0.88 -> median +1.69  reps ['+1.81', '+1.69', '+1.63']
+L1.0.full    t_u first +0.96 -> median +1.47  reps ['+1.46', '+1.47', '+2.47']
+L2.0.ds      t_u first +0.76 -> median +1.07  reps ['+0.69', '+1.07', '+1.92']
+L2.0.full    t_u first +3.57 -> median +3.73  reps ['+2.31', '+3.73', '+4.67']
+L3.0.ds      t_u first +1.04 -> median +0.91  reps ['+0.67', '+2.09', '+0.91']
+L3.0.full    t_u first +2.54 -> median +3.59  reps ['+3.26', '+5.12', '+3.59']
+L4.0.ds      t_u first -0.47 -> median +0.51  reps ['-2.02', '+2.17', '+0.51']
+L4.0.full    t_u first +3.13 -> median +3.07  reps ['+3.07', '+3.80', '+2.25']
+L1.1         t_u first +4.42 -> median +2.62  reps ['+1.66', '+2.62', '+3.44']
+L1.2         t_u first +3.10 -> median +2.95  reps ['+2.95', '+1.94', '+2.99']
+L2.1         t_u first +1.91 -> median +2.25  reps ['+2.48', '+0.86', '+2.25']
+L2.2         t_u first +2.72 -> median +0.96  reps ['+1.65', '+0.96', '-0.08']
+L2.3         t_u first +3.12 -> median -0.18  reps ['+2.35', '-0.18', '-0.81']
+L3.1         t_u first +1.69 -> median -0.70  reps ['+3.74', '-0.70', '-3.36']
+L3.2         t_u first +1.50 -> median +0.91  reps ['+4.40', '+0.91', '-1.99']
+L3.3         t_u first +1.81 -> median +2.04  reps ['+2.76', '+2.04', '-0.12']
+L3.4         t_u first +1.02 -> median +0.86  reps ['+2.81', '+0.86', '-1.57']
+L3.5         t_u first +1.53 -> median -0.81  reps ['+2.91', '-0.81', '-0.95']
+L4.1         t_u first +0.17 -> median +1.04  reps ['+1.04', '+0.50', '+1.20']
+L4.2         t_u first +0.37 -> median +0.92  reps ['+0.81', '+0.92', '+0.95']
+AP.q         t_u first -1.90 -> median +1.43  reps ['+2.11', '+0.50', '+1.43']
+AP.k         t_u first -0.96 -> median +0.77  reps ['+2.41', '+0.45', '+0.77']
+AP.v         t_u first -1.12 -> median +0.97  reps ['+2.45', '+0.97', '+0.83']
+AP.c         t_u first -0.53 -> median -1.38  reps ['+0.84', '-1.69', '-1.38']
+2026-10-20  1:16:17.16 RETIME DONE rc=0 
+2026-10-20  1:21:47.32 stage3 start 
+ilp_P1 ['quantize 112 / 201 nodes (FP32 유지 89)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_ilp_P1.onnx  50.5 MiB  (112s)']
+ilp_P2 ['quantize 107 / 201 nodes (FP32 유지 94)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_ilp_P2.onnx  56.5 MiB  (112s)']
+ilp_P3 ['quantize 104 / 201 nodes (FP32 유지 97)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_ilp_P3.onnx  56.9 MiB  (111s)']
+ilp_P4 ['quantize 103 / 201 nodes (FP32 유지 98)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_ilp_P4.onnx  68.8 MiB  (109s)']
+ilp_P5 ['quantize 100 / 201 nodes (FP32 유지 101)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_ilp_P5.onnx  70.3 MiB  (111s)']
+ilp_P6 ['quantize 86 / 201 nodes (FP32 유지 115)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_ilp_P6.onnx  74.3 MiB  (119s)']
+ilp_P7 ['quantize 86 / 201 nodes (FP32 유지 115)', 'saved C:\\study\\3\\2\\2026 모바일 학술대회\\oslab_mobile\\rn50\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_E10_ilp_P7.onnx  74.2 MiB  (125s)']
+acc done
+speed s1 t1 done 02:02:45
+speed s1 t2 done 02:06:53
+speed s1 t4 done 02:09:49
+speed s2 t1 done 02:19:33
+speed s2 t2 done 02:23:39
+speed s2 t4 done 02:26:25
+speed s3 t1 done 02:36:22
+speed s3 t2 done 02:40:26
+speed s3 t4 done 02:43:21
+mem done
+2026-10-20  2:45:44.31 STAGE3 DONE rc=0 
