@@ -251,7 +251,8 @@ def main():
         ops_tag += f"_w{a.weight_type}"
     cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
     dst = RC.ONNX_DIR / f"{_p}{cal}{'_' + a.tag if a.tag else ''}.onnx"
-    if dst.exists() and not a.overwrite:
+    # --const-b-only·--ort-const-b-only는 아래에서 이름에 표시를 붙인 뒤 확인한다 (여기서 확인하면 표시 없는 기존 파일과 겹침)
+    if dst.exists() and not a.overwrite and not (a.const_b_only or a.ort_const_b_only):
         raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
     excl = RQ.select_excluded(str(pre), a)
     cbo_nodes = []
