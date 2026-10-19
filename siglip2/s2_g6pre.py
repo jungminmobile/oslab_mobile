@@ -12,8 +12,9 @@ s2_g6pre.py — Hailo Zoo SigLIP 두 모델(B/32-256, SigLIP1 B/16)에 M2rot이 
   s1b16 google/siglip-base-patch16-224   (Zoo siglip_b_16_image_encoder)
 
 [M2 치환]  s2_regcache.MaskRegCacheTrunk(form=bcast, mask_site=mlp)와 같은 범위 (README 2-4):
-  sinks [(p, b)]: 블록 l ≥ b의 self-attention에서 위치 p의 K·V를 보정 평균 상수로, 블록 l ≥ b의 sink 행 norm2 출력을 u_c[l]로,
-  MAP 헤드 kv에서 모든 sink 위치의 K·V를 상수로. 잔차는 그대로.
+  sinks [(p, k, u)] (표기 p@k:u, p@b = p@b:b): 블록 l ≥ k의 self-attention에서 위치 p의 K·V를 보정 평균 상수로,
+  블록 l ≥ u의 sink 행 norm2 출력을 u_c[l]로, MAP 헤드 kv에서 모든 sink 위치의 K·V를 상수로. 잔차는 그대로.
+  1단계(M2rot과 같은 범위)는 k = u = b. 2단계 통일 규칙(README 12-2)은 `unify`가 k·u를 정한다.
 
 [하위 명령]  (siglip2/ 폴더에서, RN50_RESULTS=../results/siglip2/G6_pre)
   cache   원본 parquet에서 Zoo 전처리(PIL BICUBIC 바로 맞춤, crop 없음, x/127.5−1) 캐시: 보정 256장(시드 0, 기존 calib_images와 같은 사진) + dev 6×200
@@ -22,6 +23,8 @@ s2_g6pre.py — Hailo Zoo SigLIP 두 모델(B/32-256, SigLIP1 B/16)에 M2rot이 
   m2      sink K·V 평균 캐시 + u_c (보정 256장) → dev 6×200에서 원래 vs M2 / K·V만 / oracle cos
   m2xchk  ref만: 기존 timm 상수 파일과 timm 전처리 캐시로 내 HF M2 == timm MaskRegCacheTrunk 인지
   top1    HF 텍스트 인코더로 분류기 → dev 6×200 FP32 top-1 (원래, M2)
+  confset (2단계) 확인 세트 6×200 (시드 1, dev·보정 후보·test와 SHA-1로 겹침 없음 확인) → Zoo 전처리 캐시
+  unify   (2단계) sink 토큰이 high-norm이 되는 첫 지점(입력 / attn 뒤 / MLP 뒤)과 통일 규칙의 p@k:u (README 12-1·12-2)
 """
 import argparse
 import io
@@ -60,6 +63,9 @@ WORK = Path(os.environ.get("G6PRE_WORK", Path.home() / "siglip2_work" / "g6pre")
 HR = ["pets", "flowers", "cars", "food", "caltech"]
 DEV_SETS = ["cifar_A"] + [f"{n}_dev" for n in HR]
 DEV_K = 200
+CONF_SETS = ["conf_cifar"] + [f"conf_{n}" for n in HR]   # 2단계 확인 세트 (README 12-3)
+CONF_SEED = 1
+CIFAR_CONF_RANGE = (47000, 50000)                         # 보정 [0,45000)·dev A·B [45000,47000) 밖, 어떤 규칙도 쓰지 않는 구간
 CAL_N, AN_N, SEED = 256, 128, 0
 HIGH_NORM = 5.0                                # G3_why: 토큰 노름 > 중앙값의 5배
 FIX = 0.90                                     # README 2-4·4절: 고정성 문턱
@@ -230,14 +236,17 @@ def _replace(k, v, pos, kc, vc):
 
 def hf_forward(vis, x, sinks=(), kvc=None, uc=None, rec=None):
     """HF SiglipVisionModel과 같은 계산을 풀어 쓴 것.
-    sinks [(p, b)], kvc {"b<l>"/"pool": (K (H,S,d), V)} (활성 sink 순서), uc {"b<l>": (C,)} 또는 None (K·V만).
-    rec(dict)가 있으면 블록별 기록: h (블록 출력), attn mass (B,H,N), sink K·V, norm2 출력의 sink 행."""
+    sinks [(p, k, u)], kvc {"b<l>"/"pool": (K (H,S,d), V)} (블록 l에서 k ≤ l인 sink 순서), uc {"b<l>": (C,)} 또는 None (K·V만).
+    rec(dict)가 있으면 블록별 기록: h (블록 출력), attn mass (B,H,N), sink K·V, norm2 출력, 세 지점 토큰 노름(pts)."""
     h = vis.embeddings(x)
     layers = vis.encoder.layers
     for l, ly in enumerate(layers):
         at = ly.self_attn
         H = at.num_heads
-        act = [p for p, b in sinks if b <= l]
+        act = [p for p, kb, _ in sinks if kb <= l]
+        act_u = [p for p, _, ub in sinks if ub <= l]
+        if rec is not None and rec.get("pts"):
+            rec.setdefault(f"n_in_b{l}", []).append(h.norm(dim=-1))
         z = ly.layer_norm1(h)
         q, k, v = _heads(at.q_proj(z), H), _heads(at.k_proj(z), H), _heads(at.v_proj(z), H)
         if rec is not None and "kv_pos" in rec:
@@ -250,16 +259,20 @@ def hf_forward(vis, x, sinks=(), kvc=None, uc=None, rec=None):
             rec.setdefault(f"mass_b{l}", []).append(a.mean(2))
         o = (a @ v).transpose(1, 2).reshape(h.shape)
         h = h + at.out_proj(o)
+        if rec is not None and rec.get("pts"):
+            rec.setdefault(f"n_attn_b{l}", []).append(h.norm(dim=-1))
         z2 = ly.layer_norm2(h)
-        if act and uc is not None:
+        if act_u and uc is not None:
             z2 = z2.clone()
-            for p in act:
+            for p in act_u:
                 z2[:, p] = uc[f"b{l}"]
         if rec is not None and rec.get("z2_sink"):
             rec.setdefault(f"z2_b{l}", []).append(z2.clone())
         h = h + ly.mlp(z2)
         if rec is not None and rec.get("h"):
             rec.setdefault(f"h_b{l}", []).append(h.clone())
+        if rec is not None and rec.get("pts"):
+            rec.setdefault(f"n_mlp_b{l}", []).append(h.norm(dim=-1))
     h = vis.post_layernorm(h)
     head = vis.head
     q, k, v = _pool_qkv(head, h)
@@ -267,7 +280,7 @@ def hf_forward(vis, x, sinks=(), kvc=None, uc=None, rec=None):
         rec.setdefault("k_pool", []).append(k[:, :, rec["kv_pos"]].clone())
         rec.setdefault("v_pool", []).append(v[:, :, rec["kv_pos"]].clone())
     if sinks and kvc is not None:
-        k, v = _replace(k, v, [p for p, _ in sinks], *kvc["pool"])
+        k, v = _replace(k, v, [s[0] for s in sinks], *kvc["pool"])
     a = torch.softmax((q @ k.transpose(-1, -2)) / np.sqrt(q.shape[-1]), dim=-1)
     if rec is not None and rec.get("mass"):
         rec.setdefault("mass_pool", []).append(a.mean(2))
@@ -465,7 +478,13 @@ def cmd_analyze(a):
 # ---------------------------------------------------------------- m2 (요청 5)
 
 def parse_sinks(s):
-    return [tuple(int(t) for t in it.split("@")) for it in s.split(",")] if s else []
+    """'p@k:u' 또는 'p@b'(= p@b:b) → [(p, k, u)]."""
+    out = []
+    for it in (s.split(",") if s else []):
+        p, r = it.split("@")
+        k, u = (r.split(":") if ":" in r else (r, r))
+        out.append((int(p), int(k), int(u)))
+    return out
 
 
 @torch.no_grad()
@@ -473,19 +492,20 @@ def build_m2_consts(vis, x, sinks, bs=16):
     """s2_regcache.build_mean_cache + build_uc와 같은 정의 (원래 FP32 모델, 보정 사진 평균)."""
     L = len(vis.encoder.layers)
     N = vis.embeddings.num_patches
-    pos = [p for p, _ in sinks]
-    first = min(b for _, b in sinks)
+    pos = [s[0] for s in sinks]
+    first = min(s[1] for s in sinks)                     # K·V 상수가 필요한 첫 블록
+    first_u = min(s[2] for s in sinks)                   # u_c가 필요한 첫 블록
     keep = [i for i in range(N) if i not in set(pos)]
     accK, accV, accU, n = {}, {}, {}, 0
     for i in range(0, len(x), bs):
         rec = {"kv_pos": pos, "z2_sink": True}
         hf_forward(vis, torch.as_tensor(np.ascontiguousarray(x[i:i + bs])), rec=rec)
         for key in [f"b{l}" for l in range(first, L)] + ["pool"]:
-            act = [j for j, (p, b) in enumerate(sinks) if key == "pool" or b <= int(key[1:])]
+            act = [j for j, (p, kb, _) in enumerate(sinks) if key == "pool" or kb <= int(key[1:])]
             K, V = torch.cat(rec[f"k_{key}"])[:, :, act].double().sum(0), torch.cat(rec[f"v_{key}"])[:, :, act].double().sum(0)
             accK[key] = accK.get(key, 0) + K
             accV[key] = accV.get(key, 0) + V
-        for l in range(first, L):
+        for l in range(first_u, L):
             z = torch.cat(rec[f"z2_b{l}"])
             accU[f"b{l}"] = accU.get(f"b{l}", 0) + z[:, keep].double().sum((0, 1))
         n += len(x[i:i + bs])
@@ -505,9 +525,11 @@ def cmd_m2(a):
     kvc, uc, n = build_m2_consts(vis, xc, sinks)
     assert n == CAL_N, n
     torch.save({"sinks": sinks, "kvc": kvc, "uc": uc, "n": n}, WORK / f"m2consts_{name}_{a.sinks.replace(',', '-')}.pt")
-    pos = [p for p, _ in sinks]
+    pos = [s[0] for s in sinks]
     rows = {}
-    for key in DEV_SETS:
+    sets = DEV_SETS if a.xset == "dev" else CONF_SETS
+    tag = a.sinks.replace(",", "-").replace(":", "_")
+    for key in sets:
         x = load_x(size, key)
         assert len(x) == DEV_K, (key, len(x))
         base = batched(lambda t: hf_forward(vis, t), x)
@@ -522,8 +544,12 @@ def cmd_m2(a):
             L = len(vis.encoder.layers)
             ora.append(_oracle_forward(vis, t, sinks, rec, L))
         out["oracle"] = torch.cat(ora).numpy()
-        np.save(WORK / f"emb_{name}_{key}_orig.npy", base)
-        np.save(WORK / f"emb_{name}_{key}_m2.npy", out["m2"])
+        if a.xset == "dev" and not a.tagged_emb:
+            np.save(WORK / f"emb_{name}_{key}_orig.npy", base)          # 1단계 top1이 읽는 이름 (1단계 재현용)
+            np.save(WORK / f"emb_{name}_{key}_m2.npy", out["m2"])
+        else:
+            np.save(WORK / f"emb_{name}_{key}_orig.npy", base)                # conf 세트는 키 이름(conf_*)이 달라 겹치지 않음
+            np.save(WORK / f"emb_{name}_{key}_m2_{tag}.npy", out["m2"])
         r = {}
         for mode, e in out.items():
             c = cosr(e, base)
@@ -531,17 +557,18 @@ def cmd_m2(a):
         rows[key] = r
         print(key, json.dumps(r), flush=True)
     assert all(rows[k]["oracle"]["cos_min"] >= 0.99999 for k in rows), "oracle 동치 실패 — 구현 버그"
-    allc = {mode: float(np.mean([rows[k][mode]["cos_mean"] for k in DEV_SETS])) for mode in ("m2", "kv_only", "oracle")}
-    hr = {mode: float(np.mean([rows[k][mode]["cos_mean"] for k in DEV_SETS if k != "cifar_A"])) for mode in ("m2", "kv_only")}
-    append("m2.jsonl", {"what": "m2", "model": name, "sinks": a.sinks, "calib_n": n, "seed": SEED, "dev": f"6x{DEV_K}",
+    allc = {mode: float(np.mean([rows[k][mode]["cos_mean"] for k in sets])) for mode in ("m2", "kv_only", "oracle")}
+    hr = {mode: float(np.mean([rows[k][mode]["cos_mean"] for k in sets[1:]])) for mode in ("m2", "kv_only")}
+    append("m2.jsonl", {"what": "m2", "model": name, "sinks": a.sinks, "sinks_pku": [list(s) for s in sinks],
+                        "calib_n": n, "seed": SEED, "xset": a.xset, "dev": f"6x{DEV_K}",
                         "input": f"zoo{size}", "cos_mean_1200": allc, "cos_mean_highres5": hr,
-                        "cos_min_1200": {mode: float(min(rows[k][mode]["cos_min"] for k in DEV_SETS)) for mode in ("m2", "kv_only", "oracle")},
+                        "cos_min_1200": {mode: float(min(rows[k][mode]["cos_min"] for k in sets)) for mode in ("m2", "kv_only", "oracle")},
                         "per_set": rows})
 
 
 def _oracle_forward(vis, t, sinks, rec, L):
     """원래 forward에서 기록한 사진별 sink K·V·norm2 행으로 바꿔 끼운다 (배치마다 다른 값)."""
-    pos = [p for p, _ in sinks]
+    pos = [s[0] for s in sinks]
     lists = {k: torch.cat(v) for k, v in rec.items() if isinstance(v, list) and k != "kv_pos"}
     K = {k[2:]: v for k, v in lists.items() if k.startswith("k_")}
     V = {k[2:]: v for k, v in lists.items() if k.startswith("v_")}
@@ -550,7 +577,8 @@ def _oracle_forward(vis, t, sinks, rec, L):
     for l, ly in enumerate(vis.encoder.layers):
         at = ly.self_attn
         H = at.num_heads
-        act = [j for j, (p, b) in enumerate(sinks) if b <= l]
+        act = [j for j, (p, kb, _) in enumerate(sinks) if kb <= l]
+        act_u = [j for j, (p, _, ub) in enumerate(sinks) if ub <= l]
         z = ly.layer_norm1(h)
         q, k, v = _heads(at.q_proj(z), H), _heads(at.k_proj(z), H), _heads(at.v_proj(z), H)
         k, v = k.clone(), v.clone()
@@ -560,7 +588,7 @@ def _oracle_forward(vis, t, sinks, rec, L):
         a = torch.softmax((q @ k.transpose(-1, -2)) * at.scale, dim=-1)
         h = h + at.out_proj((a @ v).transpose(1, 2).reshape(h.shape))
         z2 = ly.layer_norm2(h).clone()
-        for j in act:
+        for j in act_u:
             z2[:, pos[j]] = Z[f"b{l}"][:, pos[j]]
         h = h + ly.mlp(z2)
     h = vis.post_layernorm(h)
@@ -579,12 +607,13 @@ def _oracle_forward(vis, t, sinks, rec, L):
 def cmd_m2xchk(a):
     """ref: 기존 timm 상수 파일 + timm 전처리 캐시 → 내 HF M2 == timm MaskRegCacheTrunk(bcast, mlp)."""
     from s2_regcache import MaskRegCacheTrunk, load_cache, parse_sinks as ps
-    sinks = ps("55@5,13@9")
+    sinks2 = ps("55@5,13@9")
+    sinks = [(p, b, b) for p, b in sinks2]
     cache, meta = load_cache(RC.ONNX_DIR / "regcache_55at5-13at9_highres256_s0.npz")
     z = np.load(RC.ONNX_DIR / "regcache_uc_55at5-13at9_highres256_s0.npz")
     uc = {k: z[k] for k in z.files if k != "meta"}
     model, _, _ = S.load_model()
-    tm = MaskRegCacheTrunk(model.visual.trunk, sinks, cache, "bcast", None, uc).eval()
+    tm = MaskRegCacheTrunk(model.visual.trunk, sinks2, cache, "bcast", None, uc).eval()
     vis = vis_of(load_hf("ref"))
     kvc = {k: (torch.as_tensor(np.asarray(K)).float(), torch.as_tensor(np.asarray(V)).float()) for k, (K, V) in cache.items()}
     ucs = {k: torch.as_tensor(v).float() for k, v in uc.items()}
@@ -675,6 +704,119 @@ def cmd_top1(a):
                           "templates": "rn50/common.TEMPLATES (CIFAR), rn50/datasets.HIGHRES[*].templates"})
 
 
+# ---------------------------------------------------------------- 2단계: 확인 세트 (README 12-3)
+
+def _sha(b):
+    import hashlib
+    return hashlib.sha1(b).hexdigest()
+
+
+def cmd_confset(a):
+    from PIL import Image
+    from torchvision.datasets import CIFAR100
+    cd224, cd256 = cache_dir(224), cache_dir(256)
+    calib256 = {ln.split()[1] for ln in (cd224 / "calib256_s0_src.txt").read_text().split("\n") if ln.strip()}
+    assert len(calib256) == CAL_N
+    info = {}
+    for name in HR:
+        cfg = RD.HIGHRES[name]
+        p_dev, p_cal = RD.DEV_N / cfg["n_pool"], RD.CAL_N / cfg["n_pool"]
+        had = {loc for loc, _ in cfg["pool"] if (RC.EXTRA_ROOT / loc).exists()}
+        # 1회차: 나머지 구간(u ≥ p_dev + p_cal)의 순번과 dev·보정 후보 SHA-1
+        dev_sha, cal_sha, rest_n = set(), set(), 0
+        for b, _ in RD.parquet_rows(cfg["pool"], True):
+            u = RD.u_of(b)
+            if u < p_dev:
+                dev_sha.add(_sha(b))
+            elif u < p_dev + p_cal:
+                cal_sha.add(_sha(b))
+            else:
+                rest_n += 1
+        sel = set(np.sort(np.random.default_rng(CONF_SEED).choice(rest_n, DEV_K, replace=False)).tolist())
+        # 2회차: 고른 사진
+        imgs, ys, shas, i = [], [], [], 0
+        for b, lab in RD.parquet_rows(cfg["pool"], True):
+            if RD.u_of(b) >= p_dev + p_cal:
+                if i in sel:
+                    imgs.append(b); ys.append(lab); shas.append(_sha(b))
+                i += 1
+        assert i == rest_n and len(imgs) == DEV_K
+        for loc, _ in cfg["pool"]:                        # 이번에 새로 받은 파일은 지운다 (parquet_rows 기본 동작과 같게)
+            if loc not in had and (RC.EXTRA_ROOT / loc).exists():
+                (RC.EXTRA_ROOT / loc).unlink()
+        test_sha = {_sha(b) for b, _ in RD.parquet_rows(cfg["test"], False)}   # test는 SHA-1만 계산 (모델에 넣지 않음)
+        dev_old = set((RC.CACHE_DIR / f"{name}_dev_sha1.txt").read_text().split())
+        assert dev_old <= dev_sha, "기존 dev 목록이 dev 구간과 다름"
+        ov = {"dev": len(set(shas) & dev_sha), "calib_cands": len(set(shas) & cal_sha), "calib256": len(set(shas) & calib256),
+              "test": len(set(shas) & test_sha), "dup_in_set": DEV_K - len(set(shas))}
+        info[name] = {"rest_n": rest_n, "n_dev": len(dev_sha), "n_cal_cands": len(cal_sha), "n_test": len(test_sha), "overlap": ov}
+        print(name, info[name], flush=True)
+        assert not any(ov.values()), f"{name} 확인 세트 겹침 {ov} — 멈춤 (README 12-3)"
+        for size, cd in ((224, cd224), (256, cd256)):
+            np.save(cd / f"conf_{name}_x.npy", np.stack([zoo_pre(Image.open(io.BytesIO(b)), size) for b in imgs]).astype(np.float32))
+            np.save(cd / f"conf_{name}_y.npy", np.array(ys))
+        (cd224 / f"conf_{name}_sha1.txt").write_text("\n".join(shas) + "\n")
+    tr = CIFAR100(str(RC.DATA_ROOT), train=True, download=False)
+    te = CIFAR100(str(RC.DATA_ROOT), train=False, download=False)
+    lo, hi = CIFAR_CONF_RANGE
+    idx = np.sort(np.random.default_rng(CONF_SEED).choice(hi - lo, DEV_K, replace=False)) + lo
+    px = lambda d, i: np.ascontiguousarray(d.data[i]).tobytes()
+    shas = [_sha(px(tr, int(i))) for i in idx]
+    dev_ab = {_sha(px(tr, i)) for i in range(RC.VAL_SPLITS["A"], RC.VAL_SPLITS["B"] + RC.VAL_SIZE)}
+    test_sha = {_sha(px(te, i)) for i in range(len(te.data))}
+    calib_rng = {_sha(px(tr, i)) for i in range(*RC.CALIB_RANGE)}                    # 기록용 (이번 보정 256장에는 CIFAR 없음)
+    ov = {"dev_AB": len(set(shas) & dev_ab), "test": len(set(shas) & test_sha), "dup_in_set": DEV_K - len(set(shas))}
+    info["cifar"] = {"range": [lo, hi], "overlap": ov, "overlap_calib_range_record_only": len(set(shas) & calib_rng)}
+    print("cifar", info["cifar"], flush=True)
+    assert not any(ov.values()), f"CIFAR 확인 세트 겹침 {ov} — 멈춤"
+    all_sha = shas + sum([(cd224 / f"conf_{n}_sha1.txt").read_text().split() for n in HR], [])
+    assert len(set(all_sha)) == len(all_sha) == 6 * DEV_K, "확인 세트 1,200장 안에 중복"
+    for size, cd in ((224, cd224), (256, cd256)):
+        np.save(cd / "conf_cifar_x.npy", np.stack([zoo_pre(tr[int(i)][0], size) for i in idx]).astype(np.float32))
+        np.save(cd / "conf_cifar_y.npy", np.array([tr.targets[int(i)] for i in idx]))
+    (cd224 / "conf_cifar_sha1.txt").write_text("\n".join(shas) + "\n")
+    (cd224 / "conf_cifar_idx.txt").write_text("\n".join(str(int(i)) for i in idx) + "\n")
+    append("confset.jsonl", {"what": "confset", "seed": CONF_SEED, "per_set": DEV_K, "n": 6 * DEV_K, "sets": CONF_SETS,
+                             "info": info, "preprocess": "zoo (PIL BICUBIC, x/127.5-1)", "sizes": [224, 256]})
+
+
+# ---------------------------------------------------------------- 2단계: 통일 규칙 (README 12-1·12-2)
+
+def cmd_unify(a):
+    name = a.model
+    rows = [json.loads(ln) for ln in open(out_dir() / "analyze.jsonl", encoding="utf-8")]
+    row = [r for r in rows if r["model"] == name][-1]
+    pos = sorted({s["p"] for s in row["sinks_rule"]})
+    assert pos, "sink 토큰 없음"
+    vis = vis_of(load_hf(name))
+    L = len(vis.encoder.layers)
+    x = load_x(MODELS[name]["size"], "calib256_s0")[:AN_N]
+    rec = {"pts": True}
+    for i in range(0, AN_N, 16):
+        hf_forward(vis, torch.as_tensor(x[i:i + 16]), rec=rec)
+    order = [(l, pt) for l in range(L) for pt in ("in", "attn", "mlp")]
+    frac = {}
+    for l, pt in order:
+        n = torch.cat(rec[f"n_{pt}_b{l}"]).numpy()                         # (128, N)
+        hn = n / np.median(n, axis=1, keepdims=True) > HIGH_NORM
+        frac[(l, pt)] = hn.mean(0)
+    out, table = [], {}
+    for p in pos:
+        first = next(((l, pt) for l, pt in order if frac[(l, pt)][p] >= FIX), None)
+        assert first is not None, p
+        l0, pt0 = first
+        u = l0                                                                # attn·mlp 뒤 → 그 블록 MLP부터, 블록 0 입력 → 0
+        k = next(l for l in range(L) if frac[(l, "in")][p] >= FIX)
+        out.append((p, k, u))
+        table[p] = {"first": {"block": l0, "point": pt0}, "k": k, "u": u,
+                    "frac": {f"b{l}": {pt: round(float(frac[(l, pt)][p]), 3) for pt in ("in", "attn", "mlp")}
+                             for l in range(max(0, l0 - 1), min(L, l0 + 3))}}
+    out.sort(key=lambda t: (t[2], t[0]))
+    s_u = ",".join(f"{p}@{k}:{u}" for p, k, u in out)
+    append("unify.jsonl", {"what": "unify", "model": name, "n": AN_N, "analyze_commit": row["commit"],
+                           "sink_tokens": pos, "sinks_unified": s_u, "table": {str(p): t for p, t in table.items()}})
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -686,8 +828,14 @@ def main():
         p.set_defaults(func=f)
     p = sub.add_parser("m2")
     p.add_argument("--model", choices=list(MODELS), required=True)
-    p.add_argument("--sinks", required=True, help="패치@시작블록, 쉼표 (analyze의 sinks 값)")
+    p.add_argument("--sinks", required=True, help="p@b 또는 p@k:u, 쉼표 (analyze·unify의 sinks 값)")
+    p.add_argument("--xset", choices=["dev", "conf"], default="dev", help="dev 6×200 (1단계) 또는 확인 세트 6×200 (2단계, 판정용)")
+    p.add_argument("--tagged-emb", action="store_true", help="dev 임베딩을 sinks 태그 이름으로 저장 (1단계 top1 파일을 덮지 않음)")
     p.set_defaults(func=cmd_m2)
+    sub.add_parser("confset").set_defaults(func=cmd_confset)
+    p = sub.add_parser("unify")
+    p.add_argument("--model", choices=list(MODELS), required=True)
+    p.set_defaults(func=cmd_unify)
     sub.add_parser("m2xchk").set_defaults(func=cmd_m2xchk)
     a = ap.parse_args()
     out_dir()
