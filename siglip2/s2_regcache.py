@@ -821,7 +821,7 @@ def cmd_export(a):
         stem = f"siglip2_image_fp32_rc{sinks_slug(sinks)}" + ("" if a.mode == "mean" else f"_{a.mode}")
     paths = [RC.ONNX_DIR / f"{stem}.onnx", RC.ONNX_DIR / f"{stem}_b1.onnx"]
     import onnx
-    x1 = torch.randn(1, 3, *model.visual.trunk.patch_embed.img_size)    # 기존 모델은 224 (G6: 다른 크기 모델)
+    x1 = torch.randn(1, 3, *getattr(model.visual.trunk, "t", model.visual.trunk).patch_embed.img_size)    # 기존 모델은 224 (G6), 변환 trunk는 .t가 원래 trunk
     files = {}
     for p, dyn in zip(paths, (True, False)):
         if p.exists() and not a.overwrite:
