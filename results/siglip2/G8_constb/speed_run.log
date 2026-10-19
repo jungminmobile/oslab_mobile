@@ -1,0 +1,213 @@
+2026-10-20 01:54:18 start commit=b9e1ced dirty=0 gate=WSL(others=0, load1<2, 5분 간격) windows=확인못함(interop 꺼짐)
+2026-10-20 01:59:19 s=1 t=1 pre others=0 load=0.02 1.30 2.44
+  entry = pickle.load(f, encoding="latin1")
+repeat 1/3 fp32              238.16 ms/img
+repeat 1/3 S_all              89.65 ms/img
+repeat 1/3 S_const            89.81 ms/img
+repeat 1/3 D_m2rot            83.71 ms/img
+repeat 2/3 fp32              238.56 ms/img
+repeat 2/3 S_all              89.90 ms/img
+repeat 2/3 S_const            90.13 ms/img
+repeat 2/3 D_m2rot            83.64 ms/img
+repeat 3/3 fp32              240.20 ms/img
+repeat 3/3 S_all              89.73 ms/img
+repeat 3/3 S_const            89.81 ms/img
+repeat 3/3 D_m2rot            83.49 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5   238.97   1.08  238.16  238.07  242.76
+S_all               91.7    89.76   0.13   89.65   89.60   91.36
+S_const             91.7    89.92   0.18   89.81   89.77   91.53
+D_m2rot             91.7    83.61   0.11   83.49   83.40   85.53
+saved ../results/siglip2/G8_constb/speed/speed_20261020_020437.json
+2026-10-20 02:04:38 s=1 t=1 done post others=0 load=1.00 1.10 2.01
+2026-10-20 02:04:38 s=1 t=2 pre others=0 load=1.00 1.10 2.01
+  entry = pickle.load(f, encoding="latin1")
+repeat 1/3 fp32              127.72 ms/img
+repeat 1/3 S_all              51.36 ms/img
+repeat 1/3 S_const            51.21 ms/img
+repeat 1/3 D_m2rot            46.42 ms/img
+repeat 2/3 fp32              127.62 ms/img
+repeat 2/3 S_all              51.30 ms/img
+repeat 2/3 S_const            51.06 ms/img
+repeat 2/3 D_m2rot            46.66 ms/img
+repeat 3/3 fp32              127.32 ms/img
+repeat 3/3 S_all              51.49 ms/img
+repeat 3/3 S_const            50.99 ms/img
+repeat 3/3 D_m2rot            46.48 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5   127.56   0.21  127.32  127.30  130.95
+S_all               91.7    51.38   0.10   51.30   51.19   53.44
+S_const             91.7    51.09   0.11   50.99   50.90   53.19
+D_m2rot             91.7    46.52   0.12   46.42   46.34   48.37
+saved ../results/siglip2/G8_constb/speed/speed_20261020_020736.json
+2026-10-20 02:07:36 s=1 t=2 done post others=0 load=1.99 1.54 2.01
+2026-10-20 02:07:36 s=1 t=4 pre others=0 load=1.99 1.54 2.01
+  entry = pickle.load(f, encoding="latin1")
+repeat 1/3 fp32               69.05 ms/img
+repeat 1/3 S_all              30.26 ms/img
+repeat 1/3 S_const            30.17 ms/img
+repeat 1/3 D_m2rot            26.06 ms/img
+repeat 2/3 fp32               68.21 ms/img
+repeat 2/3 S_all              30.34 ms/img
+repeat 2/3 S_const            30.23 ms/img
+repeat 2/3 D_m2rot            26.07 ms/img
+repeat 3/3 fp32               68.07 ms/img
+repeat 3/3 S_all              30.19 ms/img
+repeat 3/3 S_const            30.28 ms/img
+repeat 3/3 D_m2rot            26.21 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5    68.44   0.53   68.07   68.03   71.27
+S_all               91.7    30.27   0.08   30.19   30.06   32.08
+S_const             91.7    30.23   0.06   30.17   30.04   31.90
+D_m2rot             91.7    26.11   0.08   26.06   25.96   27.67
+saved ../results/siglip2/G8_constb/speed/speed_20261020_020919.json
+2026-10-20 02:09:19 s=1 t=4 done post others=0 load=3.65 2.26 2.22
+2026-10-20 02:14:20 s=2 t=1 pre others=0 load=0.02 0.82 1.60
+  entry = pickle.load(f, encoding="latin1")
+repeat 1/3 fp32              237.71 ms/img
+repeat 1/3 S_all              89.66 ms/img
+repeat 1/3 S_const            89.42 ms/img
+repeat 1/3 D_m2rot            83.23 ms/img
+repeat 2/3 fp32              237.91 ms/img
+repeat 2/3 S_all              90.40 ms/img
+repeat 2/3 S_const            90.04 ms/img
+repeat 2/3 D_m2rot            83.28 ms/img
+repeat 3/3 fp32              238.45 ms/img
+repeat 3/3 S_all              98.96 ms/img
+repeat 3/3 S_const            99.76 ms/img
+repeat 3/3 D_m2rot            90.62 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5   238.02   0.38  237.71  237.70  240.86
+S_all               91.7    93.01   5.17   89.66   90.41  101.22
+S_const             91.7    93.07   5.80   89.42   90.20  101.23
+D_m2rot             91.7    85.71   4.25   83.23   83.60   91.93
+saved ../results/siglip2/G8_constb/speed/speed_20261020_021942.json
+2026-10-20 02:19:42 s=2 t=1 done post others=0 load=1.01 0.97 1.42
+2026-10-20 02:19:42 s=2 t=2 pre others=0 load=1.01 0.97 1.42
+  entry = pickle.load(f, encoding="latin1")
+repeat 1/3 fp32              134.35 ms/img
+repeat 1/3 S_all              55.02 ms/img
+repeat 1/3 S_const            54.65 ms/img
+repeat 1/3 D_m2rot            48.74 ms/img
+repeat 2/3 fp32              134.31 ms/img
+repeat 2/3 S_all              55.10 ms/img
+repeat 2/3 S_const            54.81 ms/img
+repeat 2/3 D_m2rot            48.63 ms/img
+repeat 3/3 fp32              134.28 ms/img
+repeat 3/3 S_all              55.03 ms/img
+repeat 3/3 S_const            54.79 ms/img
+repeat 3/3 D_m2rot            48.77 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5   134.31   0.04  134.28  134.10  136.22
+S_all               91.7    55.05   0.04   55.02   54.88   56.81
+S_const             91.7    54.75   0.09   54.65   54.65   56.55
+D_m2rot             91.7    48.72   0.07   48.63   48.58   50.16
+saved ../results/siglip2/G8_constb/speed/speed_20261020_022251.json
+2026-10-20 02:22:51 s=2 t=2 done post others=0 load=1.92 1.48 1.54
+2026-10-20 02:22:51 s=2 t=4 pre others=0 load=1.92 1.48 1.54
+  entry = pickle.load(f, encoding="latin1")
+repeat 1/3 fp32               72.56 ms/img
+repeat 1/3 S_all              32.49 ms/img
+repeat 1/3 S_const            32.32 ms/img
+repeat 1/3 D_m2rot            27.59 ms/img
+repeat 2/3 fp32               72.23 ms/img
+repeat 2/3 S_all              32.47 ms/img
+repeat 2/3 S_const            32.45 ms/img
+repeat 2/3 D_m2rot            27.58 ms/img
+repeat 3/3 fp32               72.07 ms/img
+repeat 3/3 S_all              32.57 ms/img
+repeat 3/3 S_const            32.85 ms/img
+repeat 3/3 D_m2rot            27.64 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5    72.29   0.25   72.07   72.09   74.70
+S_all               91.7    32.51   0.05   32.47   32.48   34.17
+S_const             91.7    32.54   0.27   32.32   32.42   34.41
+D_m2rot             91.7    27.60   0.03   27.58   27.52   29.23
+saved ../results/siglip2/G8_constb/speed/speed_20261020_022440.json
+2026-10-20 02:24:41 s=2 t=4 done post others=0 load=3.50 2.22 1.81
+2026-10-20 02:29:41 s=3 t=1 pre others=0 load=0.12 0.85 1.31
+  entry = pickle.load(f, encoding="latin1")
+repeat 1/3 fp32              239.03 ms/img
+repeat 1/3 S_all              89.75 ms/img
+repeat 1/3 S_const            89.83 ms/img
+repeat 1/3 D_m2rot            83.84 ms/img
+repeat 2/3 fp32              239.20 ms/img
+repeat 2/3 S_all              89.68 ms/img
+repeat 2/3 S_const            89.73 ms/img
+repeat 2/3 D_m2rot            83.69 ms/img
+repeat 3/3 fp32              238.80 ms/img
+repeat 3/3 S_all              89.80 ms/img
+repeat 3/3 S_const            90.05 ms/img
+repeat 3/3 D_m2rot            83.78 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5   239.01   0.20  238.80  238.58  242.55
+S_all               91.7    89.74   0.06   89.68   89.60   91.42
+S_const             91.7    89.87   0.16   89.73   89.67   91.92
+D_m2rot             91.7    83.77   0.08   83.69   83.54   85.60
+saved ../results/siglip2/G8_constb/speed/speed_20261020_023500.json
+2026-10-20 02:35:01 s=3 t=1 done post others=0 load=1.00 0.97 1.22
+2026-10-20 02:35:01 s=3 t=2 pre others=0 load=1.00 0.97 1.22
+  entry = pickle.load(f, encoding="latin1")
+repeat 1/3 fp32              126.69 ms/img
+repeat 1/3 S_all              49.95 ms/img
+repeat 1/3 S_const            49.76 ms/img
+repeat 1/3 D_m2rot            45.28 ms/img
+repeat 2/3 fp32              124.42 ms/img
+repeat 2/3 S_all              49.82 ms/img
+repeat 2/3 S_const            49.69 ms/img
+repeat 2/3 D_m2rot            45.29 ms/img
+repeat 3/3 fp32              124.46 ms/img
+repeat 3/3 S_all              49.93 ms/img
+repeat 3/3 S_const            49.81 ms/img
+repeat 3/3 D_m2rot            45.34 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5   125.19   1.30  124.42  124.52  130.00
+S_all               91.7    49.90   0.07   49.82   49.84   51.11
+S_const             91.7    49.76   0.06   49.69   49.64   51.08
+D_m2rot             91.7    45.30   0.04   45.28   45.19   46.55
+saved ../results/siglip2/G8_constb/speed/speed_20261020_023755.json
+2026-10-20 02:37:55 s=3 t=2 done post others=0 load=2.01 1.47 1.37
+2026-10-20 02:42:55 s=3 t=4 pre others=0 load=0.08 0.55 0.99
+  entry = pickle.load(f, encoding="latin1")
+repeat 1/3 fp32               69.17 ms/img
+repeat 1/3 S_all              30.25 ms/img
+repeat 1/3 S_const            30.23 ms/img
+repeat 1/3 D_m2rot            26.18 ms/img
+repeat 2/3 fp32               68.41 ms/img
+repeat 2/3 S_all              30.32 ms/img
+repeat 2/3 S_const            30.08 ms/img
+repeat 2/3 D_m2rot            26.17 ms/img
+repeat 3/3 fp32               68.37 ms/img
+repeat 3/3 S_all              30.33 ms/img
+repeat 3/3 S_const            30.16 ms/img
+repeat 3/3 D_m2rot            26.15 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5    68.65   0.45   68.37   68.28   71.35
+S_all               91.7    30.30   0.04   30.25   30.12   32.02
+S_const             91.7    30.16   0.08   30.08   29.97   32.06
+D_m2rot             91.7    26.17   0.02   26.15   25.97   27.82
+saved ../results/siglip2/G8_constb/speed/speed_20261020_024438.json
+2026-10-20 02:44:38 s=3 t=4 done post others=0 load=3.88 1.72 1.36
+2026-10-20 02:49:38 peak memory pre others=0 load=0.03 0.64 0.99
+  warnings.warn(
+fp32 {"file": "siglip2_image_fp32.onnx", "MiB": 354.45, "initializer_elements": 92884224, "initializer_elements_gt16": 92884224, "n_initializers": 162, "memory": {"rss_before_MiB": 44.3, "rss_after_load_MiB": 464.1, "peak_during_load_MiB": 414.2, "peak_during_infer_MiB": 466.9}}
+S_all {"file": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx", "MiB": 91.72, "memory": {"rss_before_MiB": 44.0, "rss_after_load_MiB": 202.5, "peak_during_load_MiB": 202.5, "peak_during_infer_MiB": 239.9}}
+S_const {"file": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_cbo_all.onnx", "MiB": 91.68, "memory": {"rss_before_MiB": 43.9, "rss_after_load_MiB": 176.6, "peak_during_load_MiB": 55.3, "peak_during_infer_MiB": 219.5}}
+D_m2rot {"file": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_dynamic_ws8_pc_ops-MatMul_rr.onnx", "MiB": 91.68, "memory": {"rss_before_MiB": 44.2, "rss_after_load_MiB": 172.0, "peak_during_load_MiB": 172.0, "peak_during_infer_MiB": 184.8}}
+{"params": {"pytorch_visual": 92884224, "onnx_initializers": 92884224}, "gmacs_rel_diff": 0.00106}
+GMACs fvcore 17.727 analytic 17.708
+2026-10-20 02:49:57 profile pre others=0 load=0.48 0.71 1.00
+t=4 S_all      wall    35.6 ms  kernel    33.8 ms  int_matmul=19.82  qdq=3.73  QLinearSoftmax=2.17  Add=1.68  BiasGelu=1.66  Transpose=1.22
+t=4 S_const    wall    35.5 ms  kernel    33.8 ms  int_matmul=18.89  qdq=3.48  float_matmul=2.81  Add=1.72  BiasGelu=1.68  Transpose=1.39
+t=4 D_m2rot    wall    29.7 ms  kernel    28.5 ms  int_matmul=18.98  float_matmul=2.75  Gelu=1.68  Transpose=0.87  Add=0.73  LayerNormalization=0.65
+2026-10-20 02:50:03 profile done post others=0 load=0.80 0.77 1.02
+2026-10-20 02:50:03 G8_SPEED_DONE waits=5
