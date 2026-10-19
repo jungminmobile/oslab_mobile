@@ -1,0 +1,61 @@
+{
+ "date": "2026-10-16T01:34:27",
+ "env": {
+  "cpu": "Intel(R) Core(TM) Ultra 7 258V",
+  "vnni": null,
+  "os": "Windows 10 (10.0.26300)",
+  "python": "3.11.9",
+  "onnxruntime": "1.25.0",
+  "model": "RN50",
+  "git": {
+   "commit": "4a8fa10",
+   "dirty": true
+  },
+  "power": {
+   "plugged": true,
+   "battery_pct": 100
+  },
+  "argv": "--models fp32=rn50_image_fp32_q1.onnx c3_u8s8=rn50_image_int8_q1_minmax_cifar64_s0_c3spd.onnx c3_s8s8=rn50_image_int8_q1_minmax_cifar64_s0_c3spd_s8s8.onnx --threads 4 2 1 --n 200 --repeats 3 --warmup 20",
+  "threads": 2
+ },
+ "cond": {
+  "models": [
+   "fp32=rn50_image_fp32_q1.onnx",
+   "c3_u8s8=rn50_image_int8_q1_minmax_cifar64_s0_c3spd.onnx",
+   "c3_s8s8=rn50_image_int8_q1_minmax_cifar64_s0_c3spd_s8s8.onnx"
+  ],
+  "n": 200,
+  "repeats": 3,
+  "warmup": 20,
+  "threads": 2
+ },
+ "results": {
+  "fp32": {
+   "file": "rn50_image_fp32_q1.onnx",
+   "MiB": 146.1,
+   "ms_per_img_mean": 76.09,
+   "ms_per_img_std": 1.06,
+   "ms_per_img_min": 75.44,
+   "lat_p50": 75.48,
+   "lat_p95": 80.13
+  },
+  "c3_u8s8": {
+   "file": "rn50_image_int8_q1_minmax_cifar64_s0_c3spd.onnx",
+   "MiB": 41.5,
+   "ms_per_img_mean": 47.73,
+   "ms_per_img_std": 0.18,
+   "ms_per_img_min": 47.6,
+   "lat_p50": 47.58,
+   "lat_p95": 49.82
+  },
+  "c3_s8s8": {
+   "file": "rn50_image_int8_q1_minmax_cifar64_s0_c3spd_s8s8.onnx",
+   "MiB": 41.5,
+   "ms_per_img_mean": 82.29,
+   "ms_per_img_std": 0.65,
+   "ms_per_img_min": 81.55,
+   "lat_p50": 82.28,
+   "lat_p95": 85.65
+  }
+ }
+}

@@ -1,0 +1,8 @@
+tag,lv0_laptop_top1,top1,drop_vs_fp,top5,cos_mean,lowered_to_lv0,algorithms,opt_sec
+official_lv0,81.52,81.11,-3.23,99.19,0.9345,False,Matmul Equalization;MatmulDecomposeFix;Mixed Precision;Model Optimization;Statistics Collector;Translate Parameters,151
+official_lv2,81.52,80.61,-3.73,98.99,0.9296,False,Layer Noise Analysis;Matmul Equalization;MatmulDecomposeFix;Mixed Precision;Model Optimization;Statistics Collector;Translate Parameters,455
+off8L4_lv2,7.07,19.6,-64.74,58.59,0.7262,False,Layer Noise Analysis;Matmul Equalization;MatmulDecomposeFix;Mixed Precision;Model Optimization;Quantization-Aware Fine-Tuning;Statistics Collector;Translate Parameters,454
+base8_lv2,3.33,1.82,-82.52,12.83,0.5755,False,Layer Noise Analysis;Matmul Equalization;MatmulDecomposeFix;Mixed Precision;Model Optimization;Quantization-Aware Fine-Tuning;Statistics Collector;Translate Parameters,409
+off8L2L3_lv2,62.93,27.68,-56.66,64.34,0.3168,False,Layer Noise Analysis;Matmul Equalization;MatmulDecomposeFix;Mixed Precision;Model Optimization;Quantization-Aware Fine-Tuning;Statistics Collector;Translate Parameters,437
+c3eq_lv2,4.75,7.98,-76.36,29.8,0.5726,False,Layer Noise Analysis;Matmul Equalization;MatmulDecomposeFix;Mixed Precision;Model Optimization;Quantization-Aware Fine-Tuning;Statistics Collector;Translate Parameters,430
+c3eq_lv2_r2,4.75,6.97,-77.37,29.9,0.5645,False,Layer Noise Analysis;Matmul Equalization;MatmulDecomposeFix;Mixed Precision;Model Optimization;Quantization-Aware Fine-Tuning;Statistics Collector;Translate Parameters,430

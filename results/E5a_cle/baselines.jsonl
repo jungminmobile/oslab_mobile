@@ -1,0 +1,5 @@
+{"date": "2026-10-18T03:13:05", "data": "pets_dev", "model": "fp32", "n": 990, "classes_present": 37, "top1": 84.34, "top5": 99.39, "sec": 117}
+{"date": "2026-10-18T03:15:13", "data": "flowers_dev", "model": "fp32", "n": 957, "classes_present": 102, "top1": 63.85, "top5": 84.01, "sec": 127}
+{"date": "2026-10-18T03:18:27", "data": "cars_dev", "model": "fp32", "n": 967, "classes_present": 195, "top1": 54.4, "top5": 88.52, "sec": 193}
+{"date": "2026-10-18T03:20:32", "data": "food_dev", "model": "fp32", "n": 985, "classes_present": 101, "top1": 73.3, "top5": 93.81, "sec": 125}
+{"date": "2026-10-18T03:25:26", "data": "caltech_dev", "model": "fp32", "n": 1024, "classes_present": 102, "top1": 81.64, "top5": 97.27, "sec": 292}

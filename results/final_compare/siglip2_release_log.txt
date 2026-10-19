@@ -1,0 +1,47 @@
+2026-10-17 14:53:35.70 start 
+[1T] repeat 1/3 fp32              296.08 ms/img
+[1T] repeat 1/3 final             126.66 ms/img
+[1T] repeat 1/3 s8                292.34 ms/img
+[1T] repeat 2/3 fp32              529.48 ms/img
+[1T] repeat 2/3 final             216.03 ms/img
+[1T] repeat 2/3 s8                343.89 ms/img
+[1T] repeat 3/3 fp32              529.87 ms/img
+[1T] repeat 3/3 final             215.80 ms/img
+[1T] repeat 3/3 s8                346.36 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5   451.81 134.87  296.08  526.12  533.85
+final              105.3   186.16  51.53  126.66  213.48  219.21
+s8                 105.3   327.53  30.50  292.34  342.23  355.00
+saved results\final_compare\siglip2_release\speed_20261017_150330_1T.json
+[2T] repeat 1/3 fp32              279.39 ms/img
+[2T] repeat 1/3 final             118.61 ms/img
+[2T] repeat 1/3 s8                267.55 ms/img
+[2T] repeat 2/3 fp32              273.19 ms/img
+[2T] repeat 2/3 final             115.38 ms/img
+[2T] repeat 2/3 s8                240.56 ms/img
+[2T] repeat 3/3 fp32              288.16 ms/img
+[2T] repeat 3/3 final             122.72 ms/img
+[2T] repeat 3/3 s8                202.54 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5   280.24   7.52  273.19  274.94  303.80
+final              105.3   118.91   3.68  115.38  116.21  133.28
+s8                 105.3   236.88  32.66  202.54  204.64  342.38
+saved results\final_compare\siglip2_release\speed_20261017_151007_2T.json
+[4T] repeat 1/3 fp32              162.33 ms/img
+[4T] repeat 1/3 final              76.84 ms/img
+[4T] repeat 1/3 s8                133.51 ms/img
+[4T] repeat 2/3 fp32              175.24 ms/img
+[4T] repeat 2/3 final              73.18 ms/img
+[4T] repeat 2/3 s8                133.35 ms/img
+[4T] repeat 3/3 fp32              155.20 ms/img
+[4T] repeat 3/3 final              74.67 ms/img
+[4T] repeat 3/3 s8                134.43 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5   164.26  10.15  155.20  152.10  241.76
+final              105.3    74.90   1.84   73.18   69.77   91.69
+s8                 105.3   133.76   0.58  133.35  126.40  173.03
+saved results\final_compare\siglip2_release\speed_20261017_151401_4T.json
+2026-10-17 15:14:01.64 ALL DONE 

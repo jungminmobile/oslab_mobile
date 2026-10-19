@@ -1,0 +1,165 @@
+2026-10-17  5:13:06.31 start 
+[1T] repeat 1/3 fp32               90.92 ms/img
+[1T] repeat 1/3 B0                 29.62 ms/img
+[1T] repeat 1/3 C1                 31.19 ms/img
+[1T] repeat 1/3 H1                 33.89 ms/img
+[1T] repeat 1/3 B2                 34.99 ms/img
+[1T] repeat 1/3 H2                 36.37 ms/img
+[1T] repeat 1/3 B4                 49.08 ms/img
+[1T] repeat 1/3 B6                 63.34 ms/img
+[1T] repeat 2/3 fp32               89.32 ms/img
+[1T] repeat 2/3 B0                 29.47 ms/img
+[1T] repeat 2/3 C1                 30.34 ms/img
+[1T] repeat 2/3 H1                 33.77 ms/img
+[1T] repeat 2/3 B2                 34.70 ms/img
+[1T] repeat 2/3 H2                 36.30 ms/img
+[1T] repeat 2/3 B4                 47.91 ms/img
+[1T] repeat 2/3 B6                 63.23 ms/img
+[1T] repeat 3/3 fp32               89.31 ms/img
+[1T] repeat 3/3 B0                 29.39 ms/img
+[1T] repeat 3/3 C1                 30.37 ms/img
+[1T] repeat 3/3 H1                 33.75 ms/img
+[1T] repeat 3/3 B2                 34.77 ms/img
+[1T] repeat 3/3 H2                 36.28 ms/img
+[1T] repeat 3/3 B4                 47.82 ms/img
+[1T] repeat 3/3 B6                 63.25 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               146.1    89.85   0.93   89.31   89.40   92.97
+B0                  37.4    29.49   0.11   29.39   29.44   30.55
+C1                  37.4    30.63   0.48   30.34   30.50   32.00
+H1                  37.6    33.81   0.08   33.75   33.69   34.79
+B2                  37.7    34.82   0.15   34.70   34.72   35.87
+H2                  49.6    36.31   0.05   36.28   36.23   37.21
+B4                  80.7    48.27   0.70   47.82   47.84   50.36
+B6                 102.1    63.27   0.06   63.23   63.18   64.61
+saved ..\results\final_compare\rn50\speed_20261017_051656_1T.json
+[2T] repeat 1/3 fp32               47.42 ms/img
+[2T] repeat 1/3 B0                 16.70 ms/img
+[2T] repeat 1/3 C1                 17.23 ms/img
+[2T] repeat 1/3 H1                 19.36 ms/img
+[2T] repeat 1/3 B2                 19.77 ms/img
+[2T] repeat 1/3 H2                 20.98 ms/img
+[2T] repeat 1/3 B4                 27.06 ms/img
+[2T] repeat 1/3 B6                 35.30 ms/img
+[2T] repeat 2/3 fp32               48.42 ms/img
+[2T] repeat 2/3 B0                 16.84 ms/img
+[2T] repeat 2/3 C1                 17.65 ms/img
+[2T] repeat 2/3 H1                 19.58 ms/img
+[2T] repeat 2/3 B2                 20.09 ms/img
+[2T] repeat 2/3 H2                 20.95 ms/img
+[2T] repeat 2/3 B4                 27.47 ms/img
+[2T] repeat 2/3 B6                 36.69 ms/img
+[2T] repeat 3/3 fp32               49.26 ms/img
+[2T] repeat 3/3 B0                 17.13 ms/img
+[2T] repeat 3/3 C1                 17.97 ms/img
+[2T] repeat 3/3 H1                 20.73 ms/img
+[2T] repeat 3/3 B2                 20.44 ms/img
+[2T] repeat 3/3 H2                 21.54 ms/img
+[2T] repeat 3/3 B4                 27.79 ms/img
+[2T] repeat 3/3 B6                 36.21 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               146.1    48.37   0.92   47.42   48.20   50.27
+B0                  37.4    16.89   0.22   16.70   16.80   17.62
+C1                  37.4    17.62   0.37   17.23   17.50   18.70
+H1                  37.6    19.89   0.73   19.36   19.70   21.78
+B2                  37.7    20.10   0.34   19.77   19.98   21.51
+H2                  49.6    21.16   0.33   20.95   21.02   22.61
+B4                  80.7    27.44   0.36   27.06   27.39   28.94
+B6                 102.1    36.07   0.71   35.30   35.76   38.41
+saved ..\results\final_compare\rn50\speed_20261017_051906_2T.json
+[4T] repeat 1/3 fp32               33.79 ms/img
+[4T] repeat 1/3 B0                 13.17 ms/img
+[4T] repeat 1/3 C1                 13.44 ms/img
+[4T] repeat 1/3 H1                 15.31 ms/img
+[4T] repeat 1/3 B2                 15.36 ms/img
+[4T] repeat 1/3 H2                 15.64 ms/img
+[4T] repeat 1/3 B4                 20.24 ms/img
+[4T] repeat 1/3 B6                 25.14 ms/img
+[4T] repeat 2/3 fp32               33.92 ms/img
+[4T] repeat 2/3 B0                 12.76 ms/img
+[4T] repeat 2/3 C1                 13.50 ms/img
+[4T] repeat 2/3 H1                 15.16 ms/img
+[4T] repeat 2/3 B2                 15.16 ms/img
+[4T] repeat 2/3 H2                 16.64 ms/img
+[4T] repeat 2/3 B4                 19.95 ms/img
+[4T] repeat 2/3 B6                 25.66 ms/img
+[4T] repeat 3/3 fp32               33.25 ms/img
+[4T] repeat 3/3 B0                 12.57 ms/img
+[4T] repeat 3/3 C1                 13.64 ms/img
+[4T] repeat 3/3 H1                 15.24 ms/img
+[4T] repeat 3/3 B2                 14.83 ms/img
+[4T] repeat 3/3 H2                 16.13 ms/img
+[4T] repeat 3/3 B4                 20.19 ms/img
+[4T] repeat 3/3 B6                 25.77 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               146.1    33.66   0.35   33.25   32.97   38.76
+B0                  37.4    12.83   0.31   12.57   12.75   14.14
+C1                  37.4    13.52   0.10   13.44   13.39   14.95
+H1                  37.6    15.24   0.08   15.16   14.90   17.60
+B2                  37.7    15.12   0.27   14.83   14.87   16.67
+H2                  49.6    16.14   0.50   15.64   15.76   17.54
+B4                  80.7    20.12   0.16   19.95   19.87   22.18
+B6                 102.1    25.52   0.34   25.14   25.24   28.61
+saved ..\results\final_compare\rn50\speed_20261017_052042_4T.json
+2026-10-17  5:20:42.54 rn50 speed done 
+[1T] repeat 1/3 fp32              294.12 ms/img
+[1T] repeat 1/3 S8                191.99 ms/img
+[1T] repeat 1/3 U8rr              122.76 ms/img
+[1T] repeat 2/3 fp32              298.59 ms/img
+[1T] repeat 2/3 S8                192.66 ms/img
+[1T] repeat 2/3 U8rr              123.21 ms/img
+[1T] repeat 3/3 fp32              294.12 ms/img
+[1T] repeat 3/3 S8                192.45 ms/img
+[1T] repeat 3/3 U8rr              122.92 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5   295.61   2.58  294.12  293.75  307.85
+S8                 105.3   192.37   0.34  191.99  192.07  195.76
+U8rr               105.3   122.97   0.23  122.76  122.62  125.45
+saved ..\results\final_compare\siglip2\speed_20261017_052702_1T.json
+[2T] repeat 1/3 fp32              162.18 ms/img
+[2T] repeat 1/3 S8                117.16 ms/img
+[2T] repeat 1/3 U8rr               71.06 ms/img
+[2T] repeat 2/3 fp32              162.54 ms/img
+[2T] repeat 2/3 S8                118.12 ms/img
+[2T] repeat 2/3 U8rr               72.45 ms/img
+[2T] repeat 3/3 fp32              163.99 ms/img
+[2T] repeat 3/3 S8                119.38 ms/img
+[2T] repeat 3/3 U8rr               73.05 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5   162.90   0.95  162.18  162.40  170.22
+S8                 105.3   118.22   1.11  117.16  117.31  123.92
+U8rr               105.3    72.19   1.02   71.06   71.66   75.27
+saved ..\results\final_compare\siglip2\speed_20261017_053042_2T.json
+[4T] repeat 1/3 fp32              112.56 ms/img
+[4T] repeat 1/3 S8                 93.13 ms/img
+[4T] repeat 1/3 U8rr               52.48 ms/img
+[4T] repeat 2/3 fp32              112.62 ms/img
+[4T] repeat 2/3 S8                 92.83 ms/img
+[4T] repeat 2/3 U8rr               52.42 ms/img
+[4T] repeat 3/3 fp32              112.40 ms/img
+[4T] repeat 3/3 S8                 92.94 ms/img
+[4T] repeat 3/3 U8rr               52.81 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               354.5   112.53   0.11  112.40  110.27  132.77
+S8                 105.3    92.97   0.15   92.83   91.51  103.04
+U8rr               105.3    52.57   0.21   52.42   51.63   57.55
+saved ..\results\final_compare\siglip2\speed_20261017_053323_4T.json
+2026-10-17  5:33:23.66 siglip2 speed done 
+{"name": "fp32", "file_MiB": 146.1, "peak_rss_MiB": 325.3, "base_MiB": 69.8, "model_added_MiB": 255.5}
+{"name": "B0", "file_MiB": 37.4, "peak_rss_MiB": 113.0, "base_MiB": 69.6, "model_added_MiB": 43.4}
+{"name": "C1", "file_MiB": 37.4, "peak_rss_MiB": 113.2, "base_MiB": 69.7, "model_added_MiB": 43.5}
+{"name": "H1", "file_MiB": 37.6, "peak_rss_MiB": 119.4, "base_MiB": 69.7, "model_added_MiB": 49.7}
+{"name": "B2", "file_MiB": 37.7, "peak_rss_MiB": 119.0, "base_MiB": 69.6, "model_added_MiB": 49.4}
+{"name": "H2", "file_MiB": 49.6, "peak_rss_MiB": 133.6, "base_MiB": 69.7, "model_added_MiB": 63.9}
+{"name": "B4", "file_MiB": 80.7, "peak_rss_MiB": 166.9, "base_MiB": 69.8, "model_added_MiB": 97.1}
+{"name": "B6", "file_MiB": 102.1, "peak_rss_MiB": 223.9, "base_MiB": 69.7, "model_added_MiB": 154.2}
+{"name": "fp32", "file_MiB": 354.5, "peak_rss_MiB": 435.0, "base_MiB": 69.7, "model_added_MiB": 365.3}
+{"name": "S8", "file_MiB": 105.3, "peak_rss_MiB": 230.5, "base_MiB": 69.6, "model_added_MiB": 160.9}
+{"name": "U8rr", "file_MiB": 105.3, "peak_rss_MiB": 210.8, "base_MiB": 69.7, "model_added_MiB": 141.1}
+2026-10-17  5:34:03.44 ALL DONE 

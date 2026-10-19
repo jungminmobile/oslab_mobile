@@ -12,8 +12,10 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--har", required=True); ap.add_argument("--ctx", choices=["quantized", "fp"], default="quantized")
 ap.add_argument("--data", default="pets_dev"); ap.add_argument("--n", type=int, default=200)
 ap.add_argument("--bs", type=int, default=8); ap.add_argument("--tag", default="")
+ap.add_argument("--cache", default=None, help="dev 캐시 폴더 (기본: 노트북 저장소 rn50/cache)")
+ap.add_argument("--out", default="~/hailo10_work/results/emu_eval.jsonl", help="결과 jsonl 경로")
 a = ap.parse_args()
-cache = glob.glob("/mnt/c/study/3/2/2026*/oslab_mobile/rn50/cache")[0]
+cache = a.cache or glob.glob("/mnt/c/study/3/2/2026*/oslab_mobile/rn50/cache")[0]
 L = lambda k: np.load(f"{cache}/{a.data}_{k}.npy", mmap_mode="r")
 x8, y, W, ref = L("x"), np.asarray(L("y")), np.asarray(L("clf")), np.asarray(L("ref_fp32"))
 n = min(a.n, len(y))
@@ -37,5 +39,5 @@ row = {"date": datetime.now().isoformat(timespec="seconds"), "tag": a.tag, "har"
        "fp32_ort_top1_same_imgs": round(float(ref_top1), 2), "cos_mean": round(float(cos.mean()), 4),
        "cos_p1": round(float(np.percentile(cos, 1)), 4), "sec": round(sec, 1), "sec_per_img": round(sec / n, 3)}
 print(json.dumps(row, ensure_ascii=False))
-os.makedirs(os.path.expanduser("~/hailo10_work/results"), exist_ok=True)
-with open(os.path.expanduser("~/hailo10_work/results/emu_eval.jsonl"), "a") as f: f.write(json.dumps(row, ensure_ascii=False) + "\n")
+out_path = os.path.expanduser(a.out); os.makedirs(os.path.dirname(out_path), exist_ok=True)
+with open(out_path, "a") as f: f.write(json.dumps(row, ensure_ascii=False) + "\n")

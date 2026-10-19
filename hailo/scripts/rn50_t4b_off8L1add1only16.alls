@@ -1,0 +1,10 @@
+# 진단용: Hailo Model Zoo 공식 RN50 이미지 인코더 설정(v5.4) 그대로
+normalization1 = normalization([122.7709383, 116.7460125, 104.09373615], [68.5005327, 66.6321579, 70.32316305])
+model_optimization_flavor(optimization_level=0, compression_level=0)
+model_optimization_config(calibration, batch_size=8, calibset_size=64)
+quantization_param({ew_add*}, precision_mode=a16_w16)
+quantization_param({conv*}, precision_mode=a16_w16)
+quantization_param([format_conversion1], precision_mode=a16_w16)
+quantization_param([conv56, conv57, conv58], precision_mode=a8_w8)
+# 7단계 T4b: T4에서 튀는 덧셈 ew_add1(layer1.0)만 16비트
+quantization_param([conv4, conv5, conv6, conv7, conv8, conv9, conv10, conv11, conv12, conv13, ew_add2, ew_add3], precision_mode=a8_w8)

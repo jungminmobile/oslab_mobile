@@ -16,6 +16,7 @@ evaluate.py — 양자화 모델의 정확도와 "원본과의 유사도" 비교
 
 [사용]
   python evaluate.py --data cifar_A pets_dev flowers_dev --models fp32 rn50_image_int8_xxx.onnx
+  · E0부터 기본 실행은 정수 커널(--exec int). fake-quant 값은 보고서에 쓰지 않는다(PRD)
   · "fp32"는 캐시된 기준 임베딩을 그대로 사용(다시 계산하지 않음)
   · 결과는 모델 하나 끝날 때마다 results/evaluate.jsonl 에 바로 기록된다
 """
@@ -42,9 +43,12 @@ def main():
     ap.add_argument("--data", nargs="+", required=True, help="dev 캐시 이름: cifar_A cifar_B pets_dev flowers_dev cars_dev food_dev caltech_dev")
     ap.add_argument("--models", nargs="+", required=True, help="'fp32' 또는 ONNX 파일 이름/경로")
     ap.add_argument("--threads", type=int, default=2)
-    ap.add_argument("--exec", choices=["fake", "int"], default="fake",
-                    help="fake: Q/DQ를 FP32로 흉내(정확도 평가 기본, CPU 무관 재현) / int: 정수 커널(실제 CPU 동작)")
+    ap.add_argument("--save-pred", action="store_true",
+                    help="사진별 예측(top-1 클래스)과 cos를 results/pred/<모델>__<데이터>.npz로 저장 → bootstrap.py에서 신뢰구간 계산")
+    ap.add_argument("--exec", choices=["fake", "int"], default="int",
+                    help="int(기본, E0~): 정수 커널 = 실제 CPU 동작 / fake: Q/DQ를 FP32로 흉내(참고용, PRD상 보고 금지)")
     a = ap.parse_args()
+    meta = C.run_meta()          # CPU·VNNI·ORT·OS·전원·git 커밋/dirty·실행 인자
     for d in a.data:
         x, y, W, ref = load(d)
         for m in a.models:
@@ -53,7 +57,13 @@ def main():
             row = {"date": datetime.now().isoformat(timespec="seconds"), "data": d, "n": int(len(y)),
                    "model": m if m == "fp32" else C.onnx_path(m).name,
                    "MiB": None if m == "fp32" else round(C.onnx_path(m).stat().st_size / 2**20, 1),
-                   "exec": a.exec, **C.topk_metrics(feat, W, y, ref), "eval_sec": round(time.time() - t0)}
+                   "exec": a.exec, "threads": a.threads, **C.topk_metrics(feat, W, y, ref), "eval_sec": round(time.time() - t0),
+                   "meta": meta}
+            if a.save_pred:   # E0 ④: 짝 부트스트랩용 사진별 결과
+                d_pred = C.RESULTS_DIR / "pred"; d_pred.mkdir(parents=True, exist_ok=True)
+                np.savez_compressed(d_pred / f"{row['model'].removesuffix('.onnx')}__{d}.npz",
+                                    pred=np.argmax(feat @ W, 1).astype(np.int16), y=np.asarray(y, np.int16),
+                                    cos=(feat * ref).sum(1).astype(np.float32))
             print(json.dumps(row, ensure_ascii=False), flush=True)
             C.append_jsonl("evaluate", row)
 

@@ -84,7 +84,8 @@ HIGHRES = {
                     templates=CALTECH_T, rename=CALTECH_RENAME, n_pool=3060),
 }
 DEV_N = 1000           # 데이터셋당 dev 목표 장수(해시 선택이라 ±3% 정도 흔들림)
-CAL_N = 64             # 데이터셋당 보정 후보 장수 → 5개 합계 약 320장
+CAL_N = 256            # 데이터셋당 보정 후보 장수 → 5개 합계 약 1280장 (E0 ⑦: 64→256)
+                       # 해시 구간 [DEV, DEV+CAL)을 넓히는 방식이라 이전 64장 후보는 새 후보에 그대로 포함되고 dev는 바뀌지 않는다
 
 
 def u_of(b):
@@ -180,7 +181,7 @@ def build_dev(name, threads, keep_downloads):
 # --------------------------------------------------------------------------- #
 # test 전체 스트리밍 평가 (최종 보고용): 사진을 한 번만 디코딩하고 여러 모델을 같은 배치로 돌린다
 # --------------------------------------------------------------------------- #
-def eval_test(name, models, threads, bs=32, keep_downloads=True):
+def eval_test(name, models, threads, bs=32, keep_downloads=True, exec_mode="int"):
     t0 = time.time()
     if name == "cifar_test":
         from torchvision.datasets import CIFAR100
@@ -195,7 +196,10 @@ def eval_test(name, models, threads, bs=32, keep_downloads=True):
         rows, to_u8 = parquet_rows(HIGHRES[name]["test"], keep_downloads), decode
         names, templates = classnames(name), HIGHRES[name]["templates"]
     W = C.zeroshot_classifier(names, templates, threads)
-    sess = {m: C.session(C.onnx_path(C.FP32_IMAGE if m == "fp32" else m), threads, fake_quant=True) for m in models}
+    # FP32 기준은 dev 기준 임베딩과 같은 방식(그래프 최적화 끔)으로, 양자화 모델은 exec_mode(기본 정수 커널)로 실행
+    sess = {m: C.session(C.onnx_path(C.FP32_IMAGE if m == "fp32" else m), threads,
+                         fake_quant=(m == "fp32" or exec_mode == "fake")) for m in models}
+    meta = C.run_meta()
     emb = {m: [] for m in models}
     ys, buf = [], []
 
@@ -218,8 +222,9 @@ def eval_test(name, models, threads, bs=32, keep_downloads=True):
     for m in models:
         E = C.l2n(np.concatenate(emb[m]))
         row = {"date": datetime.now().isoformat(timespec="seconds"), "data": f"{name}_test" if name in HIGHRES else name,
-               "model": m if m == "fp32" else C.onnx_path(m).name, "n": int(len(y)), "exec": "fake_quant",
-               **C.topk_metrics(E, W, y, ref), "sec": round(time.time() - t0)}
+               "model": m if m == "fp32" else C.onnx_path(m).name, "n": int(len(y)),
+               "exec": "fp32" if m == "fp32" else exec_mode, "threads": threads,
+               **C.topk_metrics(E, W, y, ref), "sec": round(time.time() - t0), "meta": meta}
         print(json.dumps(row, ensure_ascii=False))
         C.append_jsonl("final_test", row)
 
@@ -231,13 +236,14 @@ def main():
     ap.add_argument("--models", nargs="+", default=["fp32"], help="test 전용. 'fp32'를 넣으면 유사도도 계산")
     ap.add_argument("--threads", type=int, default=2)
     ap.add_argument("--keep-downloads", action="store_true", help="새로 받은 parquet을 지우지 않음")
+    ap.add_argument("--exec", choices=["fake", "int"], default="int", help="test 전용: 양자화 모델 실행 방식 (E0부터 기본 int)")
     a = ap.parse_args()
     C.CACHE_DIR.mkdir(parents=True, exist_ok=True)
     if a.cmd == "dev":
         for n in (["cifar_A", "cifar_B"] + list(HIGHRES) if a.name == "all" else [a.name]):
             build_dev(n, a.threads, a.keep_downloads)
     else:
-        eval_test(a.name, a.models, a.threads, keep_downloads=True)
+        eval_test(a.name, a.models, a.threads, keep_downloads=True, exec_mode=a.exec)
 
 
 if __name__ == "__main__":

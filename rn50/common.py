@@ -181,3 +181,68 @@ def append_jsonl(name, row):
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     with open(RESULTS_DIR / f"{name}.jsonl", "a", buffering=1, encoding="utf-8") as f:
         f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
+# --------------------------------------------------------------------------- #
+# 6. 실행 환경 자동 기록 (E0 ②⑤) — 결과마다 "어디서, 어떤 코드로" 쟀는지 남겨 재현성을 확인한다
+# --------------------------------------------------------------------------- #
+def _cpu_name():
+    """CPU 모델명. 리눅스는 /proc/cpuinfo, 윈도우는 레지스트리, 그 외는 platform 값."""
+    import platform
+    try:
+        if platform.system() == "Linux":
+            for line in open("/proc/cpuinfo", encoding="utf-8"):
+                if line.startswith("model name"):
+                    return line.split(":", 1)[1].strip()
+        if platform.system() == "Windows":
+            import winreg
+            k = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"HARDWARE\DESCRIPTION\System\CentralProcessor\0")
+            return winreg.QueryValueEx(k, "ProcessorNameString")[0].strip()
+    except Exception:
+        pass
+    return platform.processor() or platform.machine()
+
+
+def _vnni():
+    """VNNI 지원 여부. 리눅스만 확실히 알 수 있다(/proc/cpuinfo flags). 그 외는 None(알 수 없음)."""
+    try:
+        for line in open("/proc/cpuinfo", encoding="utf-8"):
+            if line.startswith("flags"):
+                f = set(line.split(":", 1)[1].split())
+                return {"avx512_vnni": "avx512_vnni" in f, "avx_vnni": "avx_vnni" in f}
+    except Exception:
+        pass
+    return None
+
+
+def _git():
+    """현재 커밋 해시와 수정 중(dirty) 여부. git이 없으면 None."""
+    import subprocess
+    try:
+        run = lambda *c: subprocess.run(["git", "-C", str(HERE), *c], capture_output=True, text=True, timeout=10).stdout.strip()
+        h = run("rev-parse", "--short", "HEAD")
+        return {"commit": h or None, "dirty": bool(run("status", "--porcelain", "--untracked-files=no"))} if h else None
+    except Exception:
+        return None
+
+
+def _power():
+    """전원 연결 여부·배터리(%). 노트북 속도는 전원 상태에 따라 크게 달라진다."""
+    try:
+        import psutil
+        b = psutil.sensors_battery()
+        return None if b is None else {"plugged": bool(b.power_plugged), "battery_pct": round(b.percent)}
+    except Exception:
+        return None
+
+
+def run_meta(**extra):
+    """결과 한 줄에 붙일 실행 환경 정보. extra로 사용 옵션(argparse vars 등)을 함께 남긴다."""
+    import platform
+    import sys
+    import onnxruntime as ort
+    m = {"cpu": _cpu_name(), "vnni": _vnni(), "os": f"{platform.system()} {platform.release()} ({platform.version()})",
+         "python": platform.python_version(), "onnxruntime": ort.__version__, "model": MODEL,
+         "git": _git(), "power": _power(), "argv": " ".join(sys.argv[1:])}
+    m.update(extra)
+    return m

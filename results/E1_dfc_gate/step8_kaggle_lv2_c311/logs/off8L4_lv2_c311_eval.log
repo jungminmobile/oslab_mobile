@@ -1,0 +1,7 @@
+[info] Hailo HW architecture: hailo10h
+[info] Using 1 GPU for inference
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792061815.994327    2050 service.cc:152] XLA service 0x5c1af7141860 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1792061815.994366    2050 service.cc:160]   StreamExecutor device (0): Tesla T4, Compute Capability 7.5
+I0000 00:00:1792061831.411880    2050 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+{"date": "2026-10-15T10:57:39", "tag": "kaggle_off8L4_lv2_c311", "har": "rn50_image_fp32_q1_optimized.har", "ctx": "quantized", "data": "pets_dev", "n": 990, "top1": 57.58, "top5": 92.93, "fp32_ort_top1_same_imgs": 84.34, "cos_mean": 0.8338, "cos_p1": 0.5948, "sec": 63.4, "sec_per_img": 0.064}

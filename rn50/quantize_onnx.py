@@ -8,8 +8,16 @@ quantize_onnx.py — ONNX Runtime 정적 INT8 양자화(PTQ)
 
 [양자화 형식]  QDQ 형식 (각 연산 앞뒤에 Quantize/Dequantize 노드를 끼워 넣는 방식)
   - 가중치  : INT8, 대칭(0이 가운데), 채널별(도장마다 눈금 따로)  ← 정확도에 유리
-  - 활성값  : UINT8, 비대칭, 텐서별(층 전체에 눈금 하나)
+  - 활성값  : UINT8(기본) 또는 INT8(--act-type s8), 비대칭, 텐서별(층 전체에 눈금 하나)
+             E0(10/15)에 S8을 기본으로 바꿨다가 되돌렸다. 정확도는 S8≈U8(−0.14%p, 구간에 0 포함)이지만
+             x86 VNNI CPU에서 S8 활성값 모델은 FP32보다 느려진다(용 측정: Core Ultra 9 285K 4스레드 c3 0.72배, U8은 1.55배).
+             ARM(sdot)에서는 둘 다 빠르다
   - 범위 측정: minmax(기본) / percentile / entropy
+  - 비-VNNI 대비(E0 ⑧): --reduce-range(가중치 7비트), --act-type u8 --weight-type u8(U8U8)
+  - percentile·entropy는 배치 4개(32장)씩 나눠 히스토그램에 누적한다(--calib-stride, 메모리 부족 방지).
+    ORT 1.25의 히스토그램 보정은 기본적으로 모든 층 출력을 한꺼번에 쌓아 256장이면 약 6GB 이상이 필요하다
+  - percentile은 대칭 범위를 끄고(CalibTensorRangeSymmetric=False) 백분위 값(--percentile)을 명시한다.
+    ORT 기본은 대칭(−t~t)이라 ReLU 뒤 활성값에서 눈금 절반을 버린다(PRD 3절, ORT 1.25.0 소스 확인)
 
 [어느 노드를 양자화할지 고르는 3가지 방법] (함께 쓰면 '제외'가 우선)
   --exclude 부분문자열들  : 이름에 포함되면 FP32로 남김. --keep으로 예외를 다시 양자화
@@ -42,7 +50,10 @@ quantize_onnx.py — ONNX Runtime 정적 INT8 양자화(PTQ)
 """
 import argparse
 import os
+import shutil
+import tempfile
 import time
+from pathlib import Path
 
 import numpy as np
 from onnxruntime.quantization import (CalibrationDataReader, CalibrationMethod, QuantFormat,
@@ -53,6 +64,7 @@ import common as C
 
 METHODS = {"minmax": CalibrationMethod.MinMax, "entropy": CalibrationMethod.Entropy,
            "percentile": CalibrationMethod.Percentile}
+QT = {"s8": QuantType.QInt8, "u8": QuantType.QUInt8}
 ATTN_PROJ = "/attnpool/MatMul,/attnpool/MatMul_1,/attnpool/MatMul_2,/attnpool/Gemm"  # q,k,v 투영 + c_proj
 
 
@@ -89,6 +101,13 @@ class ImageCalib(CalibrationDataReader):
     def rewind(self):
         self.it = iter(self.batches)
 
+    # CalibStridedMinMax용: ORT가 len()으로 배치 수를 알고, set_range로 일부 배치씩 나눠 받아 간다
+    def __len__(self):
+        return len(self.batches)
+
+    def set_range(self, start_index, end_index):
+        self.it = iter(self.batches[start_index:end_index])
+
 
 class TextCalib(CalibrationDataReader):
     """글 인코더용: ImageNet 클래스명 × ImageNet 템플릿 무작위 문장(평가 프롬프트와 겹치지 않음)."""
@@ -112,7 +131,7 @@ class TextCalib(CalibrationDataReader):
 def select_excluded(pre, a):
     """--exclude/--keep/--only/--only-exact 규칙으로 'FP32로 남길 노드 이름 목록'을 만든다."""
     import onnx
-    if not (a.exclude or a.only or a.only_exact):
+    if not (a.exclude or a.only or a.only_exact or a.exclude_exact):
         return []
     nodes = [n.name for n in onnx.load(pre, load_external_data=False).graph.node]
     excl = set()
@@ -128,6 +147,11 @@ def select_excluded(pre, a):
         incl = {n for n in nodes if (pre_fx and n.startswith(pre_fx)) or n in exact}
         assert incl, "--only 조건에 맞는 노드가 하나도 없음"
         excl |= set(nodes) - incl
+    if a.exclude_exact:   # 정확한 이름으로 FP32 유지 (부분 문자열 --exclude는 /conv1/Conv가 블록 안 conv1까지 잡아서 따로 둠)
+        ee = {p for p in a.exclude_exact.split(",") if p}
+        missing = ee - set(nodes)
+        assert not missing, f"--exclude-exact에 없는 노드 이름: {missing}"
+        excl |= ee
     print(f"quantize {len(nodes) - len(excl)} / {len(nodes)} nodes (FP32 유지 {len(excl)})")
     return sorted(excl)
 
@@ -170,42 +194,73 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--exclude", default="")
     ap.add_argument("--keep", default="")
+    ap.add_argument("--exclude-exact", default="", help="이 이름의 노드만 정확히 FP32로 남김(쉼표). E4-C conv 단위 구성용")
     ap.add_argument("--only", default="")
     ap.add_argument("--only-exact", default="")
     ap.add_argument("--tag", default="", help="파일 이름 뒤에 붙일 설명(노드 선택 이름 등). 보정 조건은 자동으로 붙음")
     ap.add_argument("--overwrite", action="store_true")
     ap.add_argument("--w4", default="", help="가중치를 4비트로 할 노드 접두사(쉼표). 활성값은 8비트 유지")
     ap.add_argument("--w4-exact", default="", help="가중치를 4비트로 할 노드 정확한 이름(쉼표)")
+    ap.add_argument("--act-type", choices=["s8", "u8"], default="u8",
+                    help="활성값 형식. 기본 u8: x86(VNNI)에서 s8 활성값은 FP32보다도 느려진다(용 측정 10/15, 4스레드 0.72배)")
+    ap.add_argument("--weight-type", choices=["s8", "u8"], default="s8", help="가중치 형식 (u8은 U8U8 대비책용)")
+    ap.add_argument("--reduce-range", action="store_true", help="가중치 7비트 범위(비-VNNI CPU 포화 대비)")
+    ap.add_argument("--percentile", type=float, default=99.999, help="percentile 방법의 백분위 값")
+    ap.add_argument("--calib-stride", type=int, default=4,
+                    help="percentile·entropy 전용: 배치 몇 개씩 나눠 히스토그램에 누적할지(메모리 절약). "
+                         "ORT 히스토그램 보정은 모든 층 출력을 한꺼번에 메모리에 쌓아서 256장이면 8GB에서 메모리 부족")
     a = ap.parse_args()
 
     src = C.ONNX_DIR / f"{C.PREFIX}_{a.enc}_fp32{a.variant}.onnx"
     pre = C.ONNX_DIR / f"{C.PREFIX}_{a.enc}_fp32{a.variant}_pre.onnx"
     if not pre.exists() or pre.stat().st_mtime < src.stat().st_mtime:
-        quant_pre_process(str(src), str(pre), skip_symbolic_shape=a.enc == "text")  # 형태 추론 + 그래프 정리
+        # 윈도우에서 경로에 한글·공백이 있으면 ONNX 형태 추론(infer_shapes_path)이 파일을 못 찾는다
+        # → 영문 임시 폴더에서 처리한 뒤 옮긴다(리눅스에서도 결과는 같음)
+        with tempfile.TemporaryDirectory() as td:
+            shutil.copy(src, Path(td) / "src.onnx")
+            quant_pre_process(str(Path(td) / "src.onnx"), str(Path(td) / "pre.onnx"),
+                              skip_symbolic_shape=a.enc == "text")  # 형태 추론 + 그래프 정리
+            shutil.move(str(Path(td) / "pre.onnx"), str(pre))
     # 파일 이름에 그래프·보정 조건을 모두 넣어 서로 다른 설정이 같은 이름으로 덮어써지지 않게 한다
-    cal = f"{a.method}{'-ma' if a.moving_avg else ''}_{a.calib_source}{a.calib_n}_s{a.seed}" if a.mode == "static" else "dynamic"
-    dst = C.ONNX_DIR / f"{C.PREFIX}_{a.enc}_int8{a.variant}_{cal}{'_' + a.tag if a.tag else ''}.onnx"
+    meth = a.method + (f"{a.percentile:g}".replace(".", "") if a.method == "percentile" else "")   # percentile99999
+    cal = f"{meth}{'-ma' if a.moving_avg else ''}_{a.calib_source}{a.calib_n}_s{a.seed}" if a.mode == "static" else "dynamic"
+    # 형식 꼬리표: 기본(U8S8)은 없음. S8S8 → _s8s8, U8U8 → _u8u8, S8U8 → _s8u8, reduce_range → _rr
+    fmt = "" if (a.act_type, a.weight_type) == ("u8", "s8") else f"_{a.act_type}{a.weight_type}"
+    fmt += "_rr" if a.reduce_range else ""
+    dst = C.ONNX_DIR / f"{C.PREFIX}_{a.enc}_int8{a.variant}_{cal}{'_' + a.tag if a.tag else ''}{fmt}.onnx"
     if dst.exists() and not a.overwrite:
         raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
     excl = select_excluded(str(pre), a)
 
     t0 = time.time()
     if a.mode == "dynamic":   # 활성값 범위를 실행 때마다 재는 방식(NPU에서는 못 씀, 참고용)
-        quantize_dynamic(str(pre), str(dst), weight_type=QuantType.QInt8, per_channel=bool(a.per_channel),
-                         nodes_to_exclude=excl)
+        quantize_dynamic(str(pre), str(dst), weight_type=QT[a.weight_type], per_channel=bool(a.per_channel),
+                         reduce_range=a.reduce_range, nodes_to_exclude=excl)
     else:
         reader = (ImageCalib(calib_images(a.calib_source, a.calib_n, a.seed), a.calib_bs) if a.enc == "image"
                   else TextCalib(a.calib_n, a.calib_bs, a.seed))
-        quantize_static(str(pre), str(dst), reader, quant_format=QuantFormat.QDQ,
-                        activation_type=QuantType.QUInt8, weight_type=QuantType.QInt8,
-                        per_channel=bool(a.per_channel), calibrate_method=METHODS[a.method],
+        td = tempfile.mkdtemp()                       # 같은 이유로 영문 임시 폴더에서 양자화 후 옮긴다
+        tmp_pre, tmp_dst = Path(td) / "pre.onnx", Path(td) / "dst.onnx"
+        shutil.copy(pre, tmp_pre)
+        quantize_static(str(tmp_pre), str(tmp_dst), reader, quant_format=QuantFormat.QDQ,
+                        activation_type=QT[a.act_type], weight_type=QT[a.weight_type],
+                        per_channel=bool(a.per_channel), reduce_range=a.reduce_range,
+                        calibrate_method=METHODS[a.method],
                         nodes_to_exclude=excl,
                         extra_options={"ActivationSymmetric": False, "WeightSymmetric": True,
                                        "CalibMovingAverage": bool(a.moving_avg),
+                                       **({"CalibTensorRangeSymmetric": False, "CalibPercentile": a.percentile}
+                                          if a.method == "percentile" else {}),
+                                       **({"CalibStridedMinMax": a.calib_stride}
+                                          if a.method in ("percentile", "entropy") and a.enc == "image" else {}),
                                        **({"TensorQuantOverrides": w4_overrides(str(pre), a.w4, a.w4_exact),
                                            "UseQDQContribOps": True}   # 낮은 opset에서도 int4 Q/DQ 사용
                                           if (a.w4 or a.w4_exact) else {})})
+        shutil.move(str(tmp_dst), str(dst))
+        shutil.rmtree(td, ignore_errors=True)
     print(f"saved {dst}  {dst.stat().st_size / 2**20:.1f} MiB  ({time.time() - t0:.0f}s)")
+    C.append_jsonl("quantize", {"file": dst.name, "MiB": round(dst.stat().st_size / 2**20, 1),
+                                "sec": round(time.time() - t0), "opts": vars(a), "meta": C.run_meta()})
 
 
 if __name__ == "__main__":

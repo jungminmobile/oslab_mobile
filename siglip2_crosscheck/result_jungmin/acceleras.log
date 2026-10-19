@@ -1,0 +1,5 @@
+2026-10-17 15:18:19,464 - INFO - __init__.py:29 - No GPU chosen and no suitable GPU found, falling back to CPU.
+2026-10-17 15:18:46,657 - INFO - __init__.py:29 - No GPU chosen and no suitable GPU found, falling back to CPU.
+2026-10-17 15:49:25,912 - INFO - __init__.py:29 - No GPU chosen and no suitable GPU found, falling back to CPU.
+2026-10-17 15:53:11,629 - INFO - __init__.py:29 - No GPU chosen and no suitable GPU found, falling back to CPU.
+2026-10-17 16:30:12,443 - INFO - __init__.py:29 - No GPU chosen and no suitable GPU found, falling back to CPU.
