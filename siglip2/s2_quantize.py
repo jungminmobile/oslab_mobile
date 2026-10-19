@@ -162,7 +162,7 @@ def dump_ops(path, threads):
     for ext in (".data",):
         if opt.with_suffix(opt.suffix + ext).exists():
             opt.with_suffix(opt.suffix + ext).unlink()
-    int_ops = {k: v for k, v in ops.items() if any(t in k for t in ("QLinear", "Integer", "QGemm", "QAttention"))}
+    int_ops = {k: v for k, v in ops.items() if any(t in k for t in ("QLinear", "Integer", "QGemm", "QAttention", "DynamicQuantizeMatMul"))}
     qdq_ops = {k: v for k, v in ops.items() if k in ("QuantizeLinear", "DequantizeLinear", "DynamicQuantizeLinear")}
     float_ops = {k: v for k, v in ops.items() if k in ("MatMul", "Conv", "Gemm", "Softmax", "LayerNormalization", "Erf")}
     # int_kernel_ops: 정수로 계산하는 연산 / qdq_ops: 변환 노드(정수 계산 아님) / float_compute_ops: float으로 남은 계산 연산
@@ -209,6 +209,10 @@ def main():
     ap.add_argument("--src", default="",
                     help="(기본 꺼짐) 양자화할 FP32 ONNX 파일 이름($RN50_ONNX 아래). 비우면 siglip2_image_fp32.onnx. "
                          "예: s2_regcache.py export가 만든 siglip2_image_fp32_rc55at5-13at9.onnx (G3R). 출력 이름에 src 표시가 붙는다")
+    ap.add_argument("--dynamic", action="store_true",
+                    help="(기본 꺼짐) 보정 없이 ORT quantize_dynamic으로 양자화 (G7 기준선, Hailo 불가라 예선 후보 아님). "
+                         "입력은 --src FP32 ONNX 원본 그대로 (quant_pre_process 안 함, '한 줄' 기준선). "
+                         "--op-types·--per-channel·--reduce-range·--weight-type만 쓰고 보정·제외 옵션은 쓰지 않는다")
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--log", default="", help="기본: $RN50_RESULTS/quantize_log.jsonl (RN50_RESULTS 명시 필요)")
     a = ap.parse_args()
@@ -223,6 +227,8 @@ def main():
     # --src를 주면 출력 이름 앞에 src 표시를 붙여 기본 모델의 INT8 파일과 섞이지 않게 한다 (옵션을 끄면 이름·내용 그대로)
     src_tag = src_name[len("siglip2_image_fp32"):-len(".onnx")].lstrip("_")
     _p = f"siglip2_image_int8_{src_tag}_" if a.src else "siglip2_image_int8_"
+    if a.dynamic:
+        return _quantize_dynamic(a, src, _p)
     if not pre.exists() or pre.stat().st_mtime < src.stat().st_mtime:
         quant_pre_process(str(src), str(pre))
     meth = f"percentile{str(a.percentile).replace('.', '')}" if a.method == "percentile" else a.method
@@ -339,6 +345,39 @@ def _quantize_static_checked(quantize_static, pre, tmp, reader, a, excl, extra, 
     if not (seen and all(c == a.calib_n for c in seen)):
         tmp.unlink()
         raise AssertionError(f"보정에 쓰인 사진 {seen} ≠ 요청 {a.calib_n}장 — 모델 파일을 지웠음")
+
+
+def _quantize_dynamic(a, src, _p):
+    """G7: ORT quantize_dynamic 기준선. 가중치는 미리 양자화, 활성값은 실행 중 텐서별로 눈금을 정한다 (DynamicQuantizeLinear)."""
+    from onnxruntime.quantization import QuantType, quantize_dynamic
+    bad = [k for k in ("exclude", "keep", "only", "only_exact", "u8_match", "w4_regex") if getattr(a, k)]
+    bad += [k for k in ("hist_chunk", "attn_u8") if getattr(a, k)]
+    assert not bad, f"--dynamic과 함께 쓸 수 없는 옵션: {bad}"
+    ops_tag = f"_ops-{a.op_types.replace(',', '-')}" if a.op_types else ""
+    cal = f"dynamic_w{a.weight_type}_{'pc' if a.per_channel else 'pt'}{ops_tag}{'_rr' if a.reduce_range else ''}"
+    dst = RC.ONNX_DIR / f"{_p}{cal}{'_' + a.tag if a.tag else ''}.onnx"
+    if dst.exists() and not a.overwrite:
+        raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
+    log_path = Path(a.log) if a.log else S.require_results_dir() / "quantize_log.jsonl"
+    t0 = time.time()
+    tmp = dst.with_name(dst.stem + ".tmp.onnx")
+    quantize_dynamic(str(src), str(tmp), weight_type=QuantType.QInt8 if a.weight_type == "s8" else QuantType.QUInt8,
+                     per_channel=bool(a.per_channel), reduce_range=bool(a.reduce_range),
+                     op_types_to_quantize=[o for o in a.op_types.split(",") if o] or None)
+    tmp.replace(dst)
+    print(f"saved {dst.name}  {dst.stat().st_size / 2**20:.1f} MiB  ({time.time() - t0:.0f}s), dynamic")
+    env = env_info.collect()
+    row = {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"],
+           "dirty": env["git"]["dirty"], "options": vars(a), "model": dst.name, "src": src.name,
+           "MiB": round(dst.stat().st_size / 2**20, 2), "calib_seen": None,
+           "qtype": f"dynamicU8{a.weight_type.upper()}" + ("+pc" if a.per_channel else "+pt") + ("+rr" if a.reduce_range else ""),
+           "sec": round(time.time() - t0), **env_info.flat(env)}
+    if a.dump_ops:
+        row["ort_optimized_graph"] = dump_ops(dst, a.threads)
+        print(json.dumps(row["ort_optimized_graph"], ensure_ascii=False))
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(log_path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
 def _log(a, dst, seen, pool_n, excl, attn_tensors, w4_nodes, t0, log_path):
