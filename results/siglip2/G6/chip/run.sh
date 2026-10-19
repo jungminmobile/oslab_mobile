@@ -1,6 +1,6 @@
 # G6 실칩 (AGX Hailo-10H): parse-hef → dev 전체 eval (HEF마다, 세션마다 냉각) → 지연 배치 1·8 각 3세션 (모든 HEF 번갈아) → run2 -t 10
 # G5c run.sh와 같은 규칙: 다른 Hailo 작업 0개일 때 시작(최대 3시간), 세션마다 칩 온도 max(ts0, ts1) < TH (최대 90분).
-# TH = 쉬는 온도 + 2 °C. 쉬는 온도 62.6 °C(G3RQ) → 64.6. 시작 때 잰 온도가 62.6보다 높으면 그 값 + 2 (README 5-3).
+# TH = 쉬는 온도 62.6 °C(G3RQ) + 2 = 64.6 고정 (README 8절 사후 변경 — 시작 온도로 문턱을 올리던 규칙은 폐기).
 # 사용: HEFS="b32_Z b32_V ..." nohup bash run.sh > run.out 2>&1 < /dev/null &   (모든 대기에는 상한이 있다)
 export OPENBLAS_NUM_THREADS=1
 cd ~/ssd/junyong/hailo_g6
@@ -11,7 +11,7 @@ temp() { timeout 60 python3 s2_hailo_temp.py "$1" 2>/dev/null | grep '^{' | tee 
 others() { ps aux | grep -iE "hailortcli|hailo_chip|hailo_bench|hailo_platform" | grep -v grep | grep -v "$$" | wc -l; }
 t0w=$(date +%s); while [ "$(others)" -gt 0 ]; do log "다른 Hailo 작업 대기 $(others)개"; [ $(( $(date +%s) - t0w )) -gt 10800 ] && { log "BUSY 3시간 넘김 — 멈춤"; exit 1; }; sleep 120; done
 j=$(temp "idle_start"); IDLE=$(echo "$j" | python3 -c "import json,sys; d=json.loads(sys.stdin.read()); print(max(d['ts0_c'], d['ts1_c']))" 2>/dev/null || echo 62.6)
-TH=$(python3 -c "print(round(max(62.6, float('$IDLE')) + 2.0, 1))")
+TH=64.6   # 고정 (G5와 같음). 10/20 첫 속도 실행에서 'max(62.6, 시작 온도)+2'가 eval 직후의 뜨거운 시작 온도(약 83 °C)를 쉬는 온도로 잡아 냉각이 꺼졌다 → 칩 103 °C·드라이버 오류. 시작 온도는 기록만 한다
 log "start commit=$(cat COMMIT 2>/dev/null) hailort=$(hailortcli --version | tail -1) script_sha=$(sha256sum g6_hailo_chip.py run.sh | cut -c1-16 | tr '\n' ' ')load=$(cut -d' ' -f1-3 /proc/loadavg) users=$(who | wc -l) other_hailo=$(others) idle=$IDLE TH=$TH data_sha=$(sha256sum dev_zoo*/*.npy | cut -c1-12 | tr '\n' ' ')"
 wait_cool() {
   local t0=$(date +%s) j m
