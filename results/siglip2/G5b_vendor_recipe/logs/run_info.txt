@@ -1,0 +1,17 @@
+10:59:48 commit=9cafd8c dirty=0 dfc=5.4.0 onnx_sha256=a23f2a7d54bd962d9f8765e91df6fcc5376d6e33492934086e67d02591468f33 alls_sha256=1a38028145ac31f4e43b74c47e52bd6728c804008f13fb076891b16be5ece8f9 pool_sha256=91f551e312271d1af6c87c163505c9484e157dcf09afc91689609d7095ca4355
+calib n=64 shape=(64, 224, 224, 3) min=0.0 max=255.0 mean=120.76 roundtrip_maxabs=0.00000 sha256=cf73051faf354ff222266c836b56dbf1a5890d29ec76d21149ebcce36e7d8212
+10:59:49 parse 잠금 대기
+10:59:49 parse 잠금 잡음 free=29G
+11:00:01 parse rc=0 sec=12 maxrss_kb=4456220
+11:00:01 optimize 잠금 대기
+11:00:01 optimize 잠금 잡음 free=29G
+11:03:38 optimize rc=0 sec=217 maxrss_kb=9230544
+[info] Using dataset with 64 entries for calibration
+[info] Using dataset with 64 entries for calibration
+[info] Using dataset with 64 entries for calibration
+11:03:38 calib assert OK (64)
+11:03:38 compile 잠금 대기
+11:03:38 compile 잠금 잡음 free=29G
+11:48:06 compile rc=0 sec=2668 maxrss_kb=9817056
+11:48:06 hef=comp/siglip2_b_16_image_encoder.hef bytes=164384768 sha256=afa356b5bc4a904cad7fbe0b23a1d75325de19180fcac09360cf6a22a5e6a000
+11:48:06 G5B DFC DONE

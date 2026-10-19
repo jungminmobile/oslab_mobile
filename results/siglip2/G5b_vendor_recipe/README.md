@@ -1,6 +1,6 @@
 # G5b: Zoo v5.0.0 SigLIP2-B/16 "벤더 레시피"를 직접 컴파일해 우리 Hailo 최종(M2rot2)과 비교 (설계 2026-10-19)
 
-> 상태: **설계 고정 (1~4절, 컴파일·실칩 결과 전).** 기준선 측정이다. **채택 판정 없음**, 기존 모델·best 설정은 바꾸지 않는다.
+> 상태: **완료 (10/19 12:51).** 1~4절은 결과 전에 고정했다 (커밋 9cafd8c). 5~6절은 결과·해석이다. 기준선 측정이다. **채택 판정 없음**, 기존 모델·best 설정은 바꾸지 않는다.
 > 브랜치 `siglip2/g5b-vendor-recipe` (`siglip2/g5-zoo-compare` 9c1ff74에서 만듦 — G5 측정 스크립트를 재사용하려고). worktree `~/oslab_g5b`. 담당: 용 (용 요청).
 > 이 실험은 dev 스크리닝만 쓴다. test는 쓰지 않는다.
 
@@ -54,5 +54,69 @@
 - 모든 행에 커밋 해시·dirty·DFC/HailoRT 버전·세션 시작 온도를 남긴다 (`results.jsonl`). AGX에는 저장소가 없으므로 스크립트 sha256을 run.log에 남긴다.
 - 해석은 기술만 한다 (어느 쪽이 더 빠른지·정확한지, 차이가 컨텍스트 수·16비트 층 비율로 설명되는지에 대한 가설). **채택 판정은 하지 않는다.**
 
-## 5. 결과
-(아직 없음)
+## 5. 결과 (10/19, 모두 실행한 값)
+
+### 5-1. 컴파일 (DFC 5.4.0, 데스크탑 Intel Ultra 9 285K, 30 GB, 커밋 9cafd8c, dirty 0, `logs/run_info.txt`)
+| 단계 | rc | 시간 | 최대 RSS |
+|---|---|---|---|
+| parse | 0 | 12초 | 4.5 GB |
+| optimize | 0 | 3분 38초 | 9.2 GB |
+| compile | 0 | 44분 27초 | 9.8 GB |
+- **v5.0.0 .alls는 DFC 5.4.0에서 한 줄도 고치지 않고 통과했다** (경고는 "optimization_level=0은 권장하지 않음" 1개).
+- 보정: 로그 "Using dataset with 64 entries for calibration" 3번, 모두 64 → assert 통과. 보정 파일 sha256 `cf73051f…`, 원본 풀 `91f551e3…`. 풀 값이 원래 uint8 격자라서 픽셀로 되돌릴 때 반올림 오차는 0이었다.
+- 층 정밀도 (optimized HAR): 305층. `conv_feature*` 규칙에 맞은 층은 38개 (`conv_feature_splitter*` = QKV를 나누는 conv) → a8_w8. 나머지 conv 40개는 a16_w16, LayerNorm 분해 층(reduce_mean·ew_sub·feature_multiplier·reduce_sum·ew_mult 각 26개)도 모두 16비트, attention matmul·softmax는 8비트. `ew_add*` 규칙에 맞는 층은 0개였다 (덧셈이 다른 층에 합쳐짐).
+- compile은 bucket 3개로 나눴다: 컨텍스트 9 + 10 + 9 = **28**.
+- HEF: 데스크탑 `~/siglip2_work/g5b/comp/siglip2_b_16_image_encoder.hef` = AGX `~/ssd/junyong/hailo_g5b/vendor_v500.hef`, 164,384,768 B, sha256 `afa356b5bc4a904cad7fbe0b23a1d75325de19180fcac09360cf6a22a5e6a000`.
+
+### 5-2. 구조 (`hailortcli parse-hef`, HailoRT 5.3.0, `logs/out_parsehef_*.txt`)
+| HEF | 크기 | 컨텍스트 | 입력 | quant_in (scale, zp) | 정규화 내장 | 출력 |
+|---|---|---|---|---|---|---|
+| M2rot2_D256L1 | 110.4 MB | 21 | UINT8 NHWC 224×224×3 | (1/127, 128) | 아니오 (호스트에서 정규화) | ew_add57 UINT16 1×1×768 |
+| 벤더 v5.0.0 레시피 | 164.4 MB (+48.9%) | 28 | UINT8 NHWC 224×224×3 | (1, 0) | **예** (원본 픽셀 입력) | conv53 UINT16 1×1×768 |
+- FP32 ONNX(371.7 MB) 대비 크기: M2rot2 −70.3%, 벤더 −55.8%.
+
+### 5-3. 실칩 (AGX Orin + Hailo-10H, HailoRT 5.3.0, run.sh 커밋 154369e, dirty false, 다른 Hailo 프로세스 0개, `chip/run.log`)
+| HEF | 크기 MB | 컨텍스트 | b1 ms | b1 FPS | b8 ms | b8 FPS | 고화질 Δtop-1 %p [95% CI] | 고화질 cos | CIFAR A Δ %p |
+|---|---|---|---|---|---|---|---|---|---|
+| **M2rot2_D256L1** | 110.4 | 21 | 47.55 | 21.03 | 242.83 | 32.94 | −0.30 [−1.10, +0.50] | 0.9864 | −0.50 |
+| 벤더 v5.0.0 레시피 | 164.4 | 28 | 99.05 | 10.10 | 625.30 | 12.79 | −1.40 [−2.80, −0.10] | 0.9342 | −18.00 |
+| 벤더 − M2rot2 | +48.9% | +7 | +108.3% | −52.0% | +157.5% | −61.2% | −1.10 [−2.50, +0.30] | −0.0522 | −17.50 |
+- 정확도: dev 스크리닝 6×200 (각 앞 200장), Δ는 FP32 대비 (같은 사진의 FP32 ONNX 기준 임베딩). 고화질 = pets·flowers·cars·food·caltech 평균. 두 HEF의 고화질 예측 일치율 93.3%.
+  - 데이터셋별 top-1 (M2rot2 / 벤더 / FP32): cifar_A 74.0 / 56.5 / 74.5, pets 91.5 / 93.0 / 93.5, flowers 86.5 / 86.5 / 85.0, cars 93.5 / 91.0 / 93.5, food 86.5 / 82.5 / 87.5, caltech 95.0 / 94.5 / 95.0.
+  - 데이터셋별 cos (M2rot2 / 벤더): cifar_A 0.9615 / 0.8475, pets 0.9899 / 0.9636, flowers 0.9881 / 0.9557, cars 0.9864 / 0.9416, food 0.9830 / 0.8977, caltech 0.9844 / 0.9122.
+  - 확인: M2rot2 고화질 cos 0.9864는 G3RQ 에뮬레이터 스크리닝 값 0.9866과 거의 같다. 벤더 HEF는 quant_in (1, 0)이 기록돼 원본 픽셀 입력이 맞게 들어갔다.
+- 지연: 세션별 mean_ms의 3세션 중앙값. 세션별 mean_ms — M2rot2 b1 47.57 / 47.55 / 47.53, b8 242.83 / 242.36 / 243.94; 벤더 b1 99.27 / 99.05 / 98.87, b8 625.34 / 625.30 / 624.97. median_ms의 3세션 중앙값: M2rot2 b1 47.56 · b8 250.01, 벤더 b1 95.99 · b8 625.02.
+  - 벤더 b1은 분포가 두 덩어리다 (median 96.0, p90 109.0, 최대 109.4). M2rot2 b1은 47.4~48.0 사이로 좁다.
+  - M2rot2 b1 47.55 ms는 G3RQ repro(47.95 ms)와 0.8% 차이다.
+- 보조 `hailortcli run2 -t 10` FPS: M2rot2 b1 21.58 · b8 41.62, 벤더 b1 10.49 · b8 15.30.
+- 세션 시작 온도 max(ts0, ts1): 모든 세션 64.23~64.53 °C (기준 64.6 °C 미만), `chip/temps.jsonl`.
+- 결과 행 (커밋·dirty·HEF sha256·quant_in·HailoRT·온도 포함): `results.jsonl`. 실칩 임베딩(커밋 안 함): 데스크탑 `~/siglip2_work/g5b/chip/eval_*/emb_*.npz` (M2rot2 `e970f12c…`, 벤더 `8233a5d5…`).
+
+### 5-4. 진행 중 생긴 일 (숨기지 않음)
+- 첫 실칩 실행(11:48)은 run.sh가 M2rot2 eval에도 `--pixel-models vendor_v500`을 넘겨 assert에서 멈췄다 (`g5b_hailo_chip.py`가 단일 모델 호출에서 이름이 없다고 거부). run.sh를 고치고(커밋 154369e) 11:51에 처음부터 다시 돌렸다. 첫 실행 출력은 AGX `hailo_g5b/aborted_1148/`에 두었고 결과에 쓰지 않았다. 그때 끝까지 돈 벤더 eval 임베딩은 재실행 결과와 같았다.
+- `hailo parse-hef`는 DFC CLI에 없어서 AGX의 `hailortcli parse-hef`를 썼다. AGX의 sha256sum에는 `-L` 옵션이 없어 run.sh에서 뺐다 (커밋 77239dc).
+- 사전 확인 ONNX 비교는 요청의 64장 대신 66장(6종 × 11)을 썼다.
+
+## 6. 해석 (판정 없음, 기술만)
+- **이번 조건에서는 M2rot2가 세 축 모두 벤더 레시피보다 낫다**: 크기 −33%(벤더 대비), 배치 1 지연 절반 이하(47.6 vs 99.1 ms), 배치 8 처리량 2.6배, 고화질 cos +0.052. 고화질 Δtop-1 차이(−1.10%p)는 CI가 0을 포함한다 (200장 × 5종이라 작은 차이는 가려낼 수 없음). CIFAR A는 차이가 크다 (−17.5%p).
+- 벤더 레시피가 느린 이유 가설 (확인 안 함):
+  1. **16비트 층이 많다.** QKV(8비트)를 뺀 모든 conv(o-proj·fc1·fc2·헤드)와 LayerNorm 분해 층 전부가 a16_w16이다. 16비트 연산은 자원을 더 쓰고, 컴파일 로그에서도 단일 컨텍스트 시도 때 16비트 SC가 181/45로 가장 크게 넘쳤다.
+  2. 컨텍스트 수 차이(+7)만으로는 설명이 안 된다. G5의 어림셈(컨텍스트당 약 2 ms)으로는 +14 ms인데, 실측 차이는 +51.5 ms다.
+  3. bucket 3개로 나눈 구조와 bucket 사이 경계 비용. 벤더 b1 지연이 두 덩어리인 것도 이와 관련 있을 수 있다.
+- CIFAR A가 크게 떨어진 이유 가설 (확인 안 함):
+  1. 보정은 고화질 사진 64장, optimization_level=0(편향 보정·equalization 없음)이다. 32→224로 키운 저화질 CIFAR는 활성값 분포가 보정 사진과 달라서 8비트 QKV·attention에서 오차가 커질 수 있다.
+  2. Zoo v5.0.0 yaml의 FP32 CIFAR-100 76.11은 적혀 있지만 양자화 후 수치는 공개되지 않았고, v5.1.0에서 레시피가 빠졌다. Hailo 쪽에서도 이 레시피를 완성본으로 보지 않았을 수 있다.
+- 쓸모: 보고서에서 "벤더가 낸 공식 레시피(같은 모델·같은 DFC·같은 칩) 대비 우리 구성"이라는 기준선으로 쓸 수 있다. 채택 판정과 best 변경은 하지 않는다.
+
+## 7. 실행 명령 (재현)
+```bash
+# 데스크탑 WSL (worktree ~/oslab_g5b)
+source ~/siglip2_env.sh
+"$SIGLIP2_PYTHON" -I g5b_onnx_check.py --vendor ~/siglip2_work/g5b/onnx/siglip2-base-patch16-224_vision_encoder.sim.onnx \
+    --ours $SIGLIP2_ARTIFACTS/onnx/siglip2_image_fp32.onnx --cache $SIGLIP2_ARTIFACTS/cache --out ~/siglip2_work/g5b/onnx_check.jsonl
+nohup bash g5b_dfc.sh > ~/siglip2_work/g5b/dfc_nohup.log 2>&1 &          # parse → optimize → compile (잠금 안)
+# AGX (~/ssd/junyong/hailo_g5b: run.sh, g5b_hailo_chip.py, g5_hailo_bench.py, s2_hailo_temp.py, 두 HEF)
+nohup bash run.sh > run.out 2>&1 < /dev/null &
+# 데스크탑: AGX out/ → ~/siglip2_work/g5b/chip/ 복사 후
+"$SIGLIP2_PYTHON" -I g5b_summarize.py --chip ~/siglip2_work/g5b/chip --cache $SIGLIP2_ARTIFACTS/cache --hefinfo logs/hefinfo.json --out results.jsonl
+```

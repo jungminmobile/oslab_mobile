@@ -1,0 +1,58 @@
+11:51:24 start commit=154369e hailort=HailoRT-CLI version 5.3.0 script_sha=2a80625811e3cc89 4cea4d2960350e2c 77672f37de39a4df load=0.11 0.06 0.01 users=0 other_hailo=0 M2rot2_D256L1=040a3ae1ebd81d99 vendor_v500=afa356b5bc4a904c 
+11:54:57 cool eval_M2rot2_D256L1 max=64.48
+11:54:57 other_hailo=0 eval M2rot2_D256L1 시작
+M2rot2_D256L1 cifar_A (200, 768) 11s
+M2rot2_D256L1 pets_dev (200, 768) 22s
+M2rot2_D256L1 flowers_dev (200, 768) 33s
+M2rot2_D256L1 cars_dev (200, 768) 44s
+M2rot2_D256L1 food_dev (200, 768) 56s
+M2rot2_D256L1 caltech_dev (200, 768) 68s
+11:56:06 eval M2rot2_D256L1 끝
+11:59:38 cool eval_vendor_v500 max=64.53
+11:59:38 other_hailo=0 eval vendor_v500 시작
+vendor_v500 cifar_A (200, 768) 21s
+vendor_v500 pets_dev (200, 768) 42s
+vendor_v500 flowers_dev (200, 768) 64s
+vendor_v500 cars_dev (200, 768) 87s
+vendor_v500 food_dev (200, 768) 109s
+vendor_v500 caltech_dev (200, 768) 132s
+12:01:51 eval vendor_v500 끝
+12:06:24 cool bench_b1_s1 max=64.48
+12:06:24 other_hailo=0 bench b1 s1 시작
+{"model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "batch": 1, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 47.57, "median_ms": 47.559, "p90_ms": 47.749, "min_ms": 47.38, "max_ms": 48.45, "img_per_s_from_mean": 21.02}
+{"model": "vendor_v500", "hef_sha256": "afa356b5bc4a904c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 99.267, "median_ms": 95.988, "p90_ms": 109.017, "min_ms": 95.72, "max_ms": 109.716, "img_per_s_from_mean": 10.07}
+12:07:04 bench b1 s1 끝
+12:10:06 cool bench_b1_s2 max=64.33
+12:10:06 other_hailo=0 bench b1 s2 시작
+{"model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "batch": 1, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 47.55, "median_ms": 47.558, "p90_ms": 47.734, "min_ms": 47.403, "max_ms": 47.995, "img_per_s_from_mean": 21.03}
+{"model": "vendor_v500", "hef_sha256": "afa356b5bc4a904c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 99.052, "median_ms": 95.987, "p90_ms": 108.993, "min_ms": 95.697, "max_ms": 109.248, "img_per_s_from_mean": 10.1}
+12:10:46 bench b1 s2 끝
+12:13:48 cool bench_b1_s3 max=64.48
+12:13:48 other_hailo=0 bench b1 s3 시작
+{"model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "batch": 1, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 47.527, "median_ms": 47.534, "p90_ms": 47.65, "min_ms": 47.361, "max_ms": 47.964, "img_per_s_from_mean": 21.04}
+{"model": "vendor_v500", "hef_sha256": "afa356b5bc4a904c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 98.869, "median_ms": 95.952, "p90_ms": 109.01, "min_ms": 95.715, "max_ms": 109.416, "img_per_s_from_mean": 10.11}
+12:14:27 bench b1 s3 끝
+12:17:30 cool bench_b8_s1 max=64.48
+12:17:30 other_hailo=0 bench b8 s1 시작
+{"model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "batch": 8, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 242.829, "median_ms": 249.989, "p90_ms": 250.007, "min_ms": 218.83, "max_ms": 252.079, "img_per_s_from_mean": 32.94}
+{"model": "vendor_v500", "hef_sha256": "afa356b5bc4a904c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 625.34, "median_ms": 625.092, "p90_ms": 625.999, "min_ms": 623.007, "max_ms": 628.184, "img_per_s_from_mean": 12.79}
+12:20:47 bench b8 s1 끝
+12:26:21 cool bench_b8_s2 max=64.33
+12:26:21 other_hailo=0 bench b8 s2 시작
+{"model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "batch": 8, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 242.359, "median_ms": 250.024, "p90_ms": 250.038, "min_ms": 218.971, "max_ms": 250.532, "img_per_s_from_mean": 33.01}
+{"model": "vendor_v500", "hef_sha256": "afa356b5bc4a904c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 625.298, "median_ms": 625.016, "p90_ms": 625.995, "min_ms": 622.92, "max_ms": 628.231, "img_per_s_from_mean": 12.79}
+12:29:39 bench b8 s2 끝
+12:35:13 cool bench_b8_s3 max=64.48
+12:35:13 other_hailo=0 bench b8 s3 시작
+{"model": "M2rot2_D256L1", "hef_sha256": "040a3ae1ebd81d99", "batch": 8, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 243.944, "median_ms": 250.012, "p90_ms": 250.162, "min_ms": 218.845, "max_ms": 259.652, "img_per_s_from_mean": 32.79}
+{"model": "vendor_v500", "hef_sha256": "afa356b5bc4a904c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 624.974, "median_ms": 624.973, "p90_ms": 625.95, "min_ms": 587.356, "max_ms": 628.325, "img_per_s_from_mean": 12.8}
+12:38:31 bench b8 s3 끝
+12:44:05 cool run2_b1_M2rot2_D256L1 max=64.43
+12:44:15 run2 b1 M2rot2_D256L1 siglip2_m2rot: fps: 21.58
+12:46:17 cool run2_b1_vendor_v500 max=64.53
+12:46:28 run2 b1 vendor_v500 siglip2_b_16_image_encoder: fps: 10.49
+12:48:30 cool run2_b8_M2rot2_D256L1 max=64.48
+12:48:41 run2 b8 M2rot2_D256L1 siglip2_m2rot: fps: 41.62
+12:51:13 cool run2_b8_vendor_v500 max=64.23
+12:51:25 run2 b8 vendor_v500 siglip2_b_16_image_encoder: fps: 15.30
+12:51:25 G5B CHIP DONE load=0.05 0.05 0.01

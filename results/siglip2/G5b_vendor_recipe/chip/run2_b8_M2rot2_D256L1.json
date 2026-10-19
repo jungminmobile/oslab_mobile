@@ -1,0 +1,12 @@
+{
+    "time": "Mon Oct 19 12:48:41 2026",
+    "inference_mode": "full_async",
+    "network_groups": [
+        {
+            "name": "siglip2_m2rot",
+            "full_hef_path": "M2rot2_D256L1.hef",
+            "FPS": "41.657772"
+        }
+    ],
+    "time_to_run": "10.00 seconds"
+}

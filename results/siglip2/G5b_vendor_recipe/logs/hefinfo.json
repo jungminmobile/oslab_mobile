@@ -1,0 +1,2 @@
+{"M2rot2_D256L1": {"size_b": 110436352, "size_mb": 110.4, "contexts": 21, "in": "UINT8 NHWC 224x224x3, quant_in (1/127, 128) = 정규화 후 값", "out": "ew_add57 UINT16 1x1x768", "norm_in_hef": false},
+ "vendor_v500": {"size_b": 164384768, "size_mb": 164.4, "contexts": 28, "buckets": "3 (9+10+9)", "in": "UINT8 NHWC 224x224x3, quant_in (1, 0) = 원본 픽셀", "out": "conv53 UINT16 1x1x768", "norm_in_hef": true}}
