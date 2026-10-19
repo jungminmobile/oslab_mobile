@@ -620,9 +620,12 @@ def cmd_m2xchk(a):
 # ---------------------------------------------------------------- top1 (요청 6)
 
 def classifier(m, tok, names, templates):
+    """S.zeroshot_classifier와 같은 앙상블. 문장은 우리 timm 분류기(open_clip HFTokenizer)와 같게 `_clean_canonicalize`
+    (소문자·구두점 제거, big_vision 규칙)로 정리한 뒤 HF 토크나이저 max_length 64 — 정리 없이 하면 Cars가 무너진다 (README 8절)."""
+    from open_clip.tokenizer import _clean_canonicalize
     W = []
     for c in names:
-        sents = [t.format(c, c=c) for t in templates]
+        sents = [_clean_canonicalize(t.format(c, c=c)) for t in templates]
         e = []
         for i in range(0, len(sents), 128):
             ids = tok(sents[i:i + 128], padding="max_length", max_length=64, truncation=True, return_tensors="pt")
@@ -668,7 +671,7 @@ def cmd_top1(a):
     hr = {mode: float(np.mean([res[k][mode] for k in DEV_SETS if k != "cifar_A" and mode in res[k]]))
           for mode in ("orig", "m2") if all(mode in res[k] for k in DEV_SETS)}
     append("top1.jsonl", {"what": "top1", "model": name, "dev": f"6x{DEV_K}", "input": f"zoo{size}", "per_set": res,
-                          "highres5_mean": hr, "tokenizer": "AutoTokenizer, padding=max_length 64",
+                          "highres5_mean": hr, "tokenizer": "AutoTokenizer, padding=max_length 64, open_clip _clean_canonicalize",
                           "templates": "rn50/common.TEMPLATES (CIFAR), rn50/datasets.HIGHRES[*].templates"})
 
 
