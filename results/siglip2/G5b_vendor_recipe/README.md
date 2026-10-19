@@ -121,3 +121,36 @@ nohup bash run.sh > run.out 2>&1 < /dev/null &
 # 데스크탑: AGX out/ → ~/siglip2_work/g5b/chip/ 복사 후
 "$SIGLIP2_PYTHON" -I g5b_summarize.py --chip ~/siglip2_work/g5b/chip --cache $SIGLIP2_ARTIFACTS/cache --hefinfo logs/hefinfo.json --out results.jsonl
 ```
+
+## 8. 후속 작업 B·C (설계 2026-10-19, 결과 전 고정)
+> 같은 브랜치. 작업 A(6절 해석 수정)는 커밋 1aebd05. dev만 쓴다 (test 안 씀). 채택 판정 없음 — 아래 판정은 기록용이다.
+
+### 8-1. 작업 B: dev 전체 실칩 평가 (벤더 vs M2rot2)
+- 대상: `vendor_v500.hef`(afa356b5…), `M2rot2_D256L1.hef`(040a3ae1…). dev 전체 = 고화질 5종 4,923장(pets 990, flowers 957, cars 967, food 985, caltech 1,024) + CIFAR A 1,000장. AGX `hailo_repro/devfull/*_x.npy` (G3RQ repro와 같은 파일).
+- 실행: `run_devfull.sh` — 다른 Hailo 프로세스 0개를 기다린 뒤, 같은 실행에서 M2rot2 → (냉각) → 벤더 순서로 `g5b_hailo_chip.py eval --x-npy`(--k 없음 = 전부). 입력은 7절까지와 같다 (M2rot2 정규화 값, 벤더 `--pixel-models` 원본 픽셀). 시작 온도 < 64.6 °C, nohup + 로그.
+- 예전 M2rot2 dev 전체 실칩 임베딩(AGX `hailo_repro/out/eval_M2rot2_D256L1/`, 같은 HEF·같은 사진·같은 eval 코드)은 **새 실행과 출력이 같은지 확인하는 데만** 쓴다.
+- 지표 (`g5b_devfull_summarize.py`, 정확도 계산은 s2_hailo_chip_eval.py `--k 0`과 같음): 고화질 Δtop-1 (FP32 대비)과 95% 구간, 고화질 cos, 데이터셋별 top-1, CIFAR A Δ. 구간과 짝 비교는 **기존 `s2_paired_ci.boot_hr`를 그대로 import**한다 (층화 짝 부트스트랩, 시드 0, 1000회).
+- **판정 (기록용, 채택 아님):** M2rot2 − 벤더 고화질 Δtop-1의 95% 구간에서 하한 > 0이면 "M2rot2가 유의하게 높다", 0을 포함하면 "동률", 상한 < 0이면 "벤더가 높다".
+
+### 8-2. 작업 C: 벤더 CIFAR A −18.0%p의 원인 (데스크탑 DFC 에뮬레이터)
+- 질문: 손실이 양자화 때문인가, 입력 경로(원본 픽셀 입력·정규화 내장) 때문인가?
+- 실행: `g5b_emu.py` — optimized HAR를 SDK_NATIVE(float)와 SDK_QUANTIZED로 돌린다 (s2_dfc_screen.py와 같은 `runner.infer`, NHWC, batch 8). DFC 5.4.0, `flock ~/siglip2_work/dfc.lock`, `CUDA_VISIBLE_DEVICES=-1`.
+  - 벤더: `~/siglip2_work/g5b/siglip2_b_16_image_encoder_optimized.har`. 입력은 실칩 eval과 같은 변환 `x·127.5+127.5`를 반올림한 값 (칩에서는 HailoRT가 quant_in (1, 0)으로 반올림). 반올림 전후 최대 차이를 기록한다.
+  - 기준: M2rot2 `~/siglip2_work/hailo_repro/opt2_M2rot.har` (HEF 040a3ae1을 만든 2차 빌드). 정규화 값 입력.
+  - 사진: CIFAR A 앞 200장 + Pets 앞 200장 (대조군). 7절 실칩 6×200과 같은 사진이다.
+  - 지표: 모드마다 top-1, FP32 ONNX 임베딩 대비 cos (평균·최소).
+- **해석 규칙 (결과 전 고정, 벤더 CIFAR A 기준):**
+  - **"float은 FP32와 같다"** = float 에뮬레이터 vs FP32 ONNX 임베딩 cos 평균 ≥ 0.999 **그리고** CIFAR Δtop-1 > −5%p. 두 조건을 모두 만족할 때만 이렇게 쓴다 (200장 top-1은 표본 잡음이 ±3%p 정도라 top-1만으로는 경계에서 흔들린다).
+  - **입력 경로 문제를 의심** = float cos 평균 < 0.999 (top-1이 괜찮아도) **또는** float CIFAR Δtop-1 ≤ −5%p. 이 경우 우리 eval의 벤더 입력 생성 코드를 점검하고, 고친 뒤 실칩 CIFAR를 다시 잰다.
+  - **진짜 양자화 손실** = "float은 FP32와 같다"이면서 SDK_QUANTIZED에서만 떨어지는 경우. 기록만 한다.
+  - M2rot2의 두 모드 결과는 같은 사진에서의 비교 기준으로 함께 적는다.
+- **양자화 에뮬레이터 vs 실칩 (추가 확인):** CIFAR A 200장(Pets 200장도 같이 기록)에서 SDK_QUANTIZED와 실칩(7절 실행, 같은 HEF·같은 사진)을 비교한다. 지표는 예측 일치율과 사진별 임베딩 cos(평균·최소).
+  - "거의 같다" = 일치율 ≥ 90% **그리고** 임베딩 cos 평균 ≥ 0.99. 근거: 예전 G3Q/G3R 기록에서 같은 HEF의 에뮬레이터↔실칩 고화질 일치율이 0.94~0.975였다.
+  - 벤더가 "거의 같다"를 못 넘고 M2rot2는 넘으면, 차이의 원인은 양자화가 아니라 **실칩 입력 처리(uint8 변환, 입력 순서)**에 있다고 기록하고, 입력 코드를 점검한다.
+
+### 8-3. 기록
+- 결과 행에 커밋·dirty·DFC/HailoRT 버전·온도·HEF/HAR sha256을 남긴다: B는 `results_devfull.jsonl`, C는 `logs/emu.jsonl`.
+- 같은 오류가 2번 나면 3번째 시도 전에 멈추고 보고한다.
+
+## 9. 후속 결과
+(아직 없음)
