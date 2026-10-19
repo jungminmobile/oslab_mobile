@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # g6_build_all.sh — README 2절 순서로 DFC 빌드: b32_V → b32_D → b32_R → b32_M → s1b16_V → s1b16_R → (s1b16_D, ALSO_S1B16_D=1일 때)
 # 하나가 끝날 때마다 sha256·크기·컨텍스트 수를 build.jsonl에 바로 적고 로그를 logs/<tag>/에 복사한다. 실패하면 멈춘다.
-# 사용: nohup bash g6_build_all.sh > ~/siglip2_work/g6/build_all.log 2>&1 < /dev/null &
+# 사용: [ONLY=<tag>] [ALSO_S1B16_D=1] nohup bash g6_build_all.sh > ~/siglip2_work/g6/build_all.log 2>&1 < /dev/null &
 set -uo pipefail
 H=$(cd "$(dirname "$0")" && pwd); W=$HOME/siglip2_work/g6; Z=$HOME/siglip2_work/g6pre; O=$W/onnx
 B=$H/build.jsonl
 build() {   # tag onnx net size alls calib ncal [start end]
   local tag=$1
+  [ -n "${ONLY:-}" ] && [ "$tag" != "$ONLY" ] && return 0      # ONLY=<tag>: 그 구성만 (S1B16 D 선택 빌드)
   TAG=$tag ONNX=$2 NET=$3 SIZE=$4 ALLS=$5 CALIB=$6 NCAL=$7 START=${8:-} END=${9:-} bash $H/g6_dfc.sh > $W/dfc_$tag.out 2>&1
   local rc=$? D=$W/dfc/$tag
   mkdir -p $H/logs/$tag; cp $D/run_info.txt $D/optimize.log $D/model.alls $H/logs/$tag/ 2>/dev/null; tail -c 150000 $D/compile.log > $H/logs/$tag/compile_tail.log 2>/dev/null
