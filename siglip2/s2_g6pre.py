@@ -397,7 +397,7 @@ def cmd_analyze(a):
     # sink: 고정성 = 헤드 평균 질량의 상위 2개 안에 p가 드는 사진 비율
     sink_blocks = []
     keys = [f"mass_b{l}" for l in range(L)] + ["mass_pool"]
-    fix = {}
+    fix, fixh = {}, {}
     for k in keys:
         mh = mass[k].mean(1)                                               # (128, N)
         top2 = np.argsort(-mh, 1)[:, :2]
@@ -405,31 +405,36 @@ def cmd_analyze(a):
         fix[k] = frac
         topp = np.argsort(-frac)[:3]
         per_head = []
+        fixh[k] = np.zeros((mass[k].shape[1], N))
         for hh in range(mass[k].shape[1]):
             t2 = np.argsort(-mass[k][:, hh], 1)[:, :2]
             fr = np.array([(t2 == p).any(1).mean() for p in range(N)])
+            fixh[k][hh] = fr
             pb = int(fr.argmax())
             per_head.append([pb, round(float(fr[pb]), 3), round(float(mass[k][:, hh, pb].mean()), 4)])
         sink_blocks.append({"key": k[5:], "top_fix": [[int(p), round(float(frac[p]), 3), round(float(mh[:, p].mean()), 4)]
                                                       for p in topp],
                             "uniform": round(1 / N, 5), "per_head_best": per_head})
-    # README 2-4 규칙
+    # README 2-4 규칙 (6절 조정: attention 고정성은 헤드별, 블록 l > b의 어느 헤드든 ≥ 90%)
     sinks = []
     for p in range(N):
         bs = [l for l in range(L) if hn_frac[l, p] >= FIX]
         if not bs:
             continue
         b = bs[0]
-        att = [l for l in range(b + 1, L) if fix[f"mass_b{l}"][p] >= FIX]
+        att = [[l, int(hh)] for l in range(b + 1, L) for hh in np.where(fixh[f"mass_b{l}"][:, p] >= FIX)[0]]
+        att_avg = [l for l in range(b + 1, L) if fix[f"mass_b{l}"][p] >= FIX]
         if att:
             sinks.append({"p": p, "b": b, "high_norm_frac_b": round(float(hn_frac[b, p]), 3),
-                          "attn_fix_blocks": att, "attn_fix_max": round(float(max(fix[f"mass_b{l}"][p] for l in att)), 3)})
+                          "attn_fix_block_heads": att, "attn_fix_blocks_headavg": att_avg,
+                          "attn_fix_max_head": round(float(max(fixh[f"mass_b{l}"][hh, p] for l, hh in att)), 3)})
     # 기록용: 규칙에서 한 조건만 만족한 후보
     near = []
     for p in range(N):
         if hn_frac[:, p].max() >= 0.5 or max(fix[f"mass_b{l}"][p] for l in range(L)) >= 0.5:
             near.append({"p": p, "hn_frac_max": round(float(hn_frac[:, p].max()), 3), "hn_frac_argmax_block": int(hn_frac[:, p].argmax()),
-                         "attn_fix_max": round(float(max(fix[f"mass_b{l}"][p] for l in range(L))), 3)})
+                         "attn_fix_max": round(float(max(fix[f"mass_b{l}"][p] for l in range(L))), 3),
+                         "attn_fix_max_head": round(float(max(fixh[f"mass_b{l}"][:, p].max() for l in range(L))), 3)})
     sinks_s = ",".join(f"{s['p']}@{s['b']}" for s in sinks)
     # K/V 일관성 (기록용): 규칙으로 찾은 sink 위치
     kvcons = []
@@ -454,7 +459,7 @@ def cmd_analyze(a):
                              "sinks_rule": sinks, "sinks": sinks_s, "near_candidates": near,
                              "blocks": blocks, "sink_attn": sink_blocks, "kv_consistency": kvcons})
     np.savez_compressed(out_dir() / f"analyze_{name}_arrays.npz", hn_frac=hn_frac,
-                        **{f"fix_{k[5:]}": v for k, v in fix.items()})
+                        **{f"fix_{k[5:]}": v for k, v in fix.items()}, **{f"fixh_{k[5:]}": v for k, v in fixh.items()})
 
 
 # ---------------------------------------------------------------- m2 (요청 5)
@@ -588,6 +593,11 @@ def cmd_m2xchk(a):
     e_t = batched(lambda t: tm(t), x)
     e_h = batched(lambda t: hf_forward(vis, t, sinks, kvc, ucs), x)
     c = cosr(e_t, e_h)
+    o_t = batched(lambda t: model.encode_image(t), x)
+    o_h = batched(lambda t: hf_forward(vis, t), x)
+    c0 = cosr(o_t, o_h)                                  # 원래 모델끼리 (구현과 무관한 바닥 차이)
+    eff_t, eff_h = cosr(e_t, o_t), cosr(e_h, o_h)        # M2가 바꾼 양 (사진별 cos(M2, 원래))
+    d_eff = np.abs((1 - eff_t) - (1 - eff_h))
     # 내 상수 계산(build_m2_consts)이 기존 파일과 같은지: 같은 timm 전처리 보정 256장으로
     from s2_quantize import calib_images
     xc = calib_images("highres", CAL_N, SEED)
@@ -596,10 +606,15 @@ def cmd_m2xchk(a):
     dv = max(float(np.abs(kvc2[k][1].numpy() - np.asarray(cache[k][1])).max()) for k in cache)
     du = max(float(np.abs(uc2[k].numpy() - uc[k]).max()) for k in uc)
     row = {"what": "m2xchk", "model": "ref", "n": len(x), "hf_vs_timm_m2_cos_min": float(c.min()),
-           "hf_vs_timm_m2_cos_mean": float(c.mean()), "const_maxabs_K": dk, "const_maxabs_V": dv, "const_maxabs_uc": du,
+           "hf_vs_timm_m2_cos_mean": float(c.mean()), "hf_vs_timm_orig_cos_min": float(c0.min()),
+           "hf_vs_timm_orig_cos_mean": float(c0.mean()),
+           "m2_effect_timm_mean": float(1 - eff_t.mean()), "m2_effect_hf_mean": float(1 - eff_h.mean()),
+           "m2_effect_absdiff_max": float(d_eff.max()), "m2_effect_rel_diff_mean": float(abs(eff_t.mean() - eff_h.mean()) / max(1 - eff_t.mean(), 1e-12)),
+           "const_maxabs_K": dk, "const_maxabs_V": dv, "const_maxabs_uc": du,
            "const_files": ["regcache_55at5-13at9_highres256_s0.npz", "regcache_uc_55at5-13at9_highres256_s0.npz"]}
     append("m2.jsonl", row)
-    assert c.min() >= 0.99999, "HF M2 구현이 timm MaskRegCacheTrunk와 다름"
+    # 사후 변경 (README 6절): cos 최소 ≥ 0.99999는 원래 모델끼리도 못 넘으므로, 원래 모델끼리 차이보다 크게 나빠지지 않는지로 본다
+    assert c.min() >= c0.min() - 1e-5, "HF M2 구현이 timm MaskRegCacheTrunk와 다름 (원래 모델끼리 차이보다 큼)"
 
 
 # ---------------------------------------------------------------- top1 (요청 6)
