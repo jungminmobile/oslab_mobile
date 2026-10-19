@@ -320,3 +320,18 @@
   - 구간이 0을 포함하거나 상한 < 0 → **rothad 유지**
   - 보고서에는 회전(원래 모델과 수학적으로 같음, cos 0.9999999)과 M2(sink 토큰 상수 캐시 근사, 원래 FP32 대비 cos 최소 0.9994)를 구분해 쓴다
 - 레지스터 캐시(R1, `siglip2/g3r-regcache`)는 채택하지 않음: ORT는 준용의 사전 기준(비열등 하한 ≥ −0.3)에서 실패(−0.06 [−0.44, +0.33]), Hailo는 실패. 4번째 시도의 합격선 0.952는 구성 D 값이라 D256L1(0.9666)로 고치도록 요청
+
+## D-043 (기록) Hailo 최종 = M2rot_D256L1 — 준용 확정, 이 브랜치에 옮겨 적음
+- 상태: **확정** / 2026-10-19 / 용 확정 (쭈리가 10/19 결과 전에 승인한 기준 그대로, D-042 덧붙임 참고). 원문: 브랜치 `siglip2/g3rq-m2rot` DECISIONS D-043, `results/siglip2/G3RQ_m2rot/hailo/README.md`
+- 결과: 2번째 빌드끼리 실칩 dev 전체 M2rot − rothad = +0.53 [+0.03, +1.02]%p → 기준(하한 > 0) 만족 → **Hailo 최종 = M2rot_D256L1** (HEF 110.4 MB, 21 컨텍스트, 배치 1 지연 47.95 ms, rothad 대비 +3.9%)
+- 한계: 2번째 빌드의 칩 출력이 1번째와 비트 단위로 같아(HEF 헤더 몇백 바이트만 다름) 빌드 간 변동은 0이지만, 같은 숫자가 다시 나온 것이라 새 증거는 아니다. 하한 여유 +0.03은 그대로 → **본선 Pi 5에서 다시 확인**. rothad HAR SDK_NATIVE 동치 cos 최소 0.99999988 (준용 확인)
+- M2는 원래 모델의 근사다 (sink 토큰 K·V를 보정 평균 상수로, 원래 FP32 대비 cos 최소 0.9994 dev 64장 / 0.9984 dev 6×200, FP32 dev 전체 Δ +0.10 [0.00, +0.22]). 회전(수학적으로 같음)과 구분해 쓴다
+
+## D-044 예선 ONNX를 R0에서 M2rot_ort로 교체 (D-030 대체) — test 보기 전에 확정
+- 상태: **확정** / 2026-10-19T10:08 / 쭈리 승인 (준용 제안, Claude 추천) — **test를 보기 전에** dev 결과만으로 정한다
+- **결정: ORT 예선 최종 = M2rot_ort** — M2rot FP32(`siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad.onnx`, sha256 `16ef696e…`)를 R0와 같은 양자화 옵션(U8 + reduce_range, highres 256장 시드 0, percentile 99.999, hc16)으로 **MatMul 79개 전부 INT8** (fc2 예외 없음). 파일: `siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx` (91.72 MiB, 준용 PC 커밋 `5413b5f`에서 생성) — **sha256은 준용 공유 뒤 기록**
+- 근거 (`results/siglip2/G3RQ_m2rot/ort/README.md` 6절, 브랜치 `siglip2/g3rq-m2rot-ort` `66c04e4`, dev 전체, 사전 기준 ①②): FP32 대비 −0.23 [−0.64, +0.18] (R0 −0.78 [−1.26, −0.31]), **R0 대비 +0.56 [+0.10, +1.01]**, 크기 91.7 vs 105.3 MiB, 4스레드 29.5 vs 30.6 ms (285K, 비공식), peak 메모리 232 vs 266 MiB. 예선 ONNX와 Hailo 최종(D-043)이 같은 M2rot 그래프가 된다 (대회 안내 5.2 "예선 모델을 Hailo로")
+- 주의: 준용이 안전장치 관문 2개(M2 근사 cos, 스크리닝 cos)를 결과 뒤 고쳤다 (채택 기준 ①②는 그대로, README 5절 기록). 재현에 `s2_rotate.py`·`s2_regcache.py`(보정 평균 캐시 3개)·`s2_quantize.py --src`가 필요
+- **test 사용 (프로토콜 예외, 쭈리 승인)**: R0로 이미 test를 1회 썼다(`results/siglip2/G6_test`). 교체를 test 전에 확정했으므로 M2rot_ort test는 고르는 데 쓰지 않는다. **M2rot_ort로 test를 딱 한 번 돌리고 결과가 어떻든 보고한다.** R0 test 결과는 "이전 후보" 기록으로만 남긴다 (보고서 최종 수치에 쓰지 않음, 비교로 쓸 때는 이 순서를 밝힌다)
+- 다음: 준용께 ONNX 파일·sha256 공유 요청 → 이 PC에서 dev 결과 재현(같은 파일이면 x86에서 비트 단위로 같아야 함)·지연 3회 → test 1회 → README·보고서·Release
+
