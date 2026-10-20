@@ -1,0 +1,15 @@
+total 2168744
+drwxr-xr-x 2 jjury jjury       4096 Oct 14 23:33 .
+drwxr-xr-x 4 jjury jjury       4096 Oct 14 21:13 ..
+-rw-r--r-- 1 jjury jjury        224 Oct 14 23:32 acceleras.log
+-rw-r--r-- 1 jjury jjury          0 Oct 14 21:17 allocator.log
+-rw-r--r-- 1 jjury jjury     326113 Oct 14 22:51 compile.log
+-rw-r--r-- 1 jjury jjury 2113085440 Oct 14 22:51 compiled_E_fc2_b0b5b9.har
+-rw-r--r-- 1 jjury jjury     218743 Oct 14 23:33 estimation.csv
+-rw-r--r-- 1 jjury jjury       3922 Oct 14 23:33 hailo_sdk.client.log
+-rw-r--r-- 1 jjury jjury    5295025 Oct 14 22:50 hailo_sdk.core.log
+-rw-r--r-- 1 jjury jjury       1966 Oct 14 23:33 prof.log
+-rw-r--r-- 1 jjury jjury     218751 Oct 14 23:33 profiler.csv
+-rw-r--r-- 1 jjury jjury    6464029 Oct 14 23:33 profiler.html
+-rw-r--r-- 1 jjury jjury   95137792 Oct 14 22:50 siglip2_b16_224.hef
+920ff42b14bc6b1b6d60e337c411d6c21b643ac94d8f0c228e4d9dd184004ede  siglip2_b16_224.hef

@@ -34,11 +34,11 @@
 
 - [x] 저장소 구조 파악: RN50 트랙의 디렉터리, 공통 코드 위치, PRD.md, requirements, 데이터셋 경로 규칙을 읽고 `siglip2/docs/repo_map.md`로 정리 (10/13 초안)
 - [x] RN50의 공통 코드를 import해서 모델만 바꿔 끼울 수 있는지 확인. 어려우면 필요한 변경을 목록으로 만들어 사람에게 보고 (직접 고치지 않음) → `repo_map.md` 4절, D-009
-- [ ] 환경: open-clip-torch 2.31 이상, timm 1.0.15 이상. onnx·onnxruntime은 RN50 트랙과 같은 버전
-- [ ] `siglip2/scripts/env_info.py`: CPU 모델, 명령어 플래그(avx2, avx512f, avx512_vnni, avx_vnni), 코어 수, OS, 패키지 버전을 `env.json`으로 저장
-- [ ] Hailo Model Zoo의 Hailo-10H 문서에서 SigLIP 계열 공식 HEF가 있는지 확인하고 결과를 DECISIONS에 기록
+- [x] 환경: open-clip-torch 2.31 이상, timm 1.0.15 이상. onnx·onnxruntime은 RN50 트랙과 같은 버전 (`siglip2/requirements.txt`)
+- [x] `siglip2/scripts/env_info.py`: CPU 모델, 명령어 플래그(avx2, avx512f, avx512_vnni, avx_vnni), 코어 수, OS, 패키지 버전을 `env.json`으로 저장
+- [x] Hailo Model Zoo의 Hailo-10H 문서에서 SigLIP 계열 공식 HEF가 있는지 확인하고 결과를 DECISIONS에 기록 (D-018)
 - [x] DFC가 설치된 머신과 버전 확인 → 이 PC WSL Ubuntu-22.04에 DFC 5.4.0 설치 (D-011). Pi OS hailo-h10-all 버전은 주최측 확인 중
-- [ ] DFC 5.4.0 설치 (`.wslconfig` 12GB/16GB, Ubuntu-22.04 on `D:\mokerton\wsl`, 휠은 쭈리가 Developer Zone에서 받음)
+- [x] DFC 5.4.0 설치 (`.wslconfig` 12GB/16GB, Ubuntu-22.04 on `D:\mokerton\wsl`, 휠은 쭈리가 Developer Zone에서 받음)
 - [x] 라벨 `siglip2`·`experiment`·`decision`·`verification`·`blocked` 생성 (10/13). 마일스톤은 만들지 않음
 
 완료 기준: SigLIP2를 불러와 이미지 한 장의 임베딩이 나오고, PyTorch 기준 FP32 zero-shot이 CIFAR-100 dev 100장에서 돈다.
@@ -47,14 +47,14 @@
 
 목적: 튜닝에 시간을 쓰기 전에 SigLIP2가 Hailo-10H에 올라가는지 판정.
 
-- [ ] 이미지 인코더만 ONNX export (opset 17, 입력 1×3×224×224 고정). PyTorch 대비 임베딩 코사인 ≥ 0.9999, 최대 절대 오차 기록
-- [ ] ONNX 연산 목록 표: patch embedding, LayerNorm, attention(QKV, QKᵀ, Softmax, AV, proj), MLP의 GELU 종류(tanh 근사/erf), pooling head 구조
-- [ ] DFC parse → optimize(기본, 보정 64장) → compile (Hailo-10H). 성공 여부, 미지원 연산, 컨텍스트 수, 호스트로 떨어진 구간, 컴파일 시간, DFC 버전 기록
+- [x] 이미지 인코더만 ONNX export (opset 17, 입력 1×3×224×224 고정). PyTorch 대비 임베딩 코사인 ≥ 0.9999, 최대 절대 오차 기록 → `results/siglip2/G1_onnx_export`
+- [x] ONNX 연산 목록 표: patch embedding, LayerNorm, attention(QKV, QKᵀ, Softmax, AV, proj), MLP의 GELU 종류(tanh 근사/erf), pooling head 구조
+- [x] DFC parse → optimize(기본, 보정 64장) → compile (Hailo-10H). → `results/siglip2/G1_dfc_gate` (전 구간 성공, 18 컨텍스트). 성공 여부, 미지원 연산, 컨텍스트 수, 호스트로 떨어진 구간, 컴파일 시간, DFC 버전 기록
 - [ ] FP32 빠른 확인: CIFAR-100 dev 1,000장 + 고화질 1종 dev, 공개 보고치와 대조
-- [ ] 손실 감 잡기: ONNX Runtime INT8 전부(MinMax), 정수 커널, dev 1,000장
-- [ ] DFC 교차 확인 1회: 같은 float ONNX·보정 사진·`.alls`를 정민 노트북에서도 컴파일해 에뮬레이터 출력 비교 (D-011)
+- [x] 손실 감 잡기: ONNX Runtime INT8 전부(MinMax), 정수 커널, dev 1,000장 → 붕괴, `results/siglip2/G1_int8_minmax_all`
+- [ ] DFC 교차 확인 1회: G4 최종 후보 `.alls`로 정민 노트북에서도 컴파일해 에뮬레이터 출력 비교 (D-011, 시점은 D-027)
 
-판정 (DFC 결과가 나오는 대로, 사람이 결정. D-014):
+판정 (DFC 결과가 나오는 대로, 사람이 결정. D-014) → **2026-10-13 쭈리: SigLIP2 계속 (D-026)**:
 
 | 결과 | 다음 |
 | --- | --- |
@@ -64,10 +64,10 @@
 
 ## G2. FP32 기준치 — 10/10~10/14
 
-- [ ] 프롬프트 템플릿 결정 (CLIP 공식 vs SigLIP 계열 권장, dev 비교)
-- [ ] dev 6종(CIFAR A + 고화질 5종) FP32 정확도. test 7종은 기준치 기록용 1회 (D-017)
-- [ ] FP32 이미지 임베딩 저장 (충실도 비교용)
-- [ ] 파라미터 수, GMACs, ONNX 크기, peak 메모리, 지연 (`rn50/bench_speed.py`, 워밍업 20·200장×3회. 이 PC 값은 비공식, D-010)
+- [x] 프롬프트 템플릿 결정 (CLIP 공식 vs SigLIP 계열 권장, dev 비교) → CLIP 공식 (D-025)
+- [x] dev 6종(CIFAR A + 고화질 5종) FP32 정확도. test 7종은 기준치 기록용 1회 (D-017) — test는 G6로 미룸 (D-025)
+- [x] FP32 이미지 임베딩 저장 (충실도 비교용, `<key>_ref_fp32.npy`, 캐시 결정성 5종 확인)
+- [x] 파라미터 수, GMACs, ONNX 크기, peak 메모리, 지연 (`rn50/bench_speed.py`, 워밍업 20·200장×3회. 이 PC 값은 비공식, D-010)
 
 완료 기준: S-A행이 RN50 FP32 행과 같은 열로 채워진다.
 
@@ -76,11 +76,11 @@
 먼저 확인: ONNX Runtime이 LayerNorm, Softmax, GELU를 실제로 정수로 계산했는지 양자화된 그래프의 노드 목록으로 확인한다.
 Hailo는 모든 연산을 8/16비트로 계산하므로 두 런타임의 민감도 지도는 다를 수 있고, 그 차이도 분석 결과다.
 
-- [ ] 보정 방식 비교: MinMax / Percentile / Entropy, 보정 256장 (장수 assert)
-- [ ] 블록 단위 민감도: patch embedding, 블록 1~12, pooling head를 하나씩만 INT8 (14회)
-- [ ] 연산 유형 민감도: QKV / attention 행렬곱 / proj / MLP fc1·fc2 각각만 INT8
-- [ ] 활성값 이상치: 블록별 최대값 / 99.9% 분위수 비율
-- [ ] 누적 구성: 둔감한 곳부터 INT8을 넓혀 크기·지연·정확도 곡선, 균형점 2개 선정
+- [x] 보정 방식 비교: MinMax / Percentile / Entropy, 보정 256장 (장수 assert) → `G3_calib_method`
+- [x] 블록 단위 민감도: patch embedding, 블록 1~12, pooling head를 하나씩만 INT8 (14회)
+- [x] 연산 유형 민감도: QKV / attention 행렬곱 / proj / MLP fc1·fc2 각각만 INT8
+- [x] 활성값 이상치: 블록별 최대값 / 99.9% 분위수 비율 → G1 진단 + 원인 분석 `G3_why` (10/14)
+- [ ] 누적 구성: 둔감한 곳부터 INT8을 넓혀 크기·지연·정확도 곡선, 균형점 2개 선정 → 정확도·크기 완료(`G3_cumulative`), 지연 재측정 중, 선정은 팀(`results/siglip2/candidates`)
 - [ ] 모든 비교는 정수 커널 (D-008). 시간이 모자라면 연산 유형 민감도는 민감한 블록에서만
 
 완료 기준: 10/19까지 S-B 구성 확정, 새 venv에서 같은 정수 커널 정확도가 재현된다.
@@ -88,11 +88,11 @@ Hailo는 모든 연산을 8/16비트로 계산하므로 두 런타임의 민감�
 ## G4. Hailo DFC 혼합 정밀도 — 10/15~10/23
 
 - [ ] S-C: 기본 INT8, 최적화 레벨 비교
-- [ ] DFC 층별 노이즈 분석으로 층별 SNR → Hailo 민감도 지도, G3 지도와 비교
+- [ ] DFC 층별 노이즈 분석으로 층별 SNR → Hailo 민감도 지도, G3 지도와 비교 → **DFC 내부 오류 2회, 보류** (`G4_noise`, 10/14 쭈리)
 - [ ] 16비트 보호: Softmax, LayerNorm, attention 행렬곱, pooling head 중 SNR 낮은 곳
 - [ ] 4비트: MLP fc1·fc2부터 둔감한 블록 순으로 a8_w4 확대 → 정확도-크기 곡선
 - [ ] 보정 사진 수 64 / 256 / 1024
-- [ ] 구성마다 에뮬레이터 dev 정확도, 컨텍스트 수, HEF 크기
+- [ ] 구성마다 에뮬레이터 dev 정확도, 컨텍스트 수, HEF 크기 → C·D·E 정확도(`G4_dfc_screen`), D 컴파일(`G4_compile`)
 
 막히면: 4비트가 무너지면 INT8 + 16비트 보호를 최종으로, 4비트는 한계 분석.
 
@@ -113,7 +113,7 @@ Hailo는 모든 연산을 8/16비트로 계산하므로 두 런타임의 민감�
 - [ ] U8S8 포화 점검: 최종 INT8 모델을 `reduce_range`·U8U8·`session.x64quantprecision=1` 대안과 비교하고(S8S8은 x86에서 U8S8과 같음), 가능하면 VNNI 없는 CPU에서도 실행해 정확도 일치 확인. RN50 E0 ⑧ 결과를 먼저 참고
 - [ ] 스크립트를 팀 저장소 구조에 맞춰 정리, README에 SigLIP2 재현 명령어 한 줄과 보고서 표 번호 대응
 - [ ] 코드를 작성하지 않은 팀원이 새 환경에서 재현
-- [ ] 보고서 절 초안: 선정 사유, 민감도 지도(ORT vs Hailo), 결과표, CNN vs Transformer 비교 그림
+- [ ] 보고서 초안 (SigLIP2가 제출 모델일 때): 선정 사유, 민감도 지도(ORT vs Hailo), 원인 분석, 결과표 (D-034: 모델 하나 제출, CNN vs Transformer 비교 서사는 쓰지 않음)
 
 ## G7. 통합·제출 — 10/28~10/31
 

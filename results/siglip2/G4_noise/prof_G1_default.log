@@ -1,0 +1,16 @@
+waiting for lock held by None (queue position 2)
+ACQUIRED {'owner': 'siglip2', 'job': 'DFC profiler G1_default', 'since': '2026-10-14T10:36:25', 'host': 'localhost', 'pid': 8532}
+[info] Current Time: 10:36:29, 10/14/26
+[info] CPU: Architecture: x86_64, Model: 11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz, Number Of Cores: 8, Utilization: 0.0%
+[info] Memory: Total: 11GB, Available: 11GB
+[info] System info: OS: Linux, Kernel: 6.6.87.2-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo profiler noise_G1_default.har --out-path profiler_G1_default.html --csv profiler_G1_default.csv`
+[info] No GPU chosen and no suitable GPU found, falling back to CPU.
+[info] Hailo HW architecture: hailo10h
+[info] Running profile for siglip2_b16_224 in state quantized_model
+[info] Saved Profiler HTML Report to: /home/jjury/siglip2_dfc/noise_20261014/profiler_G1_default.html
+[info] Saved Profiler CSV to: /home/jjury/siglip2_dfc/noise_20261014/profiler_G1_default.csv
+RELEASED

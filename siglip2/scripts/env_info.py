@@ -118,6 +118,23 @@ def collect(cross_check_wsl=False):
     return env
 
 
+def write_env(out_dir, env):
+    """env.json(마지막 실행)과 env_history.jsonl(실행마다 한 줄 누적)을 함께 쓴다.
+    env.json만 쓰면 같은 결과 폴더에서 여러 번 실행할 때 앞 실행의 환경이 사라진다 (독립 검토 지적)."""
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    with open(out_dir / "env_history.jsonl", "a", encoding="utf-8") as f:
+        f.write(json.dumps(env, ensure_ascii=False) + "\n")
+
+
+def flat(env):
+    """결과 jsonl 한 줄에 넣을 환경 필드 (results/README.md 기록 규칙)."""
+    f = env["cpu"]["flags"]
+    return {"cpu": env["cpu"]["model"], "vnni": bool(f["avx512_vnni"] or f["avx_vnni"]),
+            "ort": (env["onnxruntime"] or {}).get("version"), "os": env["os"]}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", help="env.json 저장 경로. 없으면 화면에만 출력")

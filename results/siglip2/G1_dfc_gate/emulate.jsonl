@@ -1,0 +1,1 @@
+{"date": "2026-10-13T15:55:26", "har": "siglip2_b16_224_optimized.har", "data": "pets_dev", "k": 64, "onnx_fp32_top1": 95.31, "fp_optimized": {"cos_mean": 1.0, "cos_min": 1.0, "top1": 95.31, "sec": 89}, "quantized": {"cos_mean": 0.12064, "cos_min": -0.1613, "top1": 3.12, "sec": 1454}}

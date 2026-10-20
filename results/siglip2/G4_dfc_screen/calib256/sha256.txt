@@ -1,0 +1,2 @@
+da46a4c48569f41c1142e524a8a18d466596dbca64db6d52acd9e994f7d4d7f8  /home/jjury/siglip2_dfc/g4_calib256_20261014/opt_D256_official_b9fc2.har
+91f551e312271d1af6c87c163505c9484e157dcf09afc91689609d7095ca4355  /home/jjury/siglip2_dfc/g4_calib256_20261014/calib_highres256_s0_nhwc.npy

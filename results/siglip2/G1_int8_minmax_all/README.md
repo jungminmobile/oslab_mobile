@@ -2,7 +2,7 @@
 
 ROADMAP G1 마지막 항목: "ONNX Runtime INT8 전부(MinMax), 정수 커널, dev 1,000장".
 **결론: SigLIP2는 텐서별 8비트 MinMax로 전부 양자화하면 완전히 무너진다 (고화질 평균 top-1 91.7 → 1.4, cos 0.445).**
-원인은 블록 5부터 잔차 흐름·MLP fc2 입력에 생기는 활성값 이상치(최대값이 99.9% 분위수의 40~286배)로 보인다(아래 진단).
+원인은 블록 5부터 생기는 활성값 이상치로 보인다: 잔차 흐름 최대값이 99.9% 분위수의 39~68배(블록 5~11), fc2 입력은 블록 5·9~11에서 15~286배(아래 진단).
 이 결과는 G3의 출발점이다. 보고서 수치가 아니라 방향 확인용이다.
 
 ## 실행 명령
@@ -44,7 +44,7 @@ RN50_RESULTS=../results/siglip2/G1_int8_minmax_all/diag "$SIGLIP2_PYTHON" s2_dia
 | H3 연산 유형 | MatMul만 양자화 | top-1 13.0, cos 0.762 | MatMul만으로도 크게 손상 |
 | | QDQRegistry 연산만(MatMul·LayerNorm 등, Add·Mul·Softmax 제외)* | top-1 1.0, cos 0.512 | LayerNorm 경계 양자화가 손실을 크게 키움 |
 | | 전부 (기본) | top-1 1.0, cos 0.475 | |
-| H1 활성값 이상치 | PyTorch hook, Pets dev 32장, 텐서별 max/p99.9 | 아래 표 | **강하게 지지** |
+| H1 활성값 이상치 | PyTorch hook, **Pets dev 32장**(스크립트 상수 `outlier_stats(n_img=32)`, `diag.jsonl`의 `data`는 cos·top-1용 CIFAR 200장만 기록), 텐서별 max/p99.9 | 아래 표 | **강하게 지지** |
 
 \* 1차 진단의 `V_no_add`와 `V_no_softmax`는 대상 연산 목록을 `QDQRegistry`와의 교집합으로 만드는 실수로, ORT 기본 목록에 있는 Add·Mul·Softmax 등이 둘 다 처음부터 빠져 **같은 모델**이 되었다. 위 표에서는 하나의 행으로 해석했다. 2차 진단에서 기본 목록 기준으로 다시 나눴다.
 
@@ -63,15 +63,15 @@ RN50_RESULTS=../results/siglip2/G1_int8_minmax_all/diag "$SIGLIP2_PYTHON" s2_dia
 ## 2차 진단 (위치 좁히기, `diag/diag.jsonl` `round: 2` 줄, 커밋 `c7bfd35`, CIFAR dev A 앞 200장, FP32 top-1 74.5)
 | 변형 | 양자화 대상 | top-1 | cos 평균 | cos 하위 1% |
 |---|---|---|---|---|
-| 전부 (기본) | ORT 기본 목록 전부 | 1.0 | 0.475 | 0.387 |
+| 전부 (기본) — *1차 행, `ab52093`* | ORT 기본 목록 전부 | 1.0 | 0.475 | 0.387 |
 | 기본 − LayerNorm | Add·Softmax·Mul·MatMul 등 (LayerNorm만 float) | 1.0 | 0.483 | 0.392 |
 | MatMul + LayerNorm | | 1.0 | 0.510 | 0.384 |
-| MatMul만 (1차) | | 13.0 | 0.762 | 0.639 |
+| MatMul만 — *1차 행, `ab52093`* | | 13.0 | 0.762 | 0.639 |
 | MatMul − 모든 fc2 | fc2 13개 float | **64.5** | **0.867** | 0.783 |
 | MatMul − 블록 5~11 fc2 | fc2 7개 float | 57.5 | **0.870** | 0.787 |
 
 해석:
-1. **잔차 흐름을 8비트로 자르면 그것만으로 붕괴**한다: LayerNorm 입력(= 잔차 흐름) 양자화를 더하면 0.76 → 0.51, 잔차 합(Add) 양자화가 있으면 LayerNorm을 빼도 0.48.
+1. **잔차 흐름(LayerNorm 입력·잔차 Add)의 8비트 양자화가 붕괴의 주원인이라는 가설**: LayerNorm 경계 양자화를 더하면 0.76 → 0.51, Add를 포함한 기본 목록은 LayerNorm을 빼도 0.48. 단 Add·LayerNorm**만** 양자화한 변형은 없고, "기본 − LayerNorm"에는 Mul·Softmax·Concat·Conv 등도 들어 있어 Add만의 효과로 단정할 수 없다.
 2. **MatMul 손실은 블록 5~11의 fc2(입력 = 이상치가 큰 GELU 출력)에 몰려 있다**: 그 7개만 float으로 두면 0.76 → 0.87로, fc2 13개 전부를 뺀 것(0.867)과 같다.
 3. 그래도 cos 0.87(top-1 −10~17%p, 200장)이라 나머지 MatMul·보정 방식도 개선이 필요하다 → G3 (보정 방식 비교, 블록·연산 유형 민감도).
 200장 진단이라 top-1 차이(57.5 vs 64.5)는 표본 잡음 범위일 수 있다. 위치 판단은 cos로 한다.
@@ -79,7 +79,7 @@ RN50_RESULTS=../results/siglip2/G1_int8_minmax_all/diag "$SIGLIP2_PYTHON" s2_dia
 ## 3중 확인
 1. 자기 검증: 보정 사진 256장 assert, `CalibMaxIntermediateOutputs` 미사용 assert. 같은 파이프라인 두 번 실행(`fe295d5` / `ab52093`) → dev 6종 12개 수치 모두 같음. 같은 조건으로 다시 양자화 → sha256 같음(`requant_sha256.txt`)
 2. 독립 재계산: 요약 표를 `rn50/summarize.py`(다른 코드)로 raw `evaluate.jsonl`에서 다시 계산 → 고화질 Δtop-1 −90.29, cos 0.445 일치. 정수 커널 vs fake-quant 비교(H2)도 독립 경로 역할
-3. 독립 검토: 코드 검토 서브에이전트 1회(지적 6건 반영, 커밋 `add8dc1`). 이 결과 폴더는 PR에서 다시 검토 예정
+3. 독립 검토: 코드 검토 서브에이전트 1회(지적 6건 반영, 커밋 `add8dc1`). 결과 폴더 검토 1회 — 표·평균·차이 전부 재계산 일치, 지적(이상치 배율 범위, "잔차 흐름만으로 붕괴" 과장, H1 표본 기록, 표 출처 혼합) 반영. `requant_sha256.txt`는 `scripts/g1_pipeline.sh` [4/5] 산출물(커밋 `ab52093`, 04:48)
 
 ## 다음 (G3로 넘김)
 - 보정 방식(Percentile·Entropy)은 이상치를 잘라 눈금을 촘촘히 하지만, massive activation은 의미 있는 값일 수 있어 잘라내면 손실 가능 → 비교 필요

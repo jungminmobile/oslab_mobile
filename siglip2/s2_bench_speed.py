@@ -33,7 +33,7 @@ if __name__ == "__main__":
     out = S.require_results_dir()
     out.mkdir(parents=True, exist_ok=True)
     env = env_info.collect()
-    (out / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    env_info.write_env(out, env)
     with open(out / "runs.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps({"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"],
                             "dirty": env["git"]["dirty"], "argv": sys.argv[1:], "cpu": env["cpu"]["model"],

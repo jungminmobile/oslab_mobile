@@ -1,0 +1,25 @@
+total 5184728
+drwxr-xr-x 2 jjury jjury       4096 Oct 13 15:22 .
+drwxr-xr-x 3 jjury jjury       4096 Oct 13 12:42 ..
+-rw-r--r-- 1 jjury jjury        336 Oct 13 13:03 acceleras.log
+-rw-r--r-- 1 jjury jjury          0 Oct 13 13:04 allocator.log
+-rwxr-xr-x 1 jjury jjury   38535296 Oct 13 12:42 calib_highres64_s0_nhwc.npy
+-rw-r--r-- 1 jjury jjury     387520 Oct 13 15:22 compile.log
+-rw-r--r-- 1 jjury jjury        465 Oct 13 12:42 env.txt
+-rw-r--r-- 1 jjury jjury          0 Oct 13 15:22 files.txt
+-rw-r--r-- 1 jjury jjury       9036 Oct 13 15:22 hailo_sdk.client.log
+-rw-r--r-- 1 jjury jjury    7282809 Oct 13 15:20 hailo_sdk.core.log
+-rw-r--r-- 1 jjury jjury      40814 Oct 13 13:02 optimize.log
+-rw-r--r-- 1 jjury jjury       1474 Oct 13 12:44 parse.log
+-rw-r--r-- 1 jjury jjury     471610 Oct 13 12:44 parsing_report.json
+-rw-r--r-- 1 jjury jjury  370032640 Oct 13 12:44 siglip2_b16_224.har
+-rw-r--r-- 1 jjury jjury   69152768 Oct 13 15:21 siglip2_b16_224.hef
+-rw-r--r-- 1 jjury jjury 2082088960 Oct 13 15:22 siglip2_b16_224_compiled.har
+-rw-r--r-- 1 jjury jjury 2000148480 Oct 13 13:02 siglip2_b16_224_optimized.har
+-rwxr-xr-x 1 jjury jjury  371635636 Oct 13 12:42 siglip2_image_fp32_b1.onnx
+-rw-r--r-- 1 jjury jjury  369283905 Oct 13 12:44 siglip2_image_fp32_b1.sim.onnx
+-rw-r--r-- 1 jjury jjury         64 Oct 13 15:22 steps.txt
+3d8e143e53ad9e4aed3efae9b0560860d6b8bfe3b32b1413d19afe6ba3c9e55f  siglip2_b16_224.har
+ee726824767260fe4680457f154163e2f0883c69aeca7b4bc686cea54bd572ab  siglip2_b16_224_compiled.har
+69e86634287be9157cb106ad60953cfbbee8f3d8d3f6854d11faaa087df1147d  siglip2_b16_224_optimized.har
+6733511276bce2d3e7417593206b99a283a36a55601cb73a4ff45a9c83a17540  siglip2_b16_224.hef

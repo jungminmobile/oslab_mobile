@@ -1,0 +1,67 @@
+{
+ "name": "C256L1_official",
+ "har_sha256": "812213190c5beb216244881e3f16c47d72c42449c617966df99a8ad9a378c397",
+ "parts": [
+  {
+   "tag": "C256L1_official",
+   "start": 0,
+   "commit": "3a620c6",
+   "dirty": false
+  },
+  {
+   "tag": "C256L1_official_s200a",
+   "start": 200,
+   "commit": "8dde8e6",
+   "dirty": false
+  },
+  {
+   "tag": "C256L1_official_s200b",
+   "start": 200,
+   "commit": "027104e",
+   "dirty": false
+  },
+  {
+   "tag": "C256L1_official_s400a",
+   "start": 400,
+   "commit": "027104e",
+   "dirty": false
+  },
+  {
+   "tag": "C256L1_official_s400b",
+   "start": 400,
+   "commit": "dab52ee",
+   "dirty": false
+  },
+  {
+   "tag": "C256L1_official_s600a",
+   "start": 600,
+   "commit": "8c09591",
+   "dirty": false
+  },
+  {
+   "tag": "C256L1_official_s600b",
+   "start": 600,
+   "commit": "cf8b27f",
+   "dirty": false
+  },
+  {
+   "tag": "C256L1_official_s800a",
+   "start": 800,
+   "commit": "cf8b27f",
+   "dirty": false
+  },
+  {
+   "tag": "C256L1_official_s800b",
+   "start": 800,
+   "commit": "cf8b27f",
+   "dirty": false
+  },
+  {
+   "tag": "C256L1_official_s1000b",
+   "start": 1000,
+   "commit": "cf8b27f",
+   "dirty": false
+  }
+ ],
+ "out": "pred_C256L1_official_full.npz"
+}

@@ -37,7 +37,7 @@ PyTorch fused attention vs unfused(내보낸 형태): 코사인 최소 0.9999998
 
 ## 3중 확인
 1. 자기 검증: 코사인 ≥ 0.9999 assert 통과. 같은 명령을 여러 번 실행(`05524c5`, `615d992`, `ab52093`) → 수치 같음
-2. 독립 재계산: 같은 코드로 다른 폴더에 다시 export → 두 파일 모두 sha256 일치 (`reexport_sha256.txt`, `scripts/g1_pipeline.sh` [3/5]). export가 결정적이고, 저장된 ONNX가 커밋된 코드의 산출물임을 확인
+2. 독립 재계산: 같은 코드로 다른 폴더에 다시 export → 두 파일 모두 sha256 일치 (`reexport_sha256.txt`, `scripts/g1_pipeline.sh` [3/5], 커밋 `ab52093` 실행 04:44~04:48). export가 결정적이고, 저장된 ONNX가 커밋된 코드의 산출물임을 확인
 3. 독립 검토: 코드 검토 서브에이전트 1회 — "fused vs unfused를 검증하지 않음", "686·sha256 주장에 원본 기록 없음" 지적 → 위 비교와 `fused_variant/`, `reexport_sha256.txt`로 기록 (커밋 `add8dc1`, `84045ff`)
 
 ## 결론

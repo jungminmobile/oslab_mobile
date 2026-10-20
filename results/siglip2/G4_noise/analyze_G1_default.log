@@ -1,0 +1,74 @@
+waiting for lock held by None (queue position 2)
+ACQUIRED {'owner': 'siglip2', 'job': 'DFC analyze-noise G1_default', 'since': '2026-10-14T10:22:56', 'host': 'localhost', 'pid': 8345}
+[info] Current Time: 10:22:59, 10/14/26
+[info] CPU: Architecture: x86_64, Model: 11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz, Number Of Cores: 8, Utilization: 0.1%
+[info] Memory: Total: 11GB, Available: 11GB
+[info] System info: OS: Linux, Kernel: 6.6.87.2-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo analyze-noise noise_G1_default.har --data-path /mnt/d/mokerton/artifacts/siglip2/dfc/pets_dev64_nhwc.npy --calib-data-path /home/jjury/siglip2_dfc/20261013_124213/calib_highres64_s0_nhwc.npy --batch-size 2 --data-count 64`
+[info] No GPU chosen and no suitable GPU found, falling back to CPU.
+[info] Hailo HW architecture: hailo10h
+[info] Starting Layer Noise Analysis
+Full Quant Analysis:   0%|          | 0/32 [00:00<?, ?iterations/s]Traceback (most recent call last):
+  File "/home/jjury/hailo10_venv/bin/hailo", line 6, in <module>
+    sys.exit(main())
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/cmd_utils/main.py", line 106, in main
+    ret_val = client_command_runner.run()
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/cmd_utils/base_utils.py", line 68, in run
+    return self._run(argv)
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/cmd_utils/base_utils.py", line 98, in _run
+    return args.func(args)
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/hailo_lat_cli.py", line 67, in run
+    runner.analyze_noise(
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_common/states/states.py", line 16, in wrapped_func
+    return func(self, *args, **kwargs)
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/runner/client_runner.py", line 2200, in analyze_noise
+    self._analyze_noise(
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_common/states/states.py", line 16, in wrapped_func
+    return func(self, *args, **kwargs)
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/runner/client_runner.py", line 2223, in _analyze_noise
+    return self._sdk_backend.run_layer_analysis_tool(
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/sdk_backend/sdk_backend.py", line 1268, in run_layer_analysis_tool
+    analyzer.run()
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/optimization_algorithm.py", line 55, in run
+    return super().run()
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/algorithm_base.py", line 160, in run
+    self._run_int()
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/hailo_layer_noise_analysis.py", line 86, in _run_int
+    self.analyze_using_acceleras()
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/hailo_layer_noise_analysis.py", line 99, in analyze_using_acceleras
+    self.analyze_full_quant_net()
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/hailo_layer_noise_analysis.py", line 263, in analyze_full_quant_net
+    predict_function(inputs)
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/tensorflow/python/util/traceback_utils.py", line 153, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/tmp/__autograph_generated_file5zv6eymb.py", line 13, in tf__predict_function
+    retval_ = ag__.converted_call(ag__.ld(lat_model), (ag__.ld(data),), dict(training=False), fscope)
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/keras/src/utils/traceback_utils.py", line 122, in error_handler
+    raise e.with_traceback(filtered_tb) from None
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/lat_utils/lat_model.py", line 423, in call
+    metric.update_state(native, numeric, partial_numeric=partial_numeric)
+  File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/lat_utils/lat_model.py", line 23, in update_state
+    self.noise_energy.assign_add(tf.reduce_mean((native - numeric) ** 2))
+ValueError: in user code:
+
+    File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/hailo_layer_noise_analysis.py", line 257, in predict_function  *
+        return lat_model(data, training=False)
+    File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/keras/src/utils/traceback_utils.py", line 122, in error_handler  **
+        raise e.with_traceback(filtered_tb) from None
+    File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/lat_utils/lat_model.py", line 423, in call
+        metric.update_state(native, numeric, partial_numeric=partial_numeric)
+    File "/home/jjury/hailo10_venv/lib/python3.10/site-packages/hailo_model_optimization/algorithms/lat_utils/lat_model.py", line 23, in update_state
+        self.noise_energy.assign_add(tf.reduce_mean((native - numeric) ** 2))
+
+    ValueError: Exception encountered when calling LATModel.call().
+    
+    [1mDimensions must be equal, but are 768 and 780 for '{{node lat_model_1/sub_25}} = Sub[T=DT_FLOAT](lat_model_1/conv_feature_splitter1_2_1/act_op_1/Identity, lat_model_1/conv_feature_splitter1_2_3/output_op_1/mul)' with input shapes: [2,1,196,768], [2,1,196,780].[0m
+    
+    Arguments received by LATModel.call():
+      • inputs=tf.Tensor(shape=(2, 224, 224, 3), dtype=float32)
+
+Full Quant Analysis:   0%|          | 0/32 [00:27<?, ?iterations/s]
+RELEASED

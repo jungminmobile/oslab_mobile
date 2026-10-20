@@ -1,0 +1,49 @@
+{
+ "date": "2026-10-20T06:44:40",
+ "env": {
+  "python": "3.11.9",
+  "onnxruntime": "1.25.0",
+  "cpu": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+  "threads": 2
+ },
+ "cond": {
+  "models": [
+   "fp32=siglip2_image_fp32.onnx",
+   "r0=siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx",
+   "m2rot=siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx"
+  ],
+  "n": 200,
+  "repeats": 3,
+  "warmup": 20,
+  "threads": 2
+ },
+ "results": {
+  "fp32": {
+   "file": "siglip2_image_fp32.onnx",
+   "MiB": 354.5,
+   "ms_per_img_mean": 334.28,
+   "ms_per_img_std": 22.18,
+   "ms_per_img_min": 313.22,
+   "lat_p50": 340.82,
+   "lat_p95": 415.03
+  },
+  "r0": {
+   "file": "siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx",
+   "MiB": 105.3,
+   "ms_per_img_mean": 174.43,
+   "ms_per_img_std": 12.42,
+   "ms_per_img_min": 163.92,
+   "lat_p50": 178.05,
+   "lat_p95": 222.62
+  },
+  "m2rot": {
+   "file": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+   "MiB": 91.7,
+   "ms_per_img_mean": 173.43,
+   "ms_per_img_std": 21.82,
+   "ms_per_img_min": 157.31,
+   "lat_p50": 177.42,
+   "lat_p95": 223.11
+  }
+ }
+}

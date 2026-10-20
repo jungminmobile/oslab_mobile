@@ -1,0 +1,2 @@
+84e981f75fff02da12a4ea5e8aaa1d026003a4d0c82d05b45bb090337975e6a7  /home/jjury/siglip2_dfc/g4_lvl1_20261015/opt_D256L1_official_b9fc2.har
+812213190c5beb216244881e3f16c47d72c42449c617966df99a8ad9a378c397  /home/jjury/siglip2_dfc/g4_lvl1_20261015/opt_C256L1_official.har

@@ -117,7 +117,7 @@ def main():
     out = S.require_results_dir()
     out.mkdir(parents=True, exist_ok=True)
     env = env_info.collect()
-    (out / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    env_info.write_env(out, env)
     f = lambda k: np.load(RC.CACHE_DIR / f"cifar_A_{k}.npy", mmap_mode="r" if k == "x" else None)
     x, y, W, ref = np.asarray(f("x")[:a.n]), f("y")[:a.n], f("clf"), f("ref_fp32")[:a.n]
     res = {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"],

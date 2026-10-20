@@ -34,7 +34,7 @@ if __name__ == "__main__":
     out = S.require_results_dir()
     out.mkdir(parents=True, exist_ok=True)
     env = env_info.collect()
-    (out / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    env_info.write_env(out, env)
     # rn50 evaluate.jsonl 줄에는 커밋·옵션이 없으므로 실행마다 runs.jsonl에 따로 남긴다 (results/README.md 기록 규칙)
     with open(out / "runs.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps({"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"],

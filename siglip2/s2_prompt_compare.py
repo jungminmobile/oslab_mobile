@@ -61,7 +61,7 @@ def main():
     env = env_info.collect()
     out = S.require_results_dir()
     out.mkdir(parents=True, exist_ok=True)
-    (out / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    env_info.write_env(out, env)
     rows, corr = [], {"clip": {}, "siglip": {}}
     for key in DATA:
         f = lambda k: RC.CACHE_DIR / f"{key}_{k}.npy"

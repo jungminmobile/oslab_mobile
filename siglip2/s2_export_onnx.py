@@ -136,7 +136,7 @@ def main():
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     env = env_info.collect()
-    (out / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    env_info.write_env(out, env)
 
     model, preprocess, _ = S.load_model()
     fused_ref = fused_reference(model, preprocess, a.verify) if a.verify else None   # fused 상태 PyTorch 출력 (D-019 확인용)

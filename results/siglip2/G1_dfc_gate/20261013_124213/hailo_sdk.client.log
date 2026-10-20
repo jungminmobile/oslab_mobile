@@ -1,0 +1,77 @@
+2026-10-13 12:42:31,037 - INFO - main.py:26 - Current Time: 12:42:31, 10/13/26
+2026-10-13 12:42:32,058 - INFO - main.py:38 - CPU: Architecture: x86_64, Model: 11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz, Number Of Cores: 8, Utilization: 0.0%
+2026-10-13 12:42:32,059 - INFO - main.py:42 - Memory: Total: 11GB, Available: 11GB
+2026-10-13 12:42:32,059 - INFO - main.py:46 - System info: OS: Linux, Kernel: 6.6.87.2-microsoft-standard-WSL2
+2026-10-13 12:42:32,060 - INFO - main.py:47 - Hailo DFC Version: 5.4.0
+2026-10-13 12:42:32,060 - INFO - main.py:52 - HailoRT Version: Not Installed
+2026-10-13 12:42:32,070 - INFO - main.py:68 - PCIe: No Hailo PCIe device was found
+2026-10-13 12:42:32,070 - INFO - main.py:104 - Running `hailo parser onnx siglip2_image_fp32_b1.onnx --hw-arch hailo10h --net-name siglip2_b16_224 --har-path siglip2_b16_224.har -y --parsing-report-path parsing_report.json`
+2026-10-13 12:42:54,714 - INFO - parser.py:174 - Translation started on ONNX model siglip2_b16_224
+2026-10-13 12:43:00,095 - INFO - parser.py:209 - Restored ONNX model siglip2_b16_224 (completion time: 00:00:05.38)
+2026-10-13 12:43:20,767 - INFO - parser.py:232 - Extracted ONNXRuntime meta-data for Hailo model (completion time: 00:00:26.05)
+2026-10-13 12:44:17,333 - INFO - parser.py:285 - Simplified ONNX model for a parsing retry attempt (completion time: 00:01:22.61)
+2026-10-13 12:44:17,345 - INFO - parser.py:286 - Saved simplified ONNX to: siglip2_image_fp32_b1.sim.onnx, will be used for parsing retry.
+2026-10-13 12:44:30,280 - INFO - parser.py:434 - Start nodes mapped from original model: 'image': 'siglip2_b16_224/input_layer1'.
+2026-10-13 12:44:30,280 - INFO - parser.py:435 - End nodes mapped from original model: '/trunk/attn_pool/Gather'.
+2026-10-13 12:44:30,557 - INFO - parser.py:301 - Translation completed on ONNX model siglip2_b16_224 (completion time: 00:01:35.84)
+2026-10-13 12:44:32,594 - INFO - sdk_backend.py:266 - Hailo HW architecture: hailo10h
+2026-10-13 12:44:39,806 - INFO - sdk_backend.py:2441 - Saved HAR to: /home/jjury/siglip2_dfc/20261013_124213/siglip2_b16_224.har
+2026-10-13 12:44:39,807 - INFO - client_runner.py:2353 - Saved parsing report to: parsing_report.json
+2026-10-13 12:44:50,412 - INFO - main.py:26 - Current Time: 12:44:50, 10/13/26
+2026-10-13 12:44:51,430 - INFO - main.py:38 - CPU: Architecture: x86_64, Model: 11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz, Number Of Cores: 8, Utilization: 0.3%
+2026-10-13 12:44:51,431 - INFO - main.py:42 - Memory: Total: 11GB, Available: 11GB
+2026-10-13 12:44:51,431 - INFO - main.py:46 - System info: OS: Linux, Kernel: 6.6.87.2-microsoft-standard-WSL2
+2026-10-13 12:44:51,432 - INFO - main.py:47 - Hailo DFC Version: 5.4.0
+2026-10-13 12:44:51,432 - INFO - main.py:52 - HailoRT Version: Not Installed
+2026-10-13 12:44:51,447 - INFO - main.py:68 - PCIe: No Hailo PCIe device was found
+2026-10-13 12:44:51,447 - INFO - main.py:104 - Running `hailo optimize siglip2_b16_224.har --hw-arch hailo10h --calib-set-path calib_highres64_s0_nhwc.npy --output-har-path siglip2_b16_224_optimized.har`
+2026-10-13 12:45:17,744 - INFO - sdk_backend.py:266 - Hailo HW architecture: hailo10h
+2026-10-13 12:45:24,254 - IMPORTANT - sdk_backend.py:1341 - Starting Model Optimization
+2026-10-13 12:45:24,623 - WARNING - mo_config.py:180 - Reducing optimization level to 0 (the accuracy won't be optimized and compression won't be used) because there's less data than the recommended amount (1024), and there's no available GPU
+2026-10-13 12:45:24,623 - WARNING - mo_config.py:245 - Running model optimization with zero level of optimization is not recommended for production use and might lead to suboptimal accuracy results
+2026-10-13 12:45:24,625 - INFO - mo_script_parser.py:91 - Model received quantization params from the hn
+2026-10-13 12:45:24,668 - INFO - sdk_backend.py:171 - Notice: For optimal performance, if your model has more than 10M parameters, it is recommended to set the compression level to 4. (Current model has 92.31M parameters.)
+2026-10-13 12:45:24,668 - INFO - sdk_backend.py:177 - Notice: For optimal accuracy with compressed models, it is recommended to set the optimization level to 4.
+2026-10-13 12:45:35,902 - INFO - algorithm_base.py:150 - MatmulDecompose skipped
+2026-10-13 12:45:36,349 - INFO - algorithm_base.py:153 - Starting Mixed Precision
+2026-10-13 12:45:38,989 - INFO - algorithm_base.py:169 - Model Optimization Algorithm Mixed Precision is done (completion time is 00:00:02.62)
+2026-10-13 12:45:42,794 - INFO - algorithm_base.py:153 - Starting LayerNorm Decomposition
+2026-10-13 12:45:58,634 - INFO - stats_collection.py:130 - Using dataset with 64 entries for calibration
+2026-10-13 12:46:58,809 - INFO - algorithm_base.py:169 - Model Optimization Algorithm LayerNorm Decomposition is done (completion time is 00:01:16.01)
+2026-10-13 12:47:08,964 - INFO - algorithm_base.py:153 - Starting Statistics Collector
+2026-10-13 12:47:08,968 - INFO - stats_collection.py:130 - Using dataset with 64 entries for calibration
+2026-10-13 12:51:23,510 - INFO - algorithm_base.py:169 - Model Optimization Algorithm Statistics Collector is done (completion time is 00:04:14.54)
+2026-10-13 12:51:26,064 - INFO - stats_collection.py:130 - Using dataset with 64 entries for calibration
+2026-10-13 12:56:44,238 - INFO - algorithm_base.py:153 - Starting Fix zp_comp Encoding
+2026-10-13 12:56:44,251 - INFO - algorithm_base.py:169 - Model Optimization Algorithm Fix zp_comp Encoding is done (completion time is 00:00:00.01)
+2026-10-13 12:56:44,254 - INFO - algorithm_base.py:153 - Starting Matmul Equalization
+2026-10-13 12:56:48,812 - INFO - algorithm_base.py:169 - Model Optimization Algorithm Matmul Equalization is done (completion time is 00:00:04.56)
+2026-10-13 12:56:48,813 - INFO - algorithm_base.py:153 - Starting MatmulDecomposeFix
+2026-10-13 12:56:48,813 - INFO - algorithm_base.py:169 - Model Optimization Algorithm MatmulDecomposeFix is done (completion time is 00:00:00.00)
+2026-10-13 12:56:48,814 - INFO - algorithm_base.py:153 - Starting Translate Parameters
+2026-10-13 12:57:36,477 - INFO - algorithm_base.py:169 - Model Optimization Algorithm Translate Parameters is done (completion time is 00:00:46.92)
+2026-10-13 12:58:58,334 - INFO - algorithm_base.py:150 - Finetune encoding skipped
+2026-10-13 12:58:58,404 - INFO - algorithm_base.py:150 - Bias Correction skipped
+2026-10-13 12:58:58,482 - INFO - algorithm_base.py:150 - Adaround skipped
+2026-10-13 12:58:58,519 - INFO - algorithm_base.py:150 - Quantization-Aware Fine-Tuning skipped
+2026-10-13 13:00:24,708 - INFO - algorithm_base.py:150 - Layer Noise Analysis skipped
+2026-10-13 13:00:27,053 - INFO - quant_checker.py:171 - The calibration set seems to not be normalized, because the values range is [(-1.0, 1.0), (-1.0, 1.0), (-1.0, 1.0)].
+Since the neural core works in 8-bit (between 0 to 255), a quantization will occur on the CPU of the runtime platform.
+Add a normalization layer to the model to offload the normalization to the neural core.
+Refer to the user guide Hailo Dataflow Compiler user guide / Model Optimization / Optimization Related Model Script Commands / model_modification_commands / normalization for details.
+2026-10-13 13:01:44,298 - IMPORTANT - sdk_backend.py:1353 - Model Optimization is done
+2026-10-13 13:02:42,567 - INFO - sdk_backend.py:2441 - Saved HAR to: /home/jjury/siglip2_dfc/20261013_124213/siglip2_b16_224_optimized.har
+2026-10-13 13:03:31,891 - INFO - main.py:26 - Current Time: 13:03:31, 10/13/26
+2026-10-13 13:03:32,918 - INFO - main.py:38 - CPU: Architecture: x86_64, Model: 11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz, Number Of Cores: 8, Utilization: 0.1%
+2026-10-13 13:03:32,919 - INFO - main.py:42 - Memory: Total: 11GB, Available: 11GB
+2026-10-13 13:03:32,919 - INFO - main.py:46 - System info: OS: Linux, Kernel: 6.6.87.2-microsoft-standard-WSL2
+2026-10-13 13:03:32,920 - INFO - main.py:47 - Hailo DFC Version: 5.4.0
+2026-10-13 13:03:32,920 - INFO - main.py:52 - HailoRT Version: Not Installed
+2026-10-13 13:03:32,934 - INFO - main.py:68 - PCIe: No Hailo PCIe device was found
+2026-10-13 13:03:32,935 - INFO - main.py:104 - Running `hailo compiler siglip2_b16_224_optimized.har --hw-arch hailo10h --output-dir . --output-har-path siglip2_b16_224_compiled.har`
+2026-10-13 13:03:57,555 - INFO - sdk_backend.py:266 - Hailo HW architecture: hailo10h
+2026-10-13 13:04:45,501 - INFO - compiler_cli.py:84 - Compiling network
+2026-10-13 13:04:45,817 - INFO - hailo_tools_runner.py:695 - To achieve optimal performance, set the compiler_optimization_level to "max" by adding performance_param(compiler_optimization_level=max) to the model script. Note that this may increase compilation time.
+2026-10-13 15:21:30,578 - INFO - compiler_cli.py:89 - Compilation complete
+2026-10-13 15:21:31,056 - INFO - compiler_cli.py:94 - Saved HEF to: /home/jjury/siglip2_dfc/20261013_124213/siglip2_b16_224.hef
+2026-10-13 15:22:16,397 - INFO - sdk_backend.py:2441 - Saved HAR to: /home/jjury/siglip2_dfc/20261013_124213/siglip2_b16_224_compiled.har
