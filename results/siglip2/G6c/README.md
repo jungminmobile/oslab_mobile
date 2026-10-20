@@ -54,6 +54,18 @@
   - (b) 참고: (a) + UINT8 양자화 (bench가 HEF에 넣는 형식)
 - B32 M_both·Z와 S1B16 Z는 정규화가 HEF 안이라 호스트 정규화 시간이 없다.
 
+### 2-3. HEF가 호스트에서 실행하는 연산 확인 (용 추가 지시, 판정 없음)
+
+- 대상: B16 M2rot2, B16_rb, B16_both, B32 M_both, B32 Z (+ 참고 S1B16 Z)
+- `chip_hefinfo.py`로 HEF마다 다음을 저장한다.
+  - `hailortcli parse-hef --parse-streams --parse-vstreams` 전문
+  - `hailo_platform.HEF` API의 vstream·stream 정보: 형식 type·order·flags, 모양, quant_info, data_bytes, nms_shape, 원래 층 이름
+- 확인 방법
+  - **후처리 연산(NMS 등):** vstream이 입출력 각 1개이고, `nms_shape`가 없고(NMS 순서가 아니면 HailoRT가 예외를 냄), parse-hef 전문에 ops·NMS 항목이 없으면 "없음"
+  - **형식 변환:** vstream(사용자 쪽)과 stream(칩 쪽)의 format type·order·모양을 비교한다. 다르면 HailoRT가 변환을 한다. 변환이 어디서(AGX 호스트 CPU 또는 Hailo-10H 쪽) 도는지는 이 출력으로는 알 수 없다.
+  - **정규화:** 입력 quant_info가 (scale 1, zp 0)이면 정규화가 HEF 안이고, 아니면 호스트에서 정규화가 필요하다 (2-2)
+  - **사용자 형식 선택:** eval은 입출력을 FLOAT32로 두어 HailoRT가 양자화·역양자화를 한다. bench는 UINT8 입력과 HEF 기본 출력 형식(UINT16)을 쓴다. 이것은 HEF가 아니라 호출 쪽 선택이라 따로 적는다.
+
 ## 3. 판정 (결과 전 고정)
 
 | 항목 | 규칙 |
