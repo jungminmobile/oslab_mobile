@@ -35,10 +35,14 @@ fi
 if [ "$SKIP_BENCH" != 1 ]; then
   for b in 1 8; do
     for s in 1 2 3; do
-      wait_cool "bench_b${b}_s$s"
-      log "other_hailo=$(others) bench b$b s$s 시작"
-      timeout 3600 python3 -u g6_hailo_chip.py bench --data . --out $O/bench_b${b}_s$s --batch $b --warmup 20 --n 200 --label "b${b}_s$s" --models $MODELS >> $L 2>&1 || log "BENCH FAIL b$b s$s"
-      temp "after_bench_b${b}_s$s" > /dev/null; log "bench b$b s$s 끝"
+      # 세션 = HEF를 같은 순서로 한 번씩. 10/20 첫 실행에서 배치 8 세션 하나로 칩이 88 → 103 °C가 되어, HEF마다 냉각한다 (README 8절)
+      for h in $HEFS; do
+        wait_cool "bench_b${b}_s${s}_$h"
+        log "other_hailo=$(others) bench b$b s$s $h 시작"
+        timeout 1800 python3 -u g6_hailo_chip.py bench --data . --out $O/bench_b${b}_s$s/$h --batch $b --warmup 20 --n 200 --label "b${b}_s$s" --models $h=$h.hef >> $L 2>&1 || { log "BENCH FAIL b$b s$s $h"; exit 1; }
+        temp "after_bench_b${b}_s${s}_$h" > /dev/null
+      done
+      log "bench b$b s$s 끝"
     done
   done
   for b in 1 8; do
