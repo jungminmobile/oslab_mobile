@@ -98,7 +98,7 @@ def main():
     for i in range(len(blocks)):
         nrm = T[f"n{i}"]
         hi[i] = nrm > 5 * nrm.median(dim=1, keepdim=True).values      # (N, 196) — fc2는 블록 출력과 같은 토큰 위치
-    assert T["g0"].shape == (N, 196, 3072) and T["y0"].shape == (N, 196, 768)
+    assert T["g0"].shape == (N, S.NTOK, 3072) and T["y0"].shape == (N, S.NTOK, 768)
 
     def ranges(t, m, mode):
         """정적 범위. tensor: 전체 min~max / tensor_excl_hi: high-norm 토큰 제외 min~max / channel: 마지막 축(채널)별 min~max."""

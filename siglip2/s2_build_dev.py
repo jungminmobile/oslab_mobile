@@ -66,7 +66,7 @@ def build(name, model, preprocess, tok, threads, keep_downloads, git):
         n_cal = len(cal)
         names, templates = RD.classnames(name), cfg["templates"]
     xs = xs.astype(np.float32)
-    assert xs.ndim == 4 and xs.shape[1:] == (3, 224, 224) and np.isfinite(xs).all()
+    assert xs.ndim == 4 and xs.shape[1:] == (3, S.IMG, S.IMG) and np.isfinite(xs).all()
     assert xs.min() >= -1.0001 and xs.max() <= 1.0001, (xs.min(), xs.max())   # 평균·표준편차 0.5 정규화 범위
     W = S.zeroshot_classifier(model, tok, names, templates)
     ref = RC.embed(RC.onnx_path(FP32_IMAGE), xs, threads, fake_quant=False)   # FP32 ONNX, ORT 기본 설정

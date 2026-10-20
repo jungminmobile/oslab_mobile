@@ -136,7 +136,7 @@ def main():
     for i in range(len(blocks)):
         nrm = T[f"out{i}"].norm(dim=-1)                            # (N, 196)
         hi[i] = nrm > 5 * nrm.median(dim=1, keepdim=True).values
-    assert T["out0"].shape == (N, 196, 768) and T["g0"].shape == (N, 196, 3072)
+    assert T["out0"].shape == (N, S.NTOK, 768) and T["g0"].shape == (N, S.NTOK, 3072)
 
     # ---------- A. 거대 채널을 쓰는 가지 ----------
     rows_a = []

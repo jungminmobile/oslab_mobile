@@ -76,7 +76,7 @@ def main():
         row, preds = {}, {}
         for d, z in data.items():
             x, y, W, ref = z["x"], z["y"], z["clf"], z["ref"]
-            assert x.dtype == np.float32 and x.shape[1:] == (3, 224, 224), (d, x.dtype, x.shape)
+            assert x.dtype == np.float32 and x.shape[1] == 3 and x.shape[2] == x.shape[3] in (224, 256), (d, x.dtype, x.shape)
             e = l2n(np.concatenate([s.run(None, {"image": np.ascontiguousarray(x[i:i + a.bs])})[0]
                                     for i in range(0, len(x), a.bs)]).astype(np.float32))
             assert e.shape == ref.shape, (e.shape, ref.shape)

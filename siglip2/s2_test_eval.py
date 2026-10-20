@@ -75,7 +75,7 @@ def main():
 
     def flush():
         x = np.ascontiguousarray(np.stack(buf).astype(np.float32))
-        assert x.shape[1:] == (3, 224, 224) and x.min() >= -1.0001 and x.max() <= 1.0001, (x.shape, x.min(), x.max())
+        assert x.shape[1:] == (3, S.IMG, S.IMG) and x.min() >= -1.0001 and x.max() <= 1.0001, (x.shape, x.min(), x.max())
         for m, s in sess.items():
             emb[m].append(s.run(None, {"image": x})[0])
         buf.clear()

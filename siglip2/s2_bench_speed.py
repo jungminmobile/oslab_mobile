@@ -38,4 +38,17 @@ if __name__ == "__main__":
         f.write(json.dumps({"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"],
                             "dirty": env["git"]["dirty"], "argv": sys.argv[1:], "cpu": env["cpu"]["model"],
                             "power": env["power"], "official": False}, ensure_ascii=False) + "\n")
+    if S.IMG != 224:   # G8: rn50 bench는 CIFAR를 224로 만든다. 다른 크기 모델(B/32-256)은 같은 사진을 S.IMG로 늘려 넣는다 (속도는 값과 무관, B/16은 그대로)
+        import torch
+        _orig = RB.C.cifar100
+
+        def _cifar(*args, **kw):
+            ds, info = _orig(*args, **kw)
+
+            class _Resized:
+                def __getitem__(self, i):
+                    t, y = ds[i]
+                    return torch.nn.functional.interpolate(t[None], size=(S.IMG, S.IMG), mode="bilinear", align_corners=False)[0], y
+            return _Resized(), info
+        RB.C.cifar100 = _cifar
     RB.main()

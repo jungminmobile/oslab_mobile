@@ -58,7 +58,8 @@ def unfuse_attention(model):
 
 def export(model, path, dynamic, opset):
     import torch
-    x = torch.randn(1, 3, 224, 224)
+    assert tuple(model.visual.trunk.patch_embed.img_size) == (S.IMG, S.IMG), (model.visual.trunk.patch_embed.img_size, S.IMG)
+    x = torch.randn(1, 3, S.IMG, S.IMG)
     kw = dict(dynamic_axes={"image": {0: "batch"}, "embedding": {0: "batch"}}) if dynamic else {}
     with torch.inference_mode():
         torch.onnx.export(model.visual, (x,), str(path), input_names=["image"], output_names=["embedding"],
@@ -88,7 +89,7 @@ def cifar_dev(preprocess, n):
     ds = CIFAR100(str(RC.DATA_ROOT), train=True, download=False)
     s0 = RC.VAL_SPLITS["A"]
     x = torch.stack([preprocess(ds[i][0]) for i in range(s0, s0 + n)])
-    assert x.shape == (n, 3, 224, 224)
+    assert x.shape == (n, 3, S.IMG, S.IMG)
     return x
 
 

@@ -36,7 +36,7 @@ from scripts import env_info  # noqa: E402
 RC = S.RC
 
 
-def analytic_gmacs(N=196, D=768, L=12, mlp=4, patch=16, C=3):
+def analytic_gmacs(N=S.NTOK, D=768, L=12, mlp=4, patch=S.PATCH, C=3):
     """ViT-B/16 + MAP 헤드의 곱셈-누산 수 (LayerNorm·Softmax·GELU·bias 등 원소별 연산 제외 — fvcore와 같은 기준)."""
     patch_embed = N * D * (C * patch * patch)
     block = 3 * N * D * D + N * N * D + N * N * D + N * D * D + 2 * N * D * (mlp * D)
@@ -47,7 +47,7 @@ def analytic_gmacs(N=196, D=768, L=12, mlp=4, patch=16, C=3):
 def fvcore_gmacs(model):
     import torch
     from fvcore.nn import FlopCountAnalysis
-    fca = FlopCountAnalysis(model.visual, torch.randn(1, 3, 224, 224))
+    fca = FlopCountAnalysis(model.visual, torch.randn(1, 3, S.IMG, S.IMG))
     fca.unsupported_ops_warnings(False)
     fca.uncalled_modules_warnings(False)
     return {"total_GMACs": fca.total() / 1e9, "by_operator": {k: v / 1e9 for k, v in fca.by_operator().items()},
@@ -81,7 +81,7 @@ def mem_probe(path, threads, n_iter):
     after_load = proc.memory_info().rss
     load_peak = peak["v"]
     peak["v"] = after_load
-    x = np.random.default_rng(0).standard_normal((1, 3, 224, 224)).astype(np.float32)
+    x = np.random.default_rng(0).standard_normal((1, 3, S.IMG, S.IMG)).astype(np.float32)
     for _ in range(n_iter):
         s.run(None, {"image": x})
     stop.set()

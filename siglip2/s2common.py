@@ -31,6 +31,10 @@ import numpy as np
 REPO = Path(__file__).resolve().parents[1]
 RN50_DIR = REPO / "rn50"
 MODEL_ID = os.environ.get("S2_MODEL_ID", "hf-hub:timm/ViT-B-16-SigLIP2")   # G6: 환경변수로만 다른 모델 (없으면 기존과 같음)
+# G8: 입력 크기·패치·토큰 수 (기본 B/16 224 → 196토큰. B/32-256 → 64토큰). 모델 이름에서 정하고 export 때 trunk 값과 대조한다
+IMG = 256 if MODEL_ID.endswith("-256") else 224
+PATCH = 32 if "B-32" in MODEL_ID else 16
+NTOK = (IMG // PATCH) ** 2
 
 
 # Windows 콘솔·리디렉션 기본 인코딩(cp949)은 '—', '▁' 같은 문자를 출력하지 못해 스크립트가 멈춘다 → UTF-8로 고정
@@ -42,6 +46,13 @@ for _s in (sys.stdout, sys.stderr):
 def _setup_paths():
     data = Path(os.environ["SIGLIP2_DATA"])          # 없으면 KeyError로 멈춤 (siglip2/CLAUDE.md 10절)
     art = Path(os.environ["SIGLIP2_ARTIFACTS"])
+    # G8: 캐시·ONNX 파일 이름에 모델 이름이 없으므로, 산출물 폴더마다 model_id.txt로 모델을 확인한다 (다른 모델 캐시 덮어쓰기 방지)
+    mk = art / "model_id.txt"
+    if mk.exists():
+        assert mk.read_text(encoding="utf-8").strip() == MODEL_ID, f"{art} 는 {mk.read_text(encoding='utf-8').strip()} 용 폴더인데 MODEL_ID={MODEL_ID}"
+    elif "S2_MODEL_ID" in os.environ:
+        art.mkdir(parents=True, exist_ok=True)
+        mk.write_text(MODEL_ID + chr(10), encoding="utf-8")
     defaults = {"RN50_DATA": data / "cifar100", "RN50_EXTRA": data / "extra", "RN50_CACHE": art / "cache",
                 "RN50_ONNX": art / "onnx", "RN50_RESULTS": art / "results_tmp"}
     global RESULTS_EXPLICIT

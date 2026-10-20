@@ -115,7 +115,7 @@ def main():
     prev_hi = None
     for i in range(len(trunk.blocks)):
         h = np.concatenate(cap[f"h{i}"]); g = np.concatenate(cap[f"g{i}"]); at = np.concatenate(cap[f"attn{i}"])
-        assert h.shape[1:] == (196, 768) and g.shape[1:] == (196, 3072) and at.shape[1:] == (12, 196, 196), (h.shape, g.shape, at.shape)
+        assert h.shape[1:] == (S.NTOK, 768) and g.shape[1:] == (S.NTOK, 3072) and at.shape[1:] == (12, S.NTOK, S.NTOK), (h.shape, g.shape, at.shape)
         ts, hi = token_stats(h)
         # high-norm 토큰이 받는 attention: 쿼리·헤드 평균으로 각 키 토큰이 받는 확률, high-norm 토큰들의 합 (이미지 평균)
         recv = at.mean(axis=(1, 2))                                # (N, 196)
@@ -132,7 +132,7 @@ def main():
                      "fc2_input": {"channel": channel_stats(g), "q8": q8_stats(g)},
                      "attn_mass_to_highnorm_tokens": None if attn_to_hi is None else round(attn_to_hi, 4),
                      "attn_mass_to_prev_block_highnorm_tokens": None if attn_to_prev_hi is None else round(attn_to_prev_hi, 4),
-                     "attn_uniform_per_token": round(1 / 196, 4)})
+                     "attn_uniform_per_token": round(1 / S.NTOK, 4)})
         r = rows[-1]
         print(f"block {i:2d} | res max/med-norm {ts['max_over_median_norm']:7.2f} hi-tok {ts['n_highnorm_tokens_mean']:4.1f} "
               f"top-ch {r['residual']['channel']['top_channels'][:3]} share {r['residual']['channel']['top5_share_of_top0.01pct']:.2f} "
