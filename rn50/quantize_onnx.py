@@ -239,8 +239,13 @@ def main():
 
     t0 = time.time()
     if a.mode == "dynamic":   # 활성값 범위를 실행 때마다 재는 방식(NPU에서는 못 씀, 참고용)
-        quantize_dynamic(str(pre), str(dst), weight_type=QT[a.weight_type], per_channel=bool(a.per_channel),
-                         reduce_range=a.reduce_range, nodes_to_exclude=excl)
+        # (E11) 한글 경로에서 ORT가 중간 파일(_pre-inferred)을 못 찾으므로 정적과 같이 영문 임시 폴더에서 처리한다
+        td = tempfile.mkdtemp()
+        shutil.copy(pre, Path(td) / "pre.onnx")
+        quantize_dynamic(str(Path(td) / "pre.onnx"), str(Path(td) / "dst.onnx"), weight_type=QT[a.weight_type],
+                         per_channel=bool(a.per_channel), reduce_range=a.reduce_range, nodes_to_exclude=excl)
+        shutil.move(str(Path(td) / "dst.onnx"), str(dst))
+        shutil.rmtree(td, ignore_errors=True)
     else:
         reader = (ImageCalib(calib_images(a.calib_source, a.calib_n, a.seed), a.calib_bs) if a.enc == "image"
                   else TextCalib(a.calib_n, a.calib_bs, a.seed))
