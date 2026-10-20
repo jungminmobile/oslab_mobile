@@ -1,0 +1,100 @@
+{
+ "date": "2026-10-20T18:23:42",
+ "machine": "AMD64",
+ "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+ "platform": "Windows-10-10.0.26300-SP0",
+ "python": "3.11.9",
+ "onnxruntime": "1.25.0",
+ "numpy": "2.4.4",
+ "threads": 4,
+ "bs": 50,
+ "models": {
+  "fp32": {
+   "cifar_A": {
+    "n": 200,
+    "top1": 74.5,
+    "fp32_top1": 74.5,
+    "cos_mean": 1.0
+   },
+   "pets_dev": {
+    "n": 200,
+    "top1": 93.5,
+    "fp32_top1": 93.5,
+    "cos_mean": 1.0
+   },
+   "flowers_dev": {
+    "n": 200,
+    "top1": 85.0,
+    "fp32_top1": 85.0,
+    "cos_mean": 1.0
+   },
+   "cars_dev": {
+    "n": 200,
+    "top1": 93.5,
+    "fp32_top1": 93.5,
+    "cos_mean": 1.0
+   },
+   "food_dev": {
+    "n": 200,
+    "top1": 87.5,
+    "fp32_top1": 87.5,
+    "cos_mean": 1.0
+   },
+   "caltech_dev": {
+    "n": 200,
+    "top1": 95.0,
+    "fp32_top1": 95.0,
+    "cos_mean": 1.0
+   },
+   "hr_cos": 1.0,
+   "hr_dtop1": 0.0,
+   "file": "siglip2_image_fp32.onnx",
+   "MiB": 354.45,
+   "sec": 256
+  },
+  "m2rot_ort": {
+   "cifar_A": {
+    "n": 200,
+    "top1": 72.0,
+    "fp32_top1": 74.5,
+    "cos_mean": 0.9121
+   },
+   "pets_dev": {
+    "n": 200,
+    "top1": 93.0,
+    "fp32_top1": 93.5,
+    "cos_mean": 0.9831
+   },
+   "flowers_dev": {
+    "n": 200,
+    "top1": 86.5,
+    "fp32_top1": 85.0,
+    "cos_mean": 0.9797
+   },
+   "cars_dev": {
+    "n": 200,
+    "top1": 94.5,
+    "fp32_top1": 93.5,
+    "cos_mean": 0.9711
+   },
+   "food_dev": {
+    "n": 200,
+    "top1": 86.0,
+    "fp32_top1": 87.5,
+    "cos_mean": 0.9757
+   },
+   "caltech_dev": {
+    "n": 200,
+    "top1": 96.0,
+    "fp32_top1": 95.0,
+    "cos_mean": 0.9683
+   },
+   "hr_cos": 0.9756,
+   "hr_dtop1": 0.3,
+   "file": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+   "MiB": 91.72,
+   "sec": 128
+  }
+ },
+ "peak_rss_mib_process": 2373.8
+}
