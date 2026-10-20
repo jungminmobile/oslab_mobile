@@ -209,6 +209,8 @@ def main():
     ap.add_argument("--src", default="",
                     help="(기본 꺼짐) 양자화할 FP32 ONNX 파일 이름($RN50_ONNX 아래). 비우면 siglip2_image_fp32.onnx. "
                          "예: s2_regcache.py export가 만든 siglip2_image_fp32_rc55at5-13at9.onnx (G3R). 출력 이름에 src 표시가 붙는다")
+    ap.add_argument("--quant-format", choices=["qdq", "qoperator"], default="qdq",
+                    help="(기본 qdq) 저장 형식. qoperator = QLinearMatMul 등 정수 연산자로 바로 저장 (G8 A5: 변환 노드 비용 확인). 파일 이름에 _qop")
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--log", default="", help="기본: $RN50_RESULTS/quantize_log.jsonl (RN50_RESULTS 명시 필요)")
     a = ap.parse_args()
@@ -236,6 +238,8 @@ def main():
         ops_tag += "_rr"
     if a.weight_type != "s8":
         ops_tag += f"_w{a.weight_type}"
+    if a.quant_format != "qdq":
+        ops_tag += "_qop"
     cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
     dst = RC.ONNX_DIR / f"{_p}{cal}{'_' + a.tag if a.tag else ''}.onnx"
     if dst.exists() and not a.overwrite:
@@ -328,7 +332,7 @@ def main():
 
 
 def _quantize_static_checked(quantize_static, pre, tmp, reader, a, excl, extra, QuantFormat, QuantType):
-    quantize_static(str(pre), str(tmp), reader, quant_format=QuantFormat.QDQ,
+    quantize_static(str(pre), str(tmp), reader, quant_format=QuantFormat.QOperator if a.quant_format == "qoperator" else QuantFormat.QDQ,
                     activation_type=QuantType.QInt8 if a.act_type == "s8" else QuantType.QUInt8,
                     weight_type=QuantType.QInt8 if a.weight_type == "s8" else QuantType.QUInt8, per_channel=bool(a.per_channel),
                     reduce_range=bool(a.reduce_range),
