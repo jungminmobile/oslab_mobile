@@ -34,13 +34,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--name", required=True)
     ap.add_argument("--k", type=int, default=200)
+    ap.add_argument("--models", nargs="+", default=MODELS, help="(G8) 넣을 ONNX 이름 ($SIGLIP2_ARTIFACTS/onnx 아래). 기본은 10/15 묶음과 같음")
     a = ap.parse_args()
     A = Path(os.environ["SIGLIP2_ARTIFACTS"])
     C, O = A / "cache", A / "onnx"
     B = A / "share" / a.name
     (B / "models").mkdir(parents=True, exist_ok=True)
     (B / "dev200").mkdir(exist_ok=True)
-    for f in MODELS:
+    for f in a.models:
         if not (B / "models" / f).exists():
             shutil.copy2(O / f, B / "models" / f)
     for d in SETS:
