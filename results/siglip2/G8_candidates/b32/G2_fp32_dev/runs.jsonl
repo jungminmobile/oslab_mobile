@@ -1,0 +1,1 @@
+{"date": "2026-10-20T17:39:26", "commit": "ca36af4", "dirty": false, "argv": ["--data", "cifar_A", "cifar_B", "pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev", "--models", "fp32", "--exec", "int", "--threads", "4"], "cpu": "11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz", "vnni": true, "ort": "1.25.0", "os": "Windows-10-10.0.26300-SP0"}

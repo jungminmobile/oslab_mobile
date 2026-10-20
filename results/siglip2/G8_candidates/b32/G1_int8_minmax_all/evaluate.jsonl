@@ -1,0 +1,12 @@
+{"date": "2026-10-20T17:29:59", "data": "cifar_A", "n": 1000, "model": "fp32", "MiB": null, "exec": "int", "top1": 75.2, "top5": 93.1, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-20T17:31:14", "data": "cifar_A", "n": 1000, "model": "siglip2_image_int8_minmax_highres256_s0_s8_all.onnx", "MiB": 91.2, "exec": "int", "top1": 1.8, "top5": 6.1, "cos_mean": 0.367, "cos_p1": 0.2559, "eval_sec": 75}
+{"date": "2026-10-20T17:31:14", "data": "pets_dev", "n": 990, "model": "fp32", "MiB": null, "exec": "int", "top1": 92.02, "top5": 99.6, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-20T17:32:31", "data": "pets_dev", "n": 990, "model": "siglip2_image_int8_minmax_highres256_s0_s8_all.onnx", "MiB": 91.2, "exec": "int", "top1": 3.84, "top5": 14.65, "cos_mean": 0.3976, "cos_p1": 0.2943, "eval_sec": 77}
+{"date": "2026-10-20T17:32:31", "data": "flowers_dev", "n": 957, "model": "fp32", "MiB": null, "exec": "int", "top1": 86.42, "top5": 95.51, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-20T17:33:44", "data": "flowers_dev", "n": 957, "model": "siglip2_image_int8_minmax_highres256_s0_s8_all.onnx", "MiB": 91.2, "exec": "int", "top1": 1.04, "top5": 5.12, "cos_mean": 0.3911, "cos_p1": 0.2894, "eval_sec": 72}
+{"date": "2026-10-20T17:33:44", "data": "cars_dev", "n": 967, "model": "fp32", "MiB": null, "exec": "int", "top1": 91.62, "top5": 99.9, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-20T17:34:57", "data": "cars_dev", "n": 967, "model": "siglip2_image_int8_minmax_highres256_s0_s8_all.onnx", "MiB": 91.2, "exec": "int", "top1": 0.52, "top5": 2.48, "cos_mean": 0.4081, "cos_p1": 0.2936, "eval_sec": 73}
+{"date": "2026-10-20T17:34:57", "data": "food_dev", "n": 985, "model": "fp32", "MiB": null, "exec": "int", "top1": 85.99, "top5": 96.95, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-20T17:36:19", "data": "food_dev", "n": 985, "model": "siglip2_image_int8_minmax_highres256_s0_s8_all.onnx", "MiB": 91.2, "exec": "int", "top1": 0.41, "top5": 3.86, "cos_mean": 0.3787, "cos_p1": 0.2662, "eval_sec": 82}
+{"date": "2026-10-20T17:36:19", "data": "caltech_dev", "n": 1024, "model": "fp32", "MiB": null, "exec": "int", "top1": 93.75, "top5": 99.22, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}
+{"date": "2026-10-20T17:37:43", "data": "caltech_dev", "n": 1024, "model": "siglip2_image_int8_minmax_highres256_s0_s8_all.onnx", "MiB": 91.2, "exec": "int", "top1": 0.78, "top5": 5.27, "cos_mean": 0.4152, "cos_p1": 0.3045, "eval_sec": 83}
