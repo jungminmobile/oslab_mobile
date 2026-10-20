@@ -1,0 +1,11 @@
+같은 이름 층 235개 중 h_c*가 원래보다 2배 이상 넓은 층: 0개
+반대로 2배 이상 좁아진 층: 38개 (예: ['square1_layer_normalization24', 'square1_layer_normalization23', 'square1_layer_normalization22', 'square1_layer_normalization21', 'conv41', 'conv40'])
+K·V 마스크 출력 vs 원래 K·V (conv_feature_splitter 출력), 블록 5 예:
+  ew_add13                     h_c*       9.01   원래        nan
+  ew_add14                     h_c*       7.20   원래     251.52
+  conv_feature_splitter6_1     h_c*       2.13   원래       2.13
+  conv_feature_splitter6_2     h_c*       9.05   원래      11.87
+  reduce_sum_matmul11          h_c*       9.01   원래        nan
+  concat_matmul11              h_c*       9.01   원래        nan
+  matmul11                     h_c*      26.47   원래      27.65
+  matmul12                     h_c*       6.37   원래       6.37

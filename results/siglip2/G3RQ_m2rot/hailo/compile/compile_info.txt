@@ -1,0 +1,4 @@
+22:31:10 compile 시작 free=29G har=7aa2abe6eabedd9c
+23:02:10 compile rc=0 sec=1855
+23:02:41 hef=siglip2_m2rot.hef bytes=110436352 sha256=94fff0976ac43480 Number of Contexts      21
+G3RQ COMPILE DONE

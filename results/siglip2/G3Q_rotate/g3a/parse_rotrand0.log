@@ -1,0 +1,19 @@
+[info] Current Time: 07:47:53, 10/18/26
+[info] CPU: Architecture: x86_64, Model: Intel(R) Core(TM) Ultra 9 285K, Number Of Cores: 24, Utilization: 4.3%
+[info] Memory: Total: 30GB, Available: 23GB
+[info] System info: OS: Linux, Kernel: 6.6.114.1-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo parser onnx /home/junyong/siglip2_work/artifacts/onnx/siglip2_image_fp32_rotrand0_b1.onnx --hw-arch hailo10h --net-name siglip2_rotrand0`
+[info] Translation started on ONNX model siglip2_rotrand0
+[info] Restored ONNX model siglip2_rotrand0 (completion time: 00:00:01.03)
+[info] Extracted ONNXRuntime meta-data for Hailo model (completion time: 00:00:04.83)
+[info] Simplified ONNX model for a parsing retry attempt (completion time: 00:00:11.81)
+[info] Saved simplified ONNX to: /home/junyong/siglip2_work/artifacts/onnx/siglip2_image_fp32_rotrand0_b1.sim.onnx, will be used for parsing retry.
+[info] Start nodes mapped from original model: 'image': 'siglip2_rotrand0/input_layer1'.
+[info] End nodes mapped from original model: '/trunk/attn_pool/Gather'.
+[info] Translation completed on ONNX model siglip2_rotrand0 (completion time: 00:00:12.96)
+[info] Hailo HW architecture: hailo10h
+[info] Saved HAR to: /tmp/claude-1000/-home-junyong-oslab-mobile-yong/e83e017b-eb3c-4b14-8eac-8ca456064ca5/scratchpad/g3a/siglip2_rotrand0.har
+21.89 s

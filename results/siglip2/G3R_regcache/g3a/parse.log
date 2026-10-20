@@ -1,0 +1,87 @@
+[info] Current Time: 05:35:58, 10/18/26
+[info] CPU: Architecture: x86_64, Model: Intel(R) Core(TM) Ultra 9 285K, Number Of Cores: 24, Utilization: 16.7%
+[info] Memory: Total: 30GB, Available: 28GB
+[info] System info: OS: Linux, Kernel: 6.6.114.1-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo parser onnx siglip2_image_fp32_rc55at5-13at9_b1.onnx --hw-arch hailo10h --net-name siglip2_rc55at5_13at9`
+[info] Translation started on ONNX model siglip2_rc55at5_13at9
+[info] Restored ONNX model siglip2_rc55at5_13at9 (completion time: 00:00:01.00)
+[info] Extracted ONNXRuntime meta-data for Hailo model (completion time: 00:00:06.28)
+[info] Simplified ONNX model for a parsing retry attempt (completion time: 00:00:15.55)
+[info] Saved simplified ONNX to: siglip2_image_fp32_rc55at5-13at9_b1.sim.onnx, will be used for parsing retry.
+Traceback (most recent call last):
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/sdk_backend/parser/parser.py", line 252, in translate_onnx_model
+    parsing_results = self._parse_onnx_model_to_hn(
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/sdk_backend/parser/parser.py", line 328, in _parse_onnx_model_to_hn
+    return self.parse_model_to_hn(
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/sdk_backend/parser/parser.py", line 427, in parse_model_to_hn
+    fuser = HailoNNFuser(converter.convert_model(), net_name, converter.end_node_names)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/model_translator/translator.py", line 101, in convert_model
+    self._calculate_shapes(validate_shapes=False)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/model_translator/onnx_translator/onnx_translator.py", line 214, in _calculate_shapes
+    self._layers_graph.calculate_shapes(meta_edges_graph=self._meta_graph, validate_shapes=validate_shapes)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_common/hailo_nn/hailo_nn.py", line 810, in calculate_shapes
+    layer.update_output_shapes(hn_stage=self.net_params.stage, validate_shapes=validate_shapes)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_common/hailo_nn/hn_layers/layer.py", line 464, in update_output_shapes
+    output_shape = self._calc_output_shape()
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_common/hailo_nn/hn_layers/matmul.py", line 219, in _calc_output_shape
+    input1_shape = [-1, *[dim * ratio for dim, ratio in zip(self.input_shapes[1][1:], self._input_tiles[1])]]
+IndexError: list index out of range
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/parser_cli.py", line 220, in run
+    self._parse(net_name, args, tensor_shapes)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/parser_cli.py", line 306, in _parse
+    self.runner.translate_onnx_model(
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_common/states/states.py", line 16, in wrapped_func
+    return func(self, *args, **kwargs)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/runner/client_runner.py", line 1364, in translate_onnx_model
+    parser.translate_onnx_model(
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/sdk_backend/parser/parser.py", line 288, in translate_onnx_model
+    parsing_results = self._parse_onnx_model_to_hn(
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/sdk_backend/parser/parser.py", line 328, in _parse_onnx_model_to_hn
+    return self.parse_model_to_hn(
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/sdk_backend/parser/parser.py", line 428, in parse_model_to_hn
+    hailo_nn = fuser.convert_model()
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/model_translator/fuser/fuser.py", line 112, in convert_model
+    self._run_post_folding_optimizations()
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/model_translator/fuser/fuser.py", line 174, in _run_post_folding_optimizations
+    self._add_conv_before_dynamic_weights_layer()
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/model_translator/fuser/fuser.py", line 5476, in _add_conv_before_dynamic_weights_layer
+    self._fuser_helper.add_preds(weights_layer, [weights_pred])
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/fuser/fuser_helper.py", line 785, in add_preds
+    layer.append_input_shape(pred.output_shape)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_common/hailo_nn/hn_layers/layer.py", line 498, in output_shape
+    return self._get_output_shape(validate=True)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_common/hailo_nn/hn_layers/concat.py", line 204, in _get_output_shape
+    self._validate_concat_spatial_dims()
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_common/hailo_nn/hn_layers/concat.py", line 113, in _validate_concat_spatial_dims
+    self._report_spatial_dims_not_equal(validate)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_common/hailo_nn/hn_layers/concat.py", line 92, in _report_spatial_dims_not_equal
+    raise UnsupportedModelError(
+hailo_sdk_common.hailo_nn.exceptions.UnsupportedModelError: Unsupported dimensions at concat layer concat3 (translated from /trunk/Concat_2) with output shapes
+feature_splitter6: output_shape=[-1, 1, 195, 768]
+const_input3: output_shape=[-1, 1, 64, 12]
+. The concat layer operates on the feature dim (#3) and all other spatial dimensions (#0, #1, #2) must all be equal.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/junyong/hailo10_venv/bin/hailo", line 6, in <module>
+    sys.exit(main())
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/cmd_utils/main.py", line 106, in main
+    ret_val = client_command_runner.run()
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/cmd_utils/base_utils.py", line 68, in run
+    return self._run(argv)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/cmd_utils/base_utils.py", line 98, in _run
+    return args.func(args)
+  File "/home/junyong/hailo10_venv/lib/python3.10/site-packages/hailo_sdk_client/tools/parser_cli.py", line 247, in run
+    raise ParserCLIException(str(err).replace("net_input_format", "input_format")) from err
+hailo_sdk_client.tools.parser_cli.ParserCLIException: Unsupported dimensions at concat layer concat3 (translated from /trunk/Concat_2) with output shapes
+feature_splitter6: output_shape=[-1, 1, 195, 768]
+const_input3: output_shape=[-1, 1, 64, 12]
+. The concat layer operates on the feature dim (#3) and all other spatial dimensions (#0, #1, #2) must all be equal.

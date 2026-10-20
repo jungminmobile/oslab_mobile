@@ -1,0 +1,10 @@
+commit=64d7af3 dirty=0 cfgs=B2hcv256L1_nosink16res har=siglip2_rcmaskbchcv55at5_13at9.har har_sha256=12033159aa949339cbdeadf0a9719f5510e0ea26564ec740fa1b1cea8fb37918 calib_sha256=91f551e312271d1af6c87c163505c9484e157dcf09afc91689609d7095ca4355 lock=/home/junyong/siglip2_work/dfc.lock
+16:18:31 optimize B2hcv256L1_nosink16res 잠금 대기
+16:18:31 optimize B2hcv256L1_nosink16res 잠금 잡음
+16:18:31 optimize B2hcv256L1_nosink16res free=29G 시작
+17:08:06 B2hcv256L1_nosink16res optimize rc=0 sec=2975
+17:08:11 screen B2hcv256L1_nosink16res 잠금 대기
+17:08:11 screen B2hcv256L1_nosink16res 잠금 잡음
+17:08:11 screen B2hcv256L1_nosink16res free=29G 시작
+17:22:09 B2hcv256L1_nosink16res screen rc=0 sec=838 {"tag": "B2hcv256L1_nosink16res", "hr_cos": 0.7327, "hr_dtop1": -87.6, "sec": 808}
+G3B DONE /home/junyong/siglip2_work/g3b_20261018_161830

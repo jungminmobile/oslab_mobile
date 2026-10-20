@@ -206,14 +206,23 @@ def main():
                          r"예: '^/blocks\.\d+/mlp/fc1/' (10/15, 대회 안내 4.1 'INT8/INT4', D-036·D-037)")
     ap.add_argument("--w4-block", type=int, default=32, help="4비트 블록 크기 (--w4-regex일 때)")
     ap.add_argument("--w4-acc", type=int, default=4, help="MatMulNBits accuracy_level (4 = 활성값을 int8로 동적 양자화해 정수 계산)")
+    ap.add_argument("--src", default="",
+                    help="(기본 꺼짐) 양자화할 FP32 ONNX 파일 이름($RN50_ONNX 아래). 비우면 siglip2_image_fp32.onnx. "
+                         "예: s2_regcache.py export가 만든 siglip2_image_fp32_rc55at5-13at9.onnx (G3R). 출력 이름에 src 표시가 붙는다")
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--log", default="", help="기본: $RN50_RESULTS/quantize_log.jsonl (RN50_RESULTS 명시 필요)")
     a = ap.parse_args()
     from onnxruntime.quantization import QuantFormat, QuantType, quantize_static
     from onnxruntime.quantization.shape_inference import quant_pre_process
 
-    src = RC.ONNX_DIR / FP32_IMAGE
-    pre = RC.ONNX_DIR / FP32_IMAGE.replace(".onnx", "_pre.onnx")
+    src_name = a.src or FP32_IMAGE
+    assert src_name.startswith("siglip2_image_fp32") and src_name.endswith(".onnx"), f"--src는 FP32 ONNX 이름이어야 함: {src_name}"
+    src = RC.ONNX_DIR / src_name
+    assert src.exists(), f"{src} 없음"
+    pre = RC.ONNX_DIR / src_name.replace(".onnx", "_pre.onnx")
+    # --src를 주면 출력 이름 앞에 src 표시를 붙여 기본 모델의 INT8 파일과 섞이지 않게 한다 (옵션을 끄면 이름·내용 그대로)
+    src_tag = src_name[len("siglip2_image_fp32"):-len(".onnx")].lstrip("_")
+    _p = f"siglip2_image_int8_{src_tag}_" if a.src else "siglip2_image_int8_"
     if not pre.exists() or pre.stat().st_mtime < src.stat().st_mtime:
         quant_pre_process(str(src), str(pre))
     meth = f"percentile{str(a.percentile).replace('.', '')}" if a.method == "percentile" else a.method
@@ -228,7 +237,7 @@ def main():
     if a.weight_type != "s8":
         ops_tag += f"_w{a.weight_type}"
     cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
-    dst = RC.ONNX_DIR / f"siglip2_image_int8_{cal}{'_' + a.tag if a.tag else ''}.onnx"
+    dst = RC.ONNX_DIR / f"{_p}{cal}{'_' + a.tag if a.tag else ''}.onnx"
     if dst.exists() and not a.overwrite:
         raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
     excl = RQ.select_excluded(str(pre), a)
@@ -245,7 +254,7 @@ def main():
         print(f"--w4-regex: MatMul {len(w4_nodes)}개를 4비트로 (블록 {a.w4_block}, accuracy_level {a.w4_acc})")
         ops_tag += f"_w4b{a.w4_block}a{a.w4_acc}"
         cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
-        dst = RC.ONNX_DIR / f"siglip2_image_int8_{cal}{'_' + a.tag if a.tag else ''}.onnx"
+        dst = RC.ONNX_DIR / f"{_p}{cal}{'_' + a.tag if a.tag else ''}.onnx"
         if dst.exists() and not a.overwrite:
             raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
         # ORT 1.25: nodes_to_include는 "추가로 포함"이라 기본 op_types(MatMul)와 합쳐져 가중치 MatMul 전부가 4비트가 된다
@@ -273,7 +282,7 @@ def main():
         attn_tensors = sorted({t for n in attn_nodes for t in (*n.input, *n.output)})
         ops_tag += "_attnu8"
         cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
-        dst = RC.ONNX_DIR / f"siglip2_image_int8_{cal}{'_' + a.tag if a.tag else ''}.onnx"
+        dst = RC.ONNX_DIR / f"{_p}{cal}{'_' + a.tag if a.tag else ''}.onnx"
         if dst.exists() and not a.overwrite:
             raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
     log_path = Path(a.log) if a.log else S.require_results_dir() / "quantize_log.jsonl"
@@ -300,7 +309,7 @@ def main():
         tag = "_u8m-" + "-".join(t.strip("/").replace("/", ".") for t in pats)
         ops_tag += tag
         cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
-        dst = RC.ONNX_DIR / f"siglip2_image_int8_{cal}{'_' + a.tag if a.tag else ''}.onnx"
+        dst = RC.ONNX_DIR / f"{_p}{cal}{'_' + a.tag if a.tag else ''}.onnx"
         if dst.exists() and not a.overwrite:
             raise SystemExit(f"{dst.name} 이미 있음 (--overwrite로 덮어쓰기)")
         print(f"--u8-match: MatMul {len(hit)}개, U8로 둘 텐서 {len(attn_tensors)}개")

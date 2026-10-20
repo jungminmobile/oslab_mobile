@@ -1,0 +1,200 @@
+{
+ "b1": {
+  "Concat": [
+   1,
+   1,
+   19
+  ],
+  "Slice": [
+   1,
+   1,
+   5
+  ],
+  "Expand": [
+   1,
+   1,
+   17
+  ],
+  "Where": [
+   1,
+   1,
+   17
+  ],
+  "Mul": [
+   40,
+   70,
+   56
+  ],
+  "Add": [
+   92,
+   108,
+   92
+  ],
+  "MatMul": [
+   79,
+   79,
+   79
+  ],
+  "Softmax": [
+   13,
+   13,
+   13
+  ],
+  "Gather": [
+   1,
+   1,
+   1
+  ],
+  "Shape": [
+   1,
+   1,
+   1
+  ]
+ },
+ "b1_cols": [
+  "원래 FP32 b1 (labpc)",
+  "마스크 b1",
+  "R1 concat b1"
+ ],
+ "dynamic": {
+  "Concat": [
+   29,
+   29
+  ],
+  "Slice": [
+   1,
+   1
+  ],
+  "Expand": [
+   1,
+   1
+  ],
+  "Where": [
+   1,
+   1
+  ],
+  "Mul": [
+   40,
+   70
+  ],
+  "Add": [
+   92,
+   108
+  ],
+  "MatMul": [
+   79,
+   79
+  ],
+  "Softmax": [
+   13,
+   13
+  ],
+  "Gather": [
+   28,
+   28
+  ],
+  "Shape": [
+   29,
+   29
+  ]
+ },
+ "dynamic_cols": [
+  "원래 FP32",
+  "마스크"
+ ],
+ "b1_all_diff": {
+  "Add": [
+   92,
+   108
+  ],
+  "Identity": [
+   0,
+   11
+  ],
+  "Mul": [
+   40,
+   70
+  ]
+ },
+ "mask_b1_softmax_shapes": {
+  "/trunk/blocks.0/attn/Softmax": [
+   1,
+   12,
+   196,
+   196
+  ],
+  "/trunk/blocks.1/attn/Softmax": [
+   1,
+   12,
+   196,
+   196
+  ],
+  "/trunk/blocks.2/attn/Softmax": [
+   1,
+   12,
+   196,
+   196
+  ],
+  "/trunk/blocks.3/attn/Softmax": [
+   1,
+   12,
+   196,
+   196
+  ],
+  "/trunk/blocks.4/attn/Softmax": [
+   1,
+   12,
+   196,
+   196
+  ],
+  "/trunk/Softmax": [
+   1,
+   12,
+   196,
+   196
+  ],
+  "/trunk/Softmax_1": [
+   1,
+   12,
+   196,
+   196
+  ],
+  "/trunk/Softmax_2": [
+   1,
+   12,
+   196,
+   196
+  ],
+  "/trunk/Softmax_3": [
+   1,
+   12,
+   196,
+   196
+  ],
+  "/trunk/Softmax_4": [
+   1,
+   12,
+   196,
+   196
+  ],
+  "/trunk/Softmax_5": [
+   1,
+   12,
+   196,
+   196
+  ],
+  "/trunk/Softmax_6": [
+   1,
+   12,
+   196,
+   196
+  ],
+  "/trunk/Softmax_7": [
+   1,
+   12,
+   1,
+   196
+  ]
+ },
+ "mask_b1_any_dim_195_194": []
+}

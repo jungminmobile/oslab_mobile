@@ -1,0 +1,5 @@
+연산 종류·개수 M2rot == M2 b1: False
+  차이: {'Identity': (63, 15)}
+잔차 경로 위 새 연산: 없음
+undedup으로 지운 Identity (M2rot, M2): [63, 15]
+undedup 뒤 연산 종류·개수 M2rot == M2 b1: True 

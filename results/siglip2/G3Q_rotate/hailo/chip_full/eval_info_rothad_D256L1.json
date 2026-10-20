@@ -1,0 +1,33 @@
+{
+ "date": "2026-10-18T15:33:31",
+ "machine": "aarch64",
+ "platform": "Linux-5.15.148-tegra-aarch64-with-glibc2.35",
+ "python": "3.10.12",
+ "hailortcli": "HailoRT-CLI version 5.3.0",
+ "cmd": "eval",
+ "models": {
+  "rothad_D256L1": {
+   "hef": "rothad_D256L1.hef",
+   "hef_sha256": "7243b76cb3b1f83ba38addbb0035905cb6db1abfb1cd8fbe4d23342f3310b38c",
+   "in_shape": [
+    224,
+    224,
+    3
+   ],
+   "out_shape": [
+    1,
+    1,
+    768
+   ],
+   "quant_in": [
+    0.007874015718698502,
+    128.0
+   ],
+   "quant_out": [
+    0.00030227485694922507,
+    8165.0
+   ],
+   "sec": 338
+  }
+ }
+}

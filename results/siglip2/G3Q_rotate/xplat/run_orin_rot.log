@@ -1,0 +1,36 @@
+[0;93m2026-10-18 08:28:25.347561353 [W:onnxruntime:Default, device_discovery.cc:164 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:89 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+fp32 cifar_A {"n": 200, "top1": 74.5, "fp32_top1": 74.5, "cos_mean": 1.0}
+fp32 pets_dev {"n": 200, "top1": 93.5, "fp32_top1": 93.5, "cos_mean": 1.0}
+fp32 flowers_dev {"n": 200, "top1": 85.0, "fp32_top1": 85.0, "cos_mean": 1.0}
+fp32 cars_dev {"n": 200, "top1": 93.5, "fp32_top1": 93.5, "cos_mean": 1.0}
+fp32 food_dev {"n": 200, "top1": 87.5, "fp32_top1": 87.5, "cos_mean": 1.0}
+fp32 caltech_dev {"n": 200, "top1": 95.0, "fp32_top1": 95.0, "cos_mean": 1.0}
+fp32 hr_dtop1 0.0 hr_cos 1.0
+r0_410d cifar_A {"n": 200, "top1": 66.5, "fp32_top1": 74.5, "cos_mean": 0.8781}
+r0_410d pets_dev {"n": 200, "top1": 92.5, "fp32_top1": 93.5, "cos_mean": 0.9661}
+r0_410d flowers_dev {"n": 200, "top1": 85.5, "fp32_top1": 85.0, "cos_mean": 0.961}
+r0_410d cars_dev {"n": 200, "top1": 94.5, "fp32_top1": 93.5, "cos_mean": 0.948}
+r0_410d food_dev {"n": 200, "top1": 86.0, "fp32_top1": 87.5, "cos_mean": 0.9589}
+r0_410d caltech_dev {"n": 200, "top1": 96.5, "fp32_top1": 95.0, "cos_mean": 0.9396}
+r0_410d hr_dtop1 0.1 hr_cos 0.9547
+r0_5eee cifar_A {"n": 200, "top1": 70.0, "fp32_top1": 74.5, "cos_mean": 0.8777}
+r0_5eee pets_dev {"n": 200, "top1": 92.0, "fp32_top1": 93.5, "cos_mean": 0.9662}
+r0_5eee flowers_dev {"n": 200, "top1": 86.0, "fp32_top1": 85.0, "cos_mean": 0.961}
+r0_5eee cars_dev {"n": 200, "top1": 94.5, "fp32_top1": 93.5, "cos_mean": 0.9478}
+r0_5eee food_dev {"n": 200, "top1": 86.0, "fp32_top1": 87.5, "cos_mean": 0.9594}
+r0_5eee caltech_dev {"n": 200, "top1": 96.5, "fp32_top1": 95.0, "cos_mean": 0.9393}
+r0_5eee hr_dtop1 0.1 hr_cos 0.9547
+rothad cifar_A {"n": 200, "top1": 69.0, "fp32_top1": 74.5, "cos_mean": 0.9071}
+rothad pets_dev {"n": 200, "top1": 93.0, "fp32_top1": 93.5, "cos_mean": 0.9768}
+rothad flowers_dev {"n": 200, "top1": 87.0, "fp32_top1": 85.0, "cos_mean": 0.9701}
+rothad cars_dev {"n": 200, "top1": 94.5, "fp32_top1": 93.5, "cos_mean": 0.9632}
+rothad food_dev {"n": 200, "top1": 86.5, "fp32_top1": 87.5, "cos_mean": 0.9684}
+rothad caltech_dev {"n": 200, "top1": 96.0, "fp32_top1": 95.0, "cos_mean": 0.9621}
+rothad hr_dtop1 0.5 hr_cos 0.9681
+rotrand0 cifar_A {"n": 200, "top1": 69.5, "fp32_top1": 74.5, "cos_mean": 0.9039}
+rotrand0 pets_dev {"n": 200, "top1": 92.5, "fp32_top1": 93.5, "cos_mean": 0.9723}
+rotrand0 flowers_dev {"n": 200, "top1": 85.5, "fp32_top1": 85.0, "cos_mean": 0.9672}
+rotrand0 cars_dev {"n": 200, "top1": 94.5, "fp32_top1": 93.5, "cos_mean": 0.9585}
+rotrand0 food_dev {"n": 200, "top1": 86.0, "fp32_top1": 87.5, "cos_mean": 0.9646}
+rotrand0 caltech_dev {"n": 200, "top1": 97.0, "fp32_top1": 95.0, "cos_mean": 0.9552}
+rotrand0 hr_dtop1 0.2 hr_cos 0.9636

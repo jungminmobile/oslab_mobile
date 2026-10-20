@@ -1,0 +1,12 @@
+D_D256L1 cifar_A (200, 768) 11s
+D_D256L1 pets_dev (200, 768) 21s
+D_D256L1 flowers_dev (200, 768) 33s
+D_D256L1 cars_dev (200, 768) 44s
+D_D256L1 food_dev (200, 768) 56s
+D_D256L1 caltech_dev (200, 768) 67s
+rothad_D256L1 cifar_A (200, 768) 12s
+rothad_D256L1 pets_dev (200, 768) 24s
+rothad_D256L1 flowers_dev (200, 768) 35s
+rothad_D256L1 cars_dev (200, 768) 47s
+rothad_D256L1 food_dev (200, 768) 59s
+rothad_D256L1 caltech_dev (200, 768) 70s

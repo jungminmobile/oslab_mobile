@@ -1,0 +1,12 @@
+[info] Hailo HW architecture: hailo10h
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792317491.393057 1292071 service.cc:152] XLA service 0x5f66d4f44490 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1792317491.393099 1292071 service.cc:160]   StreamExecutor device (0): Host, Default Version
+I0000 00:00:1792317525.181865 1292071 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+cifar_A {"n": 200, "top1": 58.0, "fp32_top1": 74.5, "cos_mean": 0.8845, "cos_p1": 0.813} 118s
+pets_dev {"n": 200, "top1": 91.5, "fp32_top1": 93.5, "cos_mean": 0.9573, "cos_p1": 0.9103} 215s
+flowers_dev {"n": 200, "top1": 76.5, "fp32_top1": 85.0, "cos_mean": 0.9559, "cos_p1": 0.8916} 312s
+cars_dev {"n": 200, "top1": 85.5, "fp32_top1": 93.5, "cos_mean": 0.915, "cos_p1": 0.8259} 410s
+food_dev {"n": 200, "top1": 82.0, "fp32_top1": 87.5, "cos_mean": 0.9209, "cos_p1": 0.8185} 508s
+caltech_dev {"n": 200, "top1": 94.0, "fp32_top1": 95.0, "cos_mean": 0.9298, "cos_p1": 0.8468} 606s
+{"tag": "B2m2256L1_nosink16res", "hr_cos": 0.9358, "hr_dtop1": -5.0, "sec": 606}

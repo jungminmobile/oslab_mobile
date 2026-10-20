@@ -1,0 +1,35 @@
+{
+ "date": "2026-10-18T15:39:46",
+ "machine": "aarch64",
+ "platform": "Linux-5.15.148-tegra-aarch64-with-glibc2.35",
+ "python": "3.10.12",
+ "hailortcli": "HailoRT-CLI version 5.3.0",
+ "cmd": "bench",
+ "warmup": 20,
+ "n": 200,
+ "rounds": 1,
+ "runs": [
+  {
+   "round": 1,
+   "model": "D_D256L1",
+   "hef_sha256": "2413dd5b123d3f53",
+   "mean_ms": 51.385,
+   "median_ms": 51.368,
+   "p90_ms": 51.597,
+   "min_ms": 51.238,
+   "max_ms": 51.879,
+   "fps_from_mean": 19.46
+  },
+  {
+   "round": 1,
+   "model": "rothad_D256L1",
+   "hef_sha256": "7243b76cb3b1f83b",
+   "mean_ms": 52.349,
+   "median_ms": 52.34,
+   "p90_ms": 52.476,
+   "min_ms": 52.222,
+   "max_ms": 52.725,
+   "fps_from_mean": 19.1
+  }
+ ]
+}

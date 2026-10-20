@@ -1,0 +1,41 @@
+[info] Current Time: 23:02:12, 10/18/26
+[info] CPU: Architecture: x86_64, Model: Intel(R) Core(TM) Ultra 9 285K, Number Of Cores: 24, Utilization: 0.1%
+[info] Memory: Total: 30GB, Available: 29GB
+[info] System info: OS: Linux, Kernel: 6.6.114.1-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo profiler compiled_M2rot_D256L1.har --hef siglip2_m2rot.hef --out-path profiler.html --csv profiler.csv`
+[info] Hailo HW architecture: hailo10h
+[info] Running profile for siglip2_m2rot in state compiled_model
+[info] 
+Model Details
+--------------------------------  -----------
+Input Tensors Shapes              224x224x3
+Operations per Input Tensor       39.62 GOPs
+Operations per Input Tensor       19.83 GMACs
+Pure Operations per Input Tensor  35.49 GOPs
+Pure Operations per Input Tensor  17.76 GMACs
+Model Parameters                  92.15 M
+--------------------------------  -----------
+
+Profiler Input Settings
+-----------------  -----------------
+Optimization Goal  Reach Highest FPS
+Profiler Mode      Compiled
+-----------------  -----------------
+
+Performance Summary
+----------------------  ---
+Number of Devices       1
+Number of Contexts      21
+Throughput              N/A
+Latency                 N/A
+Operations per Second   N/A
+MACs per Second         N/A
+Total Input Bandwidth   N/A
+Total Output Bandwidth  N/A
+Context Switch Configs  N/A
+----------------------  ---
+[info] Saved Profiler HTML Report to: /home/junyong/siglip2_work/g3b_20261018_215006/comp_M2rot_D256L1equiv/profiler.html
+[info] Saved Profiler CSV to: /home/junyong/siglip2_work/g3b_20261018_215006/comp_M2rot_D256L1equiv/profiler.csv

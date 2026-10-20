@@ -1,0 +1,18 @@
+[info] Current Time: 09:04:14, 10/18/26
+[info] CPU: Architecture: x86_64, Model: Intel(R) Core(TM) Ultra 9 285K, Number Of Cores: 24, Utilization: 0.1%
+[info] Memory: Total: 30GB, Available: 29GB
+[info] System info: OS: Linux, Kernel: 6.6.114.1-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo parser onnx siglip2_image_fp32_rothad_b1.onnx --hw-arch hailo10h --net-name siglip2_rothad_b16_224 --har-path siglip2_rothad_b16_224.har`
+[info] Translation started on ONNX model siglip2_rothad_b16_224
+[info] Restored ONNX model siglip2_rothad_b16_224 (completion time: 00:00:00.82)
+[info] Extracted ONNXRuntime meta-data for Hailo model (completion time: 00:00:04.15)
+[info] Simplified ONNX model for a parsing retry attempt (completion time: 00:00:10.60)
+[info] Saved simplified ONNX to: siglip2_image_fp32_rothad_b1.sim.onnx, will be used for parsing retry.
+[info] Start nodes mapped from original model: 'image': 'siglip2_rothad_b16_224/input_layer1'.
+[info] End nodes mapped from original model: '/trunk/attn_pool/Gather'.
+[info] Translation completed on ONNX model siglip2_rothad_b16_224 (completion time: 00:00:11.72)
+[info] Hailo HW architecture: hailo10h
+[info] Saved HAR to: /home/junyong/siglip2_work/hailo_g3q/siglip2_rothad_b16_224.har
