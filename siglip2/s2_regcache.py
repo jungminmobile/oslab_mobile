@@ -56,14 +56,30 @@ HR = DATA[1:]
 # 1. 변환 모델 (데이터·경로 의존 없음)
 # --------------------------------------------------------------------------- #
 def parse_sinks(s):
-    """'55@5,13@9' → [(55, 5), (13, 9)] (시작 블록 순)."""
-    out = [(int(p), int(b)) for p, b in (t.split("@") for t in s.split(",") if t.strip())]
+    """'55@5,13@9' → [(55, 5), (13, 9)] (시작 블록 순). G8: '15@6:5'처럼 ':u'가 붙으면 u_c 시작 블록 (parse_u_starts), 여기서는 무시."""
+    out = [(int(p), int(b.split(":")[0])) for p, b in (t.split("@") for t in s.split(",") if t.strip())]
     assert len({p for p, _ in out}) == len(out), f"같은 패치가 두 번: {s}"
     return sorted(out, key=lambda t: (t[1], t[0]))
 
 
 def sinks_slug(sinks):
     return "-".join(f"{p}at{b}" for p, b in sinks)
+
+
+def parse_u_starts(s):
+    """G8 (기본 꺼짐): '15@6:5,7@10:9' → u_c 시작 블록 [5, 9] (parse_sinks와 같은 순서). ':'가 없으면 None (이전과 같음 — u = K·V 시작 블록).
+    G6 통일 규칙(s2_g6.UNIFIED)을 명령줄에서 쓰기 위함."""
+    toks = [t for t in s.split(",") if t.strip()]
+    if not any(":" in t for t in toks):
+        return None
+    assert all(":" in t for t in toks), f"u_c 시작 블록은 모든 sink에 같이 적는다: {s}"
+    rows = sorted(((int(p), int(b.split(":")[0]), int(b.split(":")[1])) for p, b in (t.split("@") for t in toks)), key=lambda t: (t[1], t[0]))
+    return [u for _, _, u in rows]
+
+
+def uslug(sinks, us):
+    """u_starts가 있으면 이름에 u를 붙인다 (예: 15at6u5-7at10u9). 없으면 sinks_slug와 같다."""
+    return sinks_slug(sinks) if us is None else "-".join(f"{p}at{b}u{u}" for (p, b), u in zip(sinks, us))
 
 
 def _check_trunk(trunk):
@@ -430,8 +446,8 @@ def build_vtarget(trunk, x, sinks, bs=16):
     return {k: float(torch.cat(v).double().median()) for k, v in vs.items()}, n, len(keep)
 
 
-def _uc_path(RC, sinks, calib_n, seed):
-    return RC.ONNX_DIR / f"regcache_uc_{sinks_slug(sinks)}{_rot_tag()}_highres{calib_n}_s{seed}.npz"
+def _uc_path(RC, sinks, calib_n, seed, us=None):
+    return RC.ONNX_DIR / f"regcache_uc_{uslug(sinks, us)}{_rot_tag()}_highres{calib_n}_s{seed}.npz"
 
 
 @torch.no_grad()
@@ -638,11 +654,17 @@ def _make_mask_trunk(RC, model, a):
     uc = None
     if getattr(a, "mask_site", "residual") == "mlp":
         assert getattr(a, "hfill", "zero") == "zero", "--mask-site mlp에서는 --hfill을 쓰지 않는다 (잔차를 건드리지 않음)"
-        up = _uc_path(RC, sinks, a.calib_n, a.seed)
+        us = parse_u_starts(a.sinks)
+        up = _uc_path(RC, sinks, a.calib_n, a.seed, us)
         assert up.exists(), f"{up.name} 없음 — 먼저 ucache 하위 명령"
         z = np.load(up)
         assert json.loads(str(z["meta"]))["sinks"] == [list(s) for s in sinks]
+        assert json.loads(str(z["meta"])).get("u_starts") == us, (json.loads(str(z["meta"])).get("u_starts"), us)
         uc = {k: z[k] for k in z.files if k != "meta"}
+        if us is not None:
+            return MaskRegCacheTrunk(model.visual.trunk, sinks, cache, getattr(a, "mask_form", "full"), hc, uc, u_starts=us).eval()
+    else:
+        assert parse_u_starts(a.sinks) is None, "u_c 시작 블록(':u')은 --mask-site mlp에서만"
     return MaskRegCacheTrunk(model.visual.trunk, sinks, cache, getattr(a, "mask_form", "full"), hc, uc).eval()
 
 
@@ -815,7 +837,7 @@ def cmd_export(a):
         assert a.mode == "mean", "--graph mask는 mode=mean만"
         model.visual.trunk = _make_mask_trunk(RC, model, a)
         stem = (f"siglip2_image_fp32_rcmask{'' if a.mask_form == 'full' else 'bc'}{ {'zero': '', 'mean': 'hc', 'meanvar': 'hcv'}[a.hfill] }"
-                f"{'mlp' if a.mask_site == 'mlp' else ''}{sinks_slug(sinks)}{_rot_tag()}")
+                f"{'mlp' if a.mask_site == 'mlp' else ''}{uslug(sinks, parse_u_starts(a.sinks))}{_rot_tag()}")
     else:
         model.visual.trunk = _make_trunk(S, RC, model, a, a.mode)
         stem = f"siglip2_image_fp32_rc{sinks_slug(sinks)}" + ("" if a.mode == "mean" else f"_{a.mode}")
@@ -967,11 +989,14 @@ def cmd_ucache(a):
     sinks = parse_sinks(a.sinks)
     from s2_quantize import calib_images                 # s2_quantize와 같은 보정 사진 (train, dev 제외)
     x = calib_images("highres", a.calib_n, a.seed)
-    uc, n = build_uc(model.visual.trunk, x, sinks)
+    us = parse_u_starts(a.sinks)
+    uc, n = build_uc(model.visual.trunk, x, sinks if us is None else [(p, u) for (p, _), u in zip(sinks, us)])   # G6 s2_g6.build_m2rot과 같은 정의
     assert n == a.calib_n, (n, a.calib_n)
-    up = _uc_path(RC, sinks, a.calib_n, a.seed)
-    np.savez(up, meta=json.dumps({"sinks": [list(s) for s in sinks], "calib": f"highres{a.calib_n}_s{a.seed}", "n": n,
-                                  "commit": env["git"]["commit"]}), **uc)
+    up = _uc_path(RC, sinks, a.calib_n, a.seed, us)
+    meta = {"sinks": [list(s) for s in sinks], "calib": f"highres{a.calib_n}_s{a.seed}", "n": n, "commit": env["git"]["commit"]}
+    if us is not None:
+        meta["u_starts"] = us                            # 기본(None)일 때는 meta를 바꾸지 않는다 (이전 파일과 같은 내용)
+    np.savez(up, meta=json.dumps(meta), **uc)
     row = _row(env, a, file=up.name, sha256=_sha256(up), n=n,
                norms={k: round(float(np.linalg.norm(v)), 4) for k, v in uc.items()})
     _append(out, "ucache.jsonl", row)
