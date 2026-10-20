@@ -1,0 +1,111 @@
+{
+ "date": "2026-10-21T08:03:56",
+ "env": {
+  "cpu": "Intel(R) Core(TM) Ultra 7 258V",
+  "vnni": null,
+  "os": "Windows 10 (10.0.26300)",
+  "python": "3.11.9",
+  "onnxruntime": "1.25.0",
+  "model": "RN50",
+  "git": {
+   "commit": "d821ddc",
+   "dirty": true
+  },
+  "power": {
+   "plugged": true,
+   "battery_pct": 100
+  },
+  "argv": "--threads 4 --n 200 --repeats 3 --warmup 20 --models fp32=rn50_image_fp32_q1.onnx B2=rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx B2rr=rn50_image_int8_q1_percentile99999_highres256_s0_B2_rr.onnx Ddef=rn50_image_int8_q1_dynamic_Ddef.onnx Dpc=rn50_image_int8_q1_dynamic_Dpc_rr.onnx B2w4=rn50_image_int8_q1_percentile99999_highres256_s0_B2w4.onnx rotvc=rn50_image_int8_q1rotvc_percentile99999_highres256_s0_B2.onnx rotqkvc=rn50_image_int8_q1rotqkvc_percentile99999_highres256_s0_B2.onnx",
+  "threads": 4
+ },
+ "cond": {
+  "models": [
+   "fp32=rn50_image_fp32_q1.onnx",
+   "B2=rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx",
+   "B2rr=rn50_image_int8_q1_percentile99999_highres256_s0_B2_rr.onnx",
+   "Ddef=rn50_image_int8_q1_dynamic_Ddef.onnx",
+   "Dpc=rn50_image_int8_q1_dynamic_Dpc_rr.onnx",
+   "B2w4=rn50_image_int8_q1_percentile99999_highres256_s0_B2w4.onnx",
+   "rotvc=rn50_image_int8_q1rotvc_percentile99999_highres256_s0_B2.onnx",
+   "rotqkvc=rn50_image_int8_q1rotqkvc_percentile99999_highres256_s0_B2.onnx"
+  ],
+  "n": 200,
+  "repeats": 3,
+  "warmup": 20,
+  "threads": 4
+ },
+ "results": {
+  "fp32": {
+   "file": "rn50_image_fp32_q1.onnx",
+   "MiB": 146.1,
+   "ms_per_img_mean": 32.23,
+   "ms_per_img_std": 0.2,
+   "ms_per_img_min": 32.08,
+   "lat_p50": 32.15,
+   "lat_p95": 33.29
+  },
+  "B2": {
+   "file": "rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx",
+   "MiB": 37.7,
+   "ms_per_img_mean": 14.65,
+   "ms_per_img_std": 0.02,
+   "ms_per_img_min": 14.64,
+   "lat_p50": 14.6,
+   "lat_p95": 15.37
+  },
+  "B2rr": {
+   "file": "rn50_image_int8_q1_percentile99999_highres256_s0_B2_rr.onnx",
+   "MiB": 37.7,
+   "ms_per_img_mean": 14.74,
+   "ms_per_img_std": 0.23,
+   "ms_per_img_min": 14.57,
+   "lat_p50": 14.63,
+   "lat_p95": 15.73
+  },
+  "Ddef": {
+   "file": "rn50_image_int8_q1_dynamic_Ddef.onnx",
+   "MiB": 37.0,
+   "ms_per_img_mean": 25.92,
+   "ms_per_img_std": 0.12,
+   "ms_per_img_min": 25.85,
+   "lat_p50": 25.57,
+   "lat_p95": 28.15
+  },
+  "Dpc": {
+   "file": "rn50_image_int8_q1_dynamic_Dpc_rr.onnx",
+   "MiB": 37.1,
+   "ms_per_img_mean": 25.76,
+   "ms_per_img_std": 0.3,
+   "ms_per_img_min": 25.56,
+   "lat_p50": 25.51,
+   "lat_p95": 27.28
+  },
+  "B2w4": {
+   "file": "rn50_image_int8_q1_percentile99999_highres256_s0_B2w4.onnx",
+   "MiB": 33.2,
+   "ms_per_img_mean": 16.2,
+   "ms_per_img_std": 0.18,
+   "ms_per_img_min": 16.03,
+   "lat_p50": 16.08,
+   "lat_p95": 17.57
+  },
+  "rotvc": {
+   "file": "rn50_image_int8_q1rotvc_percentile99999_highres256_s0_B2.onnx",
+   "MiB": 37.7,
+   "ms_per_img_mean": 14.97,
+   "ms_per_img_std": 0.34,
+   "ms_per_img_min": 14.78,
+   "lat_p50": 14.73,
+   "lat_p95": 16.31
+  },
+  "rotqkvc": {
+   "file": "rn50_image_int8_q1rotqkvc_percentile99999_highres256_s0_B2.onnx",
+   "MiB": 37.7,
+   "ms_per_img_mean": 14.68,
+   "ms_per_img_std": 0.14,
+   "ms_per_img_min": 14.55,
+   "lat_p50": 14.61,
+   "lat_p95": 15.59
+  }
+ }
+}
