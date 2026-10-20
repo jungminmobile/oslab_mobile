@@ -1,6 +1,7 @@
 # G6: Hailo Zoo 모델에 M2rot을 적용해 Zoo 공개 HEF와 Hailo-10H 실칩에서 비교 (설계 2026-10-20)
 
-> 상태: **설계·판정 고정 (결과 전).** 1~6절은 결과 전에 커밋한다. 결과는 7절부터 붙인다.
+> 상태: **완료 (10/20).** 1~5절은 결과 전에 고정했다 (커밋 8d7b947, 6-2 대응표·.alls는 optimize 전 a565049). 결과는 7절부터다.
+> **한 줄 결론: B32에서 우리 방식(M) − Zoo 공개 HEF(Z) = +3.38%p [+2.62, +4.17] → "우위"** (실칩 dev 전체 고화질 top-1, FP32 대비 −0.84 vs −4.22). 비용은 배치 1 지연 +28.3%(16.5 → 21.2 ms), 크기 +10.1%다. 지연 증가의 대부분은 레시피(D256L1 이식) 쪽이다. S1B16은 R − Z +0.57 [+0.04, +1.10]으로 이득이 작다.
 > 브랜치 `siglip2/g6-zoo-transfer` (`siglip2/g6-zoo-transfer-pre` 3211a37에서 만듦), worktree `~/oslab_g6`. 담당: 용 (용 요청). **test는 쓰지 않는다** (dev 전체만).
 > 사전 확인: `results/siglip2/G6_pre/README.md` (B32는 통일 규칙 sink 가능, S1B16은 회전만).
 
@@ -218,8 +219,32 @@ D256L1(`siglip2/hailo/g4_D256L1_official_b9fc2.alls`, M2rot은 `g3r_M2rot_D256L1
 - B32 Z·V·D의 cos 최소가 음수다. 출력이 완전히 망가진 사진이 몇 장 있다는 뜻이다. R·M에서는 0.32·0.38로 줄었다.
 - 데이터셋별 top-1은 `results_chip.jsonl`의 `per_set`에 있다.
 
-### 7-3. 속도
-(측정 중 — 8절 2의 사고 뒤 다시 잼)
+### 7-3. 속도·크기 (판정하지 않음, 비율만)
+
+AGX Orin + Hailo-10H, HailoRT 5.3.0, 커밋 `43a3728`(dirty 0), `chip/out_bench/`, 정리 `results_speed.jsonl`.
+- 세션 3번 × HEF 9개를 같은 순서로 쟀다 (B32 Z·V·D·R·M → S1B16 Z·V·R·D).
+- HEF마다 칩 온도 < 64.6 °C에서 시작했다 (8절 2). 워밍업 20번, 200번.
+- 배치 8은 8개를 넣고 모두 끝날 때까지의 시간이다. 표는 세 세션의 평균이다. 세 세션 사이 차이(최대−최소)는 모든 HEF에서 평균의 0.8% 이내다.
+- 보조 지표는 `hailortcli run2 -t 10` FPS다. 측정 중 칩 최고 온도는 87.7 °C(S1B16 배치 8)였다.
+- **속도 차이에는 컴파일 설정(resources_param·bucket 유무) 차이가 포함된다.** D·R·M과 S1B16 R·D에는 resources_param·bucket이 없다 (D256L1 원칙, 3-2).
+
+| HEF | 배치 1 지연 ms (Z 대비) | 배치 1 p90 | run2 FPS b1 | 배치 8 ms/묶음 (Z 대비) | 배치 8 장/초 | run2 FPS b8 |
+|---|---|---|---|---|---|---|
+| B32 Z | 16.49 (+0.0%) | 16.65 | 64.5 | 53.96 (+0.0%) | 148.3 | 225.5 |
+| B32 V | 16.55 (+0.4%) | 16.67 | 64.5 | 54.00 (+0.1%) | 148.1 | 222.3 |
+| B32 D | 20.48 (+24.2%) | 20.60 | 52.5 | 83.10 (+54.0%) | 96.3 | 122.4 |
+| B32 R | 20.28 (+23.0%) | 20.42 | 52.6 | 83.04 (+53.9%) | 96.3 | 123.2 |
+| B32 M | 21.16 (+28.3%) | 21.30 | 50.8 | 87.62 (+62.4%) | 91.3 | 117.6 |
+| S1B16 Z | 31.52 (+0.0%) | 31.85 | 32.9 | 137.57 (+0.0%) | 58.1 | 79.1 |
+| S1B16 V | 31.48 (-0.1%) | 31.75 | 33.0 | 137.48 (-0.1%) | 58.2 | 76.8 |
+| S1B16 R | 46.42 (+47.3%) | 46.57 | 22.1 | 229.84 (+67.1%) | 34.8 | 44.9 |
+| S1B16 D | 45.56 (+44.5%) | 45.67 | 22.5 | 227.66 (+65.5%) | 35.1 | 44.9 |
+
+- 크기·컨텍스트 (6-1): B32는 Z 102.6 MB·12 → D 104.0·15 → R 111.1·15 → M 113.0 MB·17 (+10.1%). S1B16은 Z 99.1·17 → R 111.2 MB·17 (+12.3%).
+- **느려진 원인의 대부분은 레시피(D − V) 쪽이다.** 회전(R − D)은 지연이 거의 같다(배치 1 −1.0%). sink(M − R)는 배치 1 +4.3%, 배치 8 +5.5%다.
+  - B32의 D − V에는 컨텍스트 12 → 15, 16비트 층 집합, resources_param·bucket 없음이 묶여 있다.
+  - S1B16도 D가 이미 배치 1 +44.5%다 (컨텍스트는 17로 같음).
+- 정확도는 M이 Z보다 +3.38%p 높고, 배치 1 지연은 +28.3%(16.5 → 21.2 ms), 크기는 +10.1%다. 이 교환을 어떻게 볼지는 팀이 정한다 (CLAUDE.md: 트레이드오프 지점은 Claude가 정하지 않음).
 
 ## 8. 계획과 달라진 점
 
@@ -243,3 +268,29 @@ D256L1(`siglip2/hailo/g4_D256L1_official_b9fc2.alls`, M2rot은 `g3r_M2rot_D256L1
 6. **S1B16 D (선택):** B32 전체와 S1B16 Z·V·R의 빌드·eval이 끝난 뒤 빌드했다 (`ONLY=s1b16_D`, 커밋 `aed45fd`). 속도 측정에도 넣었다.
 7. **G5c R-our:** 참고로 eval만 했다. 속도 측정에서는 뺐다 (V와 출력이 같음).
 8. 모델 출처: 우리 export는 open_clip timm 모델이다. Zoo ONNX와의 cos 평균은 B32 0.999993, S1B16 1.000000이다 (`ident.jsonl`). FP32 기준과 분류기는 HF 모델로 만들었다 (G6_pre와 같음).
+
+## 9. 확인 못 한 것
+
+- 같은 레시피를 다시 빌드했을 때의 차이(빌드 사이 변동). 구간은 사진 표본만 반영한다.
+- 지연 증가를 레시피 안에서 어느 항목(컨텍스트 수, 16비트 층, resources_param·bucket)이 만드는지. 이번 설계에서는 D − V로 묶었다. 나누려면 항목별 재컴파일이 필요하다.
+- 우리 HEF에 Zoo의 resources_param·bucket을 넣었을 때의 속도와 정확도 (G5 가설과 이어짐).
+- (선택) ORT CPU 부록(5-4)은 하지 않았다. 시간이 남으면 따로 한다.
+- 과열 사고 전 G5 방식(세션 안 냉각 없음)과 이번 측정(HEF마다 냉각)의 지연이 같은 조건인지. G5의 수치와 직접 비교하지 않는다.
+
+## 10. 재현
+
+```bash
+# 데스크탑 (siglip2/, RN50_RESULTS=../results/siglip2/G6, source ~/siglip2_env.sh)
+python s2_g6.py data                                          # Zoo 전처리 dev 전체·보정 (3분)
+python s2_g6.py --model b32 ident; python s2_g6.py --model s1b16 ident
+python s2_g6.py --model b32 export --cfg plain|rot|m2rot; python s2_g6.py --model s1b16 export --cfg rot|plain
+PYTHONPATH=~/siglip2_work/g6pre/pylib python s2_g6.py --model b32 fp32; ... --model s1b16 fp32
+# DFC (results/siglip2/G6/): parse → g6_alls.py (hailo10_venv) → 빌드 체인
+PARSE_ONLY=1 TAG=parse_b32_M ONNX=… NET=g6_b32_M SIZE=256 bash g6_dfc.sh;  python g6_alls.py <har> <alls> <map.csv> --input-layer format_conversion1
+nohup bash g6_build_all.sh > ~/siglip2_work/g6/build_all.log 2>&1 &          # V → D → R → M → S1B16 V → R (+ ONLY=s1b16_D ALSO_S1B16_D=1)
+# AGX (~/ssd/junyong/hailo_g6): HEF·dev_zoo224/256·g6_hailo_chip.py·run.sh·s2_hailo_temp.py
+HEFS="b32_M" SKIP_BENCH=1 nohup bash run.sh > run.out 2>&1 < /dev/null &    # eval
+HEFS="b32_Z b32_V b32_D b32_R b32_M s1b16_Z s1b16_V s1b16_R s1b16_D" SKIP_EVAL=1 nohup bash run.sh > run.out 2>&1 < /dev/null &
+# 정리
+python g6_summarize.py --chip <AGX out 사본> --ref ~/siglip2_work/g6/ref --s2dir ../../../siglip2 --out results_chip.jsonl
+```
