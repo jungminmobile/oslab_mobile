@@ -44,6 +44,45 @@
   - 비트 확인(2-1)과 속도 측정은 B16_rb 대신 B16_rb09로 한다.
   - B16_both의 resources_param은 그대로 1.0이다. B32 M_both와 같은 줄이다.
 
+### 1-2. B16_both도 compile 실패 → 수동 bucket으로 compile만 다시 (결과 전, 용 지시)
+
+- **B16_both** (`alls/g6c_b16_both.alls`): optimize는 통과했다 (256장, 29분). compile은 116분 뒤 **실패**했다.
+  - B16_rb와 같은 모습이다: `Applying selected partition to 6 contexts` → 다시 5개로 나눔 → `siglip2_m2rot_bucket_1 - Partition and Allocation Failed (Timeout, Processing time: 1h 55m 31s)`, `Resolver didn't find possible solution.`
+  - 근거: `logs/b16_both_fail/compile_errors.txt`
+- B16_rb09(0.9)는 **보류**한다 (용 지시).
+- **가설 (용):** B16은 B32보다 커서, resources_param 제한이 있으면 Zoo S1B16처럼 수동 bucket이 있어야 배치를 찾는다. bucket을 뺀 것이 시간 초과의 원인일 수 있다.
+- **방법:**
+  - B16_rb·B16_both 각각 **이미 optimize가 끝난 HAR을 그대로 쓰고**(다시 optimize하지 않음), 원래 .alls에 bucket 3줄만 더한 model script로 `hailo compiler --model-script`를 다시 돌린다 → **B16_rb_bk**, **B16_both_bk**.
+  - compile 상한은 3시간이다 (넘으면 멈추고 보고).
+- **bucket 대응 (Zoo S1B16 optimized HAR ↔ 우리 optimized HAR, 두 HAR에서 같은 이름):**
+  - 근거: 층 종류, `original_names`(ONNX 노드), 그래프 이웃(입력·출력)
+  - 잔차 덧셈은 검증된 .alls 26개 목록의 순서(R[0] = 위치 임베딩, R[2b+1] = 블록 b attention, R[2b+2] = 블록 b MLP, R[25] = 헤드)로 정했다. Zoo도 같은 규칙으로 번호가 매겨져 있다.
+
+| bucket | Zoo 층 | 블록·연산 (Zoo 근거) | 우리 층 | 우리 근거 |
+|---|---|---|---|---|
+| b1 | `input_layer1` | 입력 | `input_layer1` | 입력 |
+| b1 | `const_input1` | 위치 임베딩 상수 → conv1 (`/embeddings/Add_input`) | `const_input1` | → conv1, `/trunk/Add_input` |
+| b1 | `conv17` | 블록 3 fc2 (`layers.3/mlp/fc2`) | `conv17` | fc2 순서 3번째, `/trunk/blocks.3/mlp/fc2`, 출력 → ew_add9 |
+| b1 | `ew_add8` | 블록 3 attention 잔차 (`layers.3/Add`, 입력 conv15 = proj) | `ew_add8` | `/trunk/blocks.3/Add`, 입력 conv15 |
+| b2 | `ew_add9` | 블록 3 MLP 잔차 (`layers.3/Add_1`, 입력 conv17) | `ew_add9` | `/trunk/blocks.3/Add_1`, 입력 conv17 |
+| b2 | `reduce_mean1·ew_sub1·square1·conv_var_inv·ew_mult1 _layer_normalization9` | 블록 4 norm1 분해 (입력 ew_add9) | 같은 이름 5개 | `/trunk/blocks.4/norm1`, 입력 ew_add9 |
+| b2 | `conv32`, `conv33` | 블록 7 fc1·fc2 | `conv32`, `conv33` | fc1·fc2 순서 7번째 |
+| b2 | `ew_add17` | 블록 7 MLP 잔차 (입력 conv33) | **`ew_add26`** | R[16], `/trunk/Add_15`, 입력 conv33 |
+| b3 | `const_input2` | 헤드 attention 상수 → matmul25 (`/head/attention/MatMul_2_input`) | **`const_input27`** | → matmul25, `/trunk/MatMul_14_input` (헤드 쪽 MatMul 상수는 이것 하나) |
+| b3 | `… _layer_normalization17` ×5 | 블록 8 norm1 분해 (입력 ew_add17) | 같은 이름 5개 | `/trunk/norm1_3` (M 블록 5·6·7·8 중 4번째 = 블록 8), 입력 ew_add26 |
+| b3 | `ew_add18` | 블록 8 attention 잔차 (입력 conv35) | **`ew_add29`** | R[17], `/trunk/Add_18`, 입력 conv35 (= 3 + 4·8, 블록 8 proj) |
+| b3 | `precision_change15` | 블록 8 norm1 출력 16 → 8비트 (→ qkv splitter 3개) | **`precision_change16`** | ew_mult1_layer_normalization17 → conv_feature_splitter9 ×3, a16_w16_a8 |
+| b3 | `conv53` | 헤드 MLP fc2 | `conv53` | fc2 순서 13번째 (헤드) |
+| b3 | `ew_add26` | 헤드 잔차 (`/head/Add;Gather`) | **`ew_add57`** | R[25], `/trunk/Add_46;/trunk/Gather` |
+| b3 | `output_layer1` | 출력 | `output_layer1` | 출력 |
+
+- 만든 model script: `alls/g6c_b16_rb_bk.alls`, `alls/g6c_b16_both_bk.alls` (원래 .alls + bucket 3줄, 다른 줄은 그대로)
+- M 그래프에만 있는 층(마스크 연산의 ew_mult·const_input 등)은 bucket 줄에 넣지 않았다. Zoo 줄도 경계 층만 나열하므로, 나머지는 DFC가 정하게 둔다.
+- 대응을 못 찾은 층은 없다. 그래서 5번 대안(Zoo `clip_vit_b_16` .alls의 `context_switch_param`)은 쓰지 않는다.
+- **비트 확인 (2-1을 바꿈):**
+  - B16_rb_bk는 M2rot2 실칩 출력과 dev 6×200으로 비트 비교한다.
+  - B16_both_bk는 B16_both 실칩 결과가 없다. 그래서 같은 optimized HAR의 에뮬레이터(SDK_QUANTIZED) 출력과 비교한다. G5b에서 에뮬레이터와 실칩이 비트 단위로 같지 않은 경우가 있었으므로, 비트 일치가 안 되면 cos·예측 일치율로 기록한다.
+
 ## 2. 측정
 
 ### 2-1. 정확도 (AGX 실칩, G6 `g6_hailo_chip.py`, G6 Zoo 전처리 캐시·HF FP32 기준·분류기)

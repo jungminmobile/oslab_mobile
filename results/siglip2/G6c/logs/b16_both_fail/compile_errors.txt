@@ -1,0 +1,11 @@
+[error] BackendAllocatorException: Compilation failed: Resolver didn't find possible solution.
+[error] Failed to optimize bucket_1 with error: Resolver didn't find possible solution.
+[error] Failed to produce compiled graph
+[error] siglip2_m2rot Allocation Failed (duration: 53m 38s)
+[error] siglip2_m2rot_bucket_1 - Partition and Allocation Failed (Timeout, Processing time: 1h 55m 31s)
+[error] siglip2_m2rot_bucket_1 Compilation Failed (duration: 1h 55m 31s)
+[info] Applying selected partition to 5 contexts...
+[info] Applying selected partition to 6 contexts...
+[info] Partition to contexts finished successfully
+[info] Partitioner finished after 287 iterations, Time it took: 7m 56s 299ms
+[info] Partitioner finished after 312 iterations, Time it took: 14m 29s 829ms
