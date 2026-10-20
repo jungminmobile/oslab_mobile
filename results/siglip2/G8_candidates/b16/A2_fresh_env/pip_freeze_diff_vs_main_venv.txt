@@ -1,0 +1,20 @@
+9c9
+< filelock==4.1.1
+---
+> filelock==4.2.4
+16,17c16,17
+< httpcore2==2.13.1
+< httpx2==2.13.1
+---
+> httpcore2==2.15.1
+> httpx2==2.15.1
+27d26
+< onnx-ir==1.0.0
+33c32
+< portalocker==4.4.0
+---
+> portalocker==4.4.1
+51c50
+< truststore==0.10.4
+---
+> truststore==0.10.5
