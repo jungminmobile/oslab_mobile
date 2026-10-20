@@ -1,0 +1,24 @@
+2026-10-20 16:40:36 start commit=e7cd97c dirty=0 gate=WSL(others=0, load1<2, 5분 간격) windows=확인못함(interop 꺼짐)
+2026-10-20 16:40:36 s=1 t=1 pre others=0 load=1.41 2.83 3.10
+2026-10-20 16:45:14 s=1 t=1 done post others=0 load=1.00 1.71 2.54
+2026-10-20 16:45:14 s=1 t=2 pre others=0 load=1.00 1.71 2.54
+2026-10-20 16:47:44 s=1 t=2 done post others=0 load=1.92 1.83 2.45
+2026-10-20 16:47:44 s=1 t=4 pre others=0 load=1.92 1.83 2.45
+2026-10-20 16:49:12 s=1 t=4 done post others=0 load=3.60 2.41 2.61
+2026-10-20 16:49:12 s=2 t=1 대기#1 others=0 load1=3.60
+2026-10-20 16:54:12 s=2 t=1 pre others=0 load=0.02 0.89 1.88
+2026-10-20 16:58:48 s=2 t=1 done post others=0 load=0.99 0.96 1.64
+2026-10-20 16:58:48 s=2 t=2 pre others=0 load=0.99 0.96 1.64
+2026-10-20 17:01:18 s=2 t=2 done post others=0 load=1.95 1.41 1.72
+2026-10-20 17:01:18 s=2 t=4 pre others=0 load=1.95 1.41 1.72
+2026-10-20 17:02:45 s=2 t=4 done post others=0 load=3.69 2.16 1.96
+2026-10-20 17:02:45 s=3 t=1 대기#2 others=0 load1=3.69
+2026-10-20 17:07:45 s=3 t=1 pre others=0 load=0.02 0.78 1.41
+2026-10-20 17:12:22 s=3 t=1 done post others=0 load=0.99 0.92 1.29
+2026-10-20 17:12:22 s=3 t=2 pre others=0 load=0.99 0.92 1.29
+2026-10-20 17:14:52 s=3 t=2 done post others=0 load=1.91 1.34 1.40
+2026-10-20 17:14:52 s=3 t=4 pre others=0 load=1.91 1.34 1.40
+2026-10-20 17:16:20 s=3 t=4 done post others=0 load=3.66 2.08 1.66
+2026-10-20 17:16:20 mem 대기#3 others=0 load1=3.66
+2026-10-20 17:21:20 peak memory pre others=0 load=0.03 0.77 1.20
+2026-10-20 17:21:38 G6B_ORT_SPEED_DONE waits=3

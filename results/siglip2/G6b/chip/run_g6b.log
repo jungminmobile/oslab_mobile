@@ -1,0 +1,626 @@
+03:08:51 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.19 0.05 0.02 users=0 other_hailo=0 idle=62.36 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+03:08:52 hef b32_Z sha256=c16123297d83a36cc862839ba1b9984d1ab539abe3773f99a332acae39e318cc bytes=102645760
+03:08:52 hef s1b16_Z sha256=e2198ed5975da551d9a807c3c22d694d7d3f1e9034b9fe3bb3562601f8f40650 bytes=99061760
+03:08:52 hef s1b16_G5cRour sha256=e21fbb12fc8bdb209d021ea364a79ce4d4614f011c53e4df6711cdc024a86c4a bytes=99168256
+03:08:53 cool eval_b32_Z max=62.26
+03:08:53 other_hailo=0 eval b32_Z 시작
+b32_Z cifar_A (1000, 768) 20s
+b32_Z pets_dev (990, 768) 41s
+b32_Z flowers_dev (957, 768) 61s
+b32_Z cars_dev (967, 768) 82s
+b32_Z food_dev (985, 768) 104s
+b32_Z caltech_dev (1024, 768) 126s
+03:11:01 eval b32_Z 끝
+03:14:33 cool eval_s1b16_Z max=64.43
+03:14:33 other_hailo=0 eval s1b16_Z 시작
+s1b16_Z cifar_A (1000, 768) 36s
+s1b16_Z pets_dev (990, 768) 74s
+s1b16_Z flowers_dev (957, 768) 110s
+s1b16_Z cars_dev (967, 768) 147s
+s1b16_Z food_dev (985, 768) 184s
+s1b16_Z caltech_dev (1024, 768) 225s
+03:18:20 eval s1b16_Z 끝
+03:23:24 cool eval_s1b16_G5cRour max=64.03
+03:23:24 other_hailo=0 eval s1b16_G5cRour 시작
+s1b16_G5cRour cifar_A (1000, 768) 36s
+s1b16_G5cRour pets_dev (990, 768) 74s
+s1b16_G5cRour flowers_dev (957, 768) 110s
+s1b16_G5cRour cars_dev (967, 768) 147s
+s1b16_G5cRour food_dev (985, 768) 184s
+s1b16_G5cRour caltech_dev (1024, 768) 226s
+03:27:12 eval s1b16_G5cRour 끝
+03:27:12 G6 CHIP DONE load=0.01 0.02 0.00
+03:40:22 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.00 0.00 0.00 users=0 other_hailo=0 idle=62.61 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+03:40:23 hef b32_V sha256=96617700b59e8ddab6eb45b8501cbcb617af837f577da83499f9a255d48ef80b bytes=102649856
+03:40:23 cool eval_b32_V max=62.61
+03:40:23 other_hailo=0 eval b32_V 시작
+b32_V cifar_A (1000, 768) 21s
+b32_V pets_dev (990, 768) 41s
+b32_V flowers_dev (957, 768) 62s
+b32_V cars_dev (967, 768) 83s
+b32_V food_dev (985, 768) 104s
+b32_V caltech_dev (1024, 768) 127s
+03:42:32 eval b32_V 끝
+03:42:32 G6 CHIP DONE load=0.12 0.06 0.02
+04:09:09 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.00 0.00 0.00 users=0 other_hailo=0 idle=62.15 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+04:09:09 hef b32_D sha256=d2f5cd6c4f45159d4e215c9b02860ba7788a2791ae69bba677b619c7887fa3d8 bytes=103997440
+04:09:10 cool eval_b32_D max=62.2
+04:09:10 other_hailo=0 eval b32_D 시작
+b32_D cifar_A (1000, 768) 24s
+b32_D pets_dev (990, 768) 48s
+b32_D flowers_dev (957, 768) 74s
+b32_D cars_dev (967, 768) 99s
+b32_D food_dev (985, 768) 125s
+b32_D caltech_dev (1024, 768) 151s
+04:11:43 eval b32_D 끝
+04:11:43 G6 CHIP DONE load=0.09 0.03 0.01
+04:45:05 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.00 0.02 0.00 users=0 other_hailo=0 idle=62.1 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+04:45:06 hef b32_R sha256=c2105fed76c541f9b3fa0bc78c397302ccfb20bf7c391d472a246d9782530ef3 bytes=111108096
+04:45:06 cool eval_b32_R max=62.26
+04:45:06 other_hailo=0 eval b32_R 시작
+b32_R cifar_A (1000, 768) 24s
+b32_R pets_dev (990, 768) 48s
+b32_R flowers_dev (957, 768) 73s
+b32_R cars_dev (967, 768) 98s
+b32_R food_dev (985, 768) 124s
+b32_R caltech_dev (1024, 768) 150s
+04:47:38 eval b32_R 끝
+04:47:38 G6 CHIP DONE load=0.01 0.02 0.00
+05:28:38 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.00 0.00 0.00 users=0 other_hailo=0 idle=62.15 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+05:28:38 hef b32_M sha256=311655b72aad4dacf81807a9ec62adf8012f5ebddcead043d7b2849870add992 bytes=112975872
+05:28:39 cool eval_b32_M max=62.0
+05:28:39 other_hailo=0 eval b32_M 시작
+b32_M cifar_A (1000, 768) 25s
+b32_M pets_dev (990, 768) 50s
+b32_M flowers_dev (957, 768) 76s
+b32_M cars_dev (967, 768) 102s
+b32_M food_dev (985, 768) 129s
+b32_M caltech_dev (1024, 768) 156s
+05:31:17 eval b32_M 끝
+05:31:17 G6 CHIP DONE load=0.15 0.06 0.01
+06:23:18 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.16 0.03 0.01 users=0 other_hailo=0 idle=62.1 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+06:23:19 hef s1b16_V sha256=395044e3a38190b183eda8958e394256d5930278225d717337bc3cc257ef76be bytes=99168256
+06:23:19 cool eval_s1b16_V max=62.0
+06:23:19 other_hailo=0 eval s1b16_V 시작
+s1b16_V cifar_A (1000, 768) 36s
+s1b16_V pets_dev (990, 768) 73s
+s1b16_V flowers_dev (957, 768) 110s
+s1b16_V cars_dev (967, 768) 147s
+s1b16_V food_dev (985, 768) 184s
+s1b16_V caltech_dev (1024, 768) 223s
+06:27:04 eval s1b16_V 끝
+06:27:04 G6 CHIP DONE load=0.17 0.16 0.07
+07:10:18 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.00 0.00 0.00 users=0 other_hailo=0 idle=62.15 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+07:10:18 hef s1b16_R sha256=6226cb511bf41304b0bfd567c2258683f65f6af594d9723ba05c631b7b047abf bytes=111230976
+07:10:18 cool eval_s1b16_R max=62.05
+07:10:18 other_hailo=0 eval s1b16_R 시작
+s1b16_R cifar_A (1000, 768) 51s
+s1b16_R pets_dev (990, 768) 106s
+s1b16_R flowers_dev (957, 768) 159s
+s1b16_R cars_dev (967, 768) 212s
+s1b16_R food_dev (985, 768) 266s
+s1b16_R caltech_dev (1024, 768) 322s
+07:15:42 eval s1b16_R 끝
+07:15:42 G6 CHIP DONE load=0.11 0.04 0.01
+07:55:40 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.00 0.00 0.00 users=0 other_hailo=0 idle=61.9 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+07:55:40 hef s1b16_D sha256=cb7f618106736c8ed5bcd575df3cab8e052b336c3535a7e8115d9bcb554e0055 bytes=99598336
+07:55:40 cool eval_s1b16_D max=61.85
+07:55:40 other_hailo=0 eval s1b16_D 시작
+s1b16_D cifar_A (1000, 768) 50s
+s1b16_D pets_dev (990, 768) 104s
+s1b16_D flowers_dev (957, 768) 156s
+s1b16_D cars_dev (967, 768) 208s
+s1b16_D food_dev (985, 768) 261s
+s1b16_D caltech_dev (1024, 768) 316s
+08:00:59 eval s1b16_D 끝
+08:00:59 G6 CHIP DONE load=0.08 0.02 0.01
+08:01:08 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.08 0.02 0.01 users=0 other_hailo=0 idle=92.61 TH=94.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+08:01:08 hef b32_Z sha256=c16123297d83a36cc862839ba1b9984d1ab539abe3773f99a332acae39e318cc bytes=102645760
+08:01:08 hef b32_V sha256=96617700b59e8ddab6eb45b8501cbcb617af837f577da83499f9a255d48ef80b bytes=102649856
+08:01:09 hef b32_D sha256=d2f5cd6c4f45159d4e215c9b02860ba7788a2791ae69bba677b619c7887fa3d8 bytes=103997440
+08:01:09 hef b32_R sha256=c2105fed76c541f9b3fa0bc78c397302ccfb20bf7c391d472a246d9782530ef3 bytes=111108096
+08:01:10 hef b32_M sha256=311655b72aad4dacf81807a9ec62adf8012f5ebddcead043d7b2849870add992 bytes=112975872
+08:01:10 hef s1b16_Z sha256=e2198ed5975da551d9a807c3c22d694d7d3f1e9034b9fe3bb3562601f8f40650 bytes=99061760
+08:01:11 hef s1b16_V sha256=395044e3a38190b183eda8958e394256d5930278225d717337bc3cc257ef76be bytes=99168256
+08:01:11 hef s1b16_R sha256=6226cb511bf41304b0bfd567c2258683f65f6af594d9723ba05c631b7b047abf bytes=111230976
+08:01:11 hef s1b16_D sha256=cb7f618106736c8ed5bcd575df3cab8e052b336c3535a7e8115d9bcb554e0055 bytes=99598336
+08:01:12 cool bench_b1_s1 max=84.87
+08:01:12 other_hailo=0 bench b1 s1 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.461, "median_ms": 18.416, "p90_ms": 18.625, "min_ms": 18.322, "max_ms": 18.865, "img_per_s_from_mean": 54.17}
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.496, "median_ms": 18.461, "p90_ms": 18.596, "min_ms": 18.385, "max_ms": 18.85, "img_per_s_from_mean": 54.07}
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 22.989, "median_ms": 22.994, "p90_ms": 23.092, "min_ms": 22.874, "max_ms": 23.162, "img_per_s_from_mean": 43.5}
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 22.742, "median_ms": 22.724, "p90_ms": 22.873, "min_ms": 22.614, "max_ms": 23.191, "img_per_s_from_mean": 43.97}
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 23.684, "median_ms": 23.698, "p90_ms": 23.781, "min_ms": 23.566, "max_ms": 23.987, "img_per_s_from_mean": 42.22}
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 35.679, "median_ms": 35.65, "p90_ms": 36.013, "min_ms": 35.241, "max_ms": 36.513, "img_per_s_from_mean": 28.03}
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 35.649, "median_ms": 35.551, "p90_ms": 36.012, "min_ms": 35.242, "max_ms": 36.613, "img_per_s_from_mean": 28.05}
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 52.584, "median_ms": 52.55, "p90_ms": 52.677, "min_ms": 52.472, "max_ms": 52.798, "img_per_s_from_mean": 19.02}
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 51.7, "median_ms": 51.618, "p90_ms": 51.974, "min_ms": 51.545, "max_ms": 52.117, "img_per_s_from_mean": 19.34}
+08:02:42 bench b1 s1 끝
+08:02:42 cool bench_b1_s2 max=87.6
+08:02:43 other_hailo=0 bench b1 s2 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.46, "median_ms": 18.415, "p90_ms": 18.642, "min_ms": 18.333, "max_ms": 18.853, "img_per_s_from_mean": 54.17}
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.503, "median_ms": 18.463, "p90_ms": 18.647, "min_ms": 18.379, "max_ms": 18.934, "img_per_s_from_mean": 54.04}
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 22.985, "median_ms": 22.985, "p90_ms": 23.075, "min_ms": 22.874, "max_ms": 23.284, "img_per_s_from_mean": 43.51}
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 22.737, "median_ms": 22.729, "p90_ms": 22.835, "min_ms": 22.624, "max_ms": 23.208, "img_per_s_from_mean": 43.98}
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 23.723, "median_ms": 23.721, "p90_ms": 23.872, "min_ms": 23.585, "max_ms": 24.368, "img_per_s_from_mean": 42.15}
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 35.685, "median_ms": 35.651, "p90_ms": 36.018, "min_ms": 35.269, "max_ms": 36.56, "img_per_s_from_mean": 28.02}
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 35.673, "median_ms": 35.622, "p90_ms": 36.026, "min_ms": 35.239, "max_ms": 36.645, "img_per_s_from_mean": 28.03}
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 52.625, "median_ms": 52.627, "p90_ms": 52.757, "min_ms": 52.494, "max_ms": 53.226, "img_per_s_from_mean": 19.0}
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 51.7, "median_ms": 51.628, "p90_ms": 52.003, "min_ms": 51.546, "max_ms": 52.186, "img_per_s_from_mean": 19.34}
+08:04:13 bench b1 s2 끝
+08:04:13 cool bench_b1_s3 max=87.85
+08:04:13 other_hailo=0 bench b1 s3 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.441, "median_ms": 18.384, "p90_ms": 18.632, "min_ms": 18.273, "max_ms": 18.799, "img_per_s_from_mean": 54.23}
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.503, "median_ms": 18.467, "p90_ms": 18.622, "min_ms": 18.389, "max_ms": 18.853, "img_per_s_from_mean": 54.05}
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 23.0, "median_ms": 22.996, "p90_ms": 23.085, "min_ms": 22.891, "max_ms": 23.176, "img_per_s_from_mean": 43.48}
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 22.751, "median_ms": 22.735, "p90_ms": 22.843, "min_ms": 22.638, "max_ms": 23.072, "img_per_s_from_mean": 43.95}
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 23.688, "median_ms": 23.678, "p90_ms": 23.794, "min_ms": 23.563, "max_ms": 24.033, "img_per_s_from_mean": 42.21}
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 35.716, "median_ms": 35.691, "p90_ms": 36.026, "min_ms": 35.246, "max_ms": 36.53, "img_per_s_from_mean": 28.0}
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 35.677, "median_ms": 35.59, "p90_ms": 36.036, "min_ms": 35.241, "max_ms": 36.666, "img_per_s_from_mean": 28.03}
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 52.588, "median_ms": 52.575, "p90_ms": 52.66, "min_ms": 52.486, "max_ms": 52.796, "img_per_s_from_mean": 19.02}
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 51.705, "median_ms": 51.613, "p90_ms": 51.992, "min_ms": 51.546, "max_ms": 52.181, "img_per_s_from_mean": 19.34}
+08:05:43 bench b1 s3 끝
+08:05:44 cool bench_b8_s1 max=87.9
+08:05:44 other_hailo=0 bench b8 s1 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 60.016, "median_ms": 60.005, "p90_ms": 60.039, "min_ms": 59.925, "max_ms": 61.039, "img_per_s_from_mean": 133.3}
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 60.121, "median_ms": 60.012, "p90_ms": 60.943, "min_ms": 59.816, "max_ms": 61.072, "img_per_s_from_mean": 133.07}
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 94.765, "median_ms": 95.002, "p90_ms": 95.035, "min_ms": 92.398, "max_ms": 96.617, "img_per_s_from_mean": 84.42}
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 93.045, "median_ms": 93.011, "p90_ms": 93.047, "min_ms": 91.392, "max_ms": 95.67, "img_per_s_from_mean": 85.98}
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 97.037, "median_ms": 96.999, "p90_ms": 97.103, "min_ms": 96.784, "max_ms": 98.978, "img_per_s_from_mean": 82.44}
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 186.604, "median_ms": 164.132, "p90_ms": 240.022, "min_ms": 140.972, "max_ms": 244.712, "img_per_s_from_mean": 42.87}
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 224.109, "median_ms": 239.988, "p90_ms": 240.056, "min_ms": 162.954, "max_ms": 241.555, "img_per_s_from_mean": 35.7}
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 275.029, "median_ms": 275.0, "p90_ms": 275.032, "min_ms": 273.198, "max_ms": 279.015, "img_per_s_from_mean": 29.09}
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 273.011, "median_ms": 272.983, "p90_ms": 273.067, "min_ms": 270.638, "max_ms": 275.533, "img_per_s_from_mean": 29.3}
+08:11:10 bench b8 s1 끝
+08:11:41 cool bench_b8_s2 max=86.54
+08:11:41 other_hailo=0 bench b8 s2 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 60.028, "median_ms": 59.99, "p90_ms": 60.036, "min_ms": 59.896, "max_ms": 61.028, "img_per_s_from_mean": 133.27}
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 60.023, "median_ms": 59.989, "p90_ms": 60.11, "min_ms": 59.789, "max_ms": 61.05, "img_per_s_from_mean": 133.28}
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 94.671, "median_ms": 94.964, "p90_ms": 95.005, "min_ms": 93.045, "max_ms": 95.107, "img_per_s_from_mean": 84.5}
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 93.037, "median_ms": 92.991, "p90_ms": 93.039, "min_ms": 92.915, "max_ms": 95.985, "img_per_s_from_mean": 85.99}
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 97.101, "median_ms": 97.006, "p90_ms": 97.891, "min_ms": 86.934, "max_ms": 100.363, "img_per_s_from_mean": 82.39}
+[HailoRT] [error] CHECK failed - Waiting for async job to finish has failed with timeout (10000ms)
+Traceback (most recent call last):
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 3198, in wait
+    self._job.wait(timedelta(milliseconds=timeout_ms))
+hailo_platform.pyhailort._pyhailort.HailoRTStatusException: 4
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/oslab/ssd/junyong/hailo_g6/g6_hailo_chip.py", line 191, in <module>
+    main()
+  File "/home/oslab/ssd/junyong/hailo_g6/g6_hailo_chip.py", line 187, in main
+    (cmd_eval if a.cmd == "eval" else cmd_bench)(a, out, models)
+  File "/home/oslab/ssd/junyong/hailo_g6/g6_hailo_chip.py", line 158, in cmd_bench
+    r.run()
+  File "/home/oslab/ssd/junyong/hailo_g6/g6_hailo_chip.py", line 82, in run
+    j.wait(self.timeout)
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 3197, in wait
+    with ExceptionWrapper():
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 110, in __exit__
+    self._raise_indicative_status_exception(value)
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 158, in _raise_indicative_status_exception
+    raise self.create_exception_from_status(error_code) from libhailort_exception
+hailo_platform.pyhailort.pyhailort.HailoRTTimeout: Received a timeout - hailort has failed because a timeout had occurred
+[HailoRT] [error] Ioctl HAILO_VDMA_LAUNCH_TRANSFER failed with 5. Read dmesg log for more info
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36) - Failed launch transfer
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] Failed to destroy VDevice! status = HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] Ioctl HAILO_VDMA_LAUNCH_TRANSFER failed with 5. Read dmesg log for more info
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36) - Failed launch transfer
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] Failed to destroy Device! status = HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] Ioctl HAILO_SOC_CLOSE failed due to timeout
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_TIMEOUT(87) - Failed soc_close
+[HailoRT] [error] Failed to close connection with status HAILO_DRIVER_TIMEOUT(87)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_TIMEOUT(87)
+[HailoRT] [error] Failed to close session, status = HAILO_DRIVER_TIMEOUT(87)
+[HailoRT] [error] CHECK failed - Lost communication with the server. This may happen if VDevice is released while the CIM is in use.
+08:13:41 BENCH FAIL b8 s2
+08:13:42 bench b8 s2 끝
+12:34:37 start commit=43a3728 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 70a5de57623799b1 load=1.28 0.62 0.23 users=0 other_hailo=0 idle=49.15 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+12:34:38 hef b32_Z sha256=c16123297d83a36cc862839ba1b9984d1ab539abe3773f99a332acae39e318cc bytes=102645760
+12:34:38 hef b32_V sha256=96617700b59e8ddab6eb45b8501cbcb617af837f577da83499f9a255d48ef80b bytes=102649856
+12:34:39 hef b32_D sha256=d2f5cd6c4f45159d4e215c9b02860ba7788a2791ae69bba677b619c7887fa3d8 bytes=103997440
+12:34:39 hef b32_R sha256=c2105fed76c541f9b3fa0bc78c397302ccfb20bf7c391d472a246d9782530ef3 bytes=111108096
+12:34:40 hef b32_M sha256=311655b72aad4dacf81807a9ec62adf8012f5ebddcead043d7b2849870add992 bytes=112975872
+12:34:40 hef s1b16_Z sha256=e2198ed5975da551d9a807c3c22d694d7d3f1e9034b9fe3bb3562601f8f40650 bytes=99061760
+12:34:41 hef s1b16_V sha256=395044e3a38190b183eda8958e394256d5930278225d717337bc3cc257ef76be bytes=99168256
+12:34:41 hef s1b16_R sha256=6226cb511bf41304b0bfd567c2258683f65f6af594d9723ba05c631b7b047abf bytes=111230976
+12:34:42 hef s1b16_D sha256=cb7f618106736c8ed5bcd575df3cab8e052b336c3535a7e8115d9bcb554e0055 bytes=99598336
+12:34:42 cool bench_b1_s1_b32_Z max=49.41
+12:34:42 other_hailo=0 bench b1 s1 b32_Z 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 16.469, "median_ms": 16.426, "p90_ms": 16.664, "min_ms": 16.336, "max_ms": 17.238, "img_per_s_from_mean": 60.72}
+12:34:49 cool bench_b1_s1_b32_V max=53.65
+12:34:50 other_hailo=0 bench b1 s1 b32_V 시작
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 16.542, "median_ms": 16.522, "p90_ms": 16.669, "min_ms": 16.42, "max_ms": 16.975, "img_per_s_from_mean": 60.45}
+12:34:57 cool bench_b1_s1_b32_D max=56.49
+12:34:57 other_hailo=0 bench b1 s1 b32_D 시작
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 20.469, "median_ms": 20.466, "p90_ms": 20.583, "min_ms": 20.364, "max_ms": 20.643, "img_per_s_from_mean": 48.85}
+12:35:05 cool bench_b1_s1_b32_R max=58.97
+12:35:05 other_hailo=0 bench b1 s1 b32_R 시작
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 20.295, "median_ms": 20.257, "p90_ms": 20.433, "min_ms": 20.172, "max_ms": 20.576, "img_per_s_from_mean": 49.27}
+12:35:14 cool bench_b1_s1_b32_M max=60.99
+12:35:14 other_hailo=0 bench b1 s1 b32_M 시작
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 21.166, "median_ms": 21.154, "p90_ms": 21.299, "min_ms": 20.993, "max_ms": 21.462, "img_per_s_from_mean": 47.25}
+12:35:22 cool bench_b1_s1_s1b16_Z max=62.76
+12:35:22 other_hailo=0 bench b1 s1 s1b16_Z 시작
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 31.526, "median_ms": 31.456, "p90_ms": 31.847, "min_ms": 31.22, "max_ms": 32.428, "img_per_s_from_mean": 31.72}
+12:36:03 cool bench_b1_s1_s1b16_V max=57.2
+12:36:03 other_hailo=0 bench b1 s1 s1b16_V 시작
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 31.483, "median_ms": 31.427, "p90_ms": 31.765, "min_ms": 31.225, "max_ms": 32.432, "img_per_s_from_mean": 31.76}
+12:36:14 cool bench_b1_s1_s1b16_R max=63.97
+12:36:14 other_hailo=0 bench b1 s1 s1b16_R 시작
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 46.42, "median_ms": 46.4, "p90_ms": 46.569, "min_ms": 46.279, "max_ms": 47.005, "img_per_s_from_mean": 21.54}
+12:36:59 cool bench_b1_s1_s1b16_D max=58.41
+12:36:59 other_hailo=0 bench b1 s1 s1b16_D 시작
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 45.558, "median_ms": 45.52, "p90_ms": 45.676, "min_ms": 45.438, "max_ms": 46.06, "img_per_s_from_mean": 21.95}
+12:37:12 bench b1 s1 끝
+12:37:43 cool bench_b1_s2_b32_Z max=57.55
+12:37:43 other_hailo=0 bench b1 s2 b32_Z 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 16.488, "median_ms": 16.458, "p90_ms": 16.634, "min_ms": 16.361, "max_ms": 16.825, "img_per_s_from_mean": 60.65}
+12:37:50 cool bench_b1_s2_b32_V max=61.14
+12:37:50 other_hailo=0 bench b1 s2 b32_V 시작
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 16.551, "median_ms": 16.537, "p90_ms": 16.678, "min_ms": 16.429, "max_ms": 16.914, "img_per_s_from_mean": 60.42}
+12:37:58 cool bench_b1_s2_b32_D max=63.22
+12:37:58 other_hailo=0 bench b1 s2 b32_D 시작
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 20.503, "median_ms": 20.502, "p90_ms": 20.618, "min_ms": 20.377, "max_ms": 20.9, "img_per_s_from_mean": 48.77}
+12:38:37 cool bench_b1_s2_b32_R max=57.55
+12:38:37 other_hailo=0 bench b1 s2 b32_R 시작
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 20.255, "median_ms": 20.213, "p90_ms": 20.403, "min_ms": 20.151, "max_ms": 20.525, "img_per_s_from_mean": 49.37}
+12:38:45 cool bench_b1_s2_b32_M max=61.44
+12:38:45 other_hailo=0 bench b1 s2 b32_M 시작
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 21.162, "median_ms": 21.165, "p90_ms": 21.306, "min_ms": 20.984, "max_ms": 21.466, "img_per_s_from_mean": 47.25}
+12:38:54 cool bench_b1_s2_s1b16_Z max=63.87
+12:38:54 other_hailo=0 bench b1 s2 s1b16_Z 시작
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 31.511, "median_ms": 31.439, "p90_ms": 31.808, "min_ms": 31.209, "max_ms": 32.474, "img_per_s_from_mean": 31.73}
+12:39:35 cool bench_b1_s2_s1b16_V max=58.71
+12:39:35 other_hailo=0 bench b1 s2 s1b16_V 시작
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 31.489, "median_ms": 31.429, "p90_ms": 31.751, "min_ms": 31.208, "max_ms": 32.571, "img_per_s_from_mean": 31.76}
+12:40:16 cool bench_b1_s2_s1b16_R max=57.5
+12:40:16 other_hailo=0 bench b1 s2 s1b16_R 시작
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 46.434, "median_ms": 46.4, "p90_ms": 46.583, "min_ms": 46.257, "max_ms": 46.721, "img_per_s_from_mean": 21.54}
+12:41:00 cool bench_b1_s2_s1b16_D max=57.55
+12:41:00 other_hailo=0 bench b1 s2 s1b16_D 시작
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 45.554, "median_ms": 45.512, "p90_ms": 45.673, "min_ms": 45.432, "max_ms": 46.017, "img_per_s_from_mean": 21.95}
+12:41:14 bench b1 s2 끝
+12:41:44 cool bench_b1_s3_b32_Z max=57.2
+12:41:44 other_hailo=0 bench b1 s3 b32_Z 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 16.506, "median_ms": 16.488, "p90_ms": 16.662, "min_ms": 16.369, "max_ms": 16.777, "img_per_s_from_mean": 60.59}
+12:41:52 cool bench_b1_s3_b32_V max=60.74
+12:41:52 other_hailo=0 bench b1 s3 b32_V 시작
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 16.543, "median_ms": 16.519, "p90_ms": 16.657, "min_ms": 16.421, "max_ms": 17.378, "img_per_s_from_mean": 60.45}
+12:41:59 cool bench_b1_s3_b32_D max=62.96
+12:41:59 other_hailo=0 bench b1 s3 b32_D 시작
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 20.474, "median_ms": 20.458, "p90_ms": 20.597, "min_ms": 20.346, "max_ms": 20.871, "img_per_s_from_mean": 48.84}
+12:42:38 cool bench_b1_s3_b32_R max=57.3
+12:42:38 other_hailo=0 bench b1 s3 b32_R 시작
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 20.277, "median_ms": 20.239, "p90_ms": 20.422, "min_ms": 20.162, "max_ms": 20.546, "img_per_s_from_mean": 49.32}
+12:42:46 cool bench_b1_s3_b32_M max=61.29
+12:42:46 other_hailo=0 bench b1 s3 b32_M 시작
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 21.146, "median_ms": 21.14, "p90_ms": 21.285, "min_ms": 21.019, "max_ms": 21.46, "img_per_s_from_mean": 47.29}
+12:42:55 cool bench_b1_s3_s1b16_Z max=63.62
+12:42:55 other_hailo=0 bench b1 s3 s1b16_Z 시작
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 31.519, "median_ms": 31.436, "p90_ms": 31.897, "min_ms": 31.239, "max_ms": 32.428, "img_per_s_from_mean": 31.73}
+12:43:36 cool bench_b1_s3_s1b16_V max=58.56
+12:43:36 other_hailo=0 bench b1 s3 s1b16_V 시작
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 31.48, "median_ms": 31.427, "p90_ms": 31.742, "min_ms": 31.179, "max_ms": 32.305, "img_per_s_from_mean": 31.77}
+12:44:17 cool bench_b1_s3_s1b16_R max=57.5
+12:44:17 other_hailo=0 bench b1 s3 s1b16_R 시작
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 46.409, "median_ms": 46.367, "p90_ms": 46.561, "min_ms": 46.265, "max_ms": 46.621, "img_per_s_from_mean": 21.55}
+12:45:02 cool bench_b1_s3_s1b16_D max=57.35
+12:45:02 other_hailo=0 bench b1 s3 s1b16_D 시작
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 45.558, "median_ms": 45.518, "p90_ms": 45.66, "min_ms": 45.452, "max_ms": 45.96, "img_per_s_from_mean": 21.95}
+12:45:15 bench b1 s3 끝
+12:45:16 cool bench_b8_s1_b32_Z max=64.58
+12:45:16 other_hailo=0 bench b8 s1 b32_Z 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 54.11, "median_ms": 54.007, "p90_ms": 54.057, "min_ms": 53.023, "max_ms": 60.098, "img_per_s_from_mean": 147.85}
+12:46:02 cool bench_b8_s1_b32_V max=60.94
+12:46:02 other_hailo=0 bench b8 s1 b32_V 시작
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 54.014, "median_ms": 54.014, "p90_ms": 54.103, "min_ms": 53.763, "max_ms": 54.796, "img_per_s_from_mean": 148.11}
+12:46:48 cool bench_b8_s1_b32_D max=60.79
+12:46:48 other_hailo=0 bench b8 s1 b32_D 시작
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 83.11, "median_ms": 83.004, "p90_ms": 83.663, "min_ms": 82.921, "max_ms": 84.439, "img_per_s_from_mean": 96.26}
+12:47:40 cool bench_b8_s1_b32_R max=61.34
+12:47:40 other_hailo=0 bench b8 s1 b32_R 시작
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 83.025, "median_ms": 83.001, "p90_ms": 83.072, "min_ms": 82.832, "max_ms": 85.865, "img_per_s_from_mean": 96.36}
+12:48:33 cool bench_b8_s1_b32_M max=61.75
+12:48:33 other_hailo=0 bench b8 s1 b32_M 시작
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 87.359, "median_ms": 87.003, "p90_ms": 87.049, "min_ms": 84.329, "max_ms": 97.058, "img_per_s_from_mean": 91.58}
+12:49:26 cool bench_b8_s1_s1b16_Z max=62.1
+12:49:26 other_hailo=0 bench b8 s1 s1b16_Z 시작
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 137.238, "median_ms": 141.98, "p90_ms": 142.045, "min_ms": 123.845, "max_ms": 142.204, "img_per_s_from_mean": 58.29}
+12:51:01 cool bench_b8_s1_s1b16_V max=61.5
+12:51:01 other_hailo=0 bench b8 s1 s1b16_V 시작
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 137.565, "median_ms": 141.972, "p90_ms": 142.026, "min_ms": 123.774, "max_ms": 142.213, "img_per_s_from_mean": 58.15}
+12:52:35 cool bench_b8_s1_s1b16_R max=61.7
+12:52:35 other_hailo=0 bench b8 s1 s1b16_R 시작
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 230.334, "median_ms": 236.981, "p90_ms": 237.03, "min_ms": 207.984, "max_ms": 241.004, "img_per_s_from_mean": 34.73}
+12:54:30 cool bench_b8_s1_s1b16_D max=61.8
+12:54:30 other_hailo=0 bench b8 s1 s1b16_D 시작
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 227.349, "median_ms": 234.982, "p90_ms": 235.025, "min_ms": 206.942, "max_ms": 236.67, "img_per_s_from_mean": 35.19}
+12:55:23 bench b8 s1 끝
+12:56:24 cool bench_b8_s2_b32_Z max=61.75
+12:56:24 other_hailo=0 bench b8 s2 b32_Z 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 53.793, "median_ms": 53.989, "p90_ms": 54.133, "min_ms": 52.961, "max_ms": 54.883, "img_per_s_from_mean": 148.72}
+12:57:10 cool bench_b8_s2_b32_V max=62.1
+12:57:10 other_hailo=0 bench b8 s2 b32_V 시작
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 53.998, "median_ms": 53.999, "p90_ms": 54.087, "min_ms": 53.814, "max_ms": 54.151, "img_per_s_from_mean": 148.15}
+12:57:56 cool bench_b8_s2_b32_D max=62.0
+12:57:56 other_hailo=0 bench b8 s2 b32_D 시작
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 83.155, "median_ms": 82.993, "p90_ms": 83.963, "min_ms": 82.919, "max_ms": 85.018, "img_per_s_from_mean": 96.21}
+12:58:49 cool bench_b8_s2_b32_R max=62.2
+12:58:49 other_hailo=0 bench b8 s2 b32_R 시작
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 82.992, "median_ms": 82.986, "p90_ms": 83.031, "min_ms": 82.865, "max_ms": 83.96, "img_per_s_from_mean": 96.4}
+12:59:41 cool bench_b8_s2_b32_M max=62.36
+12:59:41 other_hailo=0 bench b8 s2 b32_M 시작
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 87.632, "median_ms": 87.001, "p90_ms": 87.396, "min_ms": 86.72, "max_ms": 97.332, "img_per_s_from_mean": 91.29}
+13:00:35 cool bench_b8_s2_s1b16_Z max=62.66
+13:00:35 other_hailo=0 bench b8 s2 s1b16_Z 시작
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 137.565, "median_ms": 141.979, "p90_ms": 142.032, "min_ms": 123.842, "max_ms": 149.107, "img_per_s_from_mean": 58.15}
+13:02:09 cool bench_b8_s2_s1b16_V max=61.75
+13:02:09 other_hailo=0 bench b8 s2 s1b16_V 시작
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 137.981, "median_ms": 142.007, "p90_ms": 142.062, "min_ms": 123.856, "max_ms": 144.054, "img_per_s_from_mean": 57.98}
+13:03:44 cool bench_b8_s2_s1b16_R max=61.9
+13:03:44 other_hailo=0 bench b8 s2 s1b16_R 시작
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 229.396, "median_ms": 236.99, "p90_ms": 237.036, "min_ms": 207.981, "max_ms": 240.001, "img_per_s_from_mean": 34.87}
+13:05:38 cool bench_b8_s2_s1b16_D max=62.0
+13:05:38 other_hailo=0 bench b8 s2 s1b16_D 시작
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 227.662, "median_ms": 234.99, "p90_ms": 235.048, "min_ms": 205.963, "max_ms": 239.218, "img_per_s_from_mean": 35.14}
+13:06:32 bench b8 s2 끝
+13:07:32 cool bench_b8_s3_b32_Z max=61.8
+13:07:32 other_hailo=0 bench b8 s3 b32_Z 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 53.972, "median_ms": 53.995, "p90_ms": 54.114, "min_ms": 52.999, "max_ms": 55.021, "img_per_s_from_mean": 148.22}
+13:08:19 cool bench_b8_s3_b32_V max=62.31
+13:08:19 other_hailo=0 bench b8 s3 b32_V 시작
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 53.997, "median_ms": 54.002, "p90_ms": 54.088, "min_ms": 53.845, "max_ms": 54.146, "img_per_s_from_mean": 148.16}
+13:09:05 cool bench_b8_s3_b32_D max=62.1
+13:09:05 other_hailo=0 bench b8 s3 b32_D 시작
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 83.026, "median_ms": 82.994, "p90_ms": 83.026, "min_ms": 81.608, "max_ms": 86.395, "img_per_s_from_mean": 96.36}
+13:09:57 cool bench_b8_s3_b32_R max=62.31
+13:09:57 other_hailo=0 bench b8 s3 b32_R 시작
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 83.093, "median_ms": 82.999, "p90_ms": 83.1, "min_ms": 81.561, "max_ms": 89.432, "img_per_s_from_mean": 96.28}
+13:10:50 cool bench_b8_s3_b32_M max=62.46
+13:10:50 other_hailo=0 bench b8 s3 b32_M 시작
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 87.877, "median_ms": 86.992, "p90_ms": 89.013, "min_ms": 84.224, "max_ms": 98.126, "img_per_s_from_mean": 91.04}
+13:11:43 cool bench_b8_s3_s1b16_Z max=62.71
+13:11:43 other_hailo=0 bench b8 s3 s1b16_Z 시작
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 137.898, "median_ms": 141.965, "p90_ms": 142.036, "min_ms": 123.806, "max_ms": 142.99, "img_per_s_from_mean": 58.01}
+13:13:18 cool bench_b8_s3_s1b16_V max=61.8
+13:13:18 other_hailo=0 bench b8 s3 s1b16_V 시작
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 136.899, "median_ms": 141.981, "p90_ms": 142.033, "min_ms": 123.819, "max_ms": 142.696, "img_per_s_from_mean": 58.44}
+13:14:52 cool bench_b8_s3_s1b16_R max=62.1
+13:14:52 other_hailo=0 bench b8 s3 s1b16_R 시작
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 229.797, "median_ms": 236.991, "p90_ms": 237.982, "min_ms": 207.96, "max_ms": 240.022, "img_per_s_from_mean": 34.81}
+13:16:47 cool bench_b8_s3_s1b16_D max=62.1
+13:16:47 other_hailo=0 bench b8 s3 s1b16_D 시작
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 227.983, "median_ms": 234.988, "p90_ms": 235.031, "min_ms": 206.911, "max_ms": 236.309, "img_per_s_from_mean": 35.09}
+13:17:40 bench b8 s3 끝
+13:18:41 cool run2_b1_b32_Z max=61.8
+13:18:52 run2 b1 b32_Z siglip2_b_32_256_image_encoder: fps: 64.53
+13:19:23 cool run2_b1_b32_V max=61.04
+13:19:34 run2 b1 b32_V siglip2_b_32_256_image_encoder: fps: 64.46
+13:20:04 cool run2_b1_b32_D max=60.23
+13:20:15 run2 b1 b32_D g6_b32_D: fps: 52.54
+13:20:46 cool run2_b1_b32_R max=59.42
+13:20:57 run2 b1 b32_R g6_b32_R: fps: 52.64
+13:21:28 cool run2_b1_b32_M max=59.02
+13:21:39 run2 b1 b32_M g6_b32_M: fps: 50.81
+13:22:10 cool run2_b1_s1b16_Z max=58.56
+13:22:21 run2 b1 s1b16_Z siglip_b_16_image_encoder: fps: 32.89
+13:22:51 cool run2_b1_s1b16_V max=58.97
+13:23:02 run2 b1 s1b16_V siglip_b_16_image_encoder: fps: 32.96
+13:23:33 cool run2_b1_s1b16_R max=59.07
+13:23:44 run2 b1 s1b16_R g6_s1b16_R: fps: 22.08
+13:24:15 cool run2_b1_s1b16_D max=58.56
+13:24:26 run2 b1 s1b16_D g6_s1b16_D: fps: 22.48
+13:24:57 cool run2_b8_b32_Z max=58.21
+13:25:07 run2 b8 b32_Z siglip2_b_32_256_image_encoder: fps: 225.46
+13:25:38 cool run2_b8_b32_V max=60.58
+13:25:49 run2 b8 b32_V siglip2_b_32_256_image_encoder: fps: 222.26
+13:26:20 cool run2_b8_b32_D max=61.6
+13:26:31 run2 b8 b32_D g6_b32_D: fps: 122.37
+13:27:02 cool run2_b8_b32_R max=60.48
+13:27:13 run2 b8 b32_R g6_b32_R: fps: 123.20
+13:27:44 cool run2_b8_b32_M max=60.18
+13:27:55 run2 b8 b32_M g6_b32_M: fps: 117.58
+13:28:25 cool run2_b8_s1b16_Z max=59.88
+13:28:36 run2 b8 s1b16_Z siglip_b_16_image_encoder: fps: 79.12
+13:29:07 cool run2_b8_s1b16_V max=62.15
+13:29:18 run2 b8 s1b16_V siglip_b_16_image_encoder: fps: 76.75
+13:29:49 cool run2_b8_s1b16_R max=63.12
+13:30:00 run2 b8 s1b16_R g6_s1b16_R: fps: 44.87
+13:30:31 cool run2_b8_s1b16_D max=62.05
+13:30:42 run2 b8 s1b16_D g6_s1b16_D: fps: 44.85
+13:30:42 G6 CHIP DONE load=0.12 0.08 0.01
+14:09:54 start commit=43a3728 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 70a5de57623799b1 load=0.08 0.03 0.01 users=0 other_hailo=0 idle=49.71 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+14:09:54 hef b16_M2rot2 sha256=040a3ae1ebd81d9979ec893b5a65cf1265370196e8cfd516350e016191752c6f bytes=110436352
+14:09:54 cool eval_b16_M2rot2 max=49.56
+14:09:54 other_hailo=0 eval b16_M2rot2 시작
+b16_M2rot2 cifar_A (1000, 768) 53s
+b16_M2rot2 pets_dev (990, 768) 110s
+b16_M2rot2 flowers_dev (957, 768) 167s
+b16_M2rot2 cars_dev (967, 768) 224s
+b16_M2rot2 food_dev (985, 768) 282s
+b16_M2rot2 caltech_dev (1024, 768) 342s
+14:15:38 eval b16_M2rot2 끝
+14:15:38 G6 CHIP DONE load=0.00 0.01 0.00
+15:57:50 start commit=43a3728 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 70a5de57623799b1 load=0.08 0.02 0.01 users=0 other_hailo=0 idle=49.66 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+15:57:50 hef b32_M_z16 sha256=e21b99303a022c881a57326d3b8c126c52c487b40ad1e2a176048aa8bd4bb0b5 bytes=108273664
+15:57:51 cool eval_b32_M_z16 max=49.71
+15:57:51 other_hailo=0 eval b32_M_z16 시작
+b32_M_z16 cifar_A (1000, 768) 23s
+b32_M_z16 pets_dev (990, 768) 45s
+b32_M_z16 flowers_dev (957, 768) 67s
+b32_M_z16 cars_dev (967, 768) 91s
+b32_M_z16 food_dev (985, 768) 115s
+b32_M_z16 caltech_dev (1024, 768) 141s
+16:00:13 eval b32_M_z16 끝
+16:00:13 G6 CHIP DONE load=0.18 0.09 0.03
+16:40:32 start commit=43a3728 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 70a5de57623799b1 load=0.16 0.03 0.01 users=0 other_hailo=0 idle=49.46 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+16:40:33 hef b32_M_both sha256=2a381857c1e767fa92b739630431588f667d7e6056563ef0685cd82caa850f90 bytes=111955968
+16:40:33 cool eval_b32_M_both max=49.56
+16:40:33 other_hailo=0 eval b32_M_both 시작
+b32_M_both cifar_A (1000, 768) 22s
+b32_M_both pets_dev (990, 768) 44s
+b32_M_both flowers_dev (957, 768) 64s
+b32_M_both cars_dev (967, 768) 87s
+b32_M_both food_dev (985, 768) 111s
+b32_M_both caltech_dev (1024, 768) 135s
+16:42:50 eval b32_M_both 끝
+16:42:50 G6 CHIP DONE load=0.13 0.07 0.02
+16:42:59 start commit=43a3728 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 70a5de57623799b1 load=0.13 0.07 0.02 users=0 other_hailo=0 idle=83.6 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+16:43:00 hef b32_Z sha256=c16123297d83a36cc862839ba1b9984d1ab539abe3773f99a332acae39e318cc bytes=102645760
+16:43:00 hef b32_M sha256=311655b72aad4dacf81807a9ec62adf8012f5ebddcead043d7b2849870add992 bytes=112975872
+16:43:00 hef b32_M_rb sha256=a2ddb2bbc4dfb5d79fbf38ad178ceac611eef04bfe0fc7e9ff4195eff81feed3 bytes=115990528
+16:43:01 hef b32_M_z16 sha256=e21b99303a022c881a57326d3b8c126c52c487b40ad1e2a176048aa8bd4bb0b5 bytes=108273664
+16:43:01 hef b32_M_both sha256=2a381857c1e767fa92b739630431588f667d7e6056563ef0685cd82caa850f90 bytes=111955968
+16:43:02 hef b16_M2rot2 sha256=040a3ae1ebd81d9979ec893b5a65cf1265370196e8cfd516350e016191752c6f bytes=110436352
+16:44:03 cool bench_b1_s1_b32_Z max=59.57
+16:44:03 other_hailo=0 bench b1 s1 b32_Z 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 16.545, "median_ms": 16.52, "p90_ms": 16.737, "min_ms": 16.381, "max_ms": 16.958, "img_per_s_from_mean": 60.44}
+16:44:10 cool bench_b1_s1_b32_M max=63.17
+16:44:10 other_hailo=0 bench b1 s1 b32_M 시작
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 21.123, "median_ms": 21.116, "p90_ms": 21.272, "min_ms": 20.985, "max_ms": 21.48, "img_per_s_from_mean": 47.34}
+16:44:49 cool bench_b1_s1_b32_M_rb max=58.31
+16:44:49 other_hailo=0 bench b1 s1 b32_M_rb 시작
+{"model": "b32_M_rb", "hef_sha256": "a2ddb2bbc4dfb5d7", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.542, "median_ms": 18.505, "p90_ms": 18.652, "min_ms": 18.446, "max_ms": 18.789, "img_per_s_from_mean": 53.93}
+16:44:57 cool bench_b1_s1_b32_M_z16 max=62.2
+16:44:57 other_hailo=0 bench b1 s1 b32_M_z16 시작
+{"model": "b32_M_z16", "hef_sha256": "e21b99303a022c88", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 19.201, "median_ms": 19.176, "p90_ms": 19.331, "min_ms": 19.088, "max_ms": 19.439, "img_per_s_from_mean": 52.08}
+16:45:05 cool bench_b1_s1_b32_M_both max=64.43
+16:45:05 other_hailo=0 bench b1 s1 b32_M_both 시작
+{"model": "b32_M_both", "hef_sha256": "2a381857c1e767fa", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.384, "median_ms": 18.334, "p90_ms": 18.565, "min_ms": 18.261, "max_ms": 18.761, "img_per_s_from_mean": 54.39}
+16:45:44 cool bench_b1_s1_b16_M2rot2 max=58.16
+16:45:44 other_hailo=0 bench b1 s1 b16_M2rot2 시작
+{"model": "b16_M2rot2", "hef_sha256": "040a3ae1ebd81d99", "batch": 1, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 47.513, "median_ms": 47.512, "p90_ms": 47.605, "min_ms": 47.378, "max_ms": 47.757, "img_per_s_from_mean": 21.05}
+16:45:58 bench b1 s1 끝
+16:46:28 cool bench_b1_s2_b32_Z max=57.7
+16:46:28 other_hailo=0 bench b1 s2 b32_Z 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 16.483, "median_ms": 16.456, "p90_ms": 16.641, "min_ms": 16.354, "max_ms": 16.774, "img_per_s_from_mean": 60.67}
+16:46:36 cool bench_b1_s2_b32_M max=61.29
+16:46:36 other_hailo=0 bench b1 s2 b32_M 시작
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 21.177, "median_ms": 21.159, "p90_ms": 21.307, "min_ms": 21.024, "max_ms": 23.356, "img_per_s_from_mean": 47.22}
+16:46:45 cool bench_b1_s2_b32_M_rb max=63.77
+16:46:45 other_hailo=0 bench b1 s2 b32_M_rb 시작
+{"model": "b32_M_rb", "hef_sha256": "a2ddb2bbc4dfb5d7", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.556, "median_ms": 18.522, "p90_ms": 18.673, "min_ms": 18.443, "max_ms": 18.799, "img_per_s_from_mean": 53.89}
+16:47:23 cool bench_b1_s2_b32_M_z16 max=57.75
+16:47:23 other_hailo=0 bench b1 s2 b32_M_z16 시작
+{"model": "b32_M_z16", "hef_sha256": "e21b99303a022c88", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 19.23, "median_ms": 19.187, "p90_ms": 19.37, "min_ms": 19.132, "max_ms": 19.645, "img_per_s_from_mean": 52.0}
+16:47:31 cool bench_b1_s2_b32_M_both max=61.5
+16:47:31 other_hailo=0 bench b1 s2 b32_M_both 시작
+{"model": "b32_M_both", "hef_sha256": "2a381857c1e767fa", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.383, "median_ms": 18.338, "p90_ms": 18.567, "min_ms": 18.244, "max_ms": 18.747, "img_per_s_from_mean": 54.4}
+16:47:39 cool bench_b1_s2_b16_M2rot2 max=63.77
+16:47:39 other_hailo=0 bench b1 s2 b16_M2rot2 시작
+{"model": "b16_M2rot2", "hef_sha256": "040a3ae1ebd81d99", "batch": 1, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 47.53, "median_ms": 47.52, "p90_ms": 47.623, "min_ms": 47.384, "max_ms": 48.451, "img_per_s_from_mean": 21.04}
+16:47:53 bench b1 s2 끝
+16:48:24 cool bench_b1_s3_b32_Z max=58.92
+16:48:24 other_hailo=0 bench b1 s3 b32_Z 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 16.495, "median_ms": 16.459, "p90_ms": 16.663, "min_ms": 16.353, "max_ms": 17.157, "img_per_s_from_mean": 60.62}
+16:48:31 cool bench_b1_s3_b32_M max=62.31
+16:48:31 other_hailo=0 bench b1 s3 b32_M 시작
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 21.176, "median_ms": 21.175, "p90_ms": 21.311, "min_ms": 21.029, "max_ms": 21.381, "img_per_s_from_mean": 47.22}
+16:48:40 cool bench_b1_s3_b32_M_rb max=64.58
+16:48:40 other_hailo=0 bench b1 s3 b32_M_rb 시작
+{"model": "b32_M_rb", "hef_sha256": "a2ddb2bbc4dfb5d7", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.554, "median_ms": 18.519, "p90_ms": 18.662, "min_ms": 18.473, "max_ms": 18.862, "img_per_s_from_mean": 53.9}
+16:49:18 cool bench_b1_s3_b32_M_z16 max=58.06
+16:49:18 other_hailo=0 bench b1 s3 b32_M_z16 시작
+{"model": "b32_M_z16", "hef_sha256": "e21b99303a022c88", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 19.195, "median_ms": 19.172, "p90_ms": 19.326, "min_ms": 19.089, "max_ms": 19.414, "img_per_s_from_mean": 52.1}
+16:49:26 cool bench_b1_s3_b32_M_both max=61.95
+16:49:26 other_hailo=0 bench b1 s3 b32_M_both 시작
+{"model": "b32_M_both", "hef_sha256": "2a381857c1e767fa", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.378, "median_ms": 18.332, "p90_ms": 18.522, "min_ms": 18.255, "max_ms": 18.749, "img_per_s_from_mean": 54.41}
+16:49:34 cool bench_b1_s3_b16_M2rot2 max=64.18
+16:49:34 other_hailo=0 bench b1 s3 b16_M2rot2 시작
+{"model": "b16_M2rot2", "hef_sha256": "040a3ae1ebd81d99", "batch": 1, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 47.522, "median_ms": 47.526, "p90_ms": 47.607, "min_ms": 47.399, "max_ms": 47.867, "img_per_s_from_mean": 21.04}
+16:49:48 bench b1 s3 끝
+16:50:19 cool bench_b8_s1_b32_Z max=59.12
+16:50:19 other_hailo=0 bench b8 s1 b32_Z 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 53.749, "median_ms": 53.99, "p90_ms": 54.024, "min_ms": 52.976, "max_ms": 56.974, "img_per_s_from_mean": 148.84}
+16:51:05 cool bench_b8_s1_b32_M max=59.98
+16:51:05 other_hailo=0 bench b8 s1 b32_M 시작
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 87.002, "median_ms": 86.996, "p90_ms": 87.031, "min_ms": 86.906, "max_ms": 87.999, "img_per_s_from_mean": 91.95}
+16:51:58 cool bench_b8_s1_b32_M_rb max=61.34
+16:51:58 other_hailo=0 bench b8 s1 b32_M_rb 시작
+{"model": "b32_M_rb", "hef_sha256": "a2ddb2bbc4dfb5d7", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 65.685, "median_ms": 64.718, "p90_ms": 70.821, "min_ms": 54.061, "max_ms": 77.278, "img_per_s_from_mean": 121.79}
+16:52:47 cool bench_b8_s1_b32_M_z16 max=61.85
+16:52:47 other_hailo=0 bench b8 s1 b32_M_z16 시작
+{"model": "b32_M_z16", "hef_sha256": "e21b99303a022c88", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 75.017, "median_ms": 74.999, "p90_ms": 75.029, "min_ms": 74.912, "max_ms": 77.793, "img_per_s_from_mean": 106.64}
+16:53:38 cool bench_b8_s1_b32_M_both max=61.8
+16:53:38 other_hailo=0 bench b8 s1 b32_M_both 시작
+{"model": "b32_M_both", "hef_sha256": "2a381857c1e767fa", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 61.212, "median_ms": 61.001, "p90_ms": 61.994, "min_ms": 60.876, "max_ms": 63.056, "img_per_s_from_mean": 130.69}
+16:54:25 cool bench_b8_s1_b16_M2rot2 max=62.0
+16:54:25 other_hailo=0 bench b8 s1 b16_M2rot2 시작
+{"model": "b16_M2rot2", "hef_sha256": "040a3ae1ebd81d99", "batch": 8, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 242.076, "median_ms": 250.023, "p90_ms": 250.063, "min_ms": 218.979, "max_ms": 253.55, "img_per_s_from_mean": 33.05}
+16:55:22 bench b8 s1 끝
+16:56:23 cool bench_b8_s2_b32_Z max=61.75
+16:56:23 other_hailo=0 bench b8 s2 b32_Z 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 53.711, "median_ms": 53.982, "p90_ms": 54.017, "min_ms": 52.94, "max_ms": 57.975, "img_per_s_from_mean": 148.94}
+16:57:09 cool bench_b8_s2_b32_M max=61.95
+16:57:09 other_hailo=0 bench b8 s2 b32_M 시작
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 87.444, "median_ms": 86.997, "p90_ms": 87.04, "min_ms": 84.213, "max_ms": 97.178, "img_per_s_from_mean": 91.49}
+16:58:02 cool bench_b8_s2_b32_M_rb max=62.51
+16:58:02 other_hailo=0 bench b8 s2 b32_M_rb 시작
+{"model": "b32_M_rb", "hef_sha256": "a2ddb2bbc4dfb5d7", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 65.412, "median_ms": 64.64, "p90_ms": 67.84, "min_ms": 62.156, "max_ms": 73.354, "img_per_s_from_mean": 122.3}
+16:58:51 cool bench_b8_s2_b32_M_z16 max=63.17
+16:58:51 other_hailo=0 bench b8 s2 b32_M_z16 시작
+{"model": "b32_M_z16", "hef_sha256": "e21b99303a022c88", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 75.178, "median_ms": 74.999, "p90_ms": 75.058, "min_ms": 74.66, "max_ms": 84.025, "img_per_s_from_mean": 106.41}
+16:59:42 cool bench_b8_s2_b32_M_both max=63.01
+16:59:42 other_hailo=0 bench b8 s2 b32_M_both 시작
+{"model": "b32_M_both", "hef_sha256": "2a381857c1e767fa", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 62.589, "median_ms": 61.009, "p90_ms": 69.121, "min_ms": 57.112, "max_ms": 73.988, "img_per_s_from_mean": 127.82}
+17:00:30 cool bench_b8_s2_b16_M2rot2 max=62.91
+17:00:30 other_hailo=0 bench b8 s2 b16_M2rot2 시작
+{"model": "b16_M2rot2", "hef_sha256": "040a3ae1ebd81d99", "batch": 8, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 243.527, "median_ms": 249.979, "p90_ms": 250.021, "min_ms": 218.946, "max_ms": 250.221, "img_per_s_from_mean": 32.85}
+17:01:26 bench b8 s2 끝
+17:02:27 cool bench_b8_s3_b32_Z max=62.61
+17:02:27 other_hailo=0 bench b8 s3 b32_Z 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 53.529, "median_ms": 53.946, "p90_ms": 54.005, "min_ms": 52.924, "max_ms": 54.935, "img_per_s_from_mean": 149.45}
+17:03:13 cool bench_b8_s3_b32_M max=62.91
+17:03:13 other_hailo=0 bench b8 s3 b32_M 시작
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 87.716, "median_ms": 86.985, "p90_ms": 87.031, "min_ms": 77.038, "max_ms": 108.706, "img_per_s_from_mean": 91.2}
+17:04:07 cool bench_b8_s3_b32_M_rb max=63.42
+17:04:07 other_hailo=0 bench b8 s3 b32_M_rb 시작
+{"model": "b32_M_rb", "hef_sha256": "a2ddb2bbc4dfb5d7", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 65.872, "median_ms": 64.813, "p90_ms": 72.925, "min_ms": 53.699, "max_ms": 75.955, "img_per_s_from_mean": 121.45}
+17:04:56 cool bench_b8_s3_b32_M_z16 max=63.62
+17:04:56 other_hailo=0 bench b8 s3 b32_M_z16 시작
+{"model": "b32_M_z16", "hef_sha256": "e21b99303a022c88", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 75.504, "median_ms": 75.003, "p90_ms": 75.95, "min_ms": 65.884, "max_ms": 84.82, "img_per_s_from_mean": 105.95}
+17:05:46 cool bench_b8_s3_b32_M_both max=63.27
+17:05:46 other_hailo=0 bench b8 s3 b32_M_both 시작
+{"model": "b32_M_both", "hef_sha256": "2a381857c1e767fa", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 63.059, "median_ms": 61.016, "p90_ms": 69.99, "min_ms": 60.862, "max_ms": 70.012, "img_per_s_from_mean": 126.87}
+17:06:35 cool bench_b8_s3_b16_M2rot2 max=63.17
+17:06:35 other_hailo=0 bench b8 s3 b16_M2rot2 시작
+{"model": "b16_M2rot2", "hef_sha256": "040a3ae1ebd81d99", "batch": 8, "input_domain": "normalized", "qin": [0.007874015718698502, 128.0], "in_shape": [224, 224, 3], "mean_ms": 244.099, "median_ms": 249.972, "p90_ms": 249.992, "min_ms": 218.926, "max_ms": 251.913, "img_per_s_from_mean": 32.77}
+17:07:31 bench b8 s3 끝
+17:08:32 cool run2_b1_b32_Z max=62.81
+17:08:43 run2 b1 b32_Z siglip2_b_32_256_image_encoder: fps: 64.43
+17:09:14 cool run2_b1_b32_M max=61.85
+17:09:25 run2 b1 b32_M g6_b32_M: fps: 50.90
+17:09:56 cool run2_b1_b32_M_rb max=60.58
+17:10:07 run2 b1 b32_M_rb g6_b32_M_rb: fps: 58.34
+17:10:38 cool run2_b1_b32_M_z16 max=60.08
+17:10:48 run2 b1 b32_M_z16 g6_b32_M_z16: fps: 56.54
+17:11:19 cool run2_b1_b32_M_both max=59.52
+17:11:30 run2 b1 b32_M_both g6_b32_M_both: fps: 59.14
+17:12:01 cool run2_b1_b16_M2rot2 max=59.17
+17:12:12 run2 b1 b16_M2rot2 siglip2_m2rot: fps: 21.57
+17:12:43 cool run2_b8_b32_Z max=58.71
+17:12:54 run2 b8 b32_Z siglip2_b_32_256_image_encoder: fps: 225.46
+17:13:24 cool run2_b8_b32_M max=60.94
+17:13:35 run2 b8 b32_M g6_b32_M: fps: 116.89
+17:14:06 cool run2_b8_b32_M_rb max=60.33
+17:14:17 run2 b8 b32_M_rb g6_b32_M_rb: fps: 175.88
+17:14:48 cool run2_b8_b32_M_z16 max=61.44
+17:14:59 run2 b8 b32_M_z16 g6_b32_M_z16: fps: 139.95
+17:15:30 cool run2_b8_b32_M_both max=60.84
+17:15:41 run2 b8 b32_M_both g6_b32_M_both: fps: 186.30
+17:16:12 cool run2_b8_b16_M2rot2 max=61.65
+17:16:22 run2 b8 b16_M2rot2 siglip2_m2rot: fps: 41.66
+17:16:23 G6 CHIP DONE load=0.15 0.05 0.01
