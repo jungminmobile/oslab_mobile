@@ -41,6 +41,42 @@ for i in 0 1 2;       do curl -L -o extra_data/food/test-$i.parquet    $HF/ethz/
 for i in 0 1;         do curl -L -o extra_data/caltech/test-$i.parquet $HF/dpdl-benchmark/caltech101/resolve/main/data/test-0000$i-of-00002.parquet; done
 ```
 
+## 최종 후보 B2 재현 (2026-10-20 기준)
+
+B2 = stem·layer1.0은 FP32, 나머지(layer1.1~layer4, AttnPool 투영)는 INT8. Percentile 99.999, 고화질 보정 256장, 시드 0.
+수치 요약: `../results/final_compare/RN50_제출후보_요약_2026-10-20.md`.
+
+```bash
+# 0) 위 "데이터 받기"와 아래 "실행 순서" 1)~3)을 먼저 한다 (가중치, ONNX q1 변환, dev 캐시·보정 후보)
+#    고화질 파일 받기가 끊기면: python fetch_highres.py
+# 1) B2 양자화
+AP=/attnpool/MatMul,/attnpool/MatMul_1,/attnpool/MatMul_2,/attnpool/Gemm
+REST=/layer1/layer1.1/,/layer1/layer1.2/,/layer2/layer2.0/,/layer2/layer2.1/,/layer2/layer2.2/,/layer2/layer2.3/,/layer3/layer3.0/,/layer3/layer3.1/,/layer3/layer3.2/,/layer3/layer3.3/,/layer3/layer3.4/,/layer3/layer3.5/,/layer4/layer4.0/,/layer4/layer4.1/,/layer4/layer4.2/
+python quantize_onnx.py --enc image --variant _q1 --calib-source highres --calib-n 256 --seed 0 --method percentile --only $REST --only-exact $AP --tag B2
+# → onnx/rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx
+#   정민 노트북 sha256 6870979…dd3f19cd. CPU가 다르면 sha가 다를 수 있다 (정확도로 확인)
+B2=rn50_image_int8_q1_percentile99999_highres256_s0_B2
+HR="pets_dev flowers_dev cars_dev food_dev caltech_dev"
+# 2) 정확도 (정수 커널) + FP32 대비 짝 부트스트랩
+python evaluate.py --exec int --threads 4 --save-pred --data cifar_A $HR --models fp32 $B2.onnx
+python bootstrap.py --a fp32 --b $B2 --data $HR
+# 3) 속도·메모리 (다른 작업과 동시에 돌리지 말 것. 충전 중. 3번 돌려 중앙값)
+python bench_speed.py --threads 1 2 4 --n 200 --repeats 3 --warmup 20 --models fp32=rn50_image_fp32_q1.onnx B2=$B2.onnx
+python bench_mem.py --threads 4 --models fp32=rn50_image_fp32_q1.onnx B2=$B2.onnx
+```
+
+정민 노트북(Core Ultra 7 258V, 10/20) 결과는 다음과 같다.
+
+| 지표 | 결과 |
+|---|---|
+| 고화질 5종 top-1 | 70.08 (FP32 71.51 대비 −1.43 %p [−2.18, −0.74]) |
+| cos | 0.9606 |
+| CIFAR A | 40.3 (FP32 40.7) |
+| 4T 지연 | 13.82 ms (FP32 30.77 ms) |
+| peak RSS | 119.4 MiB (FP32 325.5 MiB) |
+
+Windows에서는 `run_*.bat`처럼 `chcp 65001`과 `PYTHONIOENCODING=utf-8`을 설정한다. 경로에 한글이 있으면 ORT 양자화가 실패할 수 있다 (`../docs/실험_유의사항.md`).
+
 ## 실행 순서
 
 ```bash
@@ -54,7 +90,7 @@ python export_onnx.py --weights weights/RN50.pt --attnpool-q1 --image-only --ver
 # 3) 개발용(dev) 캐시 + 보정 후보 (train 분할에서만, 없는 파일은 자동으로 받았다가 지움)
 python datasets.py dev all
 
-# 4) 양자화 예: 현재 기준 후보 ④ (stem·layer1 FP32, layer2~AttnPool INT8)
+# 4) 양자화 예 (이전 후보 c4, MinMax). 최종 후보 B2는 위 "최종 후보 B2 재현" 절
 AP=/attnpool/MatMul,/attnpool/MatMul_1,/attnpool/MatMul_2,/attnpool/Gemm
 python quantize_onnx.py --enc image --variant _q1 --calib-source highres --only /layer2,/layer3,/layer4 --only-exact $AP --tag c4
 # → onnx/rn50_image_int8_q1_minmax_highres256_s0_c4.onnx
