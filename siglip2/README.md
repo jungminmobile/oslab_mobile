@@ -15,7 +15,7 @@
 | (이전 후보 R0) | `siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx` | 105.31 MiB | `5eee783955591d1d` |
 
 - 전체 sha256: 최종 `e84c3727f51e3b97cd59d9ab9604e01acc78f81493926a0696fbf96dc9c60f9e` (GitHub Release `siglip2-m2rot-ort-20261019`), FP32·R0는 `results/siglip2/candidates/onnx_sha256.txt` (Release `siglip2-xplat-20261015`).
-- **채점·재현은 배포한 ONNX 파일로 한다** (`gh release download <태그> --repo jungminmobile/oslab_mobile`). 이 파일은 x86 세 세대(AVX-512 VNNI i7-1165G7, AVX-VNNI Ultra 9 285K·Ultra 7 258V)에서 출력이 비트 단위로 같다 (`results/siglip2/G6_m2rot_ort`).
+- **채점·재현은 배포한 ONNX 파일로 한다** (`gh release download <태그> --repo jungminmobile/oslab_mobile`). 이 파일은 x86 세 PC(AVX-512 VNNI i7-1165G7, AVX-VNNI Ultra 9 285K·Ultra 7 258V)에서 dev 결과가 같고, i7과 258V는 사진별 출력까지 비트 단위로 같았다 (`results/siglip2/G6_m2rot_ort`).
 - 포맷: ONNX opset 17, 입력 `image` float32 N×3×224×224 (SigLIP2 전처리 후), 출력 768차원 이미지 임베딩. 실행: onnxruntime 1.25.0 CPU, 기본 그래프 최적화(ORT_ENABLE_ALL).
 
 ## 1. 환경
@@ -78,7 +78,7 @@ RN50_RESULTS=../results/siglip2/G6_m2rot_ort/dev_full python s2_paired_ci.py --m
 ```
 
 - 출력: 데이터셋별 top-1, 고화질 5종 평균의 FP32 대비 Δtop-1과 짝 부트스트랩 95% 구간(`paired_ci.jsonl`), 사진별 예측(`pred_<모델>.npz`).
-- 기대값 (x86 VNNI 세 PC 모두 같음, ORT 1.25.0): FP32 고화질 평균 91.66%, 최종 M2rot_ort Δ −0.23 [−0.64, +0.18]%p, cos 0.976 (이전 R0: −0.78, 0.955).
+- `paired_ci.jsonl`은 이어 쓰기라, 재현할 때는 다른 결과 폴더를 지정한다. 기대값 (x86 VNNI PC, ORT 1.25.0): FP32 고화질 평균 91.66%, 최종 M2rot_ort Δ −0.23 [−0.64, +0.18]%p, cos 0.976 (이전 R0: −0.78, 0.955).
 - 저장소 없이 다른 기기에서 빠르게 확인: `scripts/portable_eval.py` (numpy + onnxruntime만 필요, dev 6종 × 200장 묶음).
 
 ## 5. test (최종 1회)
