@@ -10,6 +10,7 @@ export CUDA_VISIBLE_DEVICES=-1 OPENBLAS_NUM_THREADS=1
 H=$(cd "$(dirname "$0")" && pwd); REPO=$(git -C $H rev-parse --show-toplevel)
 TAG=${TAG:?}; ONNX=${ONNX:?}; NET=${NET:?}; SIZE=${SIZE:?}
 PARSE_ONLY=${PARSE_ONLY:-0}; START=${START:-}; END=${END:-}
+HAR_IN=${HAR:-}; CALIB_DOMAIN=${CALIB_DOMAIN:-pixel}   # (G6c, 기본 꺼짐) HAR=<parse된 HAR>이면 parse를 건너뛰고 그 HAR에서 시작, CALIB_DOMAIN=normalized이면 보정 값 −1~1 검사
 W=$HOME/siglip2_work/g6/dfc/$TAG; LOCK=$HOME/siglip2_work/dfc.lock; mkdir -p $W
 L=$W/run_info.txt; cd $W
 log() { echo "$(date +%T) $*" | tee -a $L; }
@@ -26,8 +27,12 @@ step() {
     log "$n rc=$rc sec=$(( $(date +%s) - t0 )) maxrss_kb=$(awk -F': ' '/Maximum resident/{print $2}' time_$n.txt)"; exit $rc ) 9>$LOCK
 }
 NODES=""; [ -n "$START" ] && NODES="--start-node-names $START --end-node-names $END"
+if [ -n "$HAR_IN" ]; then
+  cp $HAR_IN $NET.har; log "parse 건너뜀: HAR=$HAR_IN sha256=$(sha256sum $HAR_IN | cut -c1-64)"
+else
 step parse hailo parser onnx $ONNX --net-name $NET --hw-arch hailo10h $NODES --har-path $NET.har -y \
   || { log "PARSE FAIL"; tail -30 parse.log | tee -a $L; exit 1; }
+fi
 python $REPO/siglip2/hailo/s2_har_layers.py $NET.har layer_map.csv | tee -a $L
 if [ "$PARSE_ONLY" = 1 ]; then log "G6 DFC PARSE DONE $TAG"; exit 0; fi
 ALLS=${ALLS:?}; CALIB=${CALIB:?}; NCAL=${NCAL:?}
@@ -36,7 +41,10 @@ cp $ALLS model.alls; cp $CALIB calib.npy
 python - <<PY || { log "CALIB FILE CHECK FAIL"; exit 1; }
 import numpy as np
 x = np.load("calib.npy", mmap_mode="r"); assert x.shape == ($NCAL, $SIZE, $SIZE, 3) and x.dtype == np.float32, (x.shape, x.dtype)
-assert 0 <= float(x.min()) and float(x.max()) <= 255 and float(x.max()) > 2, (x.min(), x.max())
+if "$CALIB_DOMAIN" == "normalized":
+    assert -1.0001 <= float(x.min()) and float(x.max()) <= 1.0001, (x.min(), x.max())
+else:
+    assert 0 <= float(x.min()) and float(x.max()) <= 255 and float(x.max()) > 2, (x.min(), x.max())
 print("calib", x.shape, float(x.min()), float(x.max()), round(float(x.mean()), 2))
 PY
 step optimize hailo optimize $NET.har --hw-arch hailo10h --model-script model.alls --calib-set-path calib.npy \
