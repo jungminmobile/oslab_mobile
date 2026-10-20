@@ -209,6 +209,11 @@ def main():
     ap.add_argument("--calib-stride", type=int, default=4,
                     help="percentile·entropy 전용: 배치 몇 개씩 나눠 히스토그램에 누적할지(메모리 절약). "
                          "ORT 히스토그램 보정은 모든 층 출력을 한꺼번에 메모리에 쌓아서 256장이면 8GB에서 메모리 부족")
+    ap.add_argument("--w4nbits", default="",
+                    help="(E11 R3, 기본 꺼짐) 이 이름의 MatMul(쉼표, 정확한 이름) 가중치를 ORT MatMulNBits 4비트 블록 양자화로 "
+                         "바꾼 뒤 나머지를 평소처럼 INT8 QDQ로 양자화한다 (SigLIP2 s2_quantize --w4-regex와 같은 방식)")
+    ap.add_argument("--w4nbits-block", type=int, default=32)
+    ap.add_argument("--w4nbits-acc", type=int, default=4, help="MatMulNBits accuracy_level (4 = 활성값 int8 동적 양자화)")
     a = ap.parse_args()
 
     src = C.ONNX_DIR / f"{C.PREFIX}_{a.enc}_fp32{a.variant}.onnx"
@@ -242,6 +247,23 @@ def main():
         td = tempfile.mkdtemp()                       # 같은 이유로 영문 임시 폴더에서 양자화 후 옮긴다
         tmp_pre, tmp_dst = Path(td) / "pre.onnx", Path(td) / "dst.onnx"
         shutil.copy(pre, tmp_pre)
+        if a.w4nbits:   # 옵션을 끄면 이 블록을 지나지 않아 기존 결과와 같다
+            import onnx
+            from onnxruntime.quantization.matmul_nbits_quantizer import MatMulNBitsQuantizer
+            want = [s for s in a.w4nbits.split(",") if s]
+            m0 = onnx.load(str(tmp_pre))
+            inits = {i.name for i in m0.graph.initializer}
+            w_all = [n.name for n in m0.graph.node if n.op_type == "MatMul" and n.input[1] in inits]
+            assert set(want) <= set(w_all), f"가중치 MatMul이 아님: {set(want) - set(w_all)}"
+            # ORT 1.25: nodes_to_include는 '추가 포함'이라 고르지 않은 가중치 MatMul은 nodes_to_exclude로 뺀다 (SigLIP2 10/16 기록)
+            q4 = MatMulNBitsQuantizer(m0, bits=4, block_size=a.w4nbits_block, is_symmetric=True,
+                                      accuracy_level=a.w4nbits_acc, nodes_to_include=want,
+                                      nodes_to_exclude=[n for n in w_all if n not in set(want)])
+            q4.process()
+            q4.model.save_model_to_file(str(tmp_pre), use_external_data_format=False)
+            n4 = sum(n.op_type == "MatMulNBits" for n in onnx.load(str(tmp_pre)).graph.node)
+            assert n4 == len(want), f"MatMulNBits {n4}개 ≠ 요청 {len(want)}개"
+            print(f"--w4nbits: MatMul {n4}개를 4비트로 (블록 {a.w4nbits_block}, accuracy_level {a.w4nbits_acc})")
         quantize_static(str(tmp_pre), str(tmp_dst), reader, quant_format=QuantFormat.QDQ,
                         activation_type=QT[a.act_type], weight_type=QT[a.weight_type],
                         per_channel=bool(a.per_channel), reduce_range=a.reduce_range,
