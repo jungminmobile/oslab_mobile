@@ -11,6 +11,7 @@ unset RN50_ONNX RN50_CACHE
 PY="$SIGLIP2_PYTHON"; ART=$SIGLIP2_ARTIFACTS; L=$ART/logs; STOP=/d/mokerton/locks/siglip2.STOP
 R=../results/siglip2/G8_candidates/b32; mkdir -p $R $L $ART/scripts_b32
 LOCK=("$PY" D:/mokerton/locks/heavy_lock.py run --owner siglip2 --job)
+GB="C:/Program Files/Git/bin/bash.exe"   # 잠금(Windows python)이 부르는 "bash"는 WSL bash일 수 있음 (10/20 rc=127) → Git Bash를 직접 지정
 chk() { [ -f $STOP ] && { echo "$(date +%T) STOP 파일 — $1 전에 멈춤"; exit 3; }; return 0; }
 step() { local name=$1; shift; [ -f $R/.done_$name ] && { echo "$(date +%T) [$name] 이미 끝남 — 건너뜀"; return 0; }
   chk "$name"; echo "$(date +%T) [$name] 시작"; "${LOCK[@]}" "SigLIP2 G8 B/32 $name" -- "$@" > "$L/full_$name.log" 2>&1; local rc=$?
