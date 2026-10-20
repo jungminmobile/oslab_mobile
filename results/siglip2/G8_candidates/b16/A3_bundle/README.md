@@ -3,7 +3,8 @@
 목적: 학술부나 다른 기기가 **저장소·데이터셋 원본 없이** numpy + onnxruntime만으로 같은 평가를 돌려 볼 수 있는 작은 묶음.
 - 만든 명령: `bash siglip2/scripts/g8_b16_a3.sh` (커밋 ac8744e). 묶음 위치 `D:\mokerton\artifacts\siglip2\share\g8_b16_final\` (1.2 GB)
 - 구성: `dev200/<set>.npz` 6개 (dev 6종 각 앞 200장: 전처리된 입력 x, 정답 y, FP32 텍스트 분류기 clf, FP32 이미지 임베딩 ref), `models/` FP32·M2rot_ort, `portable_eval.py`, `SHA256SUMS.txt`
-- **새로 올릴 파일이 없다:** dev200 6개는 10/15 공개한 `siglip2-xplat-20261015`의 dev200과 sha256이 모두 같고(`SHA256SUMS.txt` 대조), M2rot_ort는 `siglip2-m2rot-ort-20261019`(e84c3727…), FP32는 `siglip2-xplat-20261015`에 있다. 다른 기기에서는 두 Release를 받아 같은 폴더 구조로 두면 된다.
+- **새로 올릴 데이터·모델이 없다:** dev200 6개는 10/15 공개한 `siglip2-xplat-20261015`의 dev200과 sha256이 모두 같고(`SHA256SUMS.txt` 대조), M2rot_ort는 `siglip2-m2rot-ort-20261019`(e84c3727…), FP32는 `siglip2-xplat-20261015`에 있다. 다른 기기에서는 두 Release를 받아 같은 폴더 구조로 두면 된다.
+- 단 `portable_eval.py`는 10/15 Release 것(sha256 `e88d…`)과 지금 묶음 것(`5e63…`)이 다르다. 입력 크기 확인 줄 하나만 바뀌었다(224만 → 224·256, G8 B/32용). B/16 결과는 같다. 묶음의 `SHA256SUMS.txt`와 대조하려면 저장소의 `siglip2/scripts/portable_eval.py`를 쓴다.
 - 실행 (묶음 폴더에서, 저장소 코드 없이):
 ```bash
 python portable_eval.py --data dev200 --out out --threads 4 \

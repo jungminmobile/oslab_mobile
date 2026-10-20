@@ -833,6 +833,7 @@ def cmd_export(a):
     if a.graph != "mask":
         assert a.mask_form == "full" and a.hfill == "zero" and a.mask_site == "residual", \
             "--mask-form·--hfill·--mask-site는 --graph mask에서만 쓴다 (concat에서는 무시되므로 오류로 멈춤)"
+        assert parse_u_starts(a.sinks) is None, "u_c 시작 블록(':u')은 --graph mask --mask-site mlp에서만 (concat에서는 무시되므로 오류로 멈춤, G8 독립 검토)"
     if a.graph == "mask":
         assert a.mode == "mean", "--graph mask는 mode=mean만"
         model.visual.trunk = _make_mask_trunk(RC, model, a)
