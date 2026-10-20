@@ -79,7 +79,7 @@ def targets(m):
             if add:
                 k = [i for i in add[0].input if i in init]
                 if k:
-                    t.update(kind="float", f=k[0])
+                    t.update(kind="float", f=k[0], chk=add[0].output[0])   # 확인 ③은 보정이 들어가는 Add 출력에서 잰다
         if "kind" not in t:
             raise SystemExit(f"bias를 찾지 못함: {n.name}")
         T.append(t)
@@ -176,27 +176,42 @@ def main():
     dst = src.with_name(src.stem + f"_{a.tag}.onnx")
     m = onnx.load(src.as_posix())
     T = targets(m)
+    # 주의(0단계 관문에서 발견한 버그 수정, 10/20 04:50): ORT QDQ 양자화기는 Conv 뒤 ReLU를 지우고 Conv 출력 이름을
+    # ReLU 출력 이름(예: /act1/Relu_output_0)으로 바꾼다(ReLU는 Q의 zero point 클리핑으로 대신함). 그래서 QDQ의 이 텐서는
+    # ReLU 전 값인데 FP32의 같은 이름은 ReLU 뒤 값이다. FP32 기준은 그 ReLU의 입력(= FP32 Conv 출력)으로 바꿔 잰다.
+    fpg = onnx.load(C.onnx_path(FP32).as_posix(), load_external_data=False).graph
+    fprod = {o: n for n in fpg.node for o in n.output}
+    fpn = lambda o: (lambda p: p.input[0] if p is not None and p.op_type == "Relu" else o)(fprod.get(o))
+    for t in T:
+        t["fp_out"] = fpn(t["out"])
+        t.setdefault("chk", t["out"])
+    # 수정(10/20, 2차 관문 뒤): q·k·v MatMul은 보정을 뒤 Add 상수에 넣으므로 확인 ③은 Add 출력(chk)에서 잰다.
+    # 보정 Δ 자체는 계획서대로 MatMul 출력에서 잰다. Conv·Gemm은 chk = out(변화 없음).
     x, idx = bc_images(a.calib_seed)
-    fp = run_means(C.onnx_path(FP32).as_posix(), [t["out"] for t in T], x, fake=True)
+    names = list(dict.fromkeys([t["out"] for t in T] + [t["chk"] for t in T]))
+    fpm = run_means(C.onnx_path(FP32).as_posix(), list(dict.fromkeys(fpn(o) for o in names)), x, fake=True)
+    fp = {o: fpm[fpn(o)] for o in names}
     log = []
     for i, t in enumerate(T):
-        mq = run_means(m, [t["out"]], x, fake=True)[t["out"]]
+        r0 = run_means(m, list(dict.fromkeys([t["out"], t["chk"]])), x, fake=True)
+        mq = r0[t["out"]]
         delta = mq - fp[t["out"]]
         before = float(np.abs(delta).mean())
+        before_chk = float(np.abs(r0[t["chk"]] - fp[t["chk"]]).mean())
         if a.zero_delta:
             delta = np.zeros_like(delta)
         applied = apply(m, t, delta) if not a.zero_delta else 0.0
         rel = before / (float(np.abs(fp[t["out"]]).mean()) + 1e-12)
-        log.append({"i": i, "node": t["node"], "op": t["op"], "kind": t["kind"], "ch": int(delta.size),
-                    "absdelta_mean": before, "absdelta_max": float(np.abs(mq - fp[t["out"]]).max()),
+        log.append({"i": i, "node": t["node"], "op": t["op"], "kind": t["kind"], "ch": int(delta.size), "fp_ref": t["fp_out"],
+                    "chk": t["chk"], "absdelta_chk_before": before_chk, "absdelta_mean": before, "absdelta_max": float(np.abs(mq - fp[t["out"]]).max()),
                     "rel_to_mean_abs_act": rel, "applied_mean": applied})
         print(f"[{i + 1}/{len(T)}] {t['node']:45s} |Δ| {before:.4f} rel {rel:.3f}", flush=True)
     onnx.save(m, dst.as_posix())
     # 확인 ③(fake): 고친 모델로 모든 층 |Δ|를 다시 잼
-    after = run_means(m, [t["out"] for t in T], x, fake=True)
+    after = run_means(m, list(dict.fromkeys(t["chk"] for t in T)), x, fake=True)
     for r, t in zip(log, T):
-        r["absdelta_after_fake"] = float(np.abs(after[t["out"]] - fp[t["out"]]).mean())
-    red_fake = 1 - sum(r["absdelta_after_fake"] for r in log) / sum(r["absdelta_mean"] for r in log)
+        r["absdelta_after_fake"] = float(np.abs(after[t["chk"]] - fp[t["chk"]]).mean())
+    red_fake = 1 - sum(r["absdelta_after_fake"] for r in log) / sum(r["absdelta_chk_before"] for r in log)
     row = {"src": src.name, "src_sha": sha(src), "dst": dst.name, "dst_sha": sha(dst), "tag": a.tag, "calib_seed": a.calib_seed,
            "calib_idx_head": idx[:8].tolist(), "zero_delta": a.zero_delta, "n_layers": len(T),
            "reduction_fake": red_fake, "sec": round(time.time() - t0), "meta": C.run_meta()}

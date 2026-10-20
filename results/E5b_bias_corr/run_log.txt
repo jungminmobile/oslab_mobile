@@ -1,0 +1,114 @@
+2026-10-20  4:12:50.63 start 
+전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)er2.3/conv3/Conv                   |Δ| 0.0080 rel 0.017
+[27/59] /layer3/layer3.0/conv1/Conv                   |Δ| 0.8285 rel 13.415
+[28/59] /layer3/layer3.0/downsample/downsample.0/Conv |Δ| 0.0493 rel 0.250
+[29/59] /layer3/layer3.0/conv2/Conv                   |Δ| 0.5748 rel 8.024
+[30/59] /layer3/layer3.0/conv3/Conv                   |Δ| 0.0085 rel 0.047
+[31/59] /layer3/layer3.1/conv1/Conv                   |Δ| 0.4026 rel 1.125
+[32/59] /layer3/layer3.1/conv2/Conv                   |Δ| 0.4821 rel 1.543
+[33/59] /layer3/layer3.1/conv3/Conv                   |Δ| 0.0230 rel 0.074
+[34/59] /layer3/layer3.2/conv1/Conv                   |Δ| 0.5032 rel 1.991
+[35/59] /layer3/layer3.2/conv2/Conv                   |Δ| 0.5089 rel 2.163
+[36/59] /layer3/layer3.2/conv3/Conv                   |Δ| 0.0194 rel 0.061
+[37/59] /layer3/layer3.3/conv1/Conv                   |Δ| 0.4904 rel 2.135
+[38/59] /layer3/layer3.3/conv2/Conv                   |Δ| 0.4818 rel 2.124
+[39/59] /layer3/layer3.3/conv3/Conv                   |Δ| 0.0123 rel 0.036
+[40/59] /layer3/layer3.4/conv1/Conv                   |Δ| 0.6477 rel 4.964
+[41/59] /layer3/layer3.4/conv2/Conv                   |Δ| 0.5307 rel 2.735
+[42/59] /layer3/layer3.4/conv3/Conv                   |Δ| 0.0145 rel 0.037
+[43/59] /layer3/layer3.5/conv1/Conv                   |Δ| 0.7625 rel 7.316
+[44/59] /layer3/layer3.5/conv2/Conv                   |Δ| 0.5945 rel 3.366
+[45/59] /layer3/layer3.5/conv3/Conv                   |Δ| 0.0124 rel 0.022
+[46/59] /layer4/layer4.0/conv1/Conv                   |Δ| 0.8764 rel 22.013
+[47/59] /layer4/layer4.0/downsample/downsample.0/Conv |Δ| 0.1489 rel 0.217
+[48/59] /layer4/layer4.0/conv2/Conv                   |Δ| 0.8270 rel 29.738
+[49/59] /layer4/layer4.0/conv3/Conv                   |Δ| 0.0209 rel 0.034
+[50/59] /layer4/layer4.1/conv1/Conv                   |Δ| 0.5210 rel 2.302
+[51/59] /layer4/layer4.1/conv2/Conv                   |Δ| 0.6443 rel 5.016
+[52/59] /layer4/layer4.1/conv3/Conv                   |Δ| 0.0669 rel 0.066
+[53/59] /layer4/layer4.2/conv1/Conv                   |Δ| 0.8005 rel 9.614
+[54/59] /layer4/layer4.2/conv2/Conv                   |Δ| 0.7310 rel 12.498
+[55/59] /layer4/layer4.2/conv3/Conv                   |Δ| 0.0632 rel 0.054
+[56/59] /attnpool/MatMul_1                            |Δ| 0.0705 rel 0.171
+[57/59] /attnpool/MatMul_2                            |Δ| 0.0296 rel 0.141
+[58/59] /attnpool/MatMul                              |Δ| 0.0549 rel 0.223
+[59/59] /attnpool/Gemm                                |Δ| 0.0092 rel 0.586
+{"src": "rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx", "src_sha": "9d99f92d2bc3013dc388d05afa25d7efce6721247ef9a2fe01ba72bf4670ad3f", "dst": "rn50_image_int8_q1_percentile99999_highres256_s0_B0_BCzero.onnx", "dst_sha": "9d99f92d2bc3013dc388d05afa25d7efce6721247ef9a2fe01ba72bf4670ad3f", "tag": "BCzero", "calib_seed": 0, "calib_idx_head": [427, 784, 115, 999, 5, 923, 1119, 1207], "zero_delta": true, "n_layers": 59, "reduction_fake": 0.0, "sec": 908}
+
+.7401 rel 76.746
+[28/59] /layer3/layer3.0/downsample/downsample.0/Conv |Δ| 2.1748 rel 11.044
+[29/59] /layer3/layer3.0/conv2/Conv                   |Δ| 11.5567 rel 161.321
+[30/59] /layer3/layer3.0/conv3/Conv                   |Δ| 3.4460 rel 19.141
+[31/59] /layer3/layer3.1/conv1/Conv                   |Δ| 5.3945 rel 15.071
+[32/59] /layer3/layer3.1/conv2/Conv                   |Δ| 3.5687 rel 11.420
+[33/59] /layer3/layer3.1/conv3/Conv                   |Δ| 0.9275 rel 3.004
+[34/59] /layer3/layer3.2/conv1/Conv                   |Δ| 5.5234 rel 21.853
+[35/59] /layer3/layer3.2/conv2/Conv                   |Δ| 5.7806 rel 24.574
+[36/59] /layer3/layer3.2/conv3/Conv                   |Δ| 1.2658 rel 4.016
+[37/59] /layer3/layer3.3/conv1/Conv                   |Δ| 6.7073 rel 29.203
+[38/59] /layer3/layer3.3/conv2/Conv                   |Δ| 7.1765 rel 31.644
+[39/59] /layer3/layer3.3/conv3/Conv                   |Δ| 2.1248 rel 6.299
+[40/59] /layer3/layer3.4/conv1/Conv                   |Δ| 9.4931 rel 72.755
+[41/59] /layer3/layer3.4/conv2/Conv                   |Δ| 11.8190 rel 60.920
+[42/59] /layer3/layer3.4/conv3/Conv                   |Δ| 4.2124 rel 10.863
+[43/59] /layer3/layer3.5/conv1/Conv                   |Δ| 13.3020 rel 127.640
+[44/59] /layer3/layer3.5/conv2/Conv                   |Δ| 15.0233 rel 85.055
+[45/59] /layer3/layer3.5/conv3/Conv                   |Δ| 4.9934 rel 9.074
+[46/59] /layer4/layer4.0/conv1/Conv                   |Δ| 19.4334 rel 488.113
+[47/59] /layer4/layer4.0/downsample/downsample.0/Conv |Δ| 22.2827 rel 32.464
+[48/59] /layer4/layer4.0/conv2/Conv                   |Δ| 33.2579 rel 1195.898
+[49/59] /layer4/layer4.0/conv3/Conv                   |Δ| 41.2588 rel 68.041
+[50/59] /layer4/layer4.1/conv1/Conv                   |Δ| 26.5112 rel 117.108
+[51/59] /layer4/layer4.1/conv2/Conv                   |Δ| 31.4626 rel 244.926
+[52/59] /layer4/layer4.1/conv3/Conv                   |Δ| 28.3398 rel 27.881
+[53/59] /layer4/layer4.2/conv1/Conv                   |Δ| 32.6791 rel 392.471
+[54/59] /layer4/layer4.2/conv2/Conv                   |Δ| 56.6265 rel 968.120
+[55/59] /layer4/layer4.2/conv3/Conv                   |Δ| 123.4576 rel 106.084
+[56/59] /attnpool/MatMul_1                            |Δ| 11.3145 rel 27.472
+[57/59] /attnpool/MatMul_2                            |Δ| 4.7099 rel 22.407
+[58/59] /attnpool/MatMul                              |Δ| 10.6923 rel 43.454
+[59/59] /attnpool/Gemm                                |Δ| 0.3492 rel 22.175
+{"src": "rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx", "src_sha": "9d99f92d2bc3013dc388d05afa25d7efce6721247ef9a2fe01ba72bf4670ad3f", "dst": "rn50_image_int8_q1_percentile99999_highres256_s0_B0_BC.onnx", "dst_sha": "740db93336ed9032d718c875678915fae6e69c0ede49d0640facf7218a52cbd2", "tag": "BC", "calib_seed": 0, "calib_idx_head": [427, 784, 115, 999, 5, 923, 1119, 1207], "zero_delta": false, "n_layers": 59, "reduction_fake": 0.9552931747216172, "sec": 956, "int_points": 55, "reduction_int": -40.24478295642171}
+
+CHECK {"sha_ok": {"rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx": true, "rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx": true}, "zero_delta_sha_eq_B0": true, "structure": {"same_nodes": true, "same_init_keys": true, "n_diff": 59, "non_bias_diff": []}, "reduction_fake": 0.9552931747216172, "reduction_int": -40.24478295642171, "gate": false}
+2026-10-20  4:44:44.47 STOP: stage0 gate failed 
+
+=== 04:50 진단: 0단계 관문 실패 원인 = 코드 버그. ORT QDQ가 Conv 뒤 ReLU를 지우고 Conv 출력 이름을 ReLU 출력 이름으로 바꿈 → FP32 기준을 ReLU 뒤 값으로 잘못 잡음. bias_correct.py에서 FP32 기준을 ReLU 입력으로 고치고 관문부터 다시 실행 ===
+2026-10-20  4:49:43.74 start 
+전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)/59] /layer3/layer3.0/conv1/Conv                   |Δ| 0.0157 rel 0.019
+[28/59] /layer3/layer3.0/downsample/downsample.0/Conv |Δ| 0.0189 rel 0.096
+[29/59] /layer3/layer3.0/conv2/Conv                   |Δ| 0.0053 rel 0.009
+[30/59] /layer3/layer3.0/conv3/Conv                   |Δ| 0.0026 rel 0.014
+[31/59] /layer3/layer3.1/conv1/Conv                   |Δ| 0.0120 rel 0.024
+[32/59] /layer3/layer3.1/conv2/Conv                   |Δ| 0.0105 rel 0.020
+[33/59] /layer3/layer3.1/conv3/Conv                   |Δ| 0.0029 rel 0.010
+[34/59] /layer3/layer3.2/conv1/Conv                   |Δ| 0.0134 rel 0.025
+[35/59] /layer3/layer3.2/conv2/Conv                   |Δ| 0.0109 rel 0.021
+[36/59] /layer3/layer3.2/conv3/Conv                   |Δ| 0.0044 rel 0.014
+[37/59] /layer3/layer3.3/conv1/Conv                   |Δ| 0.0200 rel 0.039
+[38/59] /layer3/layer3.3/conv2/Conv                   |Δ| 0.0130 rel 0.027
+[39/59] /layer3/layer3.3/conv3/Conv                   |Δ| 0.0054 rel 0.016
+[40/59] /layer3/layer3.4/conv1/Conv                   |Δ| 0.0248 rel 0.040
+[41/59] /layer3/layer3.4/conv2/Conv                   |Δ| 0.0196 rel 0.036
+[42/59] /layer3/layer3.4/conv3/Conv                   |Δ| 0.0112 rel 0.029
+[43/59] /layer3/layer3.5/conv1/Conv                   |Δ| 0.0380 rel 0.052
+[44/59] /layer3/layer3.5/conv2/Conv                   |Δ| 0.0368 rel 0.066
+[45/59] /layer3/layer3.5/conv3/Conv                   |Δ| 0.0263 rel 0.048
+[46/59] /layer4/layer4.0/conv1/Conv                   |Δ| 0.0593 rel 0.068
+[47/59] /layer4/layer4.0/downsample/downsample.0/Conv |Δ| 0.1082 rel 0.158
+[48/59] /layer4/layer4.0/conv2/Conv                   |Δ| 0.0770 rel 0.093
+[49/59] /layer4/layer4.0/conv3/Conv                   |Δ| 0.0862 rel 0.142
+[50/59] /layer4/layer4.1/conv1/Conv                   |Δ| 0.1357 rel 0.309
+[51/59] /layer4/layer4.1/conv2/Conv                   |Δ| 0.2052 rel 0.330
+[52/59] /layer4/layer4.1/conv3/Conv                   |Δ| 0.3241 rel 0.319
+[53/59] /layer4/layer4.2/conv1/Conv                   |Δ| 0.3265 rel 0.413
+[54/59] /layer4/layer4.2/conv2/Conv                   |Δ| 0.3716 rel 0.500
+[55/59] /layer4/layer4.2/conv3/Conv                   |Δ| 0.7427 rel 0.638
+[56/59] /attnpool/MatMul_1                            |Δ| 0.2181 rel 0.530
+[57/59] /attnpool/MatMul_2                            |Δ| 0.0845 rel 0.402
+[58/59] /attnpool/MatMul                              |Δ| 0.1624 rel 0.660
+[59/59] /attnpool/Gemm                                |Δ| 0.0372 rel 2.365
+{"src": "rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx", "src_sha": "9d99f92d2bc3013dc388d05afa25d7efce6721247ef9a2fe01ba72bf4670ad3f", "dst": "rn50_image_int8_q1_percentile99999_highres256_s0_B0_BC.onnx", "dst_sha": "cba4062a70ed323b4795817b158d7acbb53023c3643755e9c6c148794793b5b1", "tag": "BC", "calib_seed": 0, "calib_idx_head": [427, 784, 115, 999, 5, 923, 1119, 1207], "zero_delta": false, "n_layers": 59, "reduction_fake": 0.8667711048961463, "sec": 1014, "int_points": 55, "reduction_int": 0.846428008125597}
+
+CHECK {"sha_ok": {"rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx": true, "rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx": true}, "zero_delta_sha_eq_B0": true, "structure": {"same_nodes": true, "same_init_keys": true, "n_diff": 59, "non_bias_diff": []}, "reduction_fake": 0.8667711048961463, "reduction_int": 0.846428008125597, "gate": false}
+2026-10-20  5:07:38.30 STOP: stage0 gate failed 
