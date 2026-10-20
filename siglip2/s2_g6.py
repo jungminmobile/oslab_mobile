@@ -22,8 +22,10 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-MODEL_IDS = {"b32": "hf-hub:timm/ViT-B-32-SigLIP2-256", "s1b16": "hf-hub:timm/ViT-B-16-SigLIP"}
-SIZE = {"b32": 256, "s1b16": 224}
+MODEL_IDS = {"b32": "hf-hub:timm/ViT-B-32-SigLIP2-256", "s1b16": "hf-hub:timm/ViT-B-16-SigLIP",
+             "b16": "hf-hub:timm/ViT-B-16-SigLIP2"}   # b16: G6b, 우리 B16 (FP32 기준·분류기만, HF 키 ref)
+SIZE = {"b32": 256, "s1b16": 224, "b16": 224}
+HFKEY = {"b32": "b32", "s1b16": "s1b16", "b16": "ref"}   # s2_g6pre.MODELS 키
 ZOO_ONNX = {"b32": ("dl_b32/siglip2-base-patch32-256_vision_encoder.sim.onnx", "1393"),
             "s1b16": ("dl_b16/siglip_base_patch16_224_vision_encoder.onnx", "1725")}
 UNIFIED = {"b32": ([(15, 6), (7, 10)], [5, 9])}       # G6_pre 13-2: K/V 시작, u_c 시작 (15@6:5, 7@10:9)
@@ -207,17 +209,18 @@ def cmd_export(a):
         extra["unified"] = "15@6:5,7@10:9"
     e_t = feat(model.visual, x)
     stem = f"g6_{a.model}_{a.cfg}"
-    p = WORK / "onnx" / f"{stem}_b1.onnx"
+    p = WORK / "onnx" / (f"{stem}_dyn.onnx" if a.dynamic else f"{stem}_b1.onnx")   # --dynamic (G6b, 기본 꺼짐): 배치 가변
     p.parent.mkdir(parents=True, exist_ok=True)
     if p.exists() and not a.overwrite:
         raise SystemExit(f"{p} 이미 있음 (--overwrite)")
     if a.cfg == "m2rot":       # M2rot과 같은 export (s2_regcache cmd_export: torch.onnx.export 직접, undedup 없음)
         with torch.inference_mode():
+            kw = dict(dynamic_axes={"image": {0: "batch"}, "embedding": {0: "batch"}}) if a.dynamic else {}
             torch.onnx.export(model.visual, (torch.randn(1, 3, size, size),), str(p), input_names=["image"],
-                              output_names=["embedding"], opset_version=17, dynamo=False)
+                              output_names=["embedding"], opset_version=17, dynamo=False, **kw)
         n_undedup = None
     else:                      # rothad·D256L1과 같은 export (s2_rotate.export_onnx: undedup 포함)
-        n_undedup = export_onnx(model.visual, p, False, 17)
+        n_undedup = export_onnx(model.visual, p, a.dynamic, 17)
     import onnxruntime as ort
     so = ort.SessionOptions()
     so.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
@@ -233,7 +236,7 @@ def cmd_export(a):
     for nd in onnx.load(str(p), load_external_data=False).graph.node:
         ops[nd.op_type] = ops.get(nd.op_type, 0) + 1
     import hashlib
-    row = {"what": "export", "model": a.model, "cfg": a.cfg, "onnx": str(p), "bytes": p.stat().st_size,
+    row = {"what": "export", "model": a.model, "cfg": a.cfg, "dynamic": a.dynamic, "onnx": str(p), "bytes": p.stat().st_size,
            "sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "rotq_sha256": qsha, "n_undedup": n_undedup,
            "ops": dict(sorted(ops.items())), "check_n": len(x), **chk, **extra}
     append("export.jsonl", row)
@@ -247,9 +250,9 @@ def cmd_fp32(a):
     from torchvision.datasets import CIFAR100
     name = a.model
     size = SIZE[name]
-    m = P.load_hf(name)
+    m = P.load_hf(HFKEY[name])
     vis = P.vis_of(m)
-    tok = AutoTokenizer.from_pretrained(P.MODELS[name]["hf"])
+    tok = AutoTokenizer.from_pretrained(P.MODELS[HFKEY[name]]["hf"])
     cif = [c.replace("_", " ") for c in CIFAR100(str(RC.DATA_ROOT), train=True, download=False).classes]
     out = WORK / "ref"
     out.mkdir(parents=True, exist_ok=True)
@@ -278,7 +281,7 @@ def cmd_fp32(a):
         res[key] = r
         print(key, r, flush=True)
     hr = {k: round(float(np.mean([res[d][k] for d in DEV[1:]])), 3) for k in ("fp32_top1", "m2_top1") if k in res["pets_dev"]}
-    append("fp32.jsonl", {"what": "fp32", "model": name, "hf": P.MODELS[name]["hf"], "per_set": res, "hr_mean": hr,
+    append("fp32.jsonl", {"what": "fp32", "model": name, "hf": P.MODELS[HFKEY[name]]["hf"], "per_set": res, "hr_mean": hr,
                           "unified": "15@6:5,7@10:9" if sinks else None,
                           "text": "HF 텍스트 인코더 FP32, _clean_canonicalize, max_length 64 (G6_pre와 같음)"})
 
@@ -292,6 +295,7 @@ def main():
     p = sub.add_parser("export")
     p.add_argument("--cfg", choices=["plain", "rot", "m2rot"], required=True)
     p.add_argument("--overwrite", action="store_true")
+    p.add_argument("--dynamic", action="store_true", help="(G6b, 기본 꺼짐) 배치 가변 ONNX (ORT 양자화·eval용)")
     p.set_defaults(func=cmd_export)
     sub.add_parser("fp32").set_defaults(func=cmd_fp32)
     a = ap.parse_args()

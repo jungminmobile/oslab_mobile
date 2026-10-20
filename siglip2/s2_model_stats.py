@@ -63,7 +63,7 @@ def onnx_params(path):
     return {"initializer_elements": int(sum(sizes)), "initializer_elements_gt16": int(big), "n_initializers": len(sizes)}
 
 
-def mem_probe(path, threads, n_iter):
+def mem_probe(path, threads, n_iter, size=224):
     """새 프로세스에서 실행되는 부분: 세션 생성·추론 중 RSS 최대값(MiB)을 JSON 한 줄로 출력."""
     import psutil
     proc = psutil.Process()
@@ -81,7 +81,7 @@ def mem_probe(path, threads, n_iter):
     after_load = proc.memory_info().rss
     load_peak = peak["v"]
     peak["v"] = after_load
-    x = np.random.default_rng(0).standard_normal((1, 3, 224, 224)).astype(np.float32)
+    x = np.random.default_rng(0).standard_normal((1, 3, size, size)).astype(np.float32)    # size: G6b --sizes (기본 224)
     for _ in range(n_iter):
         s.run(None, {"image": x})
     stop.set()
@@ -97,9 +97,12 @@ def main():
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--mem-iters", type=int, default=50)
     ap.add_argument("--_mem-probe", dest="mem_probe", default="", help=argparse.SUPPRESS)
+    ap.add_argument("--sizes", nargs="*", default=[], help="(G6b, 기본 없음 = 모두 224) 이름=입력 크기, 메모리 측정 입력에만 쓴다")
+    ap.add_argument("--_size", dest="size", type=int, default=224, help=argparse.SUPPRESS)
     a = ap.parse_args()
     if a.mem_probe:
-        return mem_probe(RC.onnx_path(a.mem_probe), a.threads, a.mem_iters)
+        return mem_probe(RC.onnx_path(a.mem_probe), a.threads, a.mem_iters, a.size)
+    sizes = dict((k, int(v)) for k, v in (s.split("=", 1) for s in a.sizes))
 
     out = S.require_results_dir()
     out.mkdir(parents=True, exist_ok=True)
@@ -122,8 +125,11 @@ def main():
         if name == "fp32":
             info.update(onnx_params(p))
             row["params"]["onnx_initializers"] = info["initializer_elements"]
-        r = subprocess.run([sys.executable, __file__, "--_mem-probe", f, "--threads", str(a.threads),
-                            "--mem-iters", str(a.mem_iters)], capture_output=True, text=True, encoding="utf-8")
+        cmd = [sys.executable, __file__, "--_mem-probe", f, "--threads", str(a.threads), "--mem-iters", str(a.mem_iters)]
+        if name in sizes:
+            cmd += ["--_size", str(sizes[name])]
+            info["input_size"] = sizes[name]
+        r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8")
         assert r.returncode == 0, r.stderr[-2000:]
         info["memory"] = json.loads(r.stdout.strip().splitlines()[-1])
         row["files"][name] = info

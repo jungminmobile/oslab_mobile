@@ -209,6 +209,8 @@ def main():
     ap.add_argument("--src", default="",
                     help="(기본 꺼짐) 양자화할 FP32 ONNX 파일 이름($RN50_ONNX 아래). 비우면 siglip2_image_fp32.onnx. "
                          "예: s2_regcache.py export가 만든 siglip2_image_fp32_rc55at5-13at9.onnx (G3R). 출력 이름에 src 표시가 붙는다")
+    ap.add_argument("--calib-npy", default="",
+                    help="(G6b, 기본 꺼짐) 보정 사진 N×3×H×W float32 파일. 장수는 --calib-n과 같아야 한다 (calib_images 대신)")
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--log", default="", help="기본: $RN50_RESULTS/quantize_log.jsonl (RN50_RESULTS 명시 필요)")
     a = ap.parse_args()
@@ -288,7 +290,11 @@ def main():
     log_path = Path(a.log) if a.log else S.require_results_dir() / "quantize_log.jsonl"
 
     t0 = time.time()
-    x = calib_images(a.calib_source, a.calib_n, a.seed)
+    if a.calib_npy:     # (G6b, 기본 꺼짐) 보정 사진 파일을 그대로 (224가 아닌 모델: 같은 사진의 Zoo 전처리 캐시)
+        x = np.load(a.calib_npy).astype(np.float32)
+        assert x.ndim == 4 and x.shape[1] == 3 and len(x) == a.calib_n, (x.shape, a.calib_n)
+    else:
+        x = calib_images(a.calib_source, a.calib_n, a.seed)
     pool_n = sum(len(np.load(f, mmap_mode="r")) for f in sorted(RC.CACHE_DIR.glob("calib_*_f32.npy")))
     reader = CountingCalib(x, a.calib_bs)
     extra = {"ActivationSymmetric": False, "WeightSymmetric": True}
