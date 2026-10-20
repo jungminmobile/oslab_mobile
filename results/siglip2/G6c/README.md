@@ -32,6 +32,18 @@
   - `CALIB_DOMAIN=normalized` (보정 값 −1~1 검사)
   - 옵션을 끄면 이전과 같은 경로다 (diff로 확인).
 
+### 1-1. 계획에서 달라진 점: B16_rb 1차 compile 실패와 최소 수정 (결과 전, 용 결정)
+
+- 1차 B16_rb (`alls/g6c_b16_rb.alls`, Zoo 줄 그대로 `max_compute_utilization=1.0`): optimize는 통과했다 (보정 256장 assert OK, 27분).
+- compile은 116분 뒤 **실패**했다 (`logs/b16_rb_fail/compile_errors.txt`).
+  - DFC가 그래프를 5개 컨텍스트로 나눈 뒤 (`Applying selected partition to 5 contexts`), `siglip2_m2rot_bucket_1 - Partition and Allocation Failed (Timeout, Processing time: 1h 55m 28s)`, `BackendAllocatorException: Compilation failed: Resolver didn't find possible solution.`
+  - B32에서는 같은 줄로 컴파일됐다 (M_rb 12 컨텍스트). B16은 토큰이 3배라 같은 압축이 맞지 않은 것으로 보인다 (추정).
+- **처리 (용 결정):**
+  1. 설계대로 B16_both를 먼저 빌드한다. B16_both가 실패하면 다시 묻는다.
+  2. B16_rb는 최소 수정으로 `max_compute_utilization`만 1.0 → **0.9**로 낮춘 `alls/g6c_b16_rb09.alls`로 다시 빌드한다 (`max_control_utilization=0.95`, `max_memory_utilization=0.75`와 다른 줄은 그대로). 이름은 **B16_rb09**로 적는다.
+  - 비트 확인(2-1)과 속도 측정은 B16_rb 대신 B16_rb09로 한다.
+  - B16_both의 resources_param은 그대로 1.0이다. B32 M_both와 같은 줄이다.
+
 ## 2. 측정
 
 ### 2-1. 정확도 (AGX 실칩, G6 `g6_hailo_chip.py`, G6 Zoo 전처리 캐시·HF FP32 기준·분류기)

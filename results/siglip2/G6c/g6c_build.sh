@@ -28,6 +28,7 @@ PY
   tail -1 $B
   [ $rc -eq 0 ] || { echo "BUILD FAIL $tag — 멈춤"; exit 1; }
 }
-build b16_rb $H/alls/g6c_b16_rb.alls
+# 1차 b16_rb(resources_param 1.0)는 compile 실패 (README 1절 끝) → b16_both 먼저, 그다음 max_compute 0.9로 다시
 build b16_both $H/alls/g6c_b16_both.alls
+build b16_rb09 $H/alls/g6c_b16_rb09.alls
 echo "G6C BUILD ALL DONE $(date +%T)"

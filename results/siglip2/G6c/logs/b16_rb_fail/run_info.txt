@@ -1,0 +1,47 @@
+00:48:29 tag=b16_rb commit=04679f4 dirty=0 dfc=5.4.0 onnx=/home/junyong/siglip2_work/artifacts/onnx/siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad_b1.onnx onnx_sha256=d1df3f60b562cb07b69cbf6eb1fefb8ecc395fc3fb919257ccffb447e8002e04 parse_only=0
+00:48:30 parse 건너뜀: HAR=/home/junyong/siglip2_work/hailo_repro/siglip2_m2rot.har sha256=ab7b324a1658507181e26a70e0f1b1c3e8abbc378b44dc3756dfd218d5c396a3
+[info] Hailo HW architecture: hailo10h
+324 layers → layer_map.csv
+00:48:41 alls=/home/junyong/oslab_g6c/results/siglip2/G6c/alls/g6c_b16_rb.alls alls_sha256=c702a0b3c10e00c61c7636399dcfc88db573787fa53deab6861d332d698888d8 calib=/home/junyong/siglip2_work/artifacts/dfc/calib_highres256_s0_nhwc.npy calib_sha256=91f551e312271d1af6c87c163505c9484e157dcf09afc91689609d7095ca4355 ncal=256
+00:48:41 optimize 잠금 대기
+00:48:41 optimize 잠금 잡음 free=29G load=0.22 0.05 0.02
+01:15:44 optimize rc=0 sec=1623 maxrss_kb=23000012
+[info] Using dataset with 256 entries for calibration
+[info] Using dataset with 256 entries for calibration
+[info] Using dataset with 256 entries for calibration
+[info] Using dataset with 256 entries for Bias Correction
+01:15:44 calib assert OK (256)
+01:15:44 compile 잠금 대기
+01:15:44 compile 잠금 잡음 free=29G load=3.58 3.09 2.75
+03:11:41 compile rc=1 sec=6957 maxrss_kb=6667920
+03:11:41 COMPILE FAIL
+Reverts on split failed: 0
+[info] siglip2_m2rot_context_3 (siglip2_m2rot_context_3):
+Iterations: 0 [ Did not run due to an error ] 
+Reverts on cluster mapping: 0
+Reverts on inter-cluster connectivity: 0
+Reverts on pre-mapping validation: 0
+Reverts on split failed: 0
+[info] siglip2_m2rot_context_4 (siglip2_m2rot_context_4):
+Iterations: 0 [ Did not run due to an error ] 
+Reverts on cluster mapping: 0
+Reverts on inter-cluster connectivity: 0
+Reverts on pre-mapping validation: 0
+Reverts on split failed: 0
+[error] siglip2_m2rot Allocation Failed (duration: 53m 39s)
+[warning] Failed recording best-effort buffers: ddr_portal_from_ew_add9_to_ew_add10 was not found in toposort recipe during buffers override record
+[error] siglip2_m2rot_bucket_1 - Partition and Allocation Failed (Timeout, Processing time: 1h 55m 28s)
+[error] Failed to optimize bucket_1 with error: Resolver didn't find possible solution.
+worker 0 failed on Splitter shutdown timeout reached (status: 32)
+
+[warning] Failed recording best-effort buffers: ddr_portal_from_ew_add7_to_ew_add8 was not found in toposort recipe during buffers override record
+[error] siglip2_m2rot_bucket_1 - Partition and Allocation Failed (Timeout, Processing time: 1h 55m 29s)
+[error] siglip2_m2rot_bucket_1 Compilation Failed (duration: 1h 55m 29s)
+Resolver didn't find possible solution.
+worker 0 failed on Splitter shutdown timeout reached (status: 32)
+
+[?25h
+[error] Failed to produce compiled graph
+[error] BackendAllocatorException: Compilation failed: Resolver didn't find possible solution.
+worker 0 failed on Splitter shutdown timeout reached (status: 32)
+

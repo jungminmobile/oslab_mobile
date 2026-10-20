@@ -1,0 +1,2716 @@
+ker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:01
+[info] Context:1/4 Iteration 1478: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:01
+[info] Context:1/4 Iteration 1478: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:01
+[info] Context:1/4 Iteration 1478: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:03
+[info] Context:1/4 Iteration 1478: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:04
+[info] Context:1/4 Iteration 1478: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:04
+[info] Context:1/4 Iteration 1479: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:04
+[info] Context:1/4 Iteration 1479: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:04
+[info] Context:1/4 Iteration 1479: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:04
+[info] Context:1/4 Iteration 1479: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:04
+[info] Context:1/4 Iteration 1479: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:07
+[info] Context:1/4 Iteration 1479: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:07
+[info] Context:1/4 Iteration 1479: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:07
+[info] Context:1/4 Iteration 1480: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:07
+[info] Context:1/4 Iteration 1480: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:08
+[info] Context:1/4 Iteration 1480: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:08
+[info] Context:1/4 Iteration 1480: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:08
+[info] Context:1/4 Iteration 1480: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          X          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:09
+[info] Context:1/4 Iteration 1480: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:10
+[info] Context:1/4 Iteration 1480: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:10
+[info] Context:1/4 Iteration 1481: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:10
+[info] Context:1/4 Iteration 1481: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:10
+[info] Context:1/4 Iteration 1481: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:10
+[info] Context:1/4 Iteration 1481: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:10
+[info] Context:1/4 Iteration 1481: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:10
+[info] Context:1/4 Iteration 1481: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:11
+[info] Context:1/4 Iteration 1481: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:12
+[info] Context:1/4 Iteration 1482: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:12
+[info] Context:1/4 Iteration 1482: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:12
+[info] Context:1/4 Iteration 1482: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          X          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:12
+[info] Context:1/4 Iteration 1482: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          X          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:14
+[info] Context:1/4 Iteration 1482: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:14
+[info] Context:1/4 Iteration 1482: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:29
+[info] Context:1/4 Iteration 1482: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:29
+[info] Context:1/4 Iteration 1483: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:29
+[info] Context:1/4 Iteration 1483: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:29
+[info] Context:1/4 Iteration 1483: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:29
+[info] Context:1/4 Iteration 1483: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:29
+[info] Context:1/4 Iteration 1483: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:29
+[info] Context:1/4 Iteration 1483: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:31
+[info] Context:1/4 Iteration 1483: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:31
+[info] Context:1/4 Iteration 1484: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:31
+[info] Context:1/4 Iteration 1484: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:31
+[info] Context:1/4 Iteration 1484: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:31
+[info] Context:1/4 Iteration 1484: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:31
+[info] Context:1/4 Iteration 1484: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:33
+[info] Context:1/4 Iteration 1484: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:33
+[info] Context:1/4 Iteration 1484: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:33
+[info] Context:1/4 Iteration 1485: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:33
+[info] Context:1/4 Iteration 1485: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:33
+[info] Context:1/4 Iteration 1485: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:33
+[info] Context:1/4 Iteration 1485: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:33
+[info] Context:1/4 Iteration 1485: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:33
+[info] Context:1/4 Iteration 1485: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:35
+[info] Context:1/4 Iteration 1485: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:35
+[info] Context:1/4 Iteration 1486: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:35
+[info] Context:1/4 Iteration 1486: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:35
+[info] Context:1/4 Iteration 1486: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:35
+[info] Context:1/4 Iteration 1486: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:35
+[info] Context:1/4 Iteration 1486: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          *          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:35
+[info] Context:1/4 Iteration 1486: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:35
+[info] Context:1/4 Iteration 1486: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:35
+[info] Context:1/4 Iteration 1487: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:35
+[info] Context:1/4 Iteration 1487: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:35
+[info] Context:1/4 Iteration 1487: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:35
+[info] Context:1/4 Iteration 1487: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:36
+[info] Context:1/4 Iteration 1487: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:37
+[info] Context:1/4 Iteration 1487: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:38
+[info] Context:1/4 Iteration 1487: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:38
+[info] Context:1/4 Iteration 1488: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:38
+[info] Context:1/4 Iteration 1488: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:38
+[info] Context:1/4 Iteration 1488: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:38
+[info] Context:1/4 Iteration 1488: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          X          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:38
+[info] Context:1/4 Iteration 1488: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:39
+[info] Context:1/4 Iteration 1488: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:41
+[info] Context:1/4 Iteration 1488: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:41
+[info] Context:1/4 Iteration 1489: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:41
+[info] Context:1/4 Iteration 1489: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:42
+[info] Context:1/4 Iteration 1489: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:42
+[info] Context:1/4 Iteration 1489: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          X          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:42
+[info] Context:1/4 Iteration 1489: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          X          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:43
+[info] Context:1/4 Iteration 1489: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:44
+[info] Context:1/4 Iteration 1489: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:44
+[info] Context:1/4 Iteration 1490: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:44
+[info] Context:1/4 Iteration 1490: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:44
+[info] Context:1/4 Iteration 1490: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:44
+[info] Context:1/4 Iteration 1490: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          X          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:44
+[info] Context:1/4 Iteration 1490: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:47
+[info] Context:1/4 Iteration 1490: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:49
+[info] Context:1/4 Iteration 1490: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:49
+[info] Context:1/4 Iteration 1491: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:49
+[info] Context:1/4 Iteration 1491: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:49
+[info] Context:1/4 Iteration 1491: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:49
+[info] Context:1/4 Iteration 1491: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          X          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:49
+[info] Context:1/4 Iteration 1491: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:52
+[info] Context:1/4 Iteration 1491: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:52
+[info] Context:1/4 Iteration 1491: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:52
+[info] Context:1/4 Iteration 1492: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:52
+[info] Context:1/4 Iteration 1492: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:52
+[info] Context:1/4 Iteration 1492: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:52
+[info] Context:1/4 Iteration 1492: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          X          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:52
+[info] Context:1/4 Iteration 1492: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:54
+[info] Context:1/4 Iteration 1492: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:54
+[info] Context:1/4 Iteration 1492: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:54
+[info] Context:1/4 Iteration 1493: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:54
+[info] Context:1/4 Iteration 1493: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:54
+[info] Context:1/4 Iteration 1493: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:54
+[info] Context:1/4 Iteration 1493: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:54
+[info] Context:1/4 Iteration 1493: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          V          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:55
+[info] Context:1/4 Iteration 1493: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          V          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:57
+[info] Context:1/4 Iteration 1493: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:57
+[info] Context:1/4 Iteration 1494: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:57
+[info] Context:1/4 Iteration 1494: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:57
+[info] Context:1/4 Iteration 1494: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  V          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:57
+[info] Context:1/4 Iteration 1494: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  V          *          X          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:59
+[info] Context:1/4 Iteration 1494: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:59
+[info] Context:1/4 Iteration 1495: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:59
+[info] Context:1/4 Iteration 1495: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:59
+[info] Context:1/4 Iteration 1495: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:59
+[info] Context:1/4 Iteration 1495: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:59
+[info] Context:1/4 Iteration 1495: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:59
+[info] Context:1/4 Iteration 1496: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:59
+[info] Context:1/4 Iteration 1496: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:59
+[info] Context:1/4 Iteration 1496: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  V          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  48:59
+[info] Context:1/4 Iteration 1496: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  V          *          X          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:01
+[info] Context:1/4 Iteration 1496: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:01
+[info] Context:1/4 Iteration 1497: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:01
+[info] Context:1/4 Iteration 1497: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:01
+[info] Context:1/4 Iteration 1497: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:01
+[info] Context:1/4 Iteration 1497: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:01
+[info] Context:1/4 Iteration 1497: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:01
+[info] Context:1/4 Iteration 1498: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:01
+[info] Context:1/4 Iteration 1498: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:01
+[info] Context:1/4 Iteration 1498: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:01
+[info] Context:1/4 Iteration 1498: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:03
+[info] Context:1/4 Iteration 1498: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:03
+[info] Context:1/4 Iteration 1499: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:03
+[info] Context:1/4 Iteration 1499: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:03
+[info] Context:1/4 Iteration 1499: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:03
+[info] Context:1/4 Iteration 1499: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:05
+[info] Context:1/4 Iteration 1499: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:05
+[info] Context:1/4 Iteration 1500: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:05
+[info] Context:1/4 Iteration 1500: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:06
+[info] Context:1/4 Iteration 1500: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:06
+[info] Context:1/4 Iteration 1500: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:08
+[info] Context:1/4 Iteration 1500: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:08
+[info] Context:1/4 Iteration 1501: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:08
+[info] Context:1/4 Iteration 1501: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:08
+[info] Context:1/4 Iteration 1501: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:08
+[info] Context:1/4 Iteration 1501: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:10
+[info] Context:1/4 Iteration 1501: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:10
+[info] Context:1/4 Iteration 1502: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:10
+[info] Context:1/4 Iteration 1502: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:10
+[info] Context:1/4 Iteration 1502: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:10
+[info] Context:1/4 Iteration 1502: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:10
+[info] Context:1/4 Iteration 1502: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:10
+[info] Context:1/4 Iteration 1503: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:10
+[info] Context:1/4 Iteration 1503: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:10
+[info] Context:1/4 Iteration 1503: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:10
+[info] Context:1/4 Iteration 1503: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:12
+[info] Context:1/4 Iteration 1503: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:12
+[info] Context:1/4 Iteration 1504: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:12
+[info] Context:1/4 Iteration 1504: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:12
+[info] Context:1/4 Iteration 1504: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  V          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:12
+[info] Context:1/4 Iteration 1504: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  V          *          X          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:14
+[info] Context:1/4 Iteration 1504: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:14
+[info] Context:1/4 Iteration 1505: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:14
+[info] Context:1/4 Iteration 1505: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:14
+[info] Context:1/4 Iteration 1505: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:14
+[info] Context:1/4 Iteration 1505: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:16
+[info] Context:1/4 Iteration 1505: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:16
+[info] Context:1/4 Iteration 1506: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:16
+[info] Context:1/4 Iteration 1506: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:16
+[info] Context:1/4 Iteration 1506: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:16
+[info] Context:1/4 Iteration 1506: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:18
+[info] Context:1/4 Iteration 1506: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:18
+[info] Context:1/4 Iteration 1507: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:19
+[info] Context:1/4 Iteration 1507: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:19
+[info] Context:1/4 Iteration 1507: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:19
+[info] Context:1/4 Iteration 1507: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:21
+[info] Context:1/4 Iteration 1507: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:21
+[info] Context:1/4 Iteration 1508: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:21
+[info] Context:1/4 Iteration 1508: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:21
+[info] Context:1/4 Iteration 1508: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:21
+[info] Context:1/4 Iteration 1508: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:23
+[info] Context:1/4 Iteration 1508: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:23
+[info] Context:1/4 Iteration 1509: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:23
+[info] Context:1/4 Iteration 1509: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:23
+[info] Context:1/4 Iteration 1509: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:23
+[info] Context:1/4 Iteration 1509: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:25
+[info] Context:1/4 Iteration 1509: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:25
+[info] Context:1/4 Iteration 1510: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:25
+[info] Context:1/4 Iteration 1510: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:25
+[info] Context:1/4 Iteration 1510: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:25
+[info] Context:1/4 Iteration 1510: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:27
+[info] Context:1/4 Iteration 1510: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:27
+[info] Context:1/4 Iteration 1511: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:27
+[info] Context:1/4 Iteration 1511: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:27
+[info] Context:1/4 Iteration 1511: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:27
+[info] Context:1/4 Iteration 1511: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:29
+[info] Context:1/4 Iteration 1511: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:29
+[info] Context:1/4 Iteration 1512: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:29
+[info] Context:1/4 Iteration 1512: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:29
+[info] Context:1/4 Iteration 1512: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:29
+[info] Context:1/4 Iteration 1512: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:31
+[info] Context:1/4 Iteration 1512: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:31
+[info] Context:1/4 Iteration 1513: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:31
+[info] Context:1/4 Iteration 1513: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:31
+[info] Context:1/4 Iteration 1513: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:31
+[info] Context:1/4 Iteration 1513: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:33
+[info] Context:1/4 Iteration 1513: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:33
+[info] Context:1/4 Iteration 1514: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:34
+[info] Context:1/4 Iteration 1514: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:34
+[info] Context:1/4 Iteration 1514: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:34
+[info] Context:1/4 Iteration 1514: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:36
+[info] Context:1/4 Iteration 1514: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:36
+[info] Context:1/4 Iteration 1515: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:36
+[info] Context:1/4 Iteration 1515: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:36
+[info] Context:1/4 Iteration 1515: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:36
+[info] Context:1/4 Iteration 1515: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:36
+[info] Context:1/4 Iteration 1515: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:36
+[info] Context:1/4 Iteration 1516: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:36
+[info] Context:1/4 Iteration 1516: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:36
+[info] Context:1/4 Iteration 1516: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:36
+[info] Context:1/4 Iteration 1516: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          V          X          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:38
+[info] Context:1/4 Iteration 1516: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:38
+[info] Context:1/4 Iteration 1517: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:38
+[info] Context:1/4 Iteration 1517: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:38
+[info] Context:1/4 Iteration 1517: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:40
+[info] Context:1/4 Iteration 1517: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:40
+[info] Context:1/4 Iteration 1517: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:40
+[info] Context:1/4 Iteration 1518: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:40
+[info] Context:1/4 Iteration 1518: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:40
+[info] Context:1/4 Iteration 1518: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:40
+[info] Context:1/4 Iteration 1518: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:43
+[info] Context:1/4 Iteration 1518: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:43
+[info] Context:1/4 Iteration 1519: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:43
+[info] Context:1/4 Iteration 1519: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:43
+[info] Context:1/4 Iteration 1519: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:43
+[info] Context:1/4 Iteration 1519: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:45
+[info] Context:1/4 Iteration 1519: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:45
+[info] Context:1/4 Iteration 1520: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:45
+[info] Context:1/4 Iteration 1520: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:45
+[info] Context:1/4 Iteration 1520: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:45
+[info] Context:1/4 Iteration 1520: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:48
+[info] Context:1/4 Iteration 1520: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:48
+[info] Context:1/4 Iteration 1521: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:48
+[info] Context:1/4 Iteration 1521: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:48
+[info] Context:1/4 Iteration 1521: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:48
+[info] Context:1/4 Iteration 1521: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:50
+[info] Context:1/4 Iteration 1521: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:50
+[info] Context:1/4 Iteration 1522: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:50
+[info] Context:1/4 Iteration 1522: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:50
+[info] Context:1/4 Iteration 1522: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:50
+[info] Context:1/4 Iteration 1522: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:53
+[info] Context:1/4 Iteration 1522: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:53
+[info] Context:1/4 Iteration 1523: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:53
+[info] Context:1/4 Iteration 1523: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:53
+[info] Context:1/4 Iteration 1523: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:55
+[info] Context:1/4 Iteration 1523: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:55
+[info] Context:1/4 Iteration 1523: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:55
+[info] Context:1/4 Iteration 1524: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:55
+[info] Context:1/4 Iteration 1524: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:55
+[info] Context:1/4 Iteration 1524: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:57
+[info] Context:1/4 Iteration 1524: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:58
+[info] Context:1/4 Iteration 1524: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:58
+[info] Context:1/4 Iteration 1525: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:58
+[info] Context:1/4 Iteration 1525: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:58
+[info] Context:1/4 Iteration 1525: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  49:58
+[info] Context:1/4 Iteration 1525: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:00
+[info] Context:1/4 Iteration 1525: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:00
+[info] Context:1/4 Iteration 1526: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:00
+[info] Context:1/4 Iteration 1526: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:00
+[info] Context:1/4 Iteration 1526: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:00
+[info] Context:1/4 Iteration 1526: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          *          V          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:02
+[info] Context:1/4 Iteration 1526: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:03
+[info] Context:1/4 Iteration 1527: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:03
+[info] Context:1/4 Iteration 1527: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:03
+[info] Context:1/4 Iteration 1527: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:03
+[info] Context:1/4 Iteration 1527: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:05
+[info] Context:1/4 Iteration 1527: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:05
+[info] Context:1/4 Iteration 1528: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:05
+[info] Context:1/4 Iteration 1528: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:05
+[info] Context:1/4 Iteration 1528: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:05
+[info] Context:1/4 Iteration 1528: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:07
+[info] Context:1/4 Iteration 1528: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:07
+[info] Context:1/4 Iteration 1529: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:07
+[info] Context:1/4 Iteration 1529: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:07
+[info] Context:1/4 Iteration 1529: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:07
+[info] Context:1/4 Iteration 1529: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:10
+[info] Context:1/4 Iteration 1529: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:10
+[info] Context:1/4 Iteration 1530: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:10
+[info] Context:1/4 Iteration 1530: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:10
+[info] Context:1/4 Iteration 1530: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:10
+[info] Context:1/4 Iteration 1530: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:12
+[info] Context:1/4 Iteration 1530: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:12
+[info] Context:1/4 Iteration 1531: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:12
+[info] Context:1/4 Iteration 1531: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:12
+[info] Context:1/4 Iteration 1531: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:14
+[info] Context:1/4 Iteration 1531: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:15
+[info] Context:1/4 Iteration 1531: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:15
+[info] Context:1/4 Iteration 1532: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:15
+[info] Context:1/4 Iteration 1532: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:15
+[info] Context:1/4 Iteration 1532: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:15
+[info] Context:1/4 Iteration 1532: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:17
+[info] Context:1/4 Iteration 1532: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:17
+[info] Context:1/4 Iteration 1533: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:17
+[info] Context:1/4 Iteration 1533: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:17
+[info] Context:1/4 Iteration 1533: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:17
+[info] Context:1/4 Iteration 1533: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:20
+[info] Context:1/4 Iteration 1533: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:20
+[info] Context:1/4 Iteration 1534: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:20
+[info] Context:1/4 Iteration 1534: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:20
+[info] Context:1/4 Iteration 1534: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:20
+[info] Context:1/4 Iteration 1534: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          V          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:22
+[info] Context:1/4 Iteration 1534: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:22
+[info] Context:1/4 Iteration 1535: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:22
+[info] Context:1/4 Iteration 1535: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:22
+[info] Context:1/4 Iteration 1535: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:22
+[info] Context:1/4 Iteration 1535: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:25
+[info] Context:1/4 Iteration 1535: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:25
+[info] Context:1/4 Iteration 1536: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:25
+[info] Context:1/4 Iteration 1536: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:25
+[info] Context:1/4 Iteration 1536: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:25
+[info] Context:1/4 Iteration 1536: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          X          V          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:27
+[info] Context:1/4 Iteration 1536: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:27
+[info] Context:1/4 Iteration 1537: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          *       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:30
+[info] Context:1/4 Iteration 1537: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  *          *          *          *          *          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:30
+[info] Context:1/4 Iteration 1537: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          *          *          X          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:30
+[info] Context:1/4 Iteration 1537: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          *          *          X          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:30
+[info] Context:1/4 Iteration 1537: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          *          X          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:30
+[info] Context:1/4 Iteration 1537: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          *          X          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:30
+[info] Context:1/4 Iteration 1537: Trying parallel mapping...  
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0  X          X          V          X          X          V       
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:30
+[info] Context:1/4 Iteration 1537: Trying parallel splits...   
+          cluster_0  cluster_1  cluster_2  cluster_3  cluster_4  prepost 
+ worker0                                                                 
+ worker1                                                                 
+ worker2                                                                 
+ worker3                                                                 
+
+  50:30
+[info] siglip2_m2rot_context_0 (siglip2_m2rot_context_0):
+Iterations: 260
+Reverts on cluster mapping: 228
+Reverts on inter-cluster connectivity: 31
+Reverts on pre-mapping validation: 0
+Reverts on split failed: 0
+[info] siglip2_m2rot_context_1 (siglip2_m2rot_context_1):
+Iterations: 1538
+Reverts on cluster mapping: 1486
+Reverts on inter-cluster connectivity: 51
+Reverts on pre-mapping validation: 0
+Reverts on split failed: 0
+[info] siglip2_m2rot_context_2 (siglip2_m2rot_context_2):
+Iterations: 0 [ Did not run due to an error ] 
+Reverts on cluster mapping: 0
+Reverts on inter-cluster connectivity: 0
+Reverts on pre-mapping validation: 0
+Reverts on split failed: 0
+[info] siglip2_m2rot_context_3 (siglip2_m2rot_context_3):
+Iterations: 0 [ Did not run due to an error ] 
+Reverts on cluster mapping: 0
+Reverts on inter-cluster connectivity: 0
+Reverts on pre-mapping validation: 0
+Reverts on split failed: 0
+[info] siglip2_m2rot_context_4 (siglip2_m2rot_context_4):
+Iterations: 0 [ Did not run due to an error ] 
+Reverts on cluster mapping: 0
+Reverts on inter-cluster connectivity: 0
+Reverts on pre-mapping validation: 0
+Reverts on split failed: 0
+[error] siglip2_m2rot Allocation Failed (duration: 53m 39s)
+[warning] Failed recording best-effort buffers: ddr_portal_from_ew_add9_to_ew_add10 was not found in toposort recipe during buffers override record
+[error] siglip2_m2rot_bucket_1 - Partition and Allocation Failed (Timeout, Processing time: 1h 55m 28s)
+[error] Failed to optimize bucket_1 with error: Resolver didn't find possible solution.
+worker 0 failed on Splitter shutdown timeout reached (status: 32)
+
+[warning] Failed recording best-effort buffers: ddr_portal_from_ew_add7_to_ew_add8 was not found in toposort recipe during buffers override record
+[error] siglip2_m2rot_bucket_1 - Partition and Allocation Failed (Timeout, Processing time: 1h 55m 29s)
+[error] siglip2_m2rot_bucket_1 Compilation Failed (duration: 1h 55m 29s)
+Resolver didn't find possible solution.
+worker 0 failed on Splitter shutdown timeout reached (status: 32)
+
+[?25h
+[error] Failed to produce compiled graph
+[error] BackendAllocatorException: Compilation failed: Resolver didn't find possible solution.
+worker 0 failed on Splitter shutdown timeout reached (status: 32)
+
