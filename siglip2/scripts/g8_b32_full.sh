@@ -30,12 +30,12 @@ step prompt env RN50_RESULTS=$R/G2_prompt_compare "$PY" -u s2_prompt_compare.py
 step fp32_dev env RN50_RESULTS=$R/G2_fp32_dev "$PY" -u s2_evaluate.py --data cifar_A cifar_B pets_dev flowers_dev cars_dev food_dev caltech_dev --models fp32 --exec int --threads 4
 step stats0 env RN50_RESULTS=$R/G2_fp32_baseline "$PY" -u s2_model_stats.py --threads 4 --models fp32=$F0 int8_all=$Q0
 # ---- B4 민감도 지도 (블록 14 + 연산 유형 6), B6 보정 방법, B7 혼합 정밀도 — B/16 스크립트 사본
-step sensitivity bash $(B32S g3_sensitivity.sh) all || exit 1
-step calib bash $(B32S g3_calib.sh) || exit 1
+step sensitivity "$GB" $(B32S g3_sensitivity.sh) all || exit 1
+step calib "$GB" $(B32S g3_calib.sh) || exit 1
 CUM=$(B32S g3_cumulative.sh)
-step cum_screen bash $CUM screen || exit 1
-step cum_screen2 bash $CUM screen2 || exit 1
-step cum_full bash $CUM full
+step cum_screen "$GB" $CUM screen || exit 1
+step cum_screen2 "$GB" $CUM screen2 || exit 1
+step cum_full "$GB" $CUM full
 # R0와 같은 구성 (fc2L2, U8 + reduce_range) — B/16 이전 최종
 R0=siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx
 step r0 env RN50_RESULTS=$R/G3_cumulative/r0 "$PY" -u s2_quantize.py --calib-source highres --calib-n 256 --op-types MatMul --method percentile --percentile 99.999 --hist-chunk 16 \
