@@ -1,0 +1,229 @@
+03:08:51 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.19 0.05 0.02 users=0 other_hailo=0 idle=62.36 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+03:08:52 hef b32_Z sha256=c16123297d83a36cc862839ba1b9984d1ab539abe3773f99a332acae39e318cc bytes=102645760
+03:08:52 hef s1b16_Z sha256=e2198ed5975da551d9a807c3c22d694d7d3f1e9034b9fe3bb3562601f8f40650 bytes=99061760
+03:08:52 hef s1b16_G5cRour sha256=e21fbb12fc8bdb209d021ea364a79ce4d4614f011c53e4df6711cdc024a86c4a bytes=99168256
+03:08:53 cool eval_b32_Z max=62.26
+03:08:53 other_hailo=0 eval b32_Z 시작
+b32_Z cifar_A (1000, 768) 20s
+b32_Z pets_dev (990, 768) 41s
+b32_Z flowers_dev (957, 768) 61s
+b32_Z cars_dev (967, 768) 82s
+b32_Z food_dev (985, 768) 104s
+b32_Z caltech_dev (1024, 768) 126s
+03:11:01 eval b32_Z 끝
+03:14:33 cool eval_s1b16_Z max=64.43
+03:14:33 other_hailo=0 eval s1b16_Z 시작
+s1b16_Z cifar_A (1000, 768) 36s
+s1b16_Z pets_dev (990, 768) 74s
+s1b16_Z flowers_dev (957, 768) 110s
+s1b16_Z cars_dev (967, 768) 147s
+s1b16_Z food_dev (985, 768) 184s
+s1b16_Z caltech_dev (1024, 768) 225s
+03:18:20 eval s1b16_Z 끝
+03:23:24 cool eval_s1b16_G5cRour max=64.03
+03:23:24 other_hailo=0 eval s1b16_G5cRour 시작
+s1b16_G5cRour cifar_A (1000, 768) 36s
+s1b16_G5cRour pets_dev (990, 768) 74s
+s1b16_G5cRour flowers_dev (957, 768) 110s
+s1b16_G5cRour cars_dev (967, 768) 147s
+s1b16_G5cRour food_dev (985, 768) 184s
+s1b16_G5cRour caltech_dev (1024, 768) 226s
+03:27:12 eval s1b16_G5cRour 끝
+03:27:12 G6 CHIP DONE load=0.01 0.02 0.00
+03:40:22 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.00 0.00 0.00 users=0 other_hailo=0 idle=62.61 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+03:40:23 hef b32_V sha256=96617700b59e8ddab6eb45b8501cbcb617af837f577da83499f9a255d48ef80b bytes=102649856
+03:40:23 cool eval_b32_V max=62.61
+03:40:23 other_hailo=0 eval b32_V 시작
+b32_V cifar_A (1000, 768) 21s
+b32_V pets_dev (990, 768) 41s
+b32_V flowers_dev (957, 768) 62s
+b32_V cars_dev (967, 768) 83s
+b32_V food_dev (985, 768) 104s
+b32_V caltech_dev (1024, 768) 127s
+03:42:32 eval b32_V 끝
+03:42:32 G6 CHIP DONE load=0.12 0.06 0.02
+04:09:09 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.00 0.00 0.00 users=0 other_hailo=0 idle=62.15 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+04:09:09 hef b32_D sha256=d2f5cd6c4f45159d4e215c9b02860ba7788a2791ae69bba677b619c7887fa3d8 bytes=103997440
+04:09:10 cool eval_b32_D max=62.2
+04:09:10 other_hailo=0 eval b32_D 시작
+b32_D cifar_A (1000, 768) 24s
+b32_D pets_dev (990, 768) 48s
+b32_D flowers_dev (957, 768) 74s
+b32_D cars_dev (967, 768) 99s
+b32_D food_dev (985, 768) 125s
+b32_D caltech_dev (1024, 768) 151s
+04:11:43 eval b32_D 끝
+04:11:43 G6 CHIP DONE load=0.09 0.03 0.01
+04:45:05 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.00 0.02 0.00 users=0 other_hailo=0 idle=62.1 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+04:45:06 hef b32_R sha256=c2105fed76c541f9b3fa0bc78c397302ccfb20bf7c391d472a246d9782530ef3 bytes=111108096
+04:45:06 cool eval_b32_R max=62.26
+04:45:06 other_hailo=0 eval b32_R 시작
+b32_R cifar_A (1000, 768) 24s
+b32_R pets_dev (990, 768) 48s
+b32_R flowers_dev (957, 768) 73s
+b32_R cars_dev (967, 768) 98s
+b32_R food_dev (985, 768) 124s
+b32_R caltech_dev (1024, 768) 150s
+04:47:38 eval b32_R 끝
+04:47:38 G6 CHIP DONE load=0.01 0.02 0.00
+05:28:38 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.00 0.00 0.00 users=0 other_hailo=0 idle=62.15 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+05:28:38 hef b32_M sha256=311655b72aad4dacf81807a9ec62adf8012f5ebddcead043d7b2849870add992 bytes=112975872
+05:28:39 cool eval_b32_M max=62.0
+05:28:39 other_hailo=0 eval b32_M 시작
+b32_M cifar_A (1000, 768) 25s
+b32_M pets_dev (990, 768) 50s
+b32_M flowers_dev (957, 768) 76s
+b32_M cars_dev (967, 768) 102s
+b32_M food_dev (985, 768) 129s
+b32_M caltech_dev (1024, 768) 156s
+05:31:17 eval b32_M 끝
+05:31:17 G6 CHIP DONE load=0.15 0.06 0.01
+06:23:18 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.16 0.03 0.01 users=0 other_hailo=0 idle=62.1 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+06:23:19 hef s1b16_V sha256=395044e3a38190b183eda8958e394256d5930278225d717337bc3cc257ef76be bytes=99168256
+06:23:19 cool eval_s1b16_V max=62.0
+06:23:19 other_hailo=0 eval s1b16_V 시작
+s1b16_V cifar_A (1000, 768) 36s
+s1b16_V pets_dev (990, 768) 73s
+s1b16_V flowers_dev (957, 768) 110s
+s1b16_V cars_dev (967, 768) 147s
+s1b16_V food_dev (985, 768) 184s
+s1b16_V caltech_dev (1024, 768) 223s
+06:27:04 eval s1b16_V 끝
+06:27:04 G6 CHIP DONE load=0.17 0.16 0.07
+07:10:18 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.00 0.00 0.00 users=0 other_hailo=0 idle=62.15 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+07:10:18 hef s1b16_R sha256=6226cb511bf41304b0bfd567c2258683f65f6af594d9723ba05c631b7b047abf bytes=111230976
+07:10:18 cool eval_s1b16_R max=62.05
+07:10:18 other_hailo=0 eval s1b16_R 시작
+s1b16_R cifar_A (1000, 768) 51s
+s1b16_R pets_dev (990, 768) 106s
+s1b16_R flowers_dev (957, 768) 159s
+s1b16_R cars_dev (967, 768) 212s
+s1b16_R food_dev (985, 768) 266s
+s1b16_R caltech_dev (1024, 768) 322s
+07:15:42 eval s1b16_R 끝
+07:15:42 G6 CHIP DONE load=0.11 0.04 0.01
+07:55:40 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.00 0.00 0.00 users=0 other_hailo=0 idle=61.9 TH=64.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+07:55:40 hef s1b16_D sha256=cb7f618106736c8ed5bcd575df3cab8e052b336c3535a7e8115d9bcb554e0055 bytes=99598336
+07:55:40 cool eval_s1b16_D max=61.85
+07:55:40 other_hailo=0 eval s1b16_D 시작
+s1b16_D cifar_A (1000, 768) 50s
+s1b16_D pets_dev (990, 768) 104s
+s1b16_D flowers_dev (957, 768) 156s
+s1b16_D cars_dev (967, 768) 208s
+s1b16_D food_dev (985, 768) 261s
+s1b16_D caltech_dev (1024, 768) 316s
+08:00:59 eval s1b16_D 끝
+08:00:59 G6 CHIP DONE load=0.08 0.02 0.01
+08:01:08 start commit=a565049 hailort=HailoRT-CLI version 5.3.0 script_sha=f643997256dea832 92b9c1e8b4c3334f load=0.08 0.02 0.01 users=0 other_hailo=0 idle=92.61 TH=94.6 data_sha=23cb5ab63686 c56f6667bdd3 c4e72a7bda34 00136e5a89d0 56c8d1c6f0ff 53387ac65a52 4a01fd999f26 98cbbc0cac81 408d2717ffb4 3e06a7ed7992 60d28d23cfe3 f4ebf9ba892a 0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+08:01:08 hef b32_Z sha256=c16123297d83a36cc862839ba1b9984d1ab539abe3773f99a332acae39e318cc bytes=102645760
+08:01:08 hef b32_V sha256=96617700b59e8ddab6eb45b8501cbcb617af837f577da83499f9a255d48ef80b bytes=102649856
+08:01:09 hef b32_D sha256=d2f5cd6c4f45159d4e215c9b02860ba7788a2791ae69bba677b619c7887fa3d8 bytes=103997440
+08:01:09 hef b32_R sha256=c2105fed76c541f9b3fa0bc78c397302ccfb20bf7c391d472a246d9782530ef3 bytes=111108096
+08:01:10 hef b32_M sha256=311655b72aad4dacf81807a9ec62adf8012f5ebddcead043d7b2849870add992 bytes=112975872
+08:01:10 hef s1b16_Z sha256=e2198ed5975da551d9a807c3c22d694d7d3f1e9034b9fe3bb3562601f8f40650 bytes=99061760
+08:01:11 hef s1b16_V sha256=395044e3a38190b183eda8958e394256d5930278225d717337bc3cc257ef76be bytes=99168256
+08:01:11 hef s1b16_R sha256=6226cb511bf41304b0bfd567c2258683f65f6af594d9723ba05c631b7b047abf bytes=111230976
+08:01:11 hef s1b16_D sha256=cb7f618106736c8ed5bcd575df3cab8e052b336c3535a7e8115d9bcb554e0055 bytes=99598336
+08:01:12 cool bench_b1_s1 max=84.87
+08:01:12 other_hailo=0 bench b1 s1 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.461, "median_ms": 18.416, "p90_ms": 18.625, "min_ms": 18.322, "max_ms": 18.865, "img_per_s_from_mean": 54.17}
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.496, "median_ms": 18.461, "p90_ms": 18.596, "min_ms": 18.385, "max_ms": 18.85, "img_per_s_from_mean": 54.07}
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 22.989, "median_ms": 22.994, "p90_ms": 23.092, "min_ms": 22.874, "max_ms": 23.162, "img_per_s_from_mean": 43.5}
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 22.742, "median_ms": 22.724, "p90_ms": 22.873, "min_ms": 22.614, "max_ms": 23.191, "img_per_s_from_mean": 43.97}
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 23.684, "median_ms": 23.698, "p90_ms": 23.781, "min_ms": 23.566, "max_ms": 23.987, "img_per_s_from_mean": 42.22}
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 35.679, "median_ms": 35.65, "p90_ms": 36.013, "min_ms": 35.241, "max_ms": 36.513, "img_per_s_from_mean": 28.03}
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 35.649, "median_ms": 35.551, "p90_ms": 36.012, "min_ms": 35.242, "max_ms": 36.613, "img_per_s_from_mean": 28.05}
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 52.584, "median_ms": 52.55, "p90_ms": 52.677, "min_ms": 52.472, "max_ms": 52.798, "img_per_s_from_mean": 19.02}
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 51.7, "median_ms": 51.618, "p90_ms": 51.974, "min_ms": 51.545, "max_ms": 52.117, "img_per_s_from_mean": 19.34}
+08:02:42 bench b1 s1 끝
+08:02:42 cool bench_b1_s2 max=87.6
+08:02:43 other_hailo=0 bench b1 s2 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.46, "median_ms": 18.415, "p90_ms": 18.642, "min_ms": 18.333, "max_ms": 18.853, "img_per_s_from_mean": 54.17}
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.503, "median_ms": 18.463, "p90_ms": 18.647, "min_ms": 18.379, "max_ms": 18.934, "img_per_s_from_mean": 54.04}
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 22.985, "median_ms": 22.985, "p90_ms": 23.075, "min_ms": 22.874, "max_ms": 23.284, "img_per_s_from_mean": 43.51}
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 22.737, "median_ms": 22.729, "p90_ms": 22.835, "min_ms": 22.624, "max_ms": 23.208, "img_per_s_from_mean": 43.98}
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 23.723, "median_ms": 23.721, "p90_ms": 23.872, "min_ms": 23.585, "max_ms": 24.368, "img_per_s_from_mean": 42.15}
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 35.685, "median_ms": 35.651, "p90_ms": 36.018, "min_ms": 35.269, "max_ms": 36.56, "img_per_s_from_mean": 28.02}
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 35.673, "median_ms": 35.622, "p90_ms": 36.026, "min_ms": 35.239, "max_ms": 36.645, "img_per_s_from_mean": 28.03}
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 52.625, "median_ms": 52.627, "p90_ms": 52.757, "min_ms": 52.494, "max_ms": 53.226, "img_per_s_from_mean": 19.0}
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 51.7, "median_ms": 51.628, "p90_ms": 52.003, "min_ms": 51.546, "max_ms": 52.186, "img_per_s_from_mean": 19.34}
+08:04:13 bench b1 s2 끝
+08:04:13 cool bench_b1_s3 max=87.85
+08:04:13 other_hailo=0 bench b1 s3 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.441, "median_ms": 18.384, "p90_ms": 18.632, "min_ms": 18.273, "max_ms": 18.799, "img_per_s_from_mean": 54.23}
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 18.503, "median_ms": 18.467, "p90_ms": 18.622, "min_ms": 18.389, "max_ms": 18.853, "img_per_s_from_mean": 54.05}
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 23.0, "median_ms": 22.996, "p90_ms": 23.085, "min_ms": 22.891, "max_ms": 23.176, "img_per_s_from_mean": 43.48}
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 22.751, "median_ms": 22.735, "p90_ms": 22.843, "min_ms": 22.638, "max_ms": 23.072, "img_per_s_from_mean": 43.95}
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 23.688, "median_ms": 23.678, "p90_ms": 23.794, "min_ms": 23.563, "max_ms": 24.033, "img_per_s_from_mean": 42.21}
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 35.716, "median_ms": 35.691, "p90_ms": 36.026, "min_ms": 35.246, "max_ms": 36.53, "img_per_s_from_mean": 28.0}
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 35.677, "median_ms": 35.59, "p90_ms": 36.036, "min_ms": 35.241, "max_ms": 36.666, "img_per_s_from_mean": 28.03}
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 52.588, "median_ms": 52.575, "p90_ms": 52.66, "min_ms": 52.486, "max_ms": 52.796, "img_per_s_from_mean": 19.02}
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 1, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 51.705, "median_ms": 51.613, "p90_ms": 51.992, "min_ms": 51.546, "max_ms": 52.181, "img_per_s_from_mean": 19.34}
+08:05:43 bench b1 s3 끝
+08:05:44 cool bench_b8_s1 max=87.9
+08:05:44 other_hailo=0 bench b8 s1 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 60.016, "median_ms": 60.005, "p90_ms": 60.039, "min_ms": 59.925, "max_ms": 61.039, "img_per_s_from_mean": 133.3}
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 60.121, "median_ms": 60.012, "p90_ms": 60.943, "min_ms": 59.816, "max_ms": 61.072, "img_per_s_from_mean": 133.07}
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 94.765, "median_ms": 95.002, "p90_ms": 95.035, "min_ms": 92.398, "max_ms": 96.617, "img_per_s_from_mean": 84.42}
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 93.045, "median_ms": 93.011, "p90_ms": 93.047, "min_ms": 91.392, "max_ms": 95.67, "img_per_s_from_mean": 85.98}
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 97.037, "median_ms": 96.999, "p90_ms": 97.103, "min_ms": 96.784, "max_ms": 98.978, "img_per_s_from_mean": 82.44}
+{"model": "s1b16_Z", "hef_sha256": "e2198ed5975da551", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 186.604, "median_ms": 164.132, "p90_ms": 240.022, "min_ms": 140.972, "max_ms": 244.712, "img_per_s_from_mean": 42.87}
+{"model": "s1b16_V", "hef_sha256": "395044e3a38190b1", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 224.109, "median_ms": 239.988, "p90_ms": 240.056, "min_ms": 162.954, "max_ms": 241.555, "img_per_s_from_mean": 35.7}
+{"model": "s1b16_R", "hef_sha256": "6226cb511bf41304", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 275.029, "median_ms": 275.0, "p90_ms": 275.032, "min_ms": 273.198, "max_ms": 279.015, "img_per_s_from_mean": 29.09}
+{"model": "s1b16_D", "hef_sha256": "cb7f618106736c8e", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [224, 224, 3], "mean_ms": 273.011, "median_ms": 272.983, "p90_ms": 273.067, "min_ms": 270.638, "max_ms": 275.533, "img_per_s_from_mean": 29.3}
+08:11:10 bench b8 s1 끝
+08:11:41 cool bench_b8_s2 max=86.54
+08:11:41 other_hailo=0 bench b8 s2 시작
+{"model": "b32_Z", "hef_sha256": "c16123297d83a36c", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 60.028, "median_ms": 59.99, "p90_ms": 60.036, "min_ms": 59.896, "max_ms": 61.028, "img_per_s_from_mean": 133.27}
+{"model": "b32_V", "hef_sha256": "96617700b59e8dda", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 60.023, "median_ms": 59.989, "p90_ms": 60.11, "min_ms": 59.789, "max_ms": 61.05, "img_per_s_from_mean": 133.28}
+{"model": "b32_D", "hef_sha256": "d2f5cd6c4f45159d", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 94.671, "median_ms": 94.964, "p90_ms": 95.005, "min_ms": 93.045, "max_ms": 95.107, "img_per_s_from_mean": 84.5}
+{"model": "b32_R", "hef_sha256": "c2105fed76c541f9", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 93.037, "median_ms": 92.991, "p90_ms": 93.039, "min_ms": 92.915, "max_ms": 95.985, "img_per_s_from_mean": 85.99}
+{"model": "b32_M", "hef_sha256": "311655b72aad4dac", "batch": 8, "input_domain": "pixel_0_255", "qin": [1.0, 0.0], "in_shape": [256, 256, 3], "mean_ms": 97.101, "median_ms": 97.006, "p90_ms": 97.891, "min_ms": 86.934, "max_ms": 100.363, "img_per_s_from_mean": 82.39}
+[HailoRT] [error] CHECK failed - Waiting for async job to finish has failed with timeout (10000ms)
+Traceback (most recent call last):
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 3198, in wait
+    self._job.wait(timedelta(milliseconds=timeout_ms))
+hailo_platform.pyhailort._pyhailort.HailoRTStatusException: 4
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/oslab/ssd/junyong/hailo_g6/g6_hailo_chip.py", line 191, in <module>
+    main()
+  File "/home/oslab/ssd/junyong/hailo_g6/g6_hailo_chip.py", line 187, in main
+    (cmd_eval if a.cmd == "eval" else cmd_bench)(a, out, models)
+  File "/home/oslab/ssd/junyong/hailo_g6/g6_hailo_chip.py", line 158, in cmd_bench
+    r.run()
+  File "/home/oslab/ssd/junyong/hailo_g6/g6_hailo_chip.py", line 82, in run
+    j.wait(self.timeout)
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 3197, in wait
+    with ExceptionWrapper():
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 110, in __exit__
+    self._raise_indicative_status_exception(value)
+  File "/home/oslab/.local/lib/python3.10/site-packages/hailo_platform/pyhailort/pyhailort.py", line 158, in _raise_indicative_status_exception
+    raise self.create_exception_from_status(error_code) from libhailort_exception
+hailo_platform.pyhailort.pyhailort.HailoRTTimeout: Received a timeout - hailort has failed because a timeout had occurred
+[HailoRT] [error] Ioctl HAILO_VDMA_LAUNCH_TRANSFER failed with 5. Read dmesg log for more info
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36) - Failed launch transfer
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] Failed to destroy VDevice! status = HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] Ioctl HAILO_VDMA_LAUNCH_TRANSFER failed with 5. Read dmesg log for more info
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36) - Failed launch transfer
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] Failed to destroy Device! status = HAILO_DRIVER_OPERATION_FAILED(36)
+[HailoRT] [error] Ioctl HAILO_SOC_CLOSE failed due to timeout
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_TIMEOUT(87) - Failed soc_close
+[HailoRT] [error] Failed to close connection with status HAILO_DRIVER_TIMEOUT(87)
+[HailoRT] [error] CHECK_SUCCESS failed with status=HAILO_DRIVER_TIMEOUT(87)
+[HailoRT] [error] Failed to close session, status = HAILO_DRIVER_TIMEOUT(87)
+[HailoRT] [error] CHECK failed - Lost communication with the server. This may happen if VDevice is released while the CIM is in use.
+08:13:41 BENCH FAIL b8 s2
+08:13:42 bench b8 s2 끝

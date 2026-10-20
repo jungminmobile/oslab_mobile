@@ -1,0 +1,3 @@
+patch ['conv1', 'format_conversion1'] fc {'b0_fc1': 'conv4', 'b0_fc2': 'conv5', 'b5_fc1': 'conv24', 'b5_fc2': 'conv25', 'b9_fc2': 'conv41'} resid 26
+check vs /home/junyong/oslab_g6/siglip2/hailo/g3r_M2rot_D256L1equiv.alls same
+har=d7baccfc9a69a6cc onnx=d1df3f60b562cb07 (siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad_b1.onnx) commit=ef62c5c

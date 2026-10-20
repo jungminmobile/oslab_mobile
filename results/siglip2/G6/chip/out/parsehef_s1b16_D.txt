@@ -1,0 +1,7 @@
+HEF Compatible for: HAILO15H, HAILO10H
+HEF Compiler Version: 5.4.0
+Network group name: g6_s1b16_D, Multi Context - Number of contexts: 17
+    Network name: g6_s1b16_D/g6_s1b16_D
+        VStream infos:
+            Input  g6_s1b16_D/input_layer1 UINT8, NHWC(224x224x3)
+            Output g6_s1b16_D/ew_add26 UINT16, NHWC(1x1x768)

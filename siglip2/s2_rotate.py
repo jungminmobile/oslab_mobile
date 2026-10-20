@@ -212,7 +212,7 @@ def unfuse(module):
 # --------------------------------------------------------------------------- #
 def export_onnx(module, path, dynamic, opset=17):
     """s2_export_onnx.export와 같은 조건 (dynamo=False, opset 17, 입력 image, 출력 embedding)."""
-    x = torch.randn(1, 3, 224, 224)
+    x = torch.randn(1, 3, *getattr(module, "trunk", module).patch_embed.img_size)    # 기존 모델은 224 (G6: 다른 크기 모델)
     kw = dict(dynamic_axes={"image": {0: "batch"}, "embedding": {0: "batch"}}) if dynamic else {}
     with torch.inference_mode():
         torch.onnx.export(module, (x,), str(path), input_names=["image"], output_names=["embedding"],

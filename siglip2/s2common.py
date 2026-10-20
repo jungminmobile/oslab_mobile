@@ -30,7 +30,7 @@ import numpy as np
 
 REPO = Path(__file__).resolve().parents[1]
 RN50_DIR = REPO / "rn50"
-MODEL_ID = "hf-hub:timm/ViT-B-16-SigLIP2"
+MODEL_ID = os.environ.get("S2_MODEL_ID", "hf-hub:timm/ViT-B-16-SigLIP2")   # G6: 환경변수로만 다른 모델 (없으면 기존과 같음)
 
 
 # Windows 콘솔·리디렉션 기본 인코딩(cp949)은 '—', '▁' 같은 문자를 출력하지 못해 스크립트가 멈춘다 → UTF-8로 고정
