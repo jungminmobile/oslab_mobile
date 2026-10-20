@@ -112,3 +112,411 @@ CHECK {"sha_ok": {"rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx": tr
 
 CHECK {"sha_ok": {"rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx": true, "rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx": true}, "zero_delta_sha_eq_B0": true, "structure": {"same_nodes": true, "same_init_keys": true, "n_diff": 59, "non_bias_diff": []}, "reduction_fake": 0.8667711048961463, "reduction_int": 0.846428008125597, "gate": false}
 2026-10-20  5:07:38.30 STOP: stage0 gate failed 
+2026-10-20 16:36:25.59 start 
+전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)7/59] /layer3/layer3.0/conv1/Conv                   |Δ| 0.0157 rel 0.019
+[28/59] /layer3/layer3.0/downsample/downsample.0/Conv |Δ| 0.0189 rel 0.096
+[29/59] /layer3/layer3.0/conv2/Conv                   |Δ| 0.0053 rel 0.009
+[30/59] /layer3/layer3.0/conv3/Conv                   |Δ| 0.0026 rel 0.014
+[31/59] /layer3/layer3.1/conv1/Conv                   |Δ| 0.0120 rel 0.024
+[32/59] /layer3/layer3.1/conv2/Conv                   |Δ| 0.0105 rel 0.020
+[33/59] /layer3/layer3.1/conv3/Conv                   |Δ| 0.0029 rel 0.010
+[34/59] /layer3/layer3.2/conv1/Conv                   |Δ| 0.0134 rel 0.025
+[35/59] /layer3/layer3.2/conv2/Conv                   |Δ| 0.0109 rel 0.021
+[36/59] /layer3/layer3.2/conv3/Conv                   |Δ| 0.0044 rel 0.014
+[37/59] /layer3/layer3.3/conv1/Conv                   |Δ| 0.0200 rel 0.039
+[38/59] /layer3/layer3.3/conv2/Conv                   |Δ| 0.0130 rel 0.027
+[39/59] /layer3/layer3.3/conv3/Conv                   |Δ| 0.0054 rel 0.016
+[40/59] /layer3/layer3.4/conv1/Conv                   |Δ| 0.0248 rel 0.040
+[41/59] /layer3/layer3.4/conv2/Conv                   |Δ| 0.0196 rel 0.036
+[42/59] /layer3/layer3.4/conv3/Conv                   |Δ| 0.0112 rel 0.029
+[43/59] /layer3/layer3.5/conv1/Conv                   |Δ| 0.0380 rel 0.052
+[44/59] /layer3/layer3.5/conv2/Conv                   |Δ| 0.0368 rel 0.066
+[45/59] /layer3/layer3.5/conv3/Conv                   |Δ| 0.0263 rel 0.048
+[46/59] /layer4/layer4.0/conv1/Conv                   |Δ| 0.0593 rel 0.068
+[47/59] /layer4/layer4.0/downsample/downsample.0/Conv |Δ| 0.1082 rel 0.158
+[48/59] /layer4/layer4.0/conv2/Conv                   |Δ| 0.0770 rel 0.093
+[49/59] /layer4/layer4.0/conv3/Conv                   |Δ| 0.0862 rel 0.142
+[50/59] /layer4/layer4.1/conv1/Conv                   |Δ| 0.1357 rel 0.309
+[51/59] /layer4/layer4.1/conv2/Conv                   |Δ| 0.2052 rel 0.330
+[52/59] /layer4/layer4.1/conv3/Conv                   |Δ| 0.3241 rel 0.319
+[53/59] /layer4/layer4.2/conv1/Conv                   |Δ| 0.3265 rel 0.413
+[54/59] /layer4/layer4.2/conv2/Conv                   |Δ| 0.3716 rel 0.500
+[55/59] /layer4/layer4.2/conv3/Conv                   |Δ| 0.7427 rel 0.638
+[56/59] /attnpool/MatMul_1                            |Δ| 0.2181 rel 0.530
+[57/59] /attnpool/MatMul_2                            |Δ| 0.0845 rel 0.402
+[58/59] /attnpool/MatMul                              |Δ| 0.1624 rel 0.660
+[59/59] /attnpool/Gemm                                |Δ| 0.0372 rel 2.365
+{"src": "rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx", "src_sha": "9d99f92d2bc3013dc388d05afa25d7efce6721247ef9a2fe01ba72bf4670ad3f", "dst": "rn50_image_int8_q1_percentile99999_highres256_s0_B0_BC.onnx", "dst_sha": "cba4062a70ed323b4795817b158d7acbb53023c3643755e9c6c148794793b5b1", "tag": "BC", "calib_seed": 0, "calib_idx_head": [427, 784, 115, 999, 5, 923, 1119, 1207], "zero_delta": false, "n_layers": 59, "reduction_fake": 0.9993158589643417, "sec": 760, "int_points": 55, "reduction_int": 0.846428008125597}
+
+CHECK {"sha_ok": {"rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx": true, "rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx": true}, "zero_delta_sha_eq_B0": true, "structure": {"same_nodes": true, "same_init_keys": true, "n_diff": 59, "non_bias_diff": []}, "reduction_fake": 0.9993158589643417, "reduction_int": 0.846428008125597, "gate": true}
+2026-10-20 16:49:49.77 build 
+onv3/Conv                   |Δ| 0.0022 rel 0.005
+[27/59] /layer3/layer3.0/conv1/Conv                   |Δ| 0.0157 rel 0.019
+[28/59] /layer3/layer3.0/downsample/downsample.0/Conv |Δ| 0.0189 rel 0.094
+[29/59] /layer3/layer3.0/conv2/Conv                   |Δ| 0.0056 rel 0.010
+[30/59] /layer3/layer3.0/conv3/Conv                   |Δ| 0.0027 rel 0.015
+[31/59] /layer3/layer3.1/conv1/Conv                   |Δ| 0.0120 rel 0.024
+[32/59] /layer3/layer3.1/conv2/Conv                   |Δ| 0.0108 rel 0.021
+[33/59] /layer3/layer3.1/conv3/Conv                   |Δ| 0.0027 rel 0.009
+[34/59] /layer3/layer3.2/conv1/Conv                   |Δ| 0.0137 rel 0.026
+[35/59] /layer3/layer3.2/conv2/Conv                   |Δ| 0.0112 rel 0.022
+[36/59] /layer3/layer3.2/conv3/Conv                   |Δ| 0.0044 rel 0.014
+[37/59] /layer3/layer3.3/conv1/Conv                   |Δ| 0.0203 rel 0.039
+[38/59] /layer3/layer3.3/conv2/Conv                   |Δ| 0.0132 rel 0.027
+[39/59] /layer3/layer3.3/conv3/Conv                   |Δ| 0.0055 rel 0.016
+[40/59] /layer3/layer3.4/conv1/Conv                   |Δ| 0.0251 rel 0.040
+[41/59] /layer3/layer3.4/conv2/Conv                   |Δ| 0.0200 rel 0.037
+[42/59] /layer3/layer3.4/conv3/Conv                   |Δ| 0.0112 rel 0.029
+[43/59] /layer3/layer3.5/conv1/Conv                   |Δ| 0.0384 rel 0.053
+[44/59] /layer3/layer3.5/conv2/Conv                   |Δ| 0.0357 rel 0.065
+[45/59] /layer3/layer3.5/conv3/Conv                   |Δ| 0.0255 rel 0.046
+[46/59] /layer4/layer4.0/conv1/Conv                   |Δ| 0.0588 rel 0.068
+[47/59] /layer4/layer4.0/downsample/downsample.0/Conv |Δ| 0.1077 rel 0.156
+[48/59] /layer4/layer4.0/conv2/Conv                   |Δ| 0.0764 rel 0.092
+[49/59] /layer4/layer4.0/conv3/Conv                   |Δ| 0.0835 rel 0.139
+[50/59] /layer4/layer4.1/conv1/Conv                   |Δ| 0.1316 rel 0.298
+[51/59] /layer4/layer4.1/conv2/Conv                   |Δ| 0.1979 rel 0.322
+[52/59] /layer4/layer4.1/conv3/Conv                   |Δ| 0.3165 rel 0.312
+[53/59] /layer4/layer4.2/conv1/Conv                   |Δ| 0.3170 rel 0.403
+[54/59] /layer4/layer4.2/conv2/Conv                   |Δ| 0.3667 rel 0.493
+[55/59] /layer4/layer4.2/conv3/Conv                   |Δ| 0.7412 rel 0.643
+[56/59] /attnpool/MatMul_1                            |Δ| 0.2139 rel 0.524
+[57/59] /attnpool/MatMul_2                            |Δ| 0.0833 rel 0.395
+[58/59] /attnpool/MatMul                              |Δ| 0.1624 rel 0.653
+[59/59] /attnpool/Gemm                                |Δ| 0.0368 rel 2.337
+{"src": "rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx", "src_sha": "9d99f92d2bc3013dc388d05afa25d7efce6721247ef9a2fe01ba72bf4670ad3f", "dst": "rn50_image_int8_q1_percentile99999_highres256_s0_B0_BCp.onnx", "dst_sha": "cafdc87bf94e011cc30c4329ab833f04c4457fd040670c0ef0b52095d59eb5b1", "tag": "BCp", "calib_seed": 1, "calib_idx_head": [335, 744, 743, 957, 1127, 966, 856, 102], "zero_delta": false, "n_layers": 59, "reduction_fake": 0.9993138892244557, "sec": 809}
+
+3/conv3/Conv                   |Δ| 0.0017 rel 0.004
+[20/52] /layer3/layer3.0/conv1/Conv                   |Δ| 0.0155 rel 0.019
+[21/52] /layer3/layer3.0/downsample/downsample.0/Conv |Δ| 0.0186 rel 0.095
+[22/52] /layer3/layer3.0/conv2/Conv                   |Δ| 0.0041 rel 0.007
+[23/52] /layer3/layer3.0/conv3/Conv                   |Δ| 0.0020 rel 0.011
+[24/52] /layer3/layer3.1/conv1/Conv                   |Δ| 0.0088 rel 0.018
+[25/52] /layer3/layer3.1/conv2/Conv                   |Δ| 0.0083 rel 0.016
+[26/52] /layer3/layer3.1/conv3/Conv                   |Δ| 0.0020 rel 0.007
+[27/52] /layer3/layer3.2/conv1/Conv                   |Δ| 0.0119 rel 0.023
+[28/52] /layer3/layer3.2/conv2/Conv                   |Δ| 0.0067 rel 0.013
+[29/52] /layer3/layer3.2/conv3/Conv                   |Δ| 0.0020 rel 0.006
+[30/52] /layer3/layer3.3/conv1/Conv                   |Δ| 0.0175 rel 0.034
+[31/52] /layer3/layer3.3/conv2/Conv                   |Δ| 0.0063 rel 0.013
+[32/52] /layer3/layer3.3/conv3/Conv                   |Δ| 0.0022 rel 0.007
+[33/52] /layer3/layer3.4/conv1/Conv                   |Δ| 0.0203 rel 0.033
+[34/52] /layer3/layer3.4/conv2/Conv                   |Δ| 0.0065 rel 0.012
+[35/52] /layer3/layer3.4/conv3/Conv                   |Δ| 0.0033 rel 0.008
+[36/52] /layer3/layer3.5/conv1/Conv                   |Δ| 0.0263 rel 0.036
+[37/52] /layer3/layer3.5/conv2/Conv                   |Δ| 0.0096 rel 0.017
+[38/52] /layer3/layer3.5/conv3/Conv                   |Δ| 0.0075 rel 0.014
+[39/52] /layer4/layer4.0/conv1/Conv                   |Δ| 0.0345 rel 0.040
+[40/52] /layer4/layer4.0/downsample/downsample.0/Conv |Δ| 0.0884 rel 0.129
+[41/52] /layer4/layer4.0/conv2/Conv                   |Δ| 0.0197 rel 0.024
+[42/52] /layer4/layer4.0/conv3/Conv                   |Δ| 0.0270 rel 0.044
+[43/52] /layer4/layer4.1/conv1/Conv                   |Δ| 0.0378 rel 0.086
+[44/52] /layer4/layer4.1/conv2/Conv                   |Δ| 0.0608 rel 0.098
+[45/52] /layer4/layer4.1/conv3/Conv                   |Δ| 0.1059 rel 0.104
+[46/52] /layer4/layer4.2/conv1/Conv                   |Δ| 0.1145 rel 0.145
+[47/52] /layer4/layer4.2/conv2/Conv                   |Δ| 0.1464 rel 0.197
+[48/52] /layer4/layer4.2/conv3/Conv                   |Δ| 0.3677 rel 0.316
+[49/52] /attnpool/MatMul_1                            |Δ| 0.0949 rel 0.231
+[50/52] /attnpool/MatMul_2                            |Δ| 0.0361 rel 0.172
+[51/52] /attnpool/MatMul                              |Δ| 0.0762 rel 0.310
+[52/52] /attnpool/Gemm                                |Δ| 0.0185 rel 1.174
+{"src": "rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx", "src_sha": "687097928a9d82146d486f440e9956ab51d0ebacfffdf34c37e2c432dd3f19cd", "dst": "rn50_image_int8_q1_percentile99999_highres256_s0_B2_BC.onnx", "dst_sha": "57e8c41e1e059c5a0c9ff1edd88cd81000d21bdd39901492bb5efb6d8b4282b4", "tag": "BC", "calib_seed": 0, "calib_idx_head": [427, 784, 115, 999, 5, 923, 1119, 1207], "zero_delta": false, "n_layers": 52, "reduction_fake": 0.9986555232373148, "sec": 693}
+
+2026-10-20 17:14:53.44 acc 
+s256_s0_B2.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B0_BC.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B0_BCp.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B2_BC.onnx"}}
+{"date": "2026-10-20T17:21:30", "data": "caltech_dev", "n": 1024, "model": "rn50_image_int8_q1_percentile99999_highres256_s0_B0_BC.onnx", "MiB": 37.4, "exec": "int", "threads": 4, "top1": 72.17, "top5": 94.14, "cos_mean": 0.8576, "cos_p1": 0.7399, "eval_sec": 15, "meta": {"cpu": "Intel(R) Core(TM) Ultra 7 258V", "vnni": null, "os": "Windows 10 (10.0.26300)", "python": "3.11.9", "onnxruntime": "1.25.0", "model": "RN50", "git": {"commit": "0e439d9", "dirty": true}, "power": {"plugged": true, "battery_pct": 100}, "argv": "--exec int --threads 4 --save-pred --data cifar_A pets_dev flowers_dev cars_dev food_dev caltech_dev --models rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B0_BC.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B0_BCp.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B2_BC.onnx"}}
+{"date": "2026-10-20T17:21:45", "data": "caltech_dev", "n": 1024, "model": "rn50_image_int8_q1_percentile99999_highres256_s0_B0_BCp.onnx", "MiB": 37.4, "exec": "int", "threads": 4, "top1": 71.09, "top5": 94.43, "cos_mean": 0.8582, "cos_p1": 0.7455, "eval_sec": 15, "meta": {"cpu": "Intel(R) Core(TM) Ultra 7 258V", "vnni": null, "os": "Windows 10 (10.0.26300)", "python": "3.11.9", "onnxruntime": "1.25.0", "model": "RN50", "git": {"commit": "0e439d9", "dirty": true}, "power": {"plugged": true, "battery_pct": 100}, "argv": "--exec int --threads 4 --save-pred --data cifar_A pets_dev flowers_dev cars_dev food_dev caltech_dev --models rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B0_BC.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B0_BCp.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B2_BC.onnx"}}
+{"date": "2026-10-20T17:22:03", "data": "caltech_dev", "n": 1024, "model": "rn50_image_int8_q1_percentile99999_highres256_s0_B2_BC.onnx", "MiB": 37.7, "exec": "int", "threads": 4, "top1": 79.69, "top5": 97.36, "cos_mean": 0.9694, "cos_p1": 0.9411, "eval_sec": 18, "meta": {"cpu": "Intel(R) Core(TM) Ultra 7 258V", "vnni": null, "os": "Windows 10 (10.0.26300)", "python": "3.11.9", "onnxruntime": "1.25.0", "model": "RN50", "git": {"commit": "0e439d9", "dirty": true}, "power": {"plugged": true, "battery_pct": 100}, "argv": "--exec int --threads 4 --save-pred --data cifar_A pets_dev flowers_dev cars_dev food_dev caltech_dev --models rn50_image_int8_q1_percentile99999_highres256_s0_B0.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B0_BC.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B0_BCp.onnx rn50_image_int8_q1_percentile99999_highres256_s0_B2_BC.onnx"}}
+
+{"date": "2026-10-20T17:22:03", "a": "rn50_image_int8_q1_percentile99999_highres256_s0_B2", "b": "rn50_image_int8_q1_percentile99999_highres256_s0_B0_BC", "data": ["pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev"], "diff_pp": -15.94, "ci95": [-17.28, -14.54], "includes_0": false, "per_data_pp": {"pets_dev": -8.89, "flowers_dev": -18.81, "cars_dev": -27.4, "food_dev": -15.33, "caltech_dev": -9.28}, "n_boot": 1000, "seed": 0, "disagree_pct": {"pets_dev": 20.2, "flowers_dev": 26.3, "cars_dev": 35.5, "food_dev": 24.1, "caltech_dev": 14.6}}
+
+{"date": "2026-10-20T17:22:04", "a": "rn50_image_int8_q1_percentile99999_highres256_s0_B2", "b": "rn50_image_int8_q1_percentile99999_highres256_s0_B0_BCp", "data": ["pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev"], "diff_pp": -15.47, "ci95": [-16.78, -14.19], "includes_0": false, "per_data_pp": {"pets_dev": -8.79, "flowers_dev": -16.93, "cars_dev": -27.09, "food_dev": -14.21, "caltech_dev": -10.35}, "n_boot": 1000, "seed": 0, "disagree_pct": {"pets_dev": 19.1, "flowers_dev": 24.7, "cars_dev": 35.4, "food_dev": 22.9, "caltech_dev": 15.0}}
+
+{"date": "2026-10-20T17:22:04", "a": "rn50_image_int8_q1_percentile99999_highres256_s0_B0", "b": "rn50_image_int8_q1_percentile99999_highres256_s0_B0_BC", "data": ["pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev"], "diff_pp": -15.66, "ci95": [-16.98, -14.34], "includes_0": false, "per_data_pp": {"pets_dev": -8.08, "flowers_dev": -19.54, "cars_dev": -27.51, "food_dev": -13.81, "caltech_dev": -9.38}, "n_boot": 1000, "seed": 0, "disagree_pct": {"pets_dev": 19.8, "flowers_dev": 27.1, "cars_dev": 34.3, "food_dev": 24.0, "caltech_dev": 16.2}}
+
+{"date": "2026-10-20T17:22:05", "a": "rn50_image_int8_q1_percentile99999_highres256_s0_B2", "b": "rn50_image_int8_q1_percentile99999_highres256_s0_B2_BC", "data": ["pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev"], "diff_pp": -1.58, "ci95": [-2.49, -0.65], "includes_0": false, "per_data_pp": {"pets_dev": 1.21, "flowers_dev": -3.76, "cars_dev": -3.41, "food_dev": -0.2, "caltech_dev": -1.76}, "n_boot": 1000, "seed": 0, "disagree_pct": {"pets_dev": 8.7, "flowers_dev": 11.3, "cars_dev": 12.7, "food_dev": 8.3, "caltech_dev": 6.4}}
+
+{"date": "2026-10-20T17:22:05", "a": "rn50_image_int8_q1_percentile99999_highres256_s0_B2", "b": "rn50_image_int8_q1_percentile99999_highres256_s0_B0", "data": ["pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev"], "diff_pp": -0.28, "ci95": [-1.09, 0.53], "includes_0": true, "per_data_pp": {"pets_dev": -0.81, "flowers_dev": 0.73, "cars_dev": 0.1, "food_dev": -1.52, "caltech_dev": 0.1}, "n_boot": 1000, "seed": 0, "disagree_pct": {"pets_dev": 7.9, "flowers_dev": 6.4, "cars_dev": 10.9, "food_dev": 10.7, "caltech_dev": 6.3}}
+
+{"date": "2026-10-20T17:22:05", "a": "fp32", "b": "rn50_image_int8_q1_percentile99999_highres256_s0_B0", "data": ["pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev"], "diff_pp": -1.71, "ci95": [-2.61, -0.81], "includes_0": false, "per_data_pp": {"pets_dev": -3.43, "flowers_dev": -0.63, "cars_dev": -1.45, "food_dev": -2.94, "caltech_dev": -0.1}, "n_boot": 1000, "seed": 0, "disagree_pct": {"pets_dev": 9.1, "flowers_dev": 8.6, "cars_dev": 13.0, "food_dev": 11.1, "caltech_dev": 8.9}}
+
+{"date": "2026-10-20T17:22:06", "a": "fp32", "b": "rn50_image_int8_q1_percentile99999_highres256_s0_B2", "data": ["pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev"], "diff_pp": -1.43, "ci95": [-2.18, -0.74], "includes_0": false, "per_data_pp": {"pets_dev": -2.63, "flowers_dev": -1.36, "cars_dev": -1.55, "food_dev": -1.42, "caltech_dev": -0.2}, "n_boot": 1000, "seed": 0, "disagree_pct": {"pets_dev": 6.9, "flowers_dev": 5.3, "cars_dev": 9.8, "food_dev": 5.7, "caltech_dev": 4.7}}
+
+{"date": "2026-10-20T17:22:06", "a": "fp32", "b": "rn50_image_int8_q1_percentile99999_highres256_s0_B0_BC", "data": ["pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev"], "diff_pp": -17.37, "ci95": [-18.76, -15.99], "includes_0": false, "per_data_pp": {"pets_dev": -11.52, "flowers_dev": -20.17, "cars_dev": -28.96, "food_dev": -16.75, "caltech_dev": -9.47}, "n_boot": 1000, "seed": 0, "disagree_pct": {"pets_dev": 19.8, "flowers_dev": 26.6, "cars_dev": 36.8, "food_dev": 24.5, "caltech_dev": 15.1}}
+
+{"date": "2026-10-20T17:22:06", "a": "fp32", "b": "rn50_image_int8_q1_percentile99999_highres256_s0_B0_BCp", "data": ["pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev"], "diff_pp": -16.91, "ci95": [-18.21, -15.64], "includes_0": false, "per_data_pp": {"pets_dev": -11.41, "flowers_dev": -18.29, "cars_dev": -28.65, "food_dev": -15.63, "caltech_dev": -10.55}, "n_boot": 1000, "seed": 0, "disagree_pct": {"pets_dev": 18.9, "flowers_dev": 25.0, "cars_dev": 36.5, "food_dev": 24.0, "caltech_dev": 15.0}}
+
+{"date": "2026-10-20T17:22:06", "a": "fp32", "b": "rn50_image_int8_q1_percentile99999_highres256_s0_B2_BC", "data": ["pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev"], "diff_pp": -3.02, "ci95": [-3.86, -2.15], "includes_0": false, "per_data_pp": {"pets_dev": -1.41, "flowers_dev": -5.12, "cars_dev": -4.96, "food_dev": -1.62, "caltech_dev": -1.95}, "n_boot": 1000, "seed": 0, "disagree_pct": {"pets_dev": 6.1, "flowers_dev": 10.6, "cars_dev": 13.4, "food_dev": 7.3, "caltech_dev": 5.5}}
+
+2026-10-20 17:22:07.02 ACC DONE rc=0 
+2026-10-20 17:23:34.39 speed start 
+전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)[1T] repeat 1/3 fp32               88.83 ms/img
+[1T] repeat 1/3 B2                 34.07 ms/img
+[1T] repeat 1/3 B0                 29.00 ms/img
+[1T] repeat 1/3 B0BC               29.59 ms/img
+[1T] repeat 1/3 B0BCp              29.37 ms/img
+[1T] repeat 1/3 B2BC               34.17 ms/img
+[1T] repeat 2/3 fp32               88.41 ms/img
+[1T] repeat 2/3 B2                 34.19 ms/img
+[1T] repeat 2/3 B0                 28.78 ms/img
+[1T] repeat 2/3 B0BC               28.68 ms/img
+[1T] repeat 2/3 B0BCp              28.74 ms/img
+[1T] repeat 2/3 B2BC               34.21 ms/img
+[1T] repeat 3/3 fp32               88.37 ms/img
+[1T] repeat 3/3 B2                 34.15 ms/img
+[1T] repeat 3/3 B0                 28.68 ms/img
+[1T] repeat 3/3 B0BC               28.72 ms/img
+[1T] repeat 3/3 B0BCp              28.77 ms/img
+[1T] repeat 3/3 B2BC               34.18 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               146.1    88.54   0.26   88.37   88.40   90.33
+B2                  37.7    34.14   0.06   34.07   34.10   34.84
+B0                  37.4    28.82   0.17   28.68   28.76   29.82
+B0BC                37.4    29.00   0.52   28.68   28.85   30.11
+B0BCp               37.4    28.96   0.35   28.74   28.88   30.03
+B2BC                37.7    34.19   0.02   34.17   34.16   34.83
+saved C:\study\3\2\2026 모바일 학술대회\oslab_mobile\rn50\..\results\E5b_bias_corr\speed_20261020_172607_1T.json
+
+speed s1 t1 done 17:26:07
+[2T] repeat 1/3 fp32               47.53 ms/img
+[2T] repeat 1/3 B2                 19.75 ms/img
+[2T] repeat 1/3 B0                 16.72 ms/img
+[2T] repeat 1/3 B0BC               16.92 ms/img
+[2T] repeat 1/3 B0BCp              16.90 ms/img
+[2T] repeat 1/3 B2BC               20.13 ms/img
+[2T] repeat 2/3 fp32               49.78 ms/img
+[2T] repeat 2/3 B2                 20.39 ms/img
+[2T] repeat 2/3 B0                 17.01 ms/img
+[2T] repeat 2/3 B0BC               17.05 ms/img
+[2T] repeat 2/3 B0BCp              17.07 ms/img
+[2T] repeat 2/3 B2BC               20.31 ms/img
+[2T] repeat 3/3 fp32               50.25 ms/img
+[2T] repeat 3/3 B2                 20.42 ms/img
+[2T] repeat 3/3 B0                 17.18 ms/img
+[2T] repeat 3/3 B0BC               17.12 ms/img
+[2T] repeat 3/3 B0BCp              17.23 ms/img
+[2T] repeat 3/3 B2BC               20.48 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               146.1    49.19   1.46   47.53   49.32   52.22
+B2                  37.7    20.19   0.38   19.75   19.97   21.39
+B0                  37.4    16.97   0.23   16.72   16.86   17.89
+B0BC                37.4    17.03   0.10   16.92   16.90   18.25
+B0BCp               37.4    17.07   0.16   16.90   16.96   17.95
+B2BC                37.7    20.30   0.18   20.13   20.16   21.47
+saved C:\study\3\2\2026 모바일 학술대회\oslab_mobile\rn50\..\results\E5b_bias_corr\speed_20261020_172736_2T.json
+
+speed s1 t2 done 17:27:36
+[4T] repeat 1/3 fp32               28.37 ms/img
+[4T] repeat 1/3 B2                 12.87 ms/img
+[4T] repeat 1/3 B0                 11.14 ms/img
+[4T] repeat 1/3 B0BC               11.26 ms/img
+[4T] repeat 1/3 B0BCp              11.17 ms/img
+[4T] repeat 1/3 B2BC               13.32 ms/img
+[4T] repeat 2/3 fp32               30.56 ms/img
+[4T] repeat 2/3 B2                 13.34 ms/img
+[4T] repeat 2/3 B0                 11.45 ms/img
+[4T] repeat 2/3 B0BC               11.38 ms/img
+[4T] repeat 2/3 B0BCp              11.57 ms/img
+[4T] repeat 2/3 B2BC               13.61 ms/img
+[4T] repeat 3/3 fp32               31.01 ms/img
+[4T] repeat 3/3 B2                 13.70 ms/img
+[4T] repeat 3/3 B0                 11.56 ms/img
+[4T] repeat 3/3 B0BC               11.51 ms/img
+[4T] repeat 3/3 B0BCp              11.57 ms/img
+[4T] repeat 3/3 B2BC               13.75 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               146.1    29.98   1.41   28.37   29.68   34.22
+B2                  37.7    13.30   0.42   12.87   13.22   14.72
+B0                  37.4    11.38   0.22   11.14   11.32   12.73
+B0BC                37.4    11.39   0.12   11.26   11.28   12.78
+B0BCp               37.4    11.43   0.23   11.17   11.40   12.62
+B2BC                37.7    13.56   0.22   13.32   13.44   15.05
+saved C:\study\3\2\2026 모바일 학술대회\oslab_mobile\rn50\..\results\E5b_bias_corr\speed_20261020_172834_4T.json
+
+speed s1 t4 done 17:28:34
+[1T] repeat 1/3 fp32               88.35 ms/img
+[1T] repeat 1/3 B2                 34.11 ms/img
+[1T] repeat 1/3 B0                 28.56 ms/img
+[1T] repeat 1/3 B0BC               28.76 ms/img
+[1T] repeat 1/3 B0BCp              28.83 ms/img
+[1T] repeat 1/3 B2BC               34.24 ms/img
+[1T] repeat 2/3 fp32               88.28 ms/img
+[1T] repeat 2/3 B2                 34.13 ms/img
+[1T] repeat 2/3 B0                 28.64 ms/img
+[1T] repeat 2/3 B0BC               28.83 ms/img
+[1T] repeat 2/3 B0BCp              28.91 ms/img
+[1T] repeat 2/3 B2BC               34.33 ms/img
+[1T] repeat 3/3 fp32               88.37 ms/img
+[1T] repeat 3/3 B2                 34.17 ms/img
+[1T] repeat 3/3 B0                 29.48 ms/img
+[1T] repeat 3/3 B0BC               29.74 ms/img
+[1T] repeat 3/3 B0BCp              29.73 ms/img
+[1T] repeat 3/3 B2BC               35.23 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               146.1    88.34   0.05   88.28   88.28   89.51
+B2                  37.7    34.13   0.03   34.11   34.10   34.76
+B0                  37.4    28.89   0.51   28.56   28.83   30.01
+B0BC                37.4    29.11   0.54   28.76   29.01   30.26
+B0BCp               37.4    29.16   0.50   28.83   29.11   30.25
+B2BC                37.7    34.60   0.55   34.24   34.38   35.75
+saved C:\study\3\2\2026 모바일 학술대회\oslab_mobile\rn50\..\results\E5b_bias_corr\speed_20261020_173307_1T.json
+
+speed s2 t1 done 17:33:07
+[2T] repeat 1/3 fp32               47.78 ms/img
+[2T] repeat 1/3 B2                 19.62 ms/img
+[2T] repeat 1/3 B0                 16.68 ms/img
+[2T] repeat 1/3 B0BC               16.76 ms/img
+[2T] repeat 1/3 B0BCp              16.84 ms/img
+[2T] repeat 1/3 B2BC               20.06 ms/img
+[2T] repeat 2/3 fp32               49.34 ms/img
+[2T] repeat 2/3 B2                 20.09 ms/img
+[2T] repeat 2/3 B0                 17.00 ms/img
+[2T] repeat 2/3 B0BC               17.01 ms/img
+[2T] repeat 2/3 B0BCp              17.05 ms/img
+[2T] repeat 2/3 B2BC               20.24 ms/img
+[2T] repeat 3/3 fp32               49.66 ms/img
+[2T] repeat 3/3 B2                 20.58 ms/img
+[2T] repeat 3/3 B0                 17.20 ms/img
+[2T] repeat 3/3 B0BC               17.16 ms/img
+[2T] repeat 3/3 B0BCp              17.09 ms/img
+[2T] repeat 3/3 B2BC               20.30 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               146.1    48.93   1.01   47.78   48.90   51.86
+B2                  37.7    20.09   0.48   19.62   19.88   21.74
+B0                  37.4    16.96   0.26   16.68   16.84   17.90
+B0BC                37.4    16.97   0.20   16.76   16.84   18.19
+B0BCp               37.4    17.00   0.14   16.84   16.84   18.20
+B2BC                37.7    20.20   0.12   20.06   20.02   21.59
+saved C:\study\3\2\2026 모바일 학술대회\oslab_mobile\rn50\..\results\E5b_bias_corr\speed_20261020_173435_2T.json
+
+speed s2 t2 done 17:34:36
+[4T] repeat 1/3 fp32               29.73 ms/img
+[4T] repeat 1/3 B2                 14.68 ms/img
+[4T] repeat 1/3 B0                 11.53 ms/img
+[4T] repeat 1/3 B0BC               11.47 ms/img
+[4T] repeat 1/3 B0BCp              11.51 ms/img
+[4T] repeat 1/3 B2BC               13.90 ms/img
+[4T] repeat 2/3 fp32               31.61 ms/img
+[4T] repeat 2/3 B2                 14.65 ms/img
+[4T] repeat 2/3 B0                 11.82 ms/img
+[4T] repeat 2/3 B0BC               11.82 ms/img
+[4T] repeat 2/3 B0BCp              12.01 ms/img
+[4T] repeat 2/3 B2BC               13.74 ms/img
+[4T] repeat 3/3 fp32               31.61 ms/img
+[4T] repeat 3/3 B2                 13.99 ms/img
+[4T] repeat 3/3 B0                 11.92 ms/img
+[4T] repeat 3/3 B0BC               11.99 ms/img
+[4T] repeat 3/3 B0BCp              11.98 ms/img
+[4T] repeat 3/3 B2BC               14.18 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               146.1    30.99   1.08   29.73   30.78   36.77
+B2                  37.7    14.44   0.39   13.99   14.07   16.38
+B0                  37.4    11.76   0.20   11.53   11.73   13.16
+B0BC                37.4    11.76   0.26   11.47   11.70   12.93
+B0BCp               37.4    11.84   0.28   11.51   11.76   12.99
+B2BC                37.7    13.94   0.22   13.74   13.82   15.21
+saved C:\study\3\2\2026 모바일 학술대회\oslab_mobile\rn50\..\results\E5b_bias_corr\speed_20261020_173536_4T.json
+
+speed s2 t4 done 17:35:36
+[1T] repeat 1/3 fp32               90.35 ms/img
+[1T] repeat 1/3 B2                 35.08 ms/img
+[1T] repeat 1/3 B0                 29.49 ms/img
+[1T] repeat 1/3 B0BC               29.49 ms/img
+[1T] repeat 1/3 B0BCp              28.80 ms/img
+[1T] repeat 1/3 B2BC               34.25 ms/img
+[1T] repeat 2/3 fp32               91.24 ms/img
+[1T] repeat 2/3 B2                 35.20 ms/img
+[1T] repeat 2/3 B0                 29.57 ms/img
+[1T] repeat 2/3 B0BC               28.97 ms/img
+[1T] repeat 2/3 B0BCp              29.90 ms/img
+[1T] repeat 2/3 B2BC               35.20 ms/img
+[1T] repeat 3/3 fp32               89.90 ms/img
+[1T] repeat 3/3 B2                 34.07 ms/img
+[1T] repeat 3/3 B0                 28.70 ms/img
+[1T] repeat 3/3 B0BC               28.71 ms/img
+[1T] repeat 3/3 B0BCp              28.69 ms/img
+[1T] repeat 3/3 B2BC               34.18 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               146.1    90.50   0.68   89.90   90.69   92.66
+B2                  37.7    34.78   0.62   34.07   34.73   36.09
+B0                  37.4    29.26   0.48   28.70   29.22   30.47
+B0BC                37.4    29.06   0.40   28.71   28.99   30.21
+B0BCp               37.4    29.13   0.67   28.69   28.92   30.21
+B2BC                37.7    34.54   0.57   34.18   34.37   35.91
+saved C:\study\3\2\2026 모바일 학술대회\oslab_mobile\rn50\..\results\E5b_bias_corr\speed_20261020_174011_1T.json
+
+speed s3 t1 done 17:40:11
+[2T] repeat 1/3 fp32               47.56 ms/img
+[2T] repeat 1/3 B2                 19.67 ms/img
+[2T] repeat 1/3 B0                 16.67 ms/img
+[2T] repeat 1/3 B0BC               16.77 ms/img
+[2T] repeat 1/3 B0BCp              16.77 ms/img
+[2T] repeat 1/3 B2BC               19.96 ms/img
+[2T] repeat 2/3 fp32               49.55 ms/img
+[2T] repeat 2/3 B2                 20.16 ms/img
+[2T] repeat 2/3 B0                 17.06 ms/img
+[2T] repeat 2/3 B0BC               17.03 ms/img
+[2T] repeat 2/3 B0BCp              17.14 ms/img
+[2T] repeat 2/3 B2BC               20.13 ms/img
+[2T] repeat 3/3 fp32               49.99 ms/img
+[2T] repeat 3/3 B2                 20.33 ms/img
+[2T] repeat 3/3 B0                 17.05 ms/img
+[2T] repeat 3/3 B0BC               17.21 ms/img
+[2T] repeat 3/3 B0BCp              17.20 ms/img
+[2T] repeat 3/3 B2BC               20.32 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               146.1    49.03   1.30   47.56   49.16   51.72
+B2                  37.7    20.05   0.34   19.67   19.95   21.36
+B0                  37.4    16.93   0.22   16.67   16.83   17.80
+B0BC                37.4    17.00   0.22   16.77   16.83   18.38
+B0BCp               37.4    17.04   0.24   16.77   16.89   18.23
+B2BC                37.7    20.14   0.18   19.96   20.00   21.20
+saved C:\study\3\2\2026 모바일 학술대회\oslab_mobile\rn50\..\results\E5b_bias_corr\speed_20261020_174139_2T.json
+
+speed s3 t2 done 17:41:39
+[4T] repeat 1/3 fp32               28.63 ms/img
+[4T] repeat 1/3 B2                 12.99 ms/img
+[4T] repeat 1/3 B0                 12.03 ms/img
+[4T] repeat 1/3 B0BC               12.22 ms/img
+[4T] repeat 1/3 B0BCp              12.32 ms/img
+[4T] repeat 1/3 B2BC               14.11 ms/img
+[4T] repeat 2/3 fp32               31.96 ms/img
+[4T] repeat 2/3 B2                 14.15 ms/img
+[4T] repeat 2/3 B0                 12.71 ms/img
+[4T] repeat 2/3 B0BC               11.91 ms/img
+[4T] repeat 2/3 B0BCp              12.02 ms/img
+[4T] repeat 2/3 B2BC               14.08 ms/img
+[4T] repeat 3/3 fp32               31.71 ms/img
+[4T] repeat 3/3 B2                 14.33 ms/img
+[4T] repeat 3/3 B0                 12.26 ms/img
+[4T] repeat 3/3 B0BC               12.15 ms/img
+[4T] repeat 3/3 B0BCp              12.19 ms/img
+[4T] repeat 3/3 B2BC               14.31 ms/img
+
+model                MiB     mean    std     min     p50     p95
+fp32               146.1    30.77   1.86   28.63   30.98   36.18
+B2                  37.7    13.82   0.73   12.99   13.91   14.94
+B0                  37.4    12.34   0.34   12.03   12.16   13.58
+B0BC                37.4    12.09   0.16   11.91   12.05   13.05
+B0BCp               37.4    12.18   0.15   12.02   12.04   12.87
+B2BC                37.7    14.17   0.12   14.08   14.09   14.97
+saved C:\study\3\2\2026 모바일 학술대회\oslab_mobile\rn50\..\results\E5b_bias_corr\speed_20261020_174240_4T.json
+
+speed s3 t4 done 17:42:41
+2026-10-20 17:42:41.09 mem 
+{"name": "fp32", "file_MiB": 146.1, "peak_rss_MiB": 325.5, "base_MiB": 69.8, "model_added_MiB": 255.7}
+{"name": "B2", "file_MiB": 37.7, "peak_rss_MiB": 119.4, "base_MiB": 69.7, "model_added_MiB": 49.7}
+{"name": "B0", "file_MiB": 37.4, "peak_rss_MiB": 113.3, "base_MiB": 69.7, "model_added_MiB": 43.6}
+{"name": "B0BC", "file_MiB": 37.4, "peak_rss_MiB": 113.3, "base_MiB": 69.7, "model_added_MiB": 43.6}
+{"name": "B0BCp", "file_MiB": 37.4, "peak_rss_MiB": 113.3, "base_MiB": 69.7, "model_added_MiB": 43.6}
+{"name": "B2BC", "file_MiB": 37.7, "peak_rss_MiB": 119.2, "base_MiB": 69.7, "model_added_MiB": 49.5}
+
+2026-10-20 17:42:55.25 SPEED MEM DONE rc=0 

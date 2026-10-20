@@ -81,5 +81,23 @@ def acc():
         py("bootstrap.py", "--a", a, "--b", b, "--data", *HR)
 
 
+def speed():
+    """계획서 2단계 속도: 3세션 × 1·2·4T, 한 실행에서 번갈아 (E10과 같은 설정, 세션 사이 2분 냉각)."""
+    import time
+    named = ["fp32=rn50_image_fp32_q1.onnx", f"B2={B2}", f"B0={B0}", f"B0BC={out(B0, 'BC')}", f"B0BCp={out(B0, 'BCp')}", f"B2BC={out(B2, 'BC')}"]
+    for s in (1, 2, 3):
+        for t in (1, 2, 4):
+            py("bench_speed.py", "--threads", str(t), "--n", "200", "--repeats", "3", "--warmup", "20", "--models", *named)
+            C.append_jsonl("e5b_speed_sessions", {"session": s, "threads": t, "meta": C.run_meta()})
+            print(f"speed s{s} t{t} done {time.strftime('%H:%M:%S')}", flush=True)
+        if s < 3:
+            time.sleep(120)
+
+
+def mem():
+    py("bench_mem.py", "--threads", "4", "--models", "fp32=rn50_image_fp32_q1.onnx", f"B2={B2}", f"B0={B0}",
+       f"B0BC={out(B0, 'BC')}", f"B0BCp={out(B0, 'BCp')}", f"B2BC={out(B2, 'BC')}")
+
+
 if __name__ == "__main__":
-    {"check": check, "build": build, "acc": acc}[sys.argv[1]]()
+    {"check": check, "build": build, "acc": acc, "speed": speed, "mem": mem}[sys.argv[1]]()
