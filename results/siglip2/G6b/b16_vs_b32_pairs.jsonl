@@ -1,0 +1,2 @@
+{"what": "b16_vs_b32", "pair": "hailo B16M2rot2-B32M", "hr_diff": 2.14, "ci95": [1.48, 2.84], "cifar_A_diff": 0.5, "n_boot": 1000, "seed": 0}
+{"what": "b16_vs_b32", "pair": "ort B16int8-B32int8", "hr_diff": 2.34, "ci95": [1.68, 3.0], "cifar_A_diff": -2.8, "n_boot": 1000, "seed": 0}
