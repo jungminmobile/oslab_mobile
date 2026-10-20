@@ -42,12 +42,12 @@ for h in hefs:
                 "cos_mean": round(float(c.mean()), 4), "cos_min": round(float(c.min()), 4)}
     rows.append({"what": "g6_chip", "hef": h, "model": m, **base, "hef_sha256": info["hef_sha256"], "input_domain": info["input_domain"],
                  "in_shape": info["in_shape"], "quant_in": info["quant_in"], "start_temp_c": st.get(f"eval_{h}"),
-                 "hr_n": sum(r[d]["n"] for d in HR), "hr_top1": round(float(np.mean([r[d]["top1"] for d in HR])), 2),
-                 "hr_fp32_top1": round(float(np.mean([r[d]["fp32_top1"] for d in HR])), 2),
-                 "hr_dtop1": round(float(np.mean([r[d]["top1"] - r[d]["fp32_top1"] for d in HR])), 2),
+                 "hr_n": sum(r[d]["n"] for d in HR), "hr_top1": round(float(np.mean([100 * P[h][d]["ok"].mean() for d in HR])), 2),
+                 "hr_fp32_top1": round(float(np.mean([100 * P[h][d]["fp"].mean() for d in HR])), 2),
+                 "hr_dtop1": round(float(np.mean([100 * (P[h][d]["ok"].mean() - P[h][d]["fp"].mean()) for d in HR])), 2),   # 반올림 전 값으로 평균 (독립 검토)
                  "hr_dtop1_ci95": boot_hr({d: P[h][d]["ok"] - P[h][d]["fp"] for d in HR}),
                  "hr_cos": round(float(np.mean([r[d]["cos_mean"] for d in HR])), 4), "hr_cos_min": min(r[d]["cos_min"] for d in HR),
-                 "cifar_A_dtop1": round(r["cifar_A"]["top1"] - r["cifar_A"]["fp32_top1"], 2), "cifar_A_cos": r["cifar_A"]["cos_mean"],
+                 "cifar_A_dtop1": round(100 * float(P[h]["cifar_A"]["ok"].mean() - P[h]["cifar_A"]["fp"].mean()), 2), "cifar_A_cos": r["cifar_A"]["cos_mean"],
                  "per_set": r})
 for m, pairs in PAIRS.items():
     for x, y in pairs:
