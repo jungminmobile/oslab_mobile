@@ -1,0 +1,66 @@
+{
+ "b32_V": {
+  "n_layers": 248,
+  "types": {
+   "const_input": 2,
+   "conv": 53,
+   "ew_add": 26,
+   "feature_splitter": 13,
+   "format_conversion": 1,
+   "input_layer": 1,
+   "layer_normalization": 26,
+   "matmul": 26,
+   "normalization": 86,
+   "output_layer": 1,
+   "softmax": 13
+  }
+ },
+ "b32_Vrot": {
+  "n_layers": 223,
+  "types": {
+   "const_input": 2,
+   "conv": 53,
+   "ew_add": 26,
+   "feature_splitter": 13,
+   "format_conversion": 1,
+   "input_layer": 1,
+   "layer_normalization": 26,
+   "matmul": 26,
+   "normalization": 61,
+   "output_layer": 1,
+   "softmax": 13
+  }
+ },
+ "b32_S1": {
+  "n_layers": 175,
+  "types": {
+   "const_input": 2,
+   "conv": 53,
+   "ew_add": 26,
+   "feature_splitter": 13,
+   "format_conversion": 1,
+   "input_layer": 1,
+   "layer_normalization": 26,
+   "matmul": 26,
+   "normalization": 13,
+   "output_layer": 1,
+   "softmax": 13
+  }
+ },
+ "b32_D_G6": {
+  "n_layers": 200,
+  "types": {
+   "const_input": 2,
+   "conv": 53,
+   "ew_add": 26,
+   "feature_splitter": 13,
+   "format_conversion": 1,
+   "input_layer": 1,
+   "layer_normalization": 26,
+   "matmul": 26,
+   "normalization": 38,
+   "output_layer": 1,
+   "softmax": 13
+  }
+ }
+}

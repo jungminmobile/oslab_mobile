@@ -91,7 +91,7 @@
 
 - **B32 성공 구성: 둘 (규칙대로 둘 다 적음)**
   - **지연이 가장 짧은 것: G** — 배치 1 15.66 ms (Z 대비 -5.0%, **"Zoo보다 빠름"**), G − Z = +2.67 [+1.92, +3.46] **우위**
-  - **정확도가 가장 높은 것: F** — 배치 1 16.54 ms (Z 대비 +0.3%, **"Zoo 수준"**). 출력이 M_both와 비트 단위로 같아 F − Z = M_both − Z = +3.17 [+2.41, +3.95] **우위**
+  - **정확도가 가장 높은 것: F** (정확도는 dev 6×200 비트 일치로부터 M_both 값을 옮긴 **추정**, §2-1 규칙) — 배치 1 16.54 ms (Z 대비 +0.3%, **"Zoo 수준"**). 출력이 M_both와 비트 단위로 같아 F − Z = M_both − Z = +3.17 [+2.41, +3.95] **우위**
 - 성공이 아닌 것
   - S1·Vrot: Zoo 수준(+1.5%·+1.6%)이지만 정확도가 동률이다.
   - S2·Dmax2·M_both: 느림 (+10.5~11.5%)
@@ -111,9 +111,12 @@
 | (기록용) F − M_both: compile 설정 (allocator·context_switch) | 비트 동일 | **-1.84 ms** |
 
 - 해석
-  - **그래프 출처는 원인이 아니다.** 우리 open_clip export와 Zoo ONNX는 같은 회전·같은 레시피에서 정확도(+0.13 동률)와 속도(−0.01 ms)가 같다.
-  - **남은 +11%의 거의 전부는 sink 마스크 그래프**(+1.63 ms)다. Zoo 레시피의 compile 설정으로는 마스크 비용을 가리지 못한다 (S2는 Zoo .alls에 resources_param까지 있는데도 느림).
-  - 그런데 **Zoo `clip_vit_b_16`의 `allocator_param`·`context_switch_param` 두 줄(F)**을 넣으면 출력은 그대로이고 그 비용이 거의 사라진다 (M_both 대비 −10.0%, Z 대비 +0.3%).
+  - **그래프 출처는 B32·Zoo 레시피(level 0, 64장)에서 측정 가능한 차이를 만들지 않았다.** 우리 open_clip export와 Zoo ONNX는 같은 회전·같은 레시피에서 정확도(+0.13 동률)와 배치 1 속도(−0.01 ms)가 같다.
+    - M_both 레시피(level 1, 256장)와 B16에서는 시험하지 않았다.
+    - parse 뒤 그래프도 여전히 다르다: S1 175층 대 Vrot 223층 (`parsed_har_layer_counts.json`).
+  - **배치 1에서 남은 +11%(M_both − Z = +1.89 ms)의 대부분은 sink 마스크 그래프와 함께 나타난다** (S2 − S1 = +1.63 ms). Zoo 레시피의 compile 설정(resources_param까지)으로는 이 비용이 줄지 않는다.
+  - 그런데 **Zoo `clip_vit_b_16`의 `allocator_param`·`context_switch_param` 두 줄(F)**을 넣으면 출력은 그대로이고 배치 1 비용이 거의 사라진다 (F − M_both = −1.84 ms, Z 대비 +0.3%). 그래서 마스크의 고정 비용이라기보다 마스크 그래프와 compile 설정의 상호작용으로 본다.
+  - 배치 8에서는 F도 Z 대비 +4.3%로, 차이가 다 없어지지는 않는다.
 
 ### 5-1. 구성표 (`build.jsonl`, `chip/parsehef_*.txt`)
 
@@ -129,7 +132,7 @@
 | (비교) Z / V / M_both | G6·G6b | 102,645,760 / 102,649,856 / 111,955,968 | 12 / 12 / 13 | `c1612329…` / `96617700…` / `2a381857…` | | |
 
 - M_both의 optimized HAR sha256은 `00614f55…`이고, Dmax2·F의 원본이다. 모든 HEF는 입력 UINT8 NHWC이고, 정규화가 HEF 안이다 (quant_info (1, 0)).
-- **Vrot 그래프:** ONNX는 Zoo와 노드 434개의 종류·순서·입출력, initializer 이름이 같다 (`vrot.jsonl`). 그러나 **DFC parse 뒤 층은 248 → 223개**다 (`normalization` 층 86 → 61). LN의 γ=1·β=0이 되자 affine 부분이 생략된 것으로 보인다. G6에서 우리 회전 그래프(R)가 회전 없는 것(D)보다 25개 적었던 것(200 → 175)과 같은 현상이다.
+- **Vrot 그래프:** ONNX는 Zoo와 노드 434개의 종류·순서·입출력, initializer 이름이 같다 (`vrot.jsonl`). 그러나 **DFC parse 뒤 층은 248 → 223개**다 (`normalization` 층 86 → 61, `parsed_har_layer_counts.json`). LN의 γ=1·β=0이 되자 affine 부분이 생략된 것으로 보인다. 우리 export에서도 회전 전후가 200 → 175층(normalization 38 → 13)으로 같은 25개가 줄었다.
 - 빌드 시작 기록에 `dirty=1`인 것(S2·F·Vrot·G)은 앞 커밋에 들어간 `build.jsonl`에 실행 기록이 덧붙었기 때문이다 (`git status`: `M results/siglip2/G6d/build.jsonl`만). 코드·.alls·스크립트는 커밋된 그대로다.
 
 ### 5-2. 정확도 (`results_chip.jsonl`, 실칩 dev 전체 5,923장, 커밋 `3b5f93d`, dirty false)
@@ -198,12 +201,12 @@
 | 후보 | (a) compile 설정만 바꾸나 (B16_rb_bk에 바로 적용) | (b) 그래프·양자화를 바꾸나 | (c) B32 효과 (배치 1, 출력) | (d) B16에 옮길 때의 위험 |
 |---|---|---|---|---|
 | **F: Zoo `allocator_param` + `context_switch_param`** | **예.** optimized HAR에서 compile만 | 아니오 (출력 비트 동일) | **M_both 대비 −10.0%** (18.38 → 16.54 ms), Z 대비 +0.3% | ① `context_switch_param`의 `auto_partition_to_buckets=True`·`share_buckets_partition=True`가 G6c 수동 bucket과 함께 쓰일 수 있는지 모른다. ② B16은 resources_param(1.0)과 bucket이 있어야 compile됐다 (G6c). 이 두 줄이 B16의 할당 시간 초과를 풀지 악화시킬지 모른다. **가장 유력한 후보다 — 다음 실험 제안** |
-| Dmax2: `compiler_optimization_level=max` | 예 (compile만) | 아니오 (비트 동일) | M_both 대비 −0.9% (resources_param 없는 M_z16 대비 −5.2%) | resources_param과 함께 쓸 수 없다. B16_rb_bk(resources_param + bucket)에는 그대로 못 붙이고, "B16 M2rot2 + D(resources_param 없음)"로만 가능하다. B32 효과가 작아 우선순위는 낮다 |
+| Dmax2: `compiler_optimization_level=max` | 예 (compile만) | 아니오 (비트 동일) | 배치 1 M_both 대비 −0.9%. **배치 8은 67.99 ms로 Z 대비 +26.6%, M_both보다 약 11% 느림.** (resources_param 없는 M_z16의 G6b 세션 값 19.21 ms 대비 −5.2%, 같은 세션 비교 아님) | resources_param과 함께 쓸 수 없다. B16_rb_bk(resources_param + bucket)에는 그대로 못 붙이고, "B16 M2rot2 + D(resources_param 없음)"로만 가능하다. B32 효과가 작아 우선순위는 낮다 |
 | G: 16비트 conv 최소 (패치 경로만) | 아니오 (재양자화 필요) | 예 (양자화) | Z 대비 −5.0%, M_both 대비 −14.8%. 정확도 M_both와 동률 (CIFAR −2.6) | **높음.** G6c에서 B16은 conv41 하나만 8비트로 바꿔도 실칩 HEF가 무너졌다 (B16_both_bk, 원인 미확인). B16은 블록 9 fc2가 민감한 층이었다 (G3) |
 | S 계열: Zoo 레시피(level 0, 64장) | 아니오 | 예 (양자화) | M_both 대비 속도 이득은 거의 없다 (S2 −0.04%). 정확도는 −1.05 열위 | 이점 없음 |
-| 그래프 출처 (export 방식) | — | 예 (그래프) | **원인이 아니다** (S1 − Vrot: 정확도 동률, 속도 −0.01 ms) | B16 export를 고칠 필요 없음 |
+| 그래프 출처 (export 방식) | — | 예 (그래프) | B32·Zoo 레시피에서 측정 가능한 차이 없음 (S1 − Vrot: 정확도 동률, 배치 1 −0.01 ms) | 이번 근거로는 B16 export를 고칠 이유가 보이지 않는다. 다만 M_both 레시피·B16에서는 미검증이고, parse 뒤 그래프는 다르다 (175 대 223층) |
 
-- **S1·S2 결과로는 그래프 출처가 원인이 아니다.** 그래서 B16 export를 고치는 가설은 세우지 않는다. 지연 차이의 주원인은 sink 마스크 연산(S2 − S1 +1.63 ms)이고, B32에서는 F의 compile 설정이 그 비용을 가렸다.
+- **S1·S2(와 Vrot) 결과로는 그래프 출처가 B32·Zoo 레시피에서 차이를 만들지 않았다.** 그래서 B16 export를 고치는 가설은 세우지 않는다. 배치 1 지연 차이는 sink 마스크 그래프와 함께 나타나고(S2 − S1 +1.63 ms), B32에서는 F의 compile 설정이 그 대부분을 가렸다.
 
 ## 7. 계획에서 달라진 점
 
@@ -220,3 +223,17 @@
 - Vrot parse 뒤 `normalization` 층 25개가 생략된 것이 속도에 주는 영향 (Vrot과 S1의 지연은 같음)
 - G가 B16에서 무너지지 않을지
 - 빌드 사이 변동, Windows 쪽 부하 (해당 없음, AGX만 측정)
+
+## 9. 3중 확인 기록
+
+1. 자기 검증
+   - Vrot: 그래프 동일성, 바꾼 initializer 175개, FP32 cos 최소 0.9999999
+   - Dmax2·F: M_both와 6×200 비트 일치
+   - eval 분할 결과를 합친 뒤의 모양 확인, 보정 장수 assert
+2. 독립 재계산: 검토자가 `g6d_summarize.py`를 raw에서 다시 돌려 21줄 모두 일치했다. 분할 임베딩 = 데이터셋별 조각, Vrot을 무작위 입력으로 다시 확인 (cos 0.99999994).
+3. 독립 검토 (맥락 없는 서브에이전트) — 반영한 지적
+   - (a) "그래프 출처는 원인이 아니다" → B32·Zoo 레시피 한정으로 고치고, parse 뒤 층 수 차이 명시
+   - (b) sink 마스크 비용은 compile 설정과의 상호작용, 배치 8 F +4.3%
+   - (c) Dmax2 배치 8(+26.6%)과 M_z16 비교가 다른 세션 값이라는 점
+   - (d) F 정확도는 추정
+   - (e) parse 층 수 근거 파일 추가
