@@ -890,3 +890,12 @@
 01:59:25 foreign=0
 01:59:55 foreign=0
 02:00:25 foreign=0
+02:20:40 foreign=1 [63711 /home/oslab bash -c cd ~/ssd/junyong/hailo_g6f && setsid nohup bash g6f_watch.sh > /dev/null 2>&1 < /dev/null & sleep 1; n=$(ps aux ]
+02:21:10 foreign=0
+02:21:40 foreign=0
+02:22:10 foreign=0
+02:22:40 foreign=0
+02:23:10 foreign=0
+02:23:40 foreign=0
+02:24:10 foreign=0
+02:24:40 foreign=0

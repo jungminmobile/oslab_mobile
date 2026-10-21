@@ -157,3 +157,26 @@ b32_ALL8F caltech_dev (200, 768) 21s
 02:00:03 cool run2_b8_b32_ALL8F max=61.09
 02:00:14 run2 b8 b32_ALL8F g6_b32_ALL8: fps: 319.02
 02:00:14 G6 CHIP DONE load=0.02 0.04 0.05
+02:20:46 start commit=bf8b08c hailort=HailoRT-CLI version 5.3.0 script_sha=82ecd33643ec6e1d 3325fc49fd346517 load=0.00 0.00 0.00 users=0 other_hailo=0 idle=47.94 TH=64.6 data_sha=0d76de8104c8 c56f6667bdd3 344c3353b826 00136e5a89d0 50ea9e5acd8a 53387ac65a52 3d22ab560344 98cbbc0cac81 d29e49647458 3e06a7ed7992 26577c0fe146 f4ebf9ba892a 
+02:20:46 hef b32_ALL8F sha256=69df6c0978209984bf68597f8a538f92cdd3d1b6612bc175f4d082503be1b72d bytes=91770880
+02:20:46 cool eval_b32_ALL8F_cifar_A max=47.99
+02:20:46 other_hailo=0 eval b32_ALL8F cifar_A 시작
+b32_ALL8F cifar_A (1000, 768) 17s
+02:21:06 cool eval_b32_ALL8F_pets_dev max=61.14
+02:21:06 other_hailo=0 eval b32_ALL8F pets_dev 시작
+b32_ALL8F pets_dev (990, 768) 17s
+02:21:55 cool eval_b32_ALL8F_flowers_dev max=56.13
+02:21:55 other_hailo=0 eval b32_ALL8F flowers_dev 시작
+b32_ALL8F flowers_dev (957, 768) 17s
+02:22:44 cool eval_b32_ALL8F_cars_dev max=56.39
+02:22:44 other_hailo=0 eval b32_ALL8F cars_dev 시작
+b32_ALL8F cars_dev (967, 768) 17s
+02:23:33 cool eval_b32_ALL8F_food_dev max=56.69
+02:23:33 other_hailo=0 eval b32_ALL8F food_dev 시작
+b32_ALL8F food_dev (985, 768) 17s
+02:24:22 cool eval_b32_ALL8F_caltech_dev max=57.15
+02:24:22 other_hailo=0 eval b32_ALL8F caltech_dev 시작
+b32_ALL8F caltech_dev (1024, 768) 18s
+merged b32_ALL8F {'cifar_A_emb': (1000, 768), 'pets_dev_emb': (990, 768), 'flowers_dev_emb': (957, 768), 'cars_dev_emb': (967, 768), 'food_dev_emb': (985, 768), 'caltech_dev_emb': (1024, 768)}
+02:24:44 eval b32_ALL8F 끝
+02:24:44 G6 CHIP DONE load=0.09 0.04 0.01
