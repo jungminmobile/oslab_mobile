@@ -1,0 +1,22 @@
+{
+ "date": "2026-10-22T06:58:23",
+ "files": {
+  "M2rot_fp32": {
+   "file": "siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad.onnx",
+   "bytes": 371605898,
+   "sha256": "16ef696e8016f4d1f85f1cafc1d98d32882a813d83e75c179f2cfffa55c36401",
+   "expect_prefix": "16ef696e",
+   "expect_bytes": 371605898,
+   "ok": true
+  },
+  "O": {
+   "file": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+   "bytes": 96180230,
+   "sha256": "e84c3727f51e3b97cd59d9ab9604e01acc78f81493926a0696fbf96dc9c60f9e",
+   "expect_prefix": "e84c3727",
+   "expect_bytes": null,
+   "ok": true
+  }
+ },
+ "G0_pass": true
+}

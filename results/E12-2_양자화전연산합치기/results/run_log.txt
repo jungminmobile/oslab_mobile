@@ -1,0 +1,160 @@
+2026-10-22  6:58:20.95 START env 
+{"date": "2026-10-22T06:58:23", "files": {"M2rot_fp32": {"file": "siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad.onnx", "bytes": 371605898, "sha256": "16ef696e8016f4d1f85f1cafc1d98d32882a813d83e75c179f2cfffa55c36401", "expect_prefix": "16ef696e", "expect_bytes": 371605898, "ok": true}, "O": {"file": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx", "bytes": 96180230, "sha256": "e84c3727f51e3b97cd59d9ab9604e01acc78f81493926a0696fbf96dc9c60f9e", "expect_prefix": "e84c3727", "expect_bytes": null, "ok": true}}, "G0_pass": true}
+2026-10-22  6:58:23.50 DONE env 
+2026-10-22  6:58:23.53 START diag 
+optimized LN 25 SLN 1
+{
+ "Add(from Transpose,init) consumers=2 same_shape=None": 1,
+ "Add(from Add,Add) consumers=2 same_shape=True": 23,
+ "Add(from init,DequantizeLinear) consumers=2 same_shape=None": 1
+}
+RAW siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad.onnx LN 26 {
+ "Add(from Transpose,init) consumers=2 same_shape=None": 1,
+ "Add(from Add,Add) consumers=2 same_shape=True": 23,
+ "Add(from Add,Add) consumers=1 same_shape=True": 1,
+ "Add(from init,MatMul) consumers=2 same_shape=None": 1
+}
+2026-10-22  6:58:29.12 DONE diag 
+2026-10-22  6:59:01.83 START fuse 
+{"LayerNormalization_before": 26, "LayerNormalization_after": 2, "SkipLayerNormalization_after": 24, "MatMul_before": 79, "MatMul_after": 79, "attention_ops_after": {}, "fused_operator_statistics": {"EmbedLayerNormalization": 0, "Attention": 0, "MultiHeadAttention": 0, "Gelu": 0, "FastGelu": 0, "BiasGelu": 13, "GemmFastGelu": 0, "LayerNormalization": 2, "SimplifiedLayerNormalization": 0, "SkipLayerNormalization": 24, "SkipSimplifiedLayerNormalization": 0, "RotaryEmbedding": 0, "QOrderedAttention": 0, "QOrderedGelu": 0, "QOrderedLayerNormalization": 0, "QOrderedMatMul": 0}}
+2026-10-22  6:59:06.40 DONE fuse 
+2026-10-22  6:59:11.84 START equal 
+a done 100.9s
+b done 103.5s
+pets_dev {"max_abs_diff": 4.470348358154297e-07, "min_cos": 0.9999998807907104, "pred_same": 1.0, "top1_a": 93.5, "top1_b": 93.5}
+flowers_dev {"max_abs_diff": 4.3958425521850586e-07, "min_cos": 0.9999998211860657, "pred_same": 1.0, "top1_a": 85.0, "top1_b": 85.0}
+cars_dev {"max_abs_diff": 5.364418029785156e-07, "min_cos": 0.9999998807907104, "pred_same": 1.0, "top1_a": 93.5, "top1_b": 93.5}
+food_dev {"max_abs_diff": 4.3958425521850586e-07, "min_cos": 0.9999998211860657, "pred_same": 1.0, "top1_a": 87.5, "top1_b": 87.5}
+caltech_dev {"max_abs_diff": 6.453483365476131e-07, "min_cos": 0.9999997615814209, "pred_same": 1.0, "top1_a": 95.0, "top1_b": 95.0}
+min_cos 0.9999997615814209 agree 1.0 G2b_pass True
+2026-10-22  7:02:36.94 DONE equal 
+2026-10-22  7:03:56.36 START quant 
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Finding optimal threshold for each tensor using 'percentile' algorithm ...
+Number of tensors : 184
+Number of histogram bins : 2048
+Percentile : (0.0010000000000047748,99.999)
+saved siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_E12-2_B0.onnx  91.7 MiB  (121s), calib seen per pass=[256]
+{"ops": {"Add": 96, "QuantizeLinear": 79, "QLinearMatMul": 79, "DequantizeLinear": 66, "Transpose": 53, "Mul": 44, "Squeeze": 38, "Sub": 31, "Reshape": 29, "Concat": 28, "Gather": 28, "Unsqueeze": 27, "LayerNormalization": 25, "Shape": 14, "Split": 13, "com.microsoft.QLinearSoftmax": 13, "com.microsoft.BiasGelu": 13, "com.microsoft.nchwc.Conv": 1, "com.microsoft.nchwc.ReorderOutput": 1, "Slice": 1, "com.microsoft.SkipLayerNormalization": 1, "Equal": 1, "Where": 1, "Expand": 1}, "int_kernel_ops": {"QLinearMatMul": 79, "com.microsoft.QLinearSoftmax": 13}, "qdq_ops": {"QuantizeLinear": 79, "DequantizeLinear": 66}, "float_compute_ops": {"LayerNormalization": 25}}
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Collecting tensor data and making histogram ...
+Finding optimal threshold for each tensor using 'percentile' algorithm ...
+Number of tensors : 184
+Number of histogram bins : 2048
+Percentile : (0.0010000000000047748,99.999)
+saved siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_E12-2fused_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_E12-2_B1.onnx  91.7 MiB  (123s), calib seen per pass=[256]
+{"ops": {"QuantizeLinear": 79, "QLinearMatMul": 79, "DequantizeLinear": 66, "Transpose": 53, "Add": 50, "Mul": 44, "Squeeze": 38, "Sub": 31, "Concat": 28, "Reshape": 28, "Gather": 28, "Unsqueeze": 27, "com.microsoft.SkipLayerNormalization": 24, "Shape": 14, "Split": 13, "com.microsoft.QLinearSoftmax": 13, "com.microsoft.BiasGelu": 13, "LayerNormalization": 2, "com.microsoft.nchwc.Conv": 1, "com.microsoft.nchwc.ReorderOutput": 1, "Slice": 1, "Equal": 1, "Where": 1, "Expand": 1}, "int_kernel_ops": {"QLinearMatMul": 79, "com.microsoft.QLinearSoftmax": 13}, "qdq_ops": {"QuantizeLinear": 79, "DequantizeLinear": 66}, "float_compute_ops": {"LayerNormalization": 2}}
+2026-10-22  7:08:18.24 DONE quant 
+2026-10-22  7:09:42.25 START smoke 
+B1 rep0 C0 peak=198.7 infer=198.7 create=160.2 priv=234.4 base=45.4
+SUMMARY B1 C0 {"base_MiB": 45.4, "base_peak_MiB": 45.4, "create_peak_MiB": 160.2, "create_wset_MiB": 155.8, "create_private_MiB": 170.2, "infer_wset_max_MiB": 198.7, "infer_private_max_MiB": 234.4, "peak_MiB": 198.7} dPeak% 0.0 all_lower None
+S0 #0 B1 4T C0 p50=41.347 ms p95=41.999 (0.7s)
+SESSION 0 DONE 07:09:45
+2026-10-22  7:09:45.94 DONE smoke 
+2026-10-22  7:10:01.20 START acc 
+  fp32 cifar_A top1=76.90
+  fp32 pets_dev top1=93.33
+  fp32 flowers_dev top1=86.73
+  fp32 cars_dev top1=93.80
+  fp32 food_dev top1=89.44
+  fp32 caltech_dev top1=95.02
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 cifar_A top1=72.60
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 pets_dev top1=92.93
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 flowers_dev top1=86.31
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 cars_dev top1=93.80
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 food_dev top1=89.04
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 caltech_dev top1=95.12
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_E12-2fused_ cifar_A top1=72.00
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_E12-2fused_ pets_dev top1=92.83
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_E12-2fused_ flowers_dev top1=86.52
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_E12-2fused_ cars_dev top1=93.80
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_E12-2fused_ food_dev top1=88.63
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_E12-2fused_ caltech_dev top1=95.61
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 cifar_A top1=72.60
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 pets_dev top1=92.93
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 flowers_dev top1=86.31
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 cars_dev top1=93.80
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 food_dev top1=89.04
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 caltech_dev top1=95.12
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_E12-2_B0.onnx", "hr_dtop1": -0.23, "hr_dtop1_ci95": [-0.64, 0.18], "hr_cos": 0.9757, "baseline_class": "≤0.5%p"}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_E12-2fused_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_E12-2_B1.onnx", "hr_dtop1": -0.19, "hr_dtop1_ci95": [-0.63, 0.22], "hr_cos": 0.9757, "baseline_class": "≤0.5%p"}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx", "hr_dtop1": -0.23, "hr_dtop1_ci95": [-0.64, 0.18], "hr_cos": 0.9757, "baseline_class": "≤0.5%p"}
+pair Mul_hc16_rr_E12-2_B0 Mul_hc16_rr_E12-2_B1 0.04 [-0.23, 0.3]
+pair Mul_hc16_rr_E12-2_B0 s-MatMul_hc16_rr_all 0.0 [0.0, 0.0]
+pair Mul_hc16_rr_E12-2_B1 s-MatMul_hc16_rr_all -0.04 [-0.3, 0.23]
+2026-10-22  7:24:21.52 DONE acc 
+2026-10-22  7:24:21.54 START mem 
+B0 rep0 C0 peak=227.2 infer=227.2 create=160.5 priv=235.2 base=45.5
+B0 rep1 C0 peak=228.2 infer=228.2 create=160.4 priv=236.4 base=45.5
+B0 rep2 C0 peak=227.7 infer=227.7 create=160.5 priv=235.9 base=45.7
+SUMMARY B0 C0 {"base_MiB": 45.5, "base_peak_MiB": 45.5, "create_peak_MiB": 160.5, "create_wset_MiB": 157.3, "create_private_MiB": 171.7, "infer_wset_max_MiB": 227.7, "infer_private_max_MiB": 235.9, "peak_MiB": 227.7} dPeak% 0.0 all_lower None
+B1 rep0 C0 peak=226.6 infer=226.6 create=160.0 priv=234.8 base=45.5
+B1 rep1 C0 peak=225.3 infer=225.3 create=160.5 priv=233.6 base=45.6
+B1 rep2 C0 peak=226.6 infer=226.6 create=160.0 priv=234.8 base=45.5
+SUMMARY B1 C0 {"base_MiB": 45.5, "base_peak_MiB": 45.5, "create_peak_MiB": 160.0, "create_wset_MiB": 156.2, "create_private_MiB": 170.6, "infer_wset_max_MiB": 226.6, "infer_private_max_MiB": 234.8, "peak_MiB": 226.6} dPeak% 0.0 all_lower None
+2026-10-22  7:24:40.01 DONE mem 
+2026-10-22  7:27:15.13 START speed1 
+S1 #0 O 1T C0 p50=114.035 ms p95=115.733 (25.7s)
+S1 #1 O 2T C0 p50=63.146 ms p95=66.728 (14.5s)
+S1 #2 O 4T C0 p50=42.131 ms p95=43.525 (9.9s)
+S1 #3 B0 1T C0 p50=114.502 ms p95=118.783 (25.9s)
+S1 #4 B0 2T C0 p50=63.631 ms p95=66.936 (14.7s)
+S1 #5 B0 4T C0 p50=42.459 ms p95=43.826 (9.9s)
+S1 #6 B1 1T C0 p50=113.234 ms p95=115.462 (25.5s)
+S1 #7 B1 2T C0 p50=62.639 ms p95=63.799 (14.4s)
+S1 #8 B1 4T C0 p50=41.758 ms p95=47.639 (9.8s)
+SESSION 1 DONE 07:29:47
+2026-10-22  7:29:47.53 DONE speed1 
+2026-10-22  7:31:47.75 START speed2 
+S2 #0 B0 1T C0 p50=114.093 ms p95=115.571 (25.7s)
+S2 #1 B0 2T C0 p50=63.046 ms p95=64.466 (14.5s)
+S2 #2 B0 4T C0 p50=42.105 ms p95=48.693 (10.0s)
+S2 #3 B1 1T C0 p50=115.319 ms p95=118.183 (25.9s)
+S2 #4 B1 2T C0 p50=62.823 ms p95=66.356 (14.4s)
+S2 #5 B1 4T C0 p50=42.139 ms p95=48.051 (9.9s)
+S2 #6 O 1T C0 p50=114.721 ms p95=119.332 (26.1s)
+S2 #7 O 2T C0 p50=63.328 ms p95=64.858 (14.6s)
+S2 #8 O 4T C0 p50=42.576 ms p95=48.661 (10.0s)
+SESSION 2 DONE 07:34:20
+2026-10-22  7:34:20.95 DONE speed2 
+2026-10-22  7:36:21.16 START speed3 
+S3 #0 B1 1T C0 p50=113.91 ms p95=118.501 (25.8s)
+S3 #1 B1 2T C0 p50=62.629 ms p95=66.417 (14.4s)
+S3 #2 B1 4T C0 p50=41.597 ms p95=43.445 (9.7s)
+S3 #3 O 1T C0 p50=114.447 ms p95=117.215 (25.8s)
+S3 #4 O 2T C0 p50=63.55 ms p95=66.966 (14.6s)
+S3 #5 O 4T C0 p50=42.255 ms p95=44.498 (10.0s)
+S3 #6 B0 1T C0 p50=114.385 ms p95=118.22 (25.8s)
+S3 #7 B0 2T C0 p50=63.476 ms p95=66.353 (14.6s)
+S3 #8 B0 4T C0 p50=42.291 ms p95=48.614 (10.0s)
+SESSION 3 DONE 07:38:54
+2026-10-22  7:38:54.03 DONE speed3 

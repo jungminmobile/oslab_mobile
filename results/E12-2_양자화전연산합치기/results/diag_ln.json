@@ -1,0 +1,2005 @@
+{
+ "date": "2026-10-22T06:58:24",
+ "model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+ "combo": "C0",
+ "ort": "1.25.0",
+ "git": {
+  "commit": "af904a6",
+  "branch": "jungmin/e12-runtime",
+  "dirty": true
+ },
+ "optimized": {
+  "ops": {
+   "Add": 96,
+   "QuantizeLinear": 79,
+   "QLinearMatMul": 79,
+   "DequantizeLinear": 66,
+   "Transpose": 53,
+   "Mul": 44,
+   "Squeeze": 38,
+   "Sub": 31,
+   "Reshape": 29,
+   "Concat": 28,
+   "Gather": 28,
+   "Unsqueeze": 27,
+   "LayerNormalization": 25,
+   "Shape": 14,
+   "Split": 13,
+   "com.microsoft.QLinearSoftmax": 13,
+   "com.microsoft.BiasGelu": 13,
+   "com.microsoft.nchwc.Conv": 1,
+   "com.microsoft.nchwc.ReorderOutput": 1,
+   "Slice": 1,
+   "com.microsoft.SkipLayerNormalization": 1,
+   "Equal": 1,
+   "Where": 1,
+   "Expand": 1
+  },
+  "n_LayerNormalization": 25,
+  "n_SkipLayerNormalization": 1,
+  "ln_patterns": {
+   "Add(from Transpose,init) consumers=2 same_shape=None": 1,
+   "Add(from Add,Add) consumers=2 same_shape=True": 23,
+   "Add(from init,DequantizeLinear) consumers=2 same_shape=None": 1
+  },
+  "ln_nodes": [
+   {
+    "ln": "/trunk/blocks.0/norm1/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add",
+    "add_inputs": [
+     {
+      "name": "/trunk/patch_embed/Transpose_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Transpose"
+     },
+     {
+      "name": "trunk.t.pos_embed",
+      "init": true,
+      "shape": null,
+      "from": "init"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": null,
+    "pattern": "Add(from Transpose,init) consumers=2 same_shape=None"
+   },
+   {
+    "ln": "/trunk/blocks.0/norm2/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/blocks.0/Add",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/blocks.0/attn/proj/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/blocks.1/norm1/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/blocks.0/Add_1",
+    "add_inputs": [
+     {
+      "name": "/trunk/blocks.0/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/blocks.0/mlp/fc2/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/blocks.1/norm2/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/blocks.1/Add",
+    "add_inputs": [
+     {
+      "name": "/trunk/blocks.0/Add_1_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/blocks.1/attn/proj/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/blocks.2/norm1/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/blocks.1/Add_1",
+    "add_inputs": [
+     {
+      "name": "/trunk/blocks.1/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/blocks.1/mlp/fc2/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/blocks.2/norm2/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/blocks.2/Add",
+    "add_inputs": [
+     {
+      "name": "/trunk/blocks.1/Add_1_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/blocks.2/attn/proj/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/blocks.3/norm1/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/blocks.2/Add_1",
+    "add_inputs": [
+     {
+      "name": "/trunk/blocks.2/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/blocks.2/mlp/fc2/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/blocks.3/norm2/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/blocks.3/Add",
+    "add_inputs": [
+     {
+      "name": "/trunk/blocks.2/Add_1_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/blocks.3/attn/proj/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/blocks.4/norm1/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/blocks.3/Add_1",
+    "add_inputs": [
+     {
+      "name": "/trunk/blocks.3/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/blocks.3/mlp/fc2/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/blocks.4/norm2/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/blocks.4/Add",
+    "add_inputs": [
+     {
+      "name": "/trunk/blocks.3/Add_1_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/blocks.4/attn/proj/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm1/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/blocks.4/Add_1",
+    "add_inputs": [
+     {
+      "name": "/trunk/blocks.4/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/blocks.4/mlp/fc2/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm2/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_3",
+    "add_inputs": [
+     {
+      "name": "/trunk/blocks.4/Add_1_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/proj/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm1_1/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_5",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_3_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/mlp/fc2/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm2_1/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_8",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_5_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/proj_1/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm1_2/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_10",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_8_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/mlp/fc2_1/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm2_2/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_13",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_10_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/proj_2/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm1_3/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_15",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_13_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/mlp/fc2_2/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm2_3/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_18",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_15_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/proj_3/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm1_4/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_20",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_18_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/mlp/fc2_3/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm2_4/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_25",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_20_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/proj_4/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm1_5/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_27",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_25_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/mlp/fc2_4/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm2_5/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_32",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_27_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/proj_5/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm1_6/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_34",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_32_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/mlp/fc2_5/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm2_6/LayerNormalization",
+    "in_shape": [
+     "batch",
+     196,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/Add_39",
+    "add_inputs": [
+     {
+      "name": "/trunk/Add_34_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     },
+     {
+      "name": "/trunk/proj_6/Add_output_0",
+      "init": false,
+      "shape": [
+       "batch",
+       196,
+       768
+      ],
+      "from": "Add"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "SkipLayerNormalization"
+    ],
+    "same_shape": true,
+    "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+   },
+   {
+    "ln": "/trunk/norm_1/LayerNormalization",
+    "in_shape": [
+     "batch",
+     1,
+     768
+    ],
+    "producer": "Add",
+    "producer_name": "/trunk/proj_7/Add",
+    "add_inputs": [
+     {
+      "name": "trunk.t.attn_pool.proj.bias",
+      "init": true,
+      "shape": null,
+      "from": "init"
+     },
+     {
+      "name": "/trunk/proj_7/MatMul_output_0_DequantizeLinear_Output",
+      "init": false,
+      "shape": null,
+      "from": "DequantizeLinear"
+     }
+    ],
+    "add_out_consumers": [
+     "LayerNormalization",
+     "Add"
+    ],
+    "same_shape": null,
+    "pattern": "Add(from init,DequantizeLinear) consumers=2 same_shape=None"
+   }
+  ]
+ },
+ "raw": {
+  "siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad.onnx": {
+   "ops": {
+    "Constant": 248,
+    "Add": 123,
+    "MatMul": 79,
+    "Mul": 71,
+    "Identity": 63,
+    "Unsqueeze": 54,
+    "Transpose": 41,
+    "Squeeze": 38,
+    "Sub": 31,
+    "Shape": 29,
+    "Concat": 29,
+    "Reshape": 29,
+    "Gather": 28,
+    "LayerNormalization": 26,
+    "Split": 13,
+    "Softmax": 13,
+    "Div": 13,
+    "Erf": 13,
+    "Conv": 1,
+    "Slice": 1,
+    "ConstantOfShape": 1,
+    "Equal": 1,
+    "Where": 1,
+    "Expand": 1
+   },
+   "n_LayerNormalization": 26,
+   "n_SkipLayerNormalization": 0,
+   "ln_patterns": {
+    "Add(from Transpose,init) consumers=2 same_shape=None": 1,
+    "Add(from Add,Add) consumers=2 same_shape=True": 23,
+    "Add(from Add,Add) consumers=1 same_shape=True": 1,
+    "Add(from init,MatMul) consumers=2 same_shape=None": 1
+   },
+   "ln_nodes": [
+    {
+     "ln": "/trunk/blocks.0/norm1/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add",
+     "add_inputs": [
+      {
+       "name": "/trunk/patch_embed/Transpose_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Transpose"
+      },
+      {
+       "name": "trunk.t.pos_embed",
+       "init": true,
+       "shape": null,
+       "from": "init"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": null,
+     "pattern": "Add(from Transpose,init) consumers=2 same_shape=None"
+    },
+    {
+     "ln": "/trunk/blocks.0/norm2/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/blocks.0/Add",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/blocks.0/attn/proj/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/blocks.1/norm1/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/blocks.0/Add_1",
+     "add_inputs": [
+      {
+       "name": "/trunk/blocks.0/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/blocks.0/mlp/fc2/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/blocks.1/norm2/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/blocks.1/Add",
+     "add_inputs": [
+      {
+       "name": "/trunk/blocks.0/Add_1_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/blocks.1/attn/proj/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/blocks.2/norm1/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/blocks.1/Add_1",
+     "add_inputs": [
+      {
+       "name": "/trunk/blocks.1/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/blocks.1/mlp/fc2/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/blocks.2/norm2/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/blocks.2/Add",
+     "add_inputs": [
+      {
+       "name": "/trunk/blocks.1/Add_1_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/blocks.2/attn/proj/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/blocks.3/norm1/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/blocks.2/Add_1",
+     "add_inputs": [
+      {
+       "name": "/trunk/blocks.2/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/blocks.2/mlp/fc2/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/blocks.3/norm2/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/blocks.3/Add",
+     "add_inputs": [
+      {
+       "name": "/trunk/blocks.2/Add_1_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/blocks.3/attn/proj/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/blocks.4/norm1/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/blocks.3/Add_1",
+     "add_inputs": [
+      {
+       "name": "/trunk/blocks.3/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/blocks.3/mlp/fc2/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/blocks.4/norm2/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/blocks.4/Add",
+     "add_inputs": [
+      {
+       "name": "/trunk/blocks.3/Add_1_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/blocks.4/attn/proj/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm1/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/blocks.4/Add_1",
+     "add_inputs": [
+      {
+       "name": "/trunk/blocks.4/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/blocks.4/mlp/fc2/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm2/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_3",
+     "add_inputs": [
+      {
+       "name": "/trunk/blocks.4/Add_1_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/proj/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm1_1/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_5",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_3_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/mlp/fc2/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm2_1/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_8",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_5_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/proj_1/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm1_2/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_10",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_8_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/mlp/fc2_1/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm2_2/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_13",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_10_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/proj_2/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm1_3/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_15",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_13_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/mlp/fc2_2/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm2_3/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_18",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_15_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/proj_3/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm1_4/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_20",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_18_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/mlp/fc2_3/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm2_4/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_25",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_20_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/proj_4/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm1_5/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_27",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_25_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/mlp/fc2_4/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm2_5/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_32",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_27_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/proj_5/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm1_6/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_34",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_32_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/mlp/fc2_5/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm2_6/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_39",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_34_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/proj_6/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=2 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm/LayerNormalization",
+     "in_shape": [
+      "batch",
+      196,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/Add_41",
+     "add_inputs": [
+      {
+       "name": "/trunk/Add_39_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      },
+      {
+       "name": "/trunk/mlp/fc2_6/Add_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        196,
+        768
+       ],
+       "from": "Add"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization"
+     ],
+     "same_shape": true,
+     "pattern": "Add(from Add,Add) consumers=1 same_shape=True"
+    },
+    {
+     "ln": "/trunk/norm_1/LayerNormalization",
+     "in_shape": [
+      "batch",
+      1,
+      768
+     ],
+     "producer": "Add",
+     "producer_name": "/trunk/proj_7/Add",
+     "add_inputs": [
+      {
+       "name": "trunk.t.attn_pool.proj.bias",
+       "init": true,
+       "shape": null,
+       "from": "init"
+      },
+      {
+       "name": "/trunk/proj_7/MatMul_output_0",
+       "init": false,
+       "shape": [
+        "batch",
+        1,
+        768
+       ],
+       "from": "MatMul"
+      }
+     ],
+     "add_out_consumers": [
+      "LayerNormalization",
+      "Add"
+     ],
+     "same_shape": null,
+     "pattern": "Add(from init,MatMul) consumers=2 same_shape=None"
+    }
+   ]
+  }
+ }
+}

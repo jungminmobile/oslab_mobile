@@ -1,0 +1,54 @@
+{
+ "date": "2026-10-22T07:02:36",
+ "a": "siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad.onnx",
+ "b": "siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad_E12-2fused.onnx",
+ "n_per_dataset": 200,
+ "batch": 1,
+ "threads": 4,
+ "combo": "C0",
+ "per_dataset": {
+  "pets_dev": {
+   "max_abs_diff": 4.470348358154297e-07,
+   "min_cos": 0.9999998807907104,
+   "pred_same": 1.0,
+   "top1_a": 93.5,
+   "top1_b": 93.5
+  },
+  "flowers_dev": {
+   "max_abs_diff": 4.3958425521850586e-07,
+   "min_cos": 0.9999998211860657,
+   "pred_same": 1.0,
+   "top1_a": 85.0,
+   "top1_b": 85.0
+  },
+  "cars_dev": {
+   "max_abs_diff": 5.364418029785156e-07,
+   "min_cos": 0.9999998807907104,
+   "pred_same": 1.0,
+   "top1_a": 93.5,
+   "top1_b": 93.5
+  },
+  "food_dev": {
+   "max_abs_diff": 4.3958425521850586e-07,
+   "min_cos": 0.9999998211860657,
+   "pred_same": 1.0,
+   "top1_a": 87.5,
+   "top1_b": 87.5
+  },
+  "caltech_dev": {
+   "max_abs_diff": 6.453483365476131e-07,
+   "min_cos": 0.9999997615814209,
+   "pred_same": 1.0,
+   "top1_a": 95.0,
+   "top1_b": 95.0
+  }
+ },
+ "min_cos": 0.9999997615814209,
+ "pred_agree": 1.0,
+ "git": {
+  "commit": "af904a6",
+  "branch": "jungmin/e12-runtime",
+  "dirty": true
+ },
+ "G2b_pass": true
+}
