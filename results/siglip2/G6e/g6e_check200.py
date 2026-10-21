@@ -5,6 +5,7 @@
 """
 import argparse
 import json
+import subprocess
 from datetime import datetime
 from pathlib import Path
 
@@ -45,7 +46,9 @@ def main():
             bit_all &= r["bit_equal_ref"]
         rows.append(r)
         print(json.dumps(r, ensure_ascii=False))
-    out = {"date": datetime.now().isoformat(timespec="seconds"), "what": "g6e_check200", "tag": a.tag, "chip": a.chip, "emu": a.emu, "bitref": a.bitref,
+    git = lambda *c: subprocess.run(["git", "-C", str(Path(__file__).resolve().parent), *c], capture_output=True, text=True).stdout.strip()
+    out = {"date": datetime.now().isoformat(timespec="seconds"), "what": "g6e_check200", "tag": a.tag,
+           "commit": git("rev-parse", "--short", "HEAD"), "dirty": bool(git("status", "--porcelain", "--untracked-files=no")), "chip": a.chip, "emu": a.emu, "bitref": a.bitref,
            "normal": ok_all if e is not None else None, "bit_equal_all": bit_all if b is not None else None, "tol": TOL, "rows": rows}
     print(f"== {a.tag}: 정상(6개 모두 |Δcos| ≤ {TOL}) = {out['normal']}, 비트 동일 = {out['bit_equal_all']}")
     with open(a.out, "a", encoding="utf-8") as f:
