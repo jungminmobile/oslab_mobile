@@ -95,22 +95,29 @@ def main():
     ap.add_argument("--threads", nargs="+", type=int, default=[1, 4])
     ap.add_argument("--warmup", type=int, default=10)
     ap.add_argument("--n", type=int, default=30)
+    ap.add_argument("--zoo-size", type=int, default=0,
+                    help="(O1, 기본 꺼짐) 0이 아니면 입력을 G6 Zoo 전처리 캐시 dev_zoo<크기>/pets_dev_pix.npy로 (B32 256 입력용). 모델 이름은 절대 경로도 받는다")
     a = ap.parse_args()
     out = S.require_results_dir()
     out.mkdir(parents=True, exist_ok=True)
     env = env_info.collect()
     env_info.write_env(out, env)
-    x = np.ascontiguousarray(np.load(RC.CACHE_DIR / "pets_dev_x.npy", mmap_mode="r")[:a.warmup + a.n]).astype(np.float32)
+    if a.zoo_size:
+        work = Path(os.environ.get("G6_WORK", Path.home() / "siglip2_work" / "g6"))
+        pix = np.load(work / f"dev_zoo{a.zoo_size}" / "pets_dev_pix.npy", mmap_mode="r")[:a.warmup + a.n]
+        x = np.ascontiguousarray((np.asarray(pix, np.float32) / 127.5 - 1.0).transpose(0, 3, 1, 2))
+    else:
+        x = np.ascontiguousarray(np.load(RC.CACHE_DIR / "pets_dev_x.npy", mmap_mode="r")[:a.warmup + a.n]).astype(np.float32)
     rows = []
     for t in a.threads:
         for spec in a.models:
             nm, f = spec.split("=", 1)
-            r = {"model": nm, "file": f, **profile(RC.onnx_path(f), t, x, a.warmup, a.n)}
+            r = {"model": nm, "file": f, **profile(Path(f) if os.path.isabs(f) else RC.onnx_path(f), t, x, a.warmup, a.n)}
             rows.append(r)
             print(f"t={t} {nm:10s} wall {r['wall_ms_per_img_profiled']:7.1f} ms  kernel {r['kernel_ms_per_img']:7.1f} ms  "
                   + "  ".join(f"{k}={v}" for k, v in list(r['by_group_ms'].items())[:6]), flush=True)
     res = {"date": datetime.now().isoformat(timespec="seconds"), "commit": env["git"]["commit"], "dirty": env["git"]["dirty"],
-           "warmup": a.warmup, "n": a.n, "data": f"pets_dev[0:{a.warmup + a.n}]", **env_info.flat(env), "rows": rows}
+           "warmup": a.warmup, "n": a.n, "data": f"pets_dev[0:{a.warmup + a.n}]" + (f" zoo{a.zoo_size}" if a.zoo_size else ""), **env_info.flat(env), "rows": rows}
     with open(out / "profile.jsonl", "a", encoding="utf-8") as f:
         f.write(json.dumps(res, ensure_ascii=False) + "\n")
 
