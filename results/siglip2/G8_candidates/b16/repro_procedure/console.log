@@ -1,0 +1,22 @@
+18:36:46 폴더 D:/mokerton/repro_check_1021_1836
+total 1168052
+drwxr-xr-x 1 qaz43 197609         0 Oct 21 18:39 .
+drwxr-xr-x 1 qaz43 197609         0 Oct 21 18:36 ..
+-rw-r--r-- 1 qaz43 197609      1018 Oct 21 18:38 SHA256SUMS.txt
+-rw-r--r-- 1 qaz43 197609 121352710 Oct 21 18:38 caltech_dev.npz
+-rw-r--r-- 1 qaz43 197609 121641478 Oct 21 18:38 cars_dev.npz
+-rw-r--r-- 1 qaz43 197609 121346566 Oct 21 18:38 cifar_A.npz
+-rw-r--r-- 1 qaz43 197609 121352710 Oct 21 18:38 flowers_dev.npz
+-rw-r--r-- 1 qaz43 197609 121349638 Oct 21 18:38 food_dev.npz
+-rw-r--r-- 1 qaz43 197609 121153030 Oct 21 18:38 pets_dev.npz
+-rw-r--r-- 1 qaz43 197609      5336 Oct 21 18:38 portable_eval.py
+-rw-r--r-- 1 qaz43 197609 371672881 Oct 21 18:39 siglip2_image_fp32.onnx
+-rw-r--r-- 1 qaz43 197609  96180230 Oct 21 18:39 siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx
+333cad08e68dc85a release/siglip2_image_fp32.onnx
+e84c3727f51e3b97 release/siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx
+18:50:23 rc=0
+int8 food_dev {"n": 200, "top1": 86.0, "fp32_top1": 87.5, "cos_mean": 0.9757}
+int8 caltech_dev {"n": 200, "top1": 96.0, "fp32_top1": 95.0, "cos_mean": 0.9683}
+int8 hr_dtop1 0.3 hr_cos 0.9756
+RELEASED
+int8 hr_cos 0.9756 hr_dtop1 0.3
