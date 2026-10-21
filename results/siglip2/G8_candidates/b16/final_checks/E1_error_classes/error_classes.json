@@ -1,0 +1,508 @@
+{
+ "date": "2026-10-21T18:16:45",
+ "commit": "0dacc5b",
+ "dirty": true,
+ "preds": {
+  "final": "../results/siglip2/G8_candidates/b16/final_checks/E1_devfull/pred_siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.npz"
+ },
+ "sets": {
+  "cifar_A": {
+   "n": 1000,
+   "fp32_correct": 769,
+   "final": {
+    "lost": 73,
+    "gained": 30,
+    "net_pp": -4.3,
+    "top_net_loss_classes": [
+     [
+      "64",
+      4
+     ],
+     [
+      "75",
+      3
+     ],
+     [
+      "56",
+      3
+     ],
+     [
+      "52",
+      3
+     ],
+     [
+      "74",
+      3
+     ],
+     [
+      "59",
+      3
+     ],
+     [
+      "35",
+      2
+     ],
+     [
+      "97",
+      2
+     ]
+    ],
+    "top_confusions": [
+     [
+      "64",
+      "36",
+      3
+     ],
+     [
+      "59",
+      "52",
+      3
+     ],
+     [
+      "75",
+      "36",
+      2
+     ],
+     [
+      "85",
+      "58",
+      1
+     ],
+     [
+      "35",
+      "11",
+      1
+     ],
+     [
+      "97",
+      "36",
+      1
+     ],
+     [
+      "71",
+      "69",
+      1
+     ],
+     [
+      "63",
+      "29",
+      1
+     ]
+    ],
+    "classes_with_loss": 42
+   }
+  },
+  "pets_dev": {
+   "n": 990,
+   "fp32_correct": 924,
+   "final": {
+    "lost": 15,
+    "gained": 11,
+    "net_pp": -0.4,
+    "top_net_loss_classes": [
+     [
+      "english cocker spaniel",
+      1
+     ],
+     [
+      "american bulldog",
+      1
+     ],
+     [
+      "german shorthaired",
+      1
+     ],
+     [
+      "leonberger",
+      1
+     ],
+     [
+      "scottish terrier",
+      1
+     ],
+     [
+      "siamese",
+      1
+     ],
+     [
+      "beagle",
+      1
+     ],
+     [
+      "british shorthair",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "american bulldog",
+      "staffordshire bull terrier",
+      2
+     ],
+     [
+      "english cocker spaniel",
+      "newfoundland",
+      1
+     ],
+     [
+      "german shorthaired",
+      "staffordshire bull terrier",
+      1
+     ],
+     [
+      "leonberger",
+      "keeshond",
+      1
+     ],
+     [
+      "scottish terrier",
+      "yorkshire terrier",
+      1
+     ],
+     [
+      "siamese",
+      "birman",
+      1
+     ],
+     [
+      "beagle",
+      "basset hound",
+      1
+     ],
+     [
+      "american bulldog",
+      "american pit bull terrier",
+      1
+     ]
+    ],
+    "classes_with_loss": 10
+   }
+  },
+  "flowers_dev": {
+   "n": 957,
+   "fp32_correct": 830,
+   "final": {
+    "lost": 13,
+    "gained": 9,
+    "net_pp": -0.42,
+    "top_net_loss_classes": [
+     [
+      "petunia",
+      2
+     ],
+     [
+      "marigold",
+      2
+     ],
+     [
+      "colt's foot",
+      1
+     ],
+     [
+      "californian poppy",
+      1
+     ],
+     [
+      "bishop of llandaff",
+      1
+     ],
+     [
+      "cyclamen",
+      1
+     ],
+     [
+      "canna lily",
+      1
+     ],
+     [
+      "lotus",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "petunia",
+      "mexican petunia",
+      2
+     ],
+     [
+      "marigold",
+      "english marigold",
+      2
+     ],
+     [
+      "colt's foot",
+      "globe-flower",
+      1
+     ],
+     [
+      "californian poppy",
+      "tree poppy",
+      1
+     ],
+     [
+      "bishop of llandaff",
+      "orange dahlia",
+      1
+     ],
+     [
+      "cyclamen",
+      "siam tulip",
+      1
+     ],
+     [
+      "colt's foot",
+      "silverbush",
+      1
+     ],
+     [
+      "canna lily",
+      "yellow iris",
+      1
+     ]
+    ],
+    "classes_with_loss": 9
+   }
+  },
+  "cars_dev": {
+   "n": 967,
+   "fp32_correct": 907,
+   "final": {
+    "lost": 8,
+    "gained": 8,
+    "net_pp": 0.0,
+    "top_net_loss_classes": [
+     [
+      "Bentley Continental GT Coupe 2012",
+      2
+     ],
+     [
+      "Spyker C8 Convertible 2009",
+      1
+     ],
+     [
+      "Audi TT RS Coupe 2012",
+      1
+     ],
+     [
+      "BMW M6 Convertible 2010",
+      1
+     ],
+     [
+      "Chevrolet Express Cargo Van 2007",
+      1
+     ],
+     [
+      "Dodge Caliber Wagon 2012",
+      1
+     ],
+     [
+      "Aston Martin Virage Convertible 2012",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "Bentley Continental GT Coupe 2012",
+      "Bentley Continental GT Coupe 2007",
+      2
+     ],
+     [
+      "Spyker C8 Convertible 2009",
+      "Spyker C8 Coupe 2009",
+      1
+     ],
+     [
+      "Audi TT RS Coupe 2012",
+      "Audi TTS Coupe 2012",
+      1
+     ],
+     [
+      "BMW M6 Convertible 2010",
+      "BMW 6 Series Convertible 2007",
+      1
+     ],
+     [
+      "Chevrolet Express Cargo Van 2007",
+      "Chevrolet Express Van 2007",
+      1
+     ],
+     [
+      "Dodge Caliber Wagon 2012",
+      "Dodge Caliber Wagon 2007",
+      1
+     ],
+     [
+      "Aston Martin Virage Convertible 2012",
+      "Aston Martin V8 Vantage Convertible 2012",
+      1
+     ]
+    ],
+    "classes_with_loss": 7
+   }
+  },
+  "food_dev": {
+   "n": 985,
+   "fp32_correct": 881,
+   "final": {
+    "lost": 16,
+    "gained": 12,
+    "net_pp": -0.41,
+    "top_net_loss_classes": [
+     [
+      "guacamole",
+      2
+     ],
+     [
+      "gnocchi",
+      2
+     ],
+     [
+      "fried rice",
+      1
+     ],
+     [
+      "hummus",
+      1
+     ],
+     [
+      "chocolate mousse",
+      1
+     ],
+     [
+      "cheesecake",
+      1
+     ],
+     [
+      "red velvet cake",
+      1
+     ],
+     [
+      "grilled cheese sandwich",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "guacamole",
+      "ceviche",
+      1
+     ],
+     [
+      "guacamole",
+      "hummus",
+      1
+     ],
+     [
+      "fried rice",
+      "carrot cake",
+      1
+     ],
+     [
+      "hummus",
+      "omelette",
+      1
+     ],
+     [
+      "chocolate mousse",
+      "foie gras",
+      1
+     ],
+     [
+      "cheesecake",
+      "panna cotta",
+      1
+     ],
+     [
+      "red velvet cake",
+      "chocolate cake",
+      1
+     ],
+     [
+      "grilled cheese sandwich",
+      "club sandwich",
+      1
+     ]
+    ],
+    "classes_with_loss": 14
+   }
+  },
+  "caltech_dev": {
+   "n": 1024,
+   "fp32_correct": 973,
+   "final": {
+    "lost": 9,
+    "gained": 10,
+    "net_pp": 0.1,
+    "top_net_loss_classes": [
+     [
+      "wild cat",
+      2
+     ],
+     [
+      "electric guitar",
+      2
+     ],
+     [
+      "ibis",
+      1
+     ],
+     [
+      "schooner",
+      1
+     ],
+     [
+      "flamingo head",
+      1
+     ],
+     [
+      "cougar body",
+      1
+     ],
+     [
+      "crayfish",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "wild cat",
+      "leopards",
+      2
+     ],
+     [
+      "electric guitar",
+      "mandolin",
+      2
+     ],
+     [
+      "ibis",
+      "platypus",
+      1
+     ],
+     [
+      "schooner",
+      "ketch",
+      1
+     ],
+     [
+      "flamingo head",
+      "flamingo",
+      1
+     ],
+     [
+      "cougar body",
+      "wild cat",
+      1
+     ],
+     [
+      "crayfish",
+      "mayfly",
+      1
+     ]
+    ],
+    "classes_with_loss": 7
+   }
+  }
+ }
+}
