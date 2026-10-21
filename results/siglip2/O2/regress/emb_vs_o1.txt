@@ -1,0 +1,3 @@
+o2base o1b16base True
+o2oab o1b16oab True
+o2fp o1b16fp True
