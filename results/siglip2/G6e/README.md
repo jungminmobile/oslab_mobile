@@ -10,7 +10,7 @@
 >   - 다만 ew_add38은 두 HEF 모두 경계 층(홉 0)이어서, "경계에 붙어 있다"는 조건 자체는 직접 바꿔 보지 못했다. 비트가 같으므로 배치에 따라 생기는 오류일 가능성은 매우 낮다고 본다.
 >   - 그래서 붕괴는 배치와 상관없이, compile된 계산 자체가 같은 방식으로 틀린 것으로 본다.
 > - E3(bucket + F 두 줄)과 E2(bucket 없음 + F 두 줄)는 **compile에 실패**했다.
-> - 다음에 볼 것 1순위는 DFC의 `SDK_BIT_EXACT` 에뮬레이터로 붕괴를 재현해 층별로 비교하는 것이다 (5절).
+> - **(10/22 추가) 4단계 SDK_BIT_EXACT 진단 (8절):** 규칙상 "판정 불가"다. bit-exact도 붕괴를 재현하지 못했고(B16_both 실칩과 cos 0.15~0.46), 정상인 B16_rb에서도 실칩과 비트 단위로 맞지 않았다(0.97~0.99). 내용상으로는 양자화 모델의 계산은 맞고, HEF 또는 실칩·런타임 쪽 문제로 보인다.
 
 ## 1. 1단계: 빌드 없는 진단
 
@@ -175,3 +175,76 @@ python g6e_check200.py --chip emb_b16_g6e_E1.npz --ref ~/siglip2_work/g6/ref --b
      - (f) compile 실패 건수를 4건으로 정정
      - (g) check200 줄에 커밋 해시 추가
      - (h) conv41 compile 설정이 E1에서 바뀌지 않았다는 점, cos(에뮬레이터, 실칩) 추가
+
+## 8. 4단계: SDK_BIT_EXACT 진단 (10/22, 칩·compile 안 씀, 상한 2시간)
+
+> **요약**
+> - 미리 고정한 규칙으로는 **"판정 불가"**다.
+> - SDK_BIT_EXACT는 B16_both의 **실칩 붕괴를 재현하지 못했다** (cos(bit-exact, 실칩) 0.15~0.46). bit-exact 출력은 SDK_QUANTIZED 쪽에 가깝다 (0.96~0.99).
+> - 정상인 B16_rb에서도 bit-exact와 실칩은 cos 0.97~0.99에 그쳤다. **이 DFC·칩 조합에서는 bit-exact 모드도 실칩과 비트 단위로 맞지 않는다.**
+> - 그래서 "재현됨" 조건(두 HAR 모두 실칩과 ≥ 0.999)도, "재현 안 됨" 조건(B16_both가 QUANT와 ≥ 0.999)도 만족하지 못했다.
+> - 내용상으로는 **양자화 모델의 계산은 DFC 에뮬레이터 두 종류에서 모두 정상이고, 붕괴는 compile 결과물(HEF)이나 실칩·런타임 쪽에서 생기는 것으로 보인다.**
+> - 재현되지 않았으므로 층별 비교(4번)는 하지 않고 멈췄다. 걸린 시간은 33분(02:18~02:51)이다.
+
+### 8-1. SDK_BIT_EXACT가 받는 것과 지원 범위 (출처)
+
+DFC 5.4.0(`hailo-dataflow-compiler 5.4.0`, `~/hailo10_venv`)의 설치본에는 별도 문서 파일이 없다. 그래서 설치된 소스로 확인했다.
+
+- **정의:** `hailo_sdk_client/exposed_definitions.py:133` — `#: SDK_BIT_EXACT (preview) bit exact emulation. Currently not all layers and mode are supported`
+  - 미리보기 기능이고, 모든 층을 지원하지는 않는다고 적혀 있다.
+- **받는 HAR:** `hailo_sdk_client/runner/client_runner.py` `_infer_emulator`
+  - SDK_QUANTIZED·SDK_BIT_EXACT는 상태가 `QUANTIZED_MODEL` 또는 `COMPILED_MODEL`이어야 한다. 즉 optimized HAR과 compiled HAR 둘 다 받는다.
+  - 우리는 **optimized HAR**(G6c `b16_both`·`b16_rb`의 `siglip2_m2rot_optimized.har`)을 썼다.
+  - 기본 경로는 acceleras(`sdk_backend.acceleras_inference`)다. `experimental_torch_infer`일 때만 saitama 경로를 쓴다.
+- **사용 데이터:** `sdk_backend.build_acceleras_model`은 SDK_BIT_EXACT에서 SDK_QUANTIZED와 같은 hn(`get_hn_dict`)과 같은 양자화 값(`get_params_translated`)을 쓴다. 그 뒤 `set_bit_exact()`로 정수 연산 모드를 켠다.
+  - 따라서 compile 결과물(HEF의 배치·분할)은 반영되지 않는다.
+- **층별 지원:** `acceleras/hailo_layers/base_hailo_layer.py`의 `bit_exact_supported`(모든 atomic op가 지원해야 True. 아니면 `cant support bit exact` 오류)를 B16_both HAR의 489층에 대해 조회했다 (`g6e_bitexact.py probe`).
+  - **지원하지 않는 층은 없었다.**
+  - 우리 층 종류도 모두 지원한다: 16비트 잔차 덧셈 `HailoElementwiseAdd` 54, LN 분해 `HailoReduceMean` 26·`HailoElementwiseSub` 39·`HailoFeatureMultiplierOnMac` 26·`HailoElementwiseMultOnMac` 26, 마스크 연산 `HailoElementwiseMult` 44·`HailoConst` 33, 그 밖에 `HailoConv` 75·`HailoConvAdd` 3·`HailoMatmul` 26·`HailoReduceSum` 47·`HailoReduceMax` 13·`HailoNormalization` 31·`HailoStandaloneActivation` 34 등.
+  - (참고) saitama 경로의 bit-exact 등록표에는 concat·conv·dw·ew_add·ew_mult·feature_shuffle·input·matmul·norm·output·shortcut·slice만 있다. 기본 경로가 아니라서 쓰지 않았다.
+
+### 8-2. 사진과 방법
+
+- **사진 8장:** CIFAR `cifar_A` 0~3번, 고화질 `pets_dev`·`flowers_dev`·`cars_dev`·`food_dev` 각 0번.
+  - G6c에서 실칩 출력을 이미 저장한 사진이다. 실칩 출력은 B16_both_bk(G6c dev 전체 eval)와 B16_rb_bk(G6c eval200, M2rot2와 비트 동일)에서 가져왔다.
+- **입력:** `g6c_emulate.py`와 같다 (Zoo 전처리 픽셀 x/127.5 − 1).
+- **실행 조건:** `g6e_bitexact.py run --ctx bit_exact`, 배치 1, CPU(`CUDA_VISIBLE_DEVICES=-1`, OpenBLAS 6스레드), dfc.lock 안에서 돌렸다.
+- **QUANT:** G6c `emu_b16_both.npz`·`emu_b16_rb.npz` (SDK_QUANTIZED, 같은 HAR).
+- **한 장당 시간:** 86~106초 (첫 장은 준비 포함 약 100초). 8장 × 2 HAR = 약 26분으로 1시간보다 짧아 8장 그대로 했다.
+
+### 8-3. 결과 (`bitexact.jsonl`, `g6e_bitexact_cmp.py`)
+
+| 사진 | both: BE–실칩 | both: BE–QUANT | both: QUANT–실칩 | rb: BE–실칩 | rb: BE–QUANT | rb: QUANT–실칩 | 시간(초) both / rb |
+|---|---|---|---|---|---|---|---|
+| cifar_A:0 | 0.3175 | 0.9682 | 0.3397 | 0.9657 | 0.9727 | 0.9807 | 100 / 101 |
+| cifar_A:1 | 0.3211 | 0.9886 | 0.3215 | 0.9826 | 0.9884 | 0.9813 | 90 / 88 |
+| cifar_A:2 | 0.3411 | 0.9841 | 0.3355 | 0.9868 | 0.9840 | 0.9801 | 89 / 99 |
+| cifar_A:3 | 0.1459 | 0.9609 | 0.1686 | 0.9761 | 0.9553 | 0.9742 | 88 / 106 |
+| pets_dev:0 | 0.3720 | 0.9822 | 0.3684 | 0.9889 | 0.9817 | 0.9789 | 89 / 97 |
+| flowers_dev:0 | 0.3319 | 0.9841 | 0.3481 | 0.9871 | 0.9866 | 0.9859 | 89 / 100 |
+| cars_dev:0 | 0.4584 | 0.9935 | 0.4520 | 0.9934 | 0.9938 | 0.9922 | 89 / 98 |
+| food_dev:0 | 0.4516 | 0.9762 | 0.4614 | 0.9867 | 0.9754 | 0.9821 | 86 / 99 |
+
+(BE = SDK_BIT_EXACT 출력. 값은 모두 cos. 실칩과 비트 단위로 같은 사진은 두 HAR 모두 0장)
+
+- **B16_both:** bit-exact는 실칩과 0.15~0.46으로 다르다. QUANT와는 0.96~0.99로 비슷하다. 즉 bit-exact도 "붕괴하지 않는 양자화 모델"을 계산한다.
+- **B16_rb (대조군):** bit-exact–실칩 0.966~0.993, QUANT–실칩 0.974~0.992, bit-exact–QUANT 0.955~0.994로 셋이 서로 비슷한 수준이다.
+  - 정상 모델에서도 bit-exact가 실칩을 비트 단위로 재현하지 못한다. 그래서 이 도구로는 "실칩이 계산하는 것"을 따라갈 수 없다.
+
+### 8-4. 판정과 해석
+
+- **규칙상 판정: 판정 불가.**
+  - 재현됨: 아니다. rb에서도 BE–실칩이 0.999 아래다.
+  - 재현 안 됨: 아니다. both BE–QUANT가 0.999 아래다.
+  - 판정 규칙을 정할 때 bit-exact가 실칩과 비트 단위로 맞는다고 가정했는데, 대조군에서 그 가정이 성립하지 않았다.
+- **내용상 해석:**
+  - DFC의 두 에뮬레이터(SDK_QUANTIZED, SDK_BIT_EXACT)는 B16_both를 모두 정상(FP32에 가까운 쪽)으로 계산한다. 붕괴는 실칩에서만 나타난다.
+  - 그래서 **"양자화 모델(compile 전 단계)의 계산은 맞고, compile 결과물(HEF) 또는 실칩·런타임 쪽 문제로 보인다"**고 적는다.
+  - 다만 bit-exact가 대조군에서도 실칩과 맞지 않으므로 이 결론은 강하지 않다. HEF 안에서 어느 층이 틀리는지는 이 방법으로 알 수 없다.
+- 지시대로 층별 비교와 우회 방법 시험은 하지 않았다.
+
+### 8-5. 다음에 볼 것 (5절 갱신)
+
+- 5절 1번(SDK_BIT_EXACT)은 위 결과로 끝났다.
+- 남은 방법은 5절 2~4번이다. 그중 **2번(중간 출력이 있는 HEF로 실칩 중간 출력을 직접 보기)**이 HEF 쪽 문제를 직접 볼 수 있는 유일한 방법이 됐다.
+- 4번(보정 다시 하기)은 빌드 1회로 "특정 양자화 값의 우연인지"를 가를 수 있다.
