@@ -117,7 +117,7 @@ def cmd_eval(a, out, models):
         dd = Path(a.data) / f"dev_zoo{H}"
         pix = r.pixel_domain()
         embs = {}
-        for d in SETS:
+        for d in (a.sets.split(",") if a.sets else SETS):     # --sets (G6d, 기본 전부): 데이터셋을 나눠 사이에 냉각
             x = np.load(dd / f"{d}_pix.npy", mmap_mode="r")
             if a.k:
                 x = x[: a.k]
@@ -176,6 +176,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--models", nargs="+", required=True, help="이름=HEF 경로")
     ap.add_argument("--k", type=int, default=0, help="eval: 데이터셋마다 앞 k장 (0 = 전부)")
+    ap.add_argument("--sets", default="", help="(G6d, 기본 전부) eval: 쉼표로 고른 데이터셋만")
     ap.add_argument("--batch", type=int, default=1)
     ap.add_argument("--warmup", type=int, default=20)
     ap.add_argument("--n", type=int, default=200)

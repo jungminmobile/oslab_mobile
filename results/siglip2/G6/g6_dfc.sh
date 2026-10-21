@@ -10,7 +10,8 @@ export CUDA_VISIBLE_DEVICES=-1 OPENBLAS_NUM_THREADS=1
 H=$(cd "$(dirname "$0")" && pwd); REPO=$(git -C $H rev-parse --show-toplevel)
 TAG=${TAG:?}; ONNX=${ONNX:?}; NET=${NET:?}; SIZE=${SIZE:?}
 PARSE_ONLY=${PARSE_ONLY:-0}; START=${START:-}; END=${END:-}
-HAR_IN=${HAR:-}; CALIB_DOMAIN=${CALIB_DOMAIN:-pixel}   # (G6c, 기본 꺼짐) HAR=<parse된 HAR>이면 parse를 건너뛰고 그 HAR에서 시작, CALIB_DOMAIN=normalized이면 보정 값 −1~1 검사
+HAR_IN=${HAR:-}; CALIB_DOMAIN=${CALIB_DOMAIN:-pixel}
+COMPILE_TIMEOUT=${COMPILE_TIMEOUT:-0}   # (G6d, 기본 0 = 상한 없음) 초 단위 compile 상한   # (G6c, 기본 꺼짐) HAR=<parse된 HAR>이면 parse를 건너뛰고 그 HAR에서 시작, CALIB_DOMAIN=normalized이면 보정 값 −1~1 검사
 W=$HOME/siglip2_work/g6/dfc/$TAG; LOCK=$HOME/siglip2_work/dfc.lock; mkdir -p $W
 L=$W/run_info.txt; cd $W
 log() { echo "$(date +%T) $*" | tee -a $L; }
@@ -56,7 +57,8 @@ n = [int(v) for v in re.findall(r"Using dataset with ([0-9]+) entries for calibr
 print("log counts", n); assert n and all(v == $NCAL for v in n), n
 PY
 log "calib assert OK ($NCAL)"
-mkdir -p comp && step compile bash -c "cd comp && hailo compiler ../${NET}_optimized.har --hw-arch hailo10h --output-dir . --output-har-path ${NET}_compiled.har" \
+TO=""; [ "$COMPILE_TIMEOUT" != 0 ] && TO="timeout $COMPILE_TIMEOUT"
+mkdir -p comp && step compile $TO bash -c "cd comp && hailo compiler ../${NET}_optimized.har --hw-arch hailo10h --output-dir . --output-har-path ${NET}_compiled.har" \
      || { log "COMPILE FAIL"; tail -30 compile.log | tee -a $L; exit 1; }
 HEF=$(ls comp/*.hef | head -1)
 log "hef=$HEF bytes=$(stat -c %s $HEF) sha256=$(sha256sum $HEF | cut -c1-64) contexts=$(grep -oE "_context_[0-9]+" compile.log | sort -u | wc -l)"
