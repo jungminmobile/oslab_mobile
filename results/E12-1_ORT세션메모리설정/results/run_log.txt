@@ -11,3 +11,158 @@ S0 #0 m2rot 4T C0 p50=44.006 ms p95=44.096 (0.7s)
 S0 #1 m2rot 4T C4 p50=77.971 ms p95=80.007 (0.8s)
 SESSION 0 DONE 03:34:04
 2026-10-22  3:34:04.45 DONE smoke 
+2026-10-22  3:34:37.31 START g1 
+C0 done 69.9s
+C1 done 73.7s
+C2 done 117.1s
+C3 done 69.3s
+C4 done 88.7s
+C1 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C2 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C3 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C4 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+G1_pass: True
+2026-10-22  3:41:38.21 DONE g1 
+2026-10-22  3:45:14.69 START mem_m2 
+m2rot rep0 C0 peak=226.9 infer=226.9 create=160.3 priv=235.1 base=45.5
+m2rot rep0 C1 peak=223.4 infer=223.4 create=160.5 priv=323.2 base=45.4
+m2rot rep0 C2 peak=203.4 infer=201.4 create=160.3 priv=190.0 base=45.5
+m2rot rep0 C3 peak=206.5 infer=206.5 create=160.6 priv=201.7 base=45.7
+m2rot rep0 C4 peak=203.0 infer=201.2 create=160.4 priv=188.9 base=45.6
+m2rot rep1 C0 peak=226.5 infer=226.5 create=160.3 priv=234.6 base=45.4
+m2rot rep1 C1 peak=223.3 infer=223.3 create=160.4 priv=323.1 base=45.4
+m2rot rep1 C2 peak=203.2 infer=202.4 create=160.3 priv=188.9 base=45.2
+m2rot rep1 C3 peak=208.3 infer=208.3 create=160.6 priv=203.4 base=45.7
+m2rot rep1 C4 peak=202.9 infer=200.6 create=160.2 priv=188.8 base=45.5
+m2rot rep2 C0 peak=225.9 infer=225.9 create=160.4 priv=234.0 base=45.4
+m2rot rep2 C1 peak=223.0 infer=223.0 create=160.2 priv=322.9 base=45.4
+m2rot rep2 C2 peak=203.5 infer=202.1 create=160.5 priv=189.7 base=45.5
+m2rot rep2 C3 peak=206.3 infer=206.3 create=160.3 priv=201.5 base=45.5
+m2rot rep2 C4 peak=203.4 infer=202.2 create=160.4 priv=188.9 base=45.5
+SUMMARY m2rot C0 {"base_MiB": 45.4, "base_peak_MiB": 45.4, "create_peak_MiB": 160.3, "create_wset_MiB": 156.1, "create_private_MiB": 170.4, "infer_wset_max_MiB": 226.5, "infer_private_max_MiB": 234.6, "peak_MiB": 226.5} dPeak% 0.0 all_lower None
+SUMMARY m2rot C1 {"base_MiB": 45.4, "base_peak_MiB": 45.4, "create_peak_MiB": 160.4, "create_wset_MiB": 151.9, "create_private_MiB": 258.0, "infer_wset_max_MiB": 223.3, "infer_private_max_MiB": 323.1, "peak_MiB": 223.3} dPeak% -1.41 all_lower True
+SUMMARY m2rot C2 {"base_MiB": 45.5, "base_peak_MiB": 45.5, "create_peak_MiB": 160.3, "create_wset_MiB": 156.5, "create_private_MiB": 170.9, "infer_wset_max_MiB": 202.1, "infer_private_max_MiB": 189.7, "peak_MiB": 203.4} dPeak% -10.2 all_lower True
+SUMMARY m2rot C3 {"base_MiB": 45.7, "base_peak_MiB": 45.7, "create_peak_MiB": 160.6, "create_wset_MiB": 156.1, "create_private_MiB": 170.6, "infer_wset_max_MiB": 206.5, "infer_private_max_MiB": 201.7, "peak_MiB": 206.5} dPeak% -8.83 all_lower True
+SUMMARY m2rot C4 {"base_MiB": 45.5, "base_peak_MiB": 45.5, "create_peak_MiB": 160.4, "create_wset_MiB": 151.8, "create_private_MiB": 166.2, "infer_wset_max_MiB": 201.2, "infer_private_max_MiB": 188.9, "peak_MiB": 203.0} dPeak% -10.38 all_lower True
+2026-10-22  3:46:07.17 DONE mem_m2 
+2026-10-22  3:46:48.31 START mem_fp 
+fp32 rep0 C0 peak=452.2 infer=452.2 create=419.1 priv=440.5 base=45.5
+fp32 rep0 C1 peak=452.1 infer=452.1 create=418.7 priv=795.5 base=45.5
+fp32 rep0 C2 peak=448.1 infer=445.8 create=419.0 priv=433.7 base=45.4
+fp32 rep0 C3 peak=450.2 infer=450.2 create=419.1 priv=440.4 base=45.4
+fp32 rep0 C4 peak=448.2 infer=446.9 create=418.9 priv=433.8 base=45.5
+fp32 rep1 C0 peak=452.2 infer=452.2 create=419.1 priv=440.6 base=45.5
+fp32 rep1 C1 peak=452.2 infer=452.2 create=418.7 priv=795.6 base=45.5
+fp32 rep1 C2 peak=449.8 infer=448.7 create=419.1 priv=435.5 base=45.4
+fp32 rep1 C3 peak=450.2 infer=450.2 create=419.1 priv=440.4 base=45.5
+fp32 rep1 C4 peak=448.0 infer=447.8 create=418.9 priv=433.7 base=45.5
+fp32 rep2 C0 peak=452.1 infer=452.0 create=419.1 priv=440.4 base=45.5
+fp32 rep2 C1 peak=452.3 infer=452.3 create=418.9 priv=795.6 base=45.5
+fp32 rep2 C2 peak=448.1 infer=447.3 create=419.1 priv=433.7 base=45.5
+fp32 rep2 C3 peak=450.5 infer=450.5 create=419.3 priv=440.6 base=45.7
+fp32 rep2 C4 peak=448.0 infer=446.8 create=418.7 priv=433.7 base=45.4
+SUMMARY fp32 C0 {"base_MiB": 45.5, "base_peak_MiB": 45.5, "create_peak_MiB": 419.1, "create_wset_MiB": 410.2, "create_private_MiB": 424.7, "infer_wset_max_MiB": 452.2, "infer_private_max_MiB": 440.5, "peak_MiB": 452.2} dPeak% 0.0 all_lower None
+SUMMARY fp32 C1 {"base_MiB": 45.5, "base_peak_MiB": 45.5, "create_peak_MiB": 418.7, "create_wset_MiB": 410.2, "create_private_MiB": 779.7, "infer_wset_max_MiB": 452.2, "infer_private_max_MiB": 795.6, "peak_MiB": 452.2} dPeak% 0.0 all_lower False
+SUMMARY fp32 C2 {"base_MiB": 45.4, "base_peak_MiB": 45.4, "create_peak_MiB": 419.1, "create_wset_MiB": 410.1, "create_private_MiB": 424.7, "infer_wset_max_MiB": 447.3, "infer_private_max_MiB": 433.7, "peak_MiB": 448.1} dPeak% -0.91 all_lower True
+SUMMARY fp32 C3 {"base_MiB": 45.5, "base_peak_MiB": 45.5, "create_peak_MiB": 419.1, "create_wset_MiB": 410.2, "create_private_MiB": 424.7, "infer_wset_max_MiB": 450.2, "infer_private_max_MiB": 440.4, "peak_MiB": 450.2} dPeak% -0.44 all_lower True
+SUMMARY fp32 C4 {"base_MiB": 45.5, "base_peak_MiB": 45.5, "create_peak_MiB": 418.9, "create_wset_MiB": 410.2, "create_private_MiB": 424.9, "infer_wset_max_MiB": 446.9, "infer_private_max_MiB": 433.7, "peak_MiB": 448.0} dPeak% -0.93 all_lower True
+2026-10-22  3:48:43.15 DONE mem_fp 
+2026-10-22  3:52:18.29 START speed1 
+S1 #0 m2rot 1T C0 p50=122.106 ms p95=125.03 (27.6s)
+S1 #1 m2rot 1T C1 p50=125.436 ms p95=128.411 (28.2s)
+S1 #2 m2rot 1T C2 p50=147.373 ms p95=150.38 (33.0s)
+S1 #3 m2rot 1T C3 p50=122.071 ms p95=124.368 (27.4s)
+S1 #4 m2rot 1T C4 p50=153.517 ms p95=156.507 (34.3s)
+S1 #5 m2rot 2T C0 p50=67.327 ms p95=72.281 (15.5s)
+S1 #6 m2rot 2T C1 p50=71.968 ms p95=75.337 (16.5s)
+S1 #7 m2rot 2T C2 p50=96.192 ms p95=101.455 (22.0s)
+S1 #8 m2rot 2T C3 p50=67.675 ms p95=70.029 (15.5s)
+S1 #9 m2rot 2T C4 p50=99.333 ms p95=106.3 (22.6s)
+S1 #10 m2rot 4T C0 p50=46.955 ms p95=53.169 (11.0s)
+S1 #11 m2rot 4T C1 p50=56.411 ms p95=65.233 (13.1s)
+S1 #12 m2rot 4T C2 p50=75.284 ms p95=86.09 (17.5s)
+S1 #13 m2rot 4T C3 p50=48.8 ms p95=50.908 (11.3s)
+S1 #14 m2rot 4T C4 p50=82.669 ms p95=93.026 (19.0s)
+S1 #15 fp32 1T C0 p50=285.991 ms p95=309.439 (65.2s)
+S1 #16 fp32 1T C1 p50=295.258 ms p95=317.627 (66.9s)
+S1 #17 fp32 1T C2 p50=313.216 ms p95=317.689 (69.9s)
+S1 #18 fp32 1T C3 p50=308.066 ms p95=312.477 (68.7s)
+S1 #19 fp32 1T C4 p50=355.888 ms p95=362.601 (79.2s)
+S1 #20 fp32 2T C0 p50=160.877 ms p95=166.079 (36.3s)
+S1 #21 fp32 2T C1 p50=177.967 ms p95=183.017 (39.8s)
+S1 #22 fp32 2T C2 p50=171.69 ms p95=175.321 (38.8s)
+S1 #23 fp32 2T C3 p50=168.415 ms p95=172.885 (38.0s)
+S1 #24 fp32 2T C4 p50=209.809 ms p95=215.968 (47.0s)
+S1 #25 fp32 4T C0 p50=101.705 ms p95=114.141 (23.4s)
+S1 #26 fp32 4T C1 p50=113.192 ms p95=128.623 (25.7s)
+S1 #27 fp32 4T C2 p50=112.009 ms p95=130.598 (26.1s)
+S1 #28 fp32 4T C3 p50=117.024 ms p95=129.631 (26.6s)
+S1 #29 fp32 4T C4 p50=156.376 ms p95=174.33 (36.0s)
+SESSION 1 DONE 04:09:02
+2026-10-22  4:09:02.43 DONE speed1 
+2026-10-22  4:11:07.18 START speed2 
+S2 #0 m2rot 1T C2 p50=147.829 ms p95=156.811 (33.5s)
+S2 #1 m2rot 1T C1 p50=125.973 ms p95=133.752 (28.4s)
+S2 #2 m2rot 1T C4 p50=153.847 ms p95=160.799 (34.7s)
+S2 #3 m2rot 1T C3 p50=121.992 ms p95=124.777 (27.4s)
+S2 #4 m2rot 1T C0 p50=122.197 ms p95=124.914 (27.5s)
+S2 #5 m2rot 2T C2 p50=94.93 ms p95=99.252 (21.5s)
+S2 #6 m2rot 2T C1 p50=71.119 ms p95=74.552 (16.2s)
+S2 #7 m2rot 2T C4 p50=99.528 ms p95=104.604 (22.5s)
+S2 #8 m2rot 2T C3 p50=70.214 ms p95=72.232 (16.0s)
+S2 #9 m2rot 2T C0 p50=69.891 ms p95=72.514 (15.9s)
+S2 #10 m2rot 4T C2 p50=78.631 ms p95=86.71 (18.0s)
+S2 #11 m2rot 4T C1 p50=54.925 ms p95=61.554 (12.6s)
+S2 #12 m2rot 4T C4 p50=85.561 ms p95=89.006 (19.5s)
+S2 #13 m2rot 4T C3 p50=51.896 ms p95=58.705 (12.2s)
+S2 #14 m2rot 4T C0 p50=52.72 ms p95=54.412 (12.2s)
+S2 #15 fp32 1T C2 p50=312.956 ms p95=318.284 (70.0s)
+S2 #16 fp32 1T C1 p50=314.772 ms p95=320.761 (70.1s)
+S2 #17 fp32 1T C4 p50=355.878 ms p95=360.491 (79.0s)
+S2 #18 fp32 1T C3 p50=307.73 ms p95=312.851 (68.7s)
+S2 #19 fp32 1T C0 p50=307.086 ms p95=311.263 (68.5s)
+S2 #20 fp32 2T C2 p50=168.31 ms p95=172.037 (37.8s)
+S2 #21 fp32 2T C1 p50=174.675 ms p95=180.03 (39.2s)
+S2 #22 fp32 2T C4 p50=209.825 ms p95=214.742 (46.9s)
+S2 #23 fp32 2T C3 p50=168.757 ms p95=171.997 (38.0s)
+S2 #24 fp32 2T C0 p50=168.719 ms p95=172.705 (38.0s)
+S2 #25 fp32 4T C2 p50=107.947 ms p95=114.785 (24.5s)
+S2 #26 fp32 4T C1 p50=112.345 ms p95=133.371 (26.0s)
+S2 #27 fp32 4T C4 p50=150.136 ms p95=167.794 (34.2s)
+S2 #28 fp32 4T C3 p50=111.703 ms p95=125.354 (25.7s)
+S2 #29 fp32 4T C0 p50=115.92 ms p95=130.203 (26.3s)
+SESSION 2 DONE 04:28:00
+2026-10-22  4:28:00.45 DONE speed2 
+2026-10-22  4:30:07.88 START speed3 
+S3 #0 m2rot 1T C4 p50=153.354 ms p95=157.003 (34.4s)
+S3 #1 m2rot 1T C3 p50=121.93 ms p95=124.915 (27.4s)
+S3 #2 m2rot 1T C2 p50=147.815 ms p95=153.769 (33.3s)
+S3 #3 m2rot 1T C1 p50=125.678 ms p95=128.8 (28.2s)
+S3 #4 m2rot 1T C0 p50=121.839 ms p95=125.212 (27.5s)
+S3 #5 m2rot 2T C4 p50=100.288 ms p95=105.452 (22.8s)
+S3 #6 m2rot 2T C3 p50=66.765 ms p95=69.508 (15.3s)
+S3 #7 m2rot 2T C2 p50=94.977 ms p95=98.931 (21.6s)
+S3 #8 m2rot 2T C1 p50=71.584 ms p95=74.404 (16.4s)
+S3 #9 m2rot 2T C0 p50=67.691 ms p95=71.102 (15.5s)
+S3 #10 m2rot 4T C4 p50=79.193 ms p95=88.563 (18.1s)
+S3 #11 m2rot 4T C3 p50=48.21 ms p95=53.731 (11.2s)
+S3 #12 m2rot 4T C2 p50=81.868 ms p95=111.127 (19.3s)
+S3 #13 m2rot 4T C1 p50=56.535 ms p95=62.672 (13.1s)
+S3 #14 m2rot 4T C0 p50=52.124 ms p95=65.593 (12.7s)
+S3 #15 fp32 1T C4 p50=355.821 ms p95=360.461 (79.2s)
+S3 #16 fp32 1T C3 p50=307.678 ms p95=312.983 (68.6s)
+S3 #17 fp32 1T C2 p50=311.832 ms p95=317.671 (69.7s)
+S3 #18 fp32 1T C1 p50=313.969 ms p95=321.401 (69.9s)
+S3 #19 fp32 1T C0 p50=305.962 ms p95=313.209 (68.4s)
+S3 #20 fp32 2T C4 p50=210.512 ms p95=218.841 (47.3s)
+S3 #21 fp32 2T C3 p50=168.298 ms p95=172.452 (37.9s)
+S3 #22 fp32 2T C2 p50=168.984 ms p95=173.056 (38.2s)
+S3 #23 fp32 2T C1 p50=175.3 ms p95=180.755 (39.3s)
+S3 #24 fp32 2T C0 p50=166.662 ms p95=169.867 (37.7s)
+S3 #25 fp32 4T C4 p50=150.018 ms p95=161.949 (33.9s)
+S3 #26 fp32 4T C3 p50=107.49 ms p95=121.004 (24.7s)
+S3 #27 fp32 4T C2 p50=116.752 ms p95=125.12 (26.7s)
+S3 #28 fp32 4T C1 p50=116.415 ms p95=129.985 (26.6s)
+S3 #29 fp32 4T C0 p50=113.482 ms p95=127.079 (26.2s)
+SESSION 3 DONE 04:47:00
+2026-10-22  4:47:00.89 DONE speed3 
