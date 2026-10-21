@@ -1,0 +1,63 @@
+[05:05:27] G1 start
+C0 done 33.0s
+C1 done 33.4s
+C2 done 32.8s
+C3 done 31.9s
+C4 done 34.5s
+C1 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C2 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C3 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C4 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+G1_pass: True
+[05:08:14] speed s1
+S1 #0 m2rot 1T C0 p50=101.095 ms p95=104.409 (22.5s)
+S1 #1 m2rot 1T C1 p50=102.915 ms p95=106.653 (22.9s)
+S1 #2 m2rot 1T C2 p50=100.524 ms p95=103.414 (22.3s)
+S1 #3 m2rot 1T C3 p50=101.422 ms p95=104.125 (22.2s)
+S1 #4 m2rot 1T C4 p50=106.008 ms p95=110.394 (23.3s)
+S1 #5 m2rot 2T C0 p50=55.359 ms p95=57.759 (12.4s)
+S1 #6 m2rot 2T C1 p50=58.265 ms p95=60.289 (13.0s)
+S1 #7 m2rot 2T C2 p50=54.595 ms p95=57.145 (12.2s)
+S1 #8 m2rot 2T C3 p50=53.948 ms p95=56.787 (12.1s)
+S1 #9 m2rot 2T C4 p50=58.625 ms p95=60.693 (13.1s)
+S1 #10 m2rot 4T C0 p50=31.97 ms p95=34.29 (7.3s)
+S1 #11 m2rot 4T C1 p50=33.601 ms p95=34.892 (7.6s)
+S1 #12 m2rot 4T C2 p50=32.042 ms p95=34.276 (7.3s)
+S1 #13 m2rot 4T C3 p50=31.472 ms p95=33.308 (7.2s)
+S1 #14 m2rot 4T C4 p50=34.096 ms p95=36.471 (7.8s)
+SESSION 1 DONE 05:11:48
+[05:13:48] speed s2
+S2 #0 m2rot 1T C2 p50=100.05 ms p95=103.864 (22.2s)
+S2 #1 m2rot 1T C1 p50=101.906 ms p95=105.796 (22.4s)
+S2 #2 m2rot 1T C4 p50=103.803 ms p95=107.163 (22.8s)
+S2 #3 m2rot 1T C3 p50=97.876 ms p95=101.522 (21.5s)
+S2 #4 m2rot 1T C0 p50=98.18 ms p95=101.51 (21.7s)
+S2 #5 m2rot 2T C2 p50=54.919 ms p95=57.229 (12.3s)
+S2 #6 m2rot 2T C1 p50=57.121 ms p95=59.16 (12.7s)
+S2 #7 m2rot 2T C4 p50=58.182 ms p95=60.784 (12.9s)
+S2 #8 m2rot 2T C3 p50=53.691 ms p95=55.706 (12.0s)
+S2 #9 m2rot 2T C0 p50=54.178 ms p95=56.018 (12.0s)
+S2 #10 m2rot 4T C2 p50=32.399 ms p95=34.307 (7.4s)
+S2 #11 m2rot 4T C1 p50=33.447 ms p95=35.974 (7.6s)
+S2 #12 m2rot 4T C4 p50=33.755 ms p95=35.999 (7.7s)
+S2 #13 m2rot 4T C3 p50=31.457 ms p95=33.818 (7.2s)
+S2 #14 m2rot 4T C0 p50=31.721 ms p95=33.602 (7.2s)
+SESSION 2 DONE 05:17:19
+[05:19:19] speed s3
+S3 #0 m2rot 1T C4 p50=103.143 ms p95=106.999 (22.7s)
+S3 #1 m2rot 1T C3 p50=98.066 ms p95=101.638 (21.6s)
+S3 #2 m2rot 1T C2 p50=100.697 ms p95=104.03 (22.0s)
+S3 #3 m2rot 1T C1 p50=103.313 ms p95=107.106 (22.6s)
+S3 #4 m2rot 1T C0 p50=101.048 ms p95=103.437 (22.1s)
+S3 #5 m2rot 2T C4 p50=58.571 ms p95=61.04 (13.0s)
+S3 #6 m2rot 2T C3 p50=55.23 ms p95=57.823 (12.3s)
+S3 #7 m2rot 2T C2 p50=55.945 ms p95=58.361 (12.5s)
+S3 #8 m2rot 2T C1 p50=58.087 ms p95=61.018 (13.0s)
+S3 #9 m2rot 2T C0 p50=55.369 ms p95=57.901 (12.3s)
+S3 #10 m2rot 4T C4 p50=33.893 ms p95=35.518 (7.7s)
+S3 #11 m2rot 4T C3 p50=32.225 ms p95=34.493 (7.4s)
+S3 #12 m2rot 4T C2 p50=32.835 ms p95=35.128 (7.5s)
+S3 #13 m2rot 4T C1 p50=34.368 ms p95=36.657 (7.8s)
+S3 #14 m2rot 4T C0 p50=32.42 ms p95=34.802 (7.4s)
+SESSION 3 DONE 05:22:52
+[05:22:52] done

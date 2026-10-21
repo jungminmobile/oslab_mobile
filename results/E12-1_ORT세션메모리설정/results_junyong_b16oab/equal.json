@@ -1,0 +1,205 @@
+{
+ "date": "2026-10-22T05:25:31",
+ "model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx",
+ "n_per_dataset": 200,
+ "datasets": [
+  "pets_dev",
+  "flowers_dev",
+  "cars_dev",
+  "food_dev",
+  "caltech_dev"
+ ],
+ "batch": 1,
+ "threads": 4,
+ "combos": {
+  "C0": {
+   "disable_prepacking": false,
+   "cpu_mem_arena": true,
+   "mem_pattern": true
+  },
+  "C1": {
+   "disable_prepacking": true,
+   "cpu_mem_arena": true,
+   "mem_pattern": true
+  },
+  "C2": {
+   "disable_prepacking": false,
+   "cpu_mem_arena": false,
+   "mem_pattern": true
+  },
+  "C3": {
+   "disable_prepacking": false,
+   "cpu_mem_arena": true,
+   "mem_pattern": false
+  },
+  "C4": {
+   "disable_prepacking": true,
+   "cpu_mem_arena": false,
+   "mem_pattern": false
+  }
+ },
+ "git": {
+  "commit": "53f108f",
+  "branch": "exp/E12-1-junyong",
+  "dirty": false
+ },
+ "cpu": "Intel(R) Core(TM) Ultra 9 285K",
+ "vnni": true,
+ "ort": "1.25.0",
+ "os": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+ "compare_vs_C0": {
+  "C1": {
+   "pets_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 93.5,
+    "top1": 93.5
+   },
+   "flowers_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 86.5,
+    "top1": 86.5
+   },
+   "cars_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999988,
+    "pred_same": 1.0,
+    "top1_C0": 94.5,
+    "top1": 94.5
+   },
+   "food_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 85.5,
+    "top1": 85.5
+   },
+   "caltech_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 96.5,
+    "top1": 96.5
+   },
+   "identical": true
+  },
+  "C2": {
+   "pets_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 93.5,
+    "top1": 93.5
+   },
+   "flowers_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 86.5,
+    "top1": 86.5
+   },
+   "cars_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999988,
+    "pred_same": 1.0,
+    "top1_C0": 94.5,
+    "top1": 94.5
+   },
+   "food_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 85.5,
+    "top1": 85.5
+   },
+   "caltech_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 96.5,
+    "top1": 96.5
+   },
+   "identical": true
+  },
+  "C3": {
+   "pets_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 93.5,
+    "top1": 93.5
+   },
+   "flowers_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 86.5,
+    "top1": 86.5
+   },
+   "cars_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999988,
+    "pred_same": 1.0,
+    "top1_C0": 94.5,
+    "top1": 94.5
+   },
+   "food_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 85.5,
+    "top1": 85.5
+   },
+   "caltech_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 96.5,
+    "top1": 96.5
+   },
+   "identical": true
+  },
+  "C4": {
+   "pets_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 93.5,
+    "top1": 93.5
+   },
+   "flowers_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 86.5,
+    "top1": 86.5
+   },
+   "cars_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999988,
+    "pred_same": 1.0,
+    "top1_C0": 94.5,
+    "top1": 94.5
+   },
+   "food_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 85.5,
+    "top1": 85.5
+   },
+   "caltech_dev": {
+    "max_abs_diff": 0.0,
+    "min_cos": 0.99999976,
+    "pred_same": 1.0,
+    "top1_C0": 96.5,
+    "top1": 96.5
+   },
+   "identical": true
+  }
+ },
+ "G1_pass": true
+}

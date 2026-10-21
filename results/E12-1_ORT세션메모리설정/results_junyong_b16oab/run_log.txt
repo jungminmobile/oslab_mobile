@@ -1,0 +1,63 @@
+[05:23:08] G1 start
+C0 done 27.8s
+C1 done 29.4s
+C2 done 27.9s
+C3 done 27.5s
+C4 done 29.5s
+C1 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C2 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C3 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C4 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+G1_pass: True
+[05:25:31] speed s1
+S1 #0 b16oab 1T C0 p50=89.267 ms p95=92.935 (19.8s)
+S1 #1 b16oab 1T C1 p50=92.84 ms p95=96.702 (20.4s)
+S1 #2 b16oab 1T C2 p50=89.869 ms p95=93.19 (19.8s)
+S1 #3 b16oab 1T C3 p50=90.859 ms p95=93.361 (19.9s)
+S1 #4 b16oab 1T C4 p50=94.931 ms p95=98.515 (20.8s)
+S1 #5 b16oab 2T C0 p50=48.898 ms p95=51.284 (10.9s)
+S1 #6 b16oab 2T C1 p50=51.232 ms p95=53.232 (11.4s)
+S1 #7 b16oab 2T C2 p50=47.943 ms p95=49.806 (10.7s)
+S1 #8 b16oab 2T C3 p50=47.671 ms p95=49.589 (10.7s)
+S1 #9 b16oab 2T C4 p50=50.922 ms p95=53.053 (11.4s)
+S1 #10 b16oab 4T C0 p50=26.607 ms p95=28.519 (6.1s)
+S1 #11 b16oab 4T C1 p50=28.659 ms p95=30.156 (6.5s)
+S1 #12 b16oab 4T C2 p50=27.186 ms p95=29.091 (6.2s)
+S1 #13 b16oab 4T C3 p50=27.428 ms p95=29.223 (6.3s)
+S1 #14 b16oab 4T C4 p50=29.036 ms p95=30.553 (6.6s)
+SESSION 1 DONE 05:28:40
+[05:30:40] speed s2
+S2 #0 b16oab 1T C2 p50=89.412 ms p95=92.883 (19.8s)
+S2 #1 b16oab 1T C1 p50=94.353 ms p95=96.591 (20.6s)
+S2 #2 b16oab 1T C4 p50=94.21 ms p95=98.37 (20.7s)
+S2 #3 b16oab 1T C3 p50=91.16 ms p95=93.63 (19.9s)
+S2 #4 b16oab 1T C0 p50=90.395 ms p95=92.77 (19.8s)
+S2 #5 b16oab 2T C2 p50=48.092 ms p95=49.721 (10.7s)
+S2 #6 b16oab 2T C1 p50=51.048 ms p95=53.237 (11.4s)
+S2 #7 b16oab 2T C4 p50=50.841 ms p95=53.428 (11.4s)
+S2 #8 b16oab 2T C3 p50=47.82 ms p95=50.206 (10.7s)
+S2 #9 b16oab 2T C0 p50=48.997 ms p95=51.233 (11.0s)
+S2 #10 b16oab 4T C2 p50=27.703 ms p95=29.493 (6.4s)
+S2 #11 b16oab 4T C1 p50=29.183 ms p95=30.529 (6.7s)
+S2 #12 b16oab 4T C4 p50=30.421 ms p95=32.233 (6.9s)
+S2 #13 b16oab 4T C3 p50=27.067 ms p95=28.655 (6.2s)
+S2 #14 b16oab 4T C0 p50=27.36 ms p95=29.107 (6.2s)
+SESSION 2 DONE 05:33:50
+[05:35:50] speed s3
+S3 #0 b16oab 1T C4 p50=92.948 ms p95=96.629 (20.5s)
+S3 #1 b16oab 1T C3 p50=89.142 ms p95=92.157 (19.6s)
+S3 #2 b16oab 1T C2 p50=89.682 ms p95=93.327 (19.7s)
+S3 #3 b16oab 1T C1 p50=93.614 ms p95=96.503 (20.5s)
+S3 #4 b16oab 1T C0 p50=91.006 ms p95=93.415 (19.9s)
+S3 #5 b16oab 2T C4 p50=51.976 ms p95=53.931 (11.5s)
+S3 #6 b16oab 2T C3 p50=48.797 ms p95=50.522 (10.9s)
+S3 #7 b16oab 2T C2 p50=48.831 ms p95=50.676 (10.9s)
+S3 #8 b16oab 2T C1 p50=52.072 ms p95=53.83 (11.6s)
+S3 #9 b16oab 2T C0 p50=48.869 ms p95=51.172 (10.9s)
+S3 #10 b16oab 4T C4 p50=29.745 ms p95=31.848 (6.8s)
+S3 #11 b16oab 4T C3 p50=27.867 ms p95=29.253 (6.3s)
+S3 #12 b16oab 4T C2 p50=28.217 ms p95=30.231 (6.4s)
+S3 #13 b16oab 4T C1 p50=29.562 ms p95=31.535 (6.7s)
+S3 #14 b16oab 4T C0 p50=27.813 ms p95=29.776 (6.4s)
+SESSION 3 DONE 05:39:00
+[05:39:00] done
