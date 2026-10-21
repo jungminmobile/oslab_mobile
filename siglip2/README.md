@@ -19,7 +19,7 @@
 - 실행: onnxruntime 1.25.0 CPU, 기본 그래프 최적화(`ORT_ENABLE_ALL`, 정수 커널).
 - 같은 제출 파일이 x86 세 CPU(AVX-512 VNNI i7-1165G7, AVX-VNNI Ultra 9 285K·Ultra 7 258V)에서 dev 결과가 같고, i7과 258V는 사진별 출력까지 비트 단위로 같다 (`results/siglip2/G6_m2rot_ort`).
 
-## 1. 빠른 확인 (저장소 코드·데이터 없이, 약 10분)
+## 1. 빠른 확인 (저장소 코드·데이터 없이, 내려받기 약 3분 + 실행 약 8분)
 
 numpy와 onnxruntime만 있으면 된다. dev 6종 × 200장 묶음으로 FP32와 제출 모델을 비교한다.
 
@@ -60,7 +60,7 @@ mkdir -p $SIGLIP2_ARTIFACTS/onnx && cp release/*.onnx $SIGLIP2_ARTIFACTS/onnx/  
 **같은 PC에서는 다시 만들어도 비트 단위로 같은 파일이 나오지만, 다른 PC에서는 어느 단계에서 시작해도 다른 파일이 나온다.**
 - float64 행렬 곱의 반올림이 CPU·OpenBLAS 커널에 따라 달라 회전 행렬부터 달라진다 (`results/siglip2/G8_candidates/repro_fingerprint`).
 - 다른 PC가 만든 M2rot FP32에서 양자화만 해도 INT8이 다르다 — 보정 때 CPU로 FP32 추론해 범위를 잰다. 같은 회전 행렬·캐시로 FP32를 만들어도 다르다 (`…/b16/final_checks` E2).
-- 정확도 차이는 0.1%p 안팎이다 (dev −0.23 배포 파일 vs −0.31 다른 PC 빌드, `…/b16/A1_ablation`). 그래서 **채점·재현은 배포 파일**로 한다.
+- 정확도 차이는 0.1~0.3%p다 (보정 시드·빌드 PC를 바꾼 5개 빌드에서 dev −0.23 ~ −0.49, `…/b16/E5_calib_seed`). 그래서 **채점·재현은 배포 파일**로 한다.
 
 ## 4. 정확도 — dev (구성 비교용)
 
