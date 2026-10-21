@@ -1,0 +1,6 @@
+norm1 = normalization([127.5, 127.5, 127.5], [127.5, 127.5, 127.5])
+model_optimization_flavor(optimization_level=1, compression_level=0)
+pre_quantization_optimization(layer_norm_decomposition, equalization=disabled, bit_decomposition_mode=uniform_precision)
+model_optimization_config(calibration, calibset_size=256)
+
+resources_param(max_compute_utilization=1.0, max_control_utilization=0.95, max_memory_utilization=0.75)

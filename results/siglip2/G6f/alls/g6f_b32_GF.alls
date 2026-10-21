@@ -1,0 +1,10 @@
+norm1 = normalization([127.5, 127.5, 127.5], [127.5, 127.5, 127.5])
+model_optimization_flavor(optimization_level=1, compression_level=0)
+pre_quantization_optimization(layer_norm_decomposition, equalization=disabled, bit_decomposition_mode=uniform_precision)
+model_optimization_config(calibration, calibset_size=256)
+quantization_param([norm1, conv1, format_conversion1], precision_mode=a16_w16)
+quantization_param([ew_add1, ew_add2, ew_add3, ew_add4, ew_add5, ew_add6, ew_add7, ew_add8, ew_add9, ew_add10, ew_add11, ew_add12, ew_add14, ew_add17, ew_add19, ew_add22, ew_add24, ew_add27, ew_add29, ew_add32, ew_add34, ew_add39, ew_add41, ew_add46, ew_add48, ew_add53], precision_mode=a16_w16)
+
+resources_param(max_compute_utilization=1.0, max_control_utilization=0.95, max_memory_utilization=0.75)
+allocator_param(enable_automatic_features_chunks=False, enable_partial_row_buffers=disabled, disable_row_per_cut=True, enable_auto_spatial_reshapes=True, automatic_ddr=False)
+context_switch_param(toposort_mode=pushdown, slotter_chances=200, mode=enabled, share_buckets_partition=True, auto_partition_to_buckets=True, berkitizer_min_size=200, berkitizer_bucket_size=40)
