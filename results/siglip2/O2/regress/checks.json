@@ -1,0 +1,36 @@
+{
+ "timm224_calib_images": {
+  "shape": [
+   256,
+   3,
+   224,
+   224
+  ],
+  "sha256": "774f2967d9866178e8f29f6fd1558e00d018da92743c45be74d5928fa7042885"
+ },
+ "zoo224_calib256_s0": {
+  "shape": [
+   256,
+   3,
+   224,
+   224
+  ],
+  "sha256": "774f2967d9866178e8f29f6fd1558e00d018da92743c45be74d5928fa7042885"
+ },
+ "zoo256_calib256_s0": {
+  "shape": [
+   256,
+   3,
+   256,
+   256
+  ],
+  "sha256": "f296caa848de38a0b5628330a23a0faafd6f60c677e50aa3f7162f49cb8d0faa"
+ },
+ "timm224_eq_zoo224": true,
+ "timm224_vs_zoo224_maxabs": 0.0,
+ "emb_vs_o1": {
+  "o2base==o1b16base": true,
+  "o2oab==o1b16oab": true,
+  "o2fp==o1b16fp": true
+ }
+}

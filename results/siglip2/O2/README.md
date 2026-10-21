@@ -5,7 +5,7 @@
 
 ## 0. 요약
 
-**판정: 통일 규칙 채택** (4절 세 조건 모두 만족). B16 ORT도 B32와 같은 통일 sink 규칙(K/V는 입력이 high-norm인 블록부터, u_c는 high-norm이 되는 블록 MLP부터)을 쓸 수 있다. 바꾸면 두 모델의 ORT 설계가 같아진다 (1절의 다른 항목 ①이 없어지고, 남는 차이는 확인 방법·스레드 수 같은 만드는 과정의 차이뿐).
+**판정: 통일 규칙 채택** (4절 세 조건 모두 만족). B16 ORT도 B32와 같은 통일 sink 규칙(K/V는 입력이 high-norm인 블록부터, u_c는 high-norm이 되는 블록 MLP부터)을 쓸 수 있다. 바꾸면 두 모델의 ORT 설계가 같아진다 (1절의 다른 항목 ①이 없어지고, 남는 차이는 ② 동치 확인 방법·③ 스레드 수·④ 평가용 FP32 기준 파일의 export 코드 같은 만드는 과정의 차이뿐).
 
 | 구성 (B16, dev 전체, 비공식) | 지연 t1 / t2 / t4 ms (3세션 중앙값) | FP32 대비 고화질 Δ [95%] | CIFAR A (FP32 대비) | 크기 MiB |
 |---|---|---|---|---|
@@ -14,6 +14,7 @@
 | 짝 비교: 통일 O-AB − 기존 O-AB | | **−0.08 [−0.26, +0.09]** (동률) | **+0.5** | |
 
 - 조건 ① 상한 +0.09 ≥ 0 → 통과, ② CIFAR A +0.5 ≥ −1.0 → 통과, ③ 지연 −0.7 / −1.2 / −1.5% (모두 ±3% 안) → 통과.
+- **팀이 알 점:** 기준 ①에는 비열등 한계가 없다. 점추정은 통일 쪽이 고화질 −0.08 (하한 −0.26, 세트별 Pets −0.40, Food·Flowers·Caltech −0.10, Cars +0.31)이고, FP32 대비로는 통일 −0.24 vs 기존 −0.16이다. CIFAR A +0.5%p는 1,000장 중 5장이다. 기준대로 "동률"이지만 "더 좋다"는 뜻은 아니다.
 - 통일 기존설정 − 기존 M2rot_ort = +0.00 [−0.24, +0.25] (CIFAR A −0.5): O-AB가 아닌 설정에서도 동률이다.
 - 통일 FP32는 Release FP32와 거의 같다: +0.06 [−0.02, +0.16], cos 평균 0.99998 / 최소 0.9989 (dev 전체). 기존 M2rot FP32는 +0.10 [+0.00, +0.22], cos 최소 0.9969.
 - **교체 여부는 팀이 정한다.** 교체하면 예선 B16 ORT 후보가 `db2c1fdd…`(Release `siglip2-oab-20261022`)에서 `f5108c7b…`로 바뀐다. 새 파일은 아직 Release에 올리지 않았다. B16 Hailo HEF(M2rot_D256L1, 55@5,13@9 규칙)는 이번에 건드리지 않았으므로, 교체하면 B16은 "ORT 통일 규칙 / Hailo 옛 규칙"이 된다 (9절).
@@ -32,7 +33,7 @@
 | MAP 헤드 | `pool` 키: 모든 sink의 K·V를 보정 평균 상수로 | 같음 | **같음** (같은 클래스) | `MaskRegCacheTrunk` |
 | M2 그래프 | `MaskRegCacheTrunk` 제자리 마스크 `bcast` + MLP 입력 u_c (`mask_site mlp`, 잔차 그대로) | 같은 클래스·같은 형식 | **같음** | G3RQ `export.jsonl` options / `s2_g6.m2_trunk` |
 | M2 상수 계산 | `build_mean_cache` + `build_uc`, 회전한 모델, 배치 16, 256장 | 같은 함수, 같은 순서 | **같음** | `s2_regcache` cache·ucache / `s2_g6.m2_trunk` |
-| M2 상수 보정 사진 | `calib_images("highres", 256, 0)` (timm 전처리 224), 픽셀 sha256 앞 16자 `774f2967d9866178` | Zoo 전처리 256 `cache_zoo256/calib256_s0_x.npy` (같은 사진·같은 순서), `f296caa848de38a0` | **같은 사진, 크기만 모델에 맞춤**. 224에서는 timm 캐시 = Zoo 224 캐시 (픽셀 차이 0, 이번에 확인) | 이번 확인 |
+| M2 상수 보정 사진 | `calib_images("highres", 256, 0)` (timm 전처리 224), 픽셀 sha256 앞 16자 `774f2967d9866178` | Zoo 전처리 256 `cache_zoo256/calib256_s0_x.npy` (같은 사진·같은 순서), `f296caa848de38a0` | **같은 사진, 크기만 모델에 맞춤**. 224에서는 timm 캐시 = Zoo 224 캐시 (픽셀 차이 0) | `regress/checks.json` (`o2_checks.py`) |
 | 상수 저장 | npz 파일 (`regcache_…_rothad_highres256_s0.npz` `c205e3a0…`, `regcache_uc_…` `00d8ee3d…`) 후 로드 | export 중 메모리에서 바로 | 값은 같은 계산 (float32 저장) | |
 | PyTorch 스레드 | 4 (`s2_regcache --threads 4`) | 6 (`s2_g6`) | 사소한 차이 (부동소수 합 순서) | |
 | ONNX export | `torch.onnx.export` opset 17, dynamo 끔, 배치 가변 (`s2_regcache export`) | 같은 호출 (`s2_g6 export --cfg m2rot --dynamic`) | **같음** | |
@@ -82,7 +83,7 @@
 
 ### 6-1. 회귀·동일성
 - `s2_g6.py` 변경 뒤 B32 m2rot을 다시 export: sha256 `23236123…` 같음 (`regress/export_sha256.txt`, 커밋 `9e588c8`).
-- 정확도 실행의 Release FP32·기존 M2rot_ort·기존 O-AB 임베딩은 O1 저장 임베딩과 비트 단위로 같다 (`regress/emb_vs_o1.txt`).
+- 정확도 실행의 Release FP32·기존 M2rot_ort·기존 O-AB 임베딩은 O1 저장 임베딩과 비트 단위로 같다 (`regress/checks.json`, `o2_checks.py`; `regress/emb_vs_o1.txt`는 같은 확인을 명령줄에서 먼저 한 출력).
 - 통일 FP32의 O-B 정리(`s2_ortfuse`): SkipLN 24(bias 23), Reshape 28, FP32 동치 64장 cos 최소 0.99999988, 최대 차이 9.5e-6 (`ortfuse/ortfuse_log.jsonl`).
 
 ### 6-2. 정확도 (07:24~07:56, `o2_run.sh`, 커밋 `244e7bd` dirty 아님, `accuracy/ort_accuracy.jsonl`)
@@ -120,7 +121,8 @@
 | 2 | 44.39, 44.46, 44.28 | 43.87, 43.83, 43.89 | 44.39 / 43.87 | −1.17% |
 | 4 | 25.71, 26.55, 25.60 | 25.32, 25.80, 25.30 | 25.71 / 25.32 | −1.52% |
 
-- 모든 세션에서 통일 쪽이 조금 빠르다. 그래프 구조가 같고 K/V 상수를 쓰는 블록이 하나 적어서(블록 5에 K/V 마스크 연산이 없어짐)로 보지만, 연산 수·프로파일로 확인하지 않았다.
+- 모든 세션에서 통일 쪽이 조금 빠르다. **단, 측정 순서가 늘 같다:** `s2_g6b_bench.py`는 `--models` 순서대로 재므로 9번 모두 기존 → 통일 순이었다 (O1과 같은 방식). 순서 효과가 일부 섞였을 수 있다. ±3% 기준 안이라 판정에는 영향이 없다.
+- 그래프 차이: export 연산 수가 기존 M2rot FP32 → 통일 FP32에서 Add 123→119, Sub 31→27, Mul 71→67, Identity 63→61이다. 블록 5(sink 55)와 블록 9(sink 13)에서 K/V 마스크 연산이 빠진 것이다 (G3RQ `export.jsonl` vs `export/export.jsonl`). 빨라진 원인이 이것인지는 프로파일로 확인하지 않았다.
 - 기존 O-AB의 절대값(t4 25.71 ms)은 O1(26.21 ms)과 다르다. 실험끼리 절대값은 비교하지 않는다.
 
 ### 6-4. 크기·peak 메모리 (08:26, `s2_model_stats.py` 4스레드, 모델마다 새 프로세스, 1회, `model_stats/model_stats.jsonl`)
@@ -128,7 +130,7 @@
 |---|---|---|
 | 기존 O-AB | 91.65 | 216.1 |
 | 통일 O-AB | 91.63 | 240.8 |
-- 1회 측정이다. 같은 기존 O-AB 파일이 O1에서는 234.5 MiB였다 (이번 216.1). 같은 파일인데 측정마다 8% 차이가 났으므로, 1회 측정인 이번 차이(+11%)를 모델 차이로 볼 수 없다. 판정 항목도 아니다.
+- 1회 측정이다. 통일 O-AB 행은 `peak_during_load` 152.7 < `rss_after_load` 198.6으로 측정 도구 값이 앞뒤가 맞지 않아 신뢰하기 어렵다. 같은 기존 O-AB 파일이 O1에서는 234.5 MiB였다 (이번 216.1). 같은 파일인데 측정마다 8% 차이가 났으므로, 1회 측정인 이번 차이(+11%)를 모델 차이로 볼 수 없다. 판정 항목도 아니다.
 
 ## 7. 판정 (4절 그대로)
 | 조건 | 값 | 결과 |
@@ -141,6 +143,7 @@
 
 ## 8. 계획에서 달라진 점
 1. **oracle 해석 (사후 보완):** 계획의 "독립 HF 구현 cos ≥ 0.99999"는 B16에서 GELU 근사 차이(timm erf vs HF tanh) 때문에 원래 모델끼리도 넘을 수 없다 (0.99998, G6_pre와 같음). 그래서 HF MLP 활성함수를 timm과 같은 정확한 GELU로 바꾼 비교를 oracle로 썼다 (0.99999999999). HF 설정 그대로의 값(0.9999725)도 같이 적었다. 이 판단은 결과(정확도)를 보기 전, export 직후에 했다.
+4. **판정 기준 고정 시점:** 기준을 담은 README 커밋 `8c834b4`(07:25:52)는 정확도 실행 시작(07:24:54) 약 1분 뒤다. 첫 모델 평가에 407초가 걸렸고 짝 비교는 맨 끝(07:56)에 나와, 결과가 나오기 전에 고정했다 (실행 시작 직후 고정).
 2. 정확도 실행에 기존 M2rot FP32(`16ef696e…`)를 추가했다 (FP32끼리 비교용, 판정에는 안 씀).
 3. peak 메모리·크기는 요청에 없었지만 적었다 (판정에 안 씀).
 
@@ -156,4 +159,5 @@ bash results/siglip2/O2/o2_export.sh        # B32 회귀 + B16 통일 FP32 expor
 (cd siglip2 && RN50_RESULTS=../results/siglip2/O2/export python ../results/siglip2/O2/o2_oracle.py)
 bash results/siglip2/O2/o2_quant.sh         # 기존 설정·O-AB 양자화
 bash results/siglip2/O2/o2_run.sh           # 정확도 → 지연 3세션 → 메모리
+(cd siglip2 && python ../results/siglip2/O2/o2_checks.py)   # 보정 사진 동일성·O1 임베딩 동일성
 ```
