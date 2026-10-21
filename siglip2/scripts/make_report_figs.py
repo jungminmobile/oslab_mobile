@@ -7,8 +7,10 @@ make_report_figs.py — 예선 보고서 그림 (raw에서 바로 그림, 숫자
   F1 민감도 지도 (B/16·B/32): 하나만 INT8일 때 고화질 cos — 블록 14개 + 연산 유형 6개
   F2 2×2 단독 효과 (B/16·B/32): 원래 / 회전만 / M2만 / 회전+M2, dev 전체 Δtop-1과 95% 구간
   F3 FP32 대비 개선율 (B/16 최종): 크기·피크 메모리·지연(1·2·4스레드), 기기 4개
+  F4 처방별 8비트 출력 SNR (원래·회전만·M2만·회전+M2): fc1·fc2 입력, 블록별 (E4b)
 """
 import json
+import re
 from pathlib import Path
 
 import matplotlib
@@ -144,6 +146,38 @@ a2.legend(loc="upper center", bbox_to_anchor=(0.5, -0.32), ncol=2, frameon=False
 fig.tight_layout()
 fig.savefig(OUT / "F3_improvement.png")
 plt.close(fig)
+
+# ---- F4 거대 활성값 처방의 효과: fc1·fc2 입력을 8비트로 했을 때의 출력 SNR (E4b, Percentile 99.999 눈금)
+p4 = R / "G8_candidates" / "b16" / "E4_why_after" / "why_after_pct.jsonl"
+if p4.exists():
+    rows4 = jl(p4)
+    graphs = ["원래", "회전만", "M2만", "회전+M2"]
+    cols = {"원래": "#898781", "회전만": "#eda100", "M2만": "#1baf7a", "회전+M2": B16}
+    snr = {}
+    for g in graphs:
+        rs = [r for r in rows4 if r["graph"] == g]
+        fc1 = [r["out_snr_db"] for r in rs if re.search(r"fc1(_\d+)?$", r["role"])][:12]
+        fc2 = [r["out_snr_db"] for r in rs if re.search(r"fc2(_\d+)?$", r["role"])][:12]
+        snr[g] = {"fc1": fc1, "fc2": fc2}
+    data["F4"] = {"snr_db": snr, "source": "G8_candidates/b16/E4_why_after/why_after_pct.jsonl"}
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(7.2, 3.0), sharey=True)
+    for ax, key, title in [(a1, "fc1", "MLP fc1 입력 (LayerNorm 뒤, 잔차 흐름에서 옴)"), (a2, "fc2", "MLP fc2 입력 (GELU 뒤)")]:
+        for g in graphs:
+            dashed = g in ("회전만", "회전+M2")      # 겹치는 쌍(원래=회전만 / M2만=회전+M2)이 둘 다 보이게: 굵은 실선 위에 점선
+            ax.plot(range(12), snr[g][key], marker="o" if not dashed else "s", ms=4 if not dashed else 3,
+                    lw=3.2 if not dashed else 1.6, ls="--" if dashed else "-", color=cols[g], label=g, zorder=3 if dashed else 2)
+        ax.set_xticks(range(12), [str(i) for i in range(12)])
+        ax.set_xlabel("블록")
+        ax.set_title(title, fontsize=9, color=INK, loc="left")
+        ax.axvspan(4.5, 11.5, color="#f3f2ee", zorder=0)
+    a1.set_ylabel("출력 SNR (dB)")
+    a1.legend(loc="lower left", frameon=False, fontsize=8, ncol=2)
+    a2.text(8, a2.get_ylim()[1] * 0.97, "거대 값이 생기는 블록 5~11", fontsize=7, color=MUTED, ha="center", va="top")
+    fig.text(0.01, 0.01, "fc2 입력(MLP 은닉 3072차원)은 회전 대상이 아니라 원래=회전만, M2만=회전+M2 선이 겹친다 (굵은 실선 위의 점선).", fontsize=7, color=MUTED, ha="left", va="bottom")
+    fig.suptitle("활성값만 8비트(Percentile 99.999)로 했을 때 층 출력의 SNR — dev 64장", fontsize=9, x=0.01, ha="left", color=INK)
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    fig.savefig(OUT / "F4_activation_snr.png")
+    plt.close(fig)
 
 json.dump(data, open(OUT / "figs_data.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print("saved", sorted(p.name for p in OUT.glob("*.png")))
