@@ -1,0 +1,35 @@
+{
+ "date": "2026-10-21T16:51:41",
+ "machine": "aarch64",
+ "platform": "Linux-5.15.148-tegra-aarch64-with-glibc2.35",
+ "python": "3.10.12",
+ "hailortcli": "HailoRT-CLI version 5.3.0",
+ "cmd": "bench",
+ "label": "b8_s1",
+ "batch": 8,
+ "warmup": 20,
+ "n": 200,
+ "runs": [
+  {
+   "model": "b32_Z",
+   "hef_sha256": "c16123297d83a36c",
+   "batch": 8,
+   "input_domain": "pixel_0_255",
+   "qin": [
+    1.0,
+    0.0
+   ],
+   "in_shape": [
+    256,
+    256,
+    3
+   ],
+   "mean_ms": 53.883,
+   "median_ms": 53.985,
+   "p90_ms": 54.115,
+   "min_ms": 52.967,
+   "max_ms": 54.36,
+   "img_per_s_from_mean": 148.47
+  }
+ ]
+}

@@ -1,0 +1,12 @@
+{
+    "time": "Wed Oct 21 17:21:03 2026",
+    "inference_mode": "full_async",
+    "network_groups": [
+        {
+            "name": "g6_b32_S1",
+            "full_hef_path": "b32_S1.hef",
+            "FPS": "63.635411"
+        }
+    ],
+    "time_to_run": "10.00 seconds"
+}
