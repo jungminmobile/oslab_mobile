@@ -1,0 +1,19 @@
+15:21:47 tag=b32_Vrot commit=ddf9b5f dirty=1 dfc=5.4.0 onnx=/home/junyong/siglip2_work/g6d/vrot/siglip2-base-patch32-256_vision_encoder_vrot.onnx onnx_sha256=fa0c7a1846e9c19647b43b981beb19da911a0c2fb3fd36ff79d17c823ee5bdf2 parse_only=0
+15:21:47 parse 잠금 대기
+15:21:47 parse 잠금 잡음 free=29G load=2.75 3.99 4.09
+15:21:59 parse rc=0 sec=12 maxrss_kb=4147376
+[info] Hailo HW architecture: hailo10h
+223 layers → layer_map.csv
+15:22:06 alls=/home/junyong/oslab_g6d/results/siglip2/G6d/alls/g6d_b32_Vrot.alls alls_sha256=7a18577ed5b1c4dcc5fa70e6f1e31d2ad3b50e9a99696ba8cf534ff738a285ca calib=/home/junyong/siglip2_work/g6/calib64_s0_zoo256_nhwc.npy calib_sha256=c02c0b12028220cad20c30cfb5f7f4b1e46a72e756ff0fca39444dc1f67657bf ncal=64
+15:22:06 optimize 잠금 대기
+15:22:06 optimize 잠금 잡음 free=29G load=2.36 3.84 4.04
+15:25:31 optimize rc=0 sec=205 maxrss_kb=9535184
+[info] Using dataset with 64 entries for calibration
+[info] Using dataset with 64 entries for calibration
+[info] Using dataset with 64 entries for calibration
+15:25:31 calib assert OK (64)
+15:25:31 compile 잠금 대기
+15:25:31 compile 잠금 잡음 free=29G load=1.60 2.77 3.56
+15:42:58 compile rc=0 sec=1047 maxrss_kb=7206696
+15:42:58 hef=comp/siglip2_b_32_256_image_encoder.hef bytes=109993984 sha256=a4fc92497f3e8c7f09d1249d9cda6a73c549ccb1444d3e799d5f7afbf381a1d2 contexts=12
+15:42:58 G6 DFC DONE b32_Vrot

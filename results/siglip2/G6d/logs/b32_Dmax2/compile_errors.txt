@@ -1,0 +1,68 @@
+	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[info] Successfully built optimization options - 16s 564ms
+	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[info] Successfully built optimization options - 26s 741ms
+	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[info] Successfully built optimization options - 34s 529ms
+	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[info] Successfully built optimization options - 23s 714ms
+[info] Applying selected partition to 2 contexts...
+[info] Applying selected partition to 3 contexts...
+[info] Applying selected partition to 4 contexts...
+[info] Applying selected partition to 5 contexts...
+[info] Partitioner finished after 106 iterations, Time it took: 1m 13s 694ms
+[info] Partitioner finished after 111 iterations, Time it took: 1m 2s 673ms
+[info] Partitioner finished after 125 iterations, Time it took: 4m 1s 352ms
+[info] Partitioner finished after 151 iterations, Time it took: 1m 31s 571ms
+[info] Partitioner finished after 167 iterations, Time it took: 1m 47s 178ms
+[info] Partitioner finished after 177 iterations, Time it took: 1m 40s 23ms
+[info] Partitioner finished after 185 iterations, Time it took: 5m 9s 250ms
+[info] Partitioner finished after 200 iterations, Time it took: 3m 29s 766ms
+[info] Partitioner finished after 211 iterations, Time it took: 1m 53s 916ms
+[info] Partitioner finished after 214 iterations, Time it took: 5m 56s 282ms
+[info] Partitioner finished after 222 iterations, Time it took: 2m 15s 264ms
+[info] Partitioner finished after 231 iterations, Time it took: 5m 32s 343ms
+[info] Partitioner finished after 234 iterations, Time it took: 3m 9s 883ms
+[info] Partitioner finished after 238 iterations, Time it took: 3m 16s 168ms
+[info] Partitioner finished after 252 iterations, Time it took: 3m 4s 775ms
+[info] Partitioner finished after 265 iterations, Time it took: 2m 14s 294ms
+[info] Partitioner finished after 286 iterations, Time it took: 2m 18s 749ms
+[info] Partitioner finished after 326 iterations, Time it took: 3m 12s 184ms
+[info] Partitioner finished after 332 iterations, Time it took: 2m 33s 964ms
+[info] Partitioner finished after 91 iterations, Time it took: 49s 522ms
+[info] g6_b32_M_both Successful Allocation (duration: 10s)
+[info] g6_b32_M_both Successful Allocation (duration: 16s)
+[info] g6_b32_M_both Successful Allocation (duration: 19s)
+[info] g6_b32_M_both Successful Allocation (duration: 1m 10s)
+[info] g6_b32_M_both Successful Allocation (duration: 23s)
+[info] g6_b32_M_both Successful Allocation (duration: 2m 58s)
+[info] g6_b32_M_both Successful Allocation (duration: 47s)
+[info] g6_b32_M_both Successful Allocation (duration: 49s)
+[info] g6_b32_M_both Successful Allocation (duration: 4m 2s)
+[info] g6_b32_M_both Successful Allocation (duration: 52s)
+[info] g6_b32_M_both Successful Allocation (duration: 53s)
+[info] g6_b32_M_both Successful Allocation (duration: 55s)
+[info] g6_b32_M_both Successful Compilation (duration: 1h 15m 31s)
+[info] g6_b32_M_both Successful Kernel Compilation (duration: 17s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 1m 15s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 1m 33s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 1m 41s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 1m 48s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 1m 4s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 1m 55s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 2m 16s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 2m 17s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 2m 20s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 2m 35s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 3m 11s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 3m 14s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 3m 18s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 3m 31s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 3m 6s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 4m 4s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 51s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 5m 11s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 5m 34s)
+[info] g6_b32_M_both Successful Multi Context Partition (duration: 5m 58s)
+[info] g6_b32_M_both Successful Partition and Allocation (duration: 1h 14m 46s)
+[info] g6_b32_M_both Successful Pre Builder (duration: 0s)
+[info] g6_b32_M_both Successful Pre Partition (duration: 16s)
+[info] g6_b32_M_both Successful Pre Partition (duration: 23s)
+[info] g6_b32_M_both Successful Pre Partition (duration: 26s)
+[info] g6_b32_M_both Successful Pre Partition (duration: 34s)

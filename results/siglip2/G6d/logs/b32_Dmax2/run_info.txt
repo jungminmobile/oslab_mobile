@@ -1,0 +1,3 @@
+12:53:26 tag=b32_Dmax2 commit=2f7438f dirty=0 src_har=/home/junyong/siglip2_work/g6/dfc/b32_M_both/g6_b32_M_both_optimized.har src_har_sha256=00614f551ac504d875a37bb19ed5f824a969cee85392a1d8702f6eec1154186e alls=/home/junyong/oslab_g6d/results/siglip2/G6d/alls/g6d_b32_Dmax2.alls alls_sha256=33e263ee121e205bcefb25b450124e48c5c8a4c6c8f649db8eb7e08beacf72cb (optimize 안 함, compile만)
+12:56:45 compile 잠금 잡음 free=29G load=1.28 1.00 0.47
+14:12:49 compile rc=0 sec=4564 maxrss_kb=10098900 
