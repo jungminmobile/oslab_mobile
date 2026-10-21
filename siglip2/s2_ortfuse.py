@@ -2,7 +2,7 @@
 s2_ortfuse.py — (O1, O-B) 양자화 전 FP32 그래프 정리: ORT CPU 속도용, 수학적으로 같은 변환만
 ==============================================================================================
 - 원인 (O1 README 2절): 잔차 Add의 출력은 LayerNorm과 다음 잔차 Add 두 곳에서 쓰인다. ORT C++ SkipLayerNormFusion은
-  Add 출력의 소비자가 하나일 때만 합치므로 25개 중 마지막 `/trunk/norm` 하나만 합쳐진다.
+  Add 출력의 소비자가 하나일 때만 합치므로 INT8 그래프에서 26개 중 마지막 `/trunk/norm` 하나만 합쳐진다 (FP32 그래프는 0개).
 - (1) --skip-ln: ORT python 융합기(onnxruntime.transformers)의 FusionSkipLayerNormalization으로 Add+LayerNorm →
   com.microsoft SkipLayerNormalization (소비자가 여럿이면 4번째 출력 input_skip_bias_sum으로 합을 내보낸다),
   이어서 FusionBiasSkipLayerNormalization으로 앞 MatMul의 bias Add(1차원 상수)를 SkipLayerNorm의 bias 입력으로 흡수.
@@ -74,6 +74,8 @@ def fold_shape(model):
             return None
         return [d.dim_param if d.dim_param else (d.dim_value if d.HasField("dim_value") else None)
                 for d in vi[t].type.tensor_type.shape.dim]
+    assert not any(at.type in (onnx.AttributeProto.GRAPH, onnx.AttributeProto.GRAPHS) for n in model.graph.node for at in n.attribute), \
+        "하위 그래프(If/Loop)가 있는 모델은 지원 안 함 (아래 노드 정리가 하위 그래프의 바깥 참조를 보지 않음)"
     batch = model.graph.input[0].type.tensor_type.shape.dim[0].dim_param
     assert batch, "입력 0번 축이 기호(배치 가변)가 아님"
     inits = {i.name for i in model.graph.initializer}
@@ -92,6 +94,8 @@ def fold_shape(model):
         if any(a.name == "allowzero" and a.i for a in n.attribute):
             kept.append(n.name)
             continue
+        if all(isinstance(d, int) for d in di[1:]):     # 입력 원소 수(배치 제외)와 맞는지
+            assert int(np.prod(di[1:])) == int(np.prod(do[1:])), (n.name, di, do)
         c = f"{n.name}_o1b_shape"
         model.graph.initializer.append(numpy_helper.from_array(np.array([0, *do[1:]], np.int64), c))
         n.input[1] = c

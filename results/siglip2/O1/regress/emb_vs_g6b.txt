@@ -1,0 +1,4 @@
+g6b_ort_emb_o1b16base.npz vs g6b_ort_emb_b16_int8.npz: keys_same=True all_array_equal=True
+g6b_ort_emb_o1b32base.npz vs g6b_ort_emb_b32_int8.npz: keys_same=True all_array_equal=True
+g6b_ort_emb_o1b16fp.npz vs g6b_ort_emb_b16_fp32.npz: keys_same=True all_array_equal=True
+g6b_ort_emb_o1b32fp.npz vs g6b_ort_emb_b32_fp32.npz: keys_same=True all_array_equal=True

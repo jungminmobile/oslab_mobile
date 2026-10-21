@@ -5,6 +5,7 @@
 # 사용 (siglip2/):  M="b16_fp32=…:224 …" bash ../results/siglip2/O1/o1_ort_speed.sh
 set -uo pipefail
 cd "$(dirname "$0")/../../../siglip2"
+source ~/siglip2_env.sh
 export OPENBLAS_NUM_THREADS=1 HF_HUB_OFFLINE=1
 PY="$SIGLIP2_PYTHON"
 R=../results/siglip2/O1

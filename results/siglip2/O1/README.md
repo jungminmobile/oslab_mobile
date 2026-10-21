@@ -14,7 +14,8 @@ ORT CPU, 이 PC(Core Ultra 9 285K, avx_vnni, ORT 1.25.0, 정수 커널) **비공
 | B32 | 기준 INT8 | 2.69× / 2.35× / 1.95× | 31.75 / 19.81 / 13.84 | −0.87 [−1.33, −0.38] | 89.09 | 75.4 (+0.2) | 98.1 | 225.4 |
 | B32 | **최선 O-AB** | **2.83× / 2.57× / 2.20×** | 30.20 / 18.15 / 12.26 | **−0.29 [−0.65, +0.06]** | 89.67 | 74.7 (−0.5) | 98.0 | 216.9 |
 
-- **판정 (4절 기준 그대로, 모델별):** B16 채택 후보 O-A·O-AB → 4스레드 최단 **O-AB**. B32 채택 후보 **O-AB**만 (O-A는 CIFAR A −1.1%p로 ③ 실패). → 두 모델 모두 **"예선 모델 교체 제안: 기준 → O-AB"**. 교체는 팀이 정한다. 정민 노트북 공식 측정과 test 1회가 필요하다.
+- **판정 (4절 기준 그대로, 모델별):** B16 채택 후보 O-A·O-AB → 4스레드 최단 **O-AB**. B32 채택 후보 **O-AB**만 (O-A는 CIFAR A −1.1%p로 ③ 실패). → 두 모델 모두 **"예선 모델 교체 제안: 기준 → O-AB"**. 교체는 팀이 정한다. 정민 노트북 공식 측정이 필요하고, **test는 G6_test에서 fc2L2 최종 모델로 이미 1회 썼으므로 O-AB를 test로 다시 잴지는 팀·PRD 결정이다** (9절).
+- **주의: O-AB(O-A 포함)는 출력이 바뀌는 변경이다.** 기준 대비 cos 0.9875(B16)·0.9852(B32), 사진별 최소 0.90. QKᵀ 출력과 Softmax가 float이 되므로, 팀 규칙(ORT에서 FP32로 남긴 부분은 Hailo에서 `a16_w16`)에 따른 Hailo 대응을 정해야 한다 (9절). 기준 모델로 검증한 기존 기록(G6b 표 등)은 O-AB에 그대로 적용되지 않는다.
 - O-AB는 기준보다 지연 −9.8 / −11.0 / −13.2% (B16), −4.9 / −8.4 / −11.4% (B32)이고, 정확도는 기준과 동률(B16 +0.06 [−0.26, +0.35]) 또는 우위(B32 +0.57 [+0.17, +0.97])다.
 - **B16 vs B32 (같은 사진 쌍 비교, 기록용):** 고화질 B16 − B32 = 기준끼리 +2.34 [+1.68, +3.00]%p (G6b와 같음), **O-AB끼리 +1.83 [+1.16, +2.48]%p**, FP32끼리 +1.70 [+1.03, +2.36]%p. O-AB 지연은 B32가 B16의 0.36 / 0.40 / 0.47배다.
 - O-AB로 B32의 양자화 손실(−0.87 → −0.29)이 B16(−0.23 → −0.16)보다 많이 줄어 두 모델의 차이가 좁아졌다. 그래도 절대 top-1은 B16이 1.83%p 높다.
@@ -22,7 +23,7 @@ ORT CPU, 이 PC(Core Ultra 9 285K, avx_vnni, ORT 1.25.0, 정수 커널) **비공
 ## 1. 질문과 배경
 - 정확도는 그대로 두고 ORT CPU 지연만 줄이는 두 후보를 **B16 M2rot_ort**(`e84c3727…`)와 **B32 INT8**(G6b, `3a46ae8a…`)에 같은 방식으로 적용한다. 판정은 모델별로 따로 낸다.
 - G8 프로파일(B16, 4스레드): 동적 양자화보다 5.3 ms 느린 원인은 가중치 MatMul 둘레의 독립 Q/DQ 3.5 ms, 합쳐지지 않은 bias Add 1.0 ms, Transpose 0.5 ms. 정수 행렬곱 자체는 같다(18.9 ms).
-- 양자화 로그: SkipLayerNorm 융합 25개 중 1개, Transpose 53, Squeeze 38, Gather 28.
+- 양자화 로그: LayerNorm 26개 중 SkipLayerNorm으로 합쳐진 것 1개, Transpose 53, Squeeze 38, Gather 28.
 
 ## 2. 후보 (모두 기본 꺼짐 옵션)
 | 이름 | 만드는 법 |
@@ -36,7 +37,7 @@ ORT CPU, 이 PC(Core Ultra 9 285K, avx_vnni, ORT 1.25.0, 정수 커널) **비공
 공통 양자화 옵션 (기준과 같음): `--calib-source highres --calib-n 256 --seed 0 --method percentile --percentile 99.999 --act-type u8 --reduce-range --op-types MatMul --hist-chunk 16 --tag all`. B32는 `--calib-npy ~/siglip2_work/g6pre/cache_zoo256/calib256_s0_x.npy` (G6b와 같은 사진의 256 캐시).
 
 ### O-B 원인과 변환 (ORT 최적화 그래프를 저장해 확인)
-- **SkipLayerNorm이 안 합쳐지는 원인:** 잔차 Add의 출력이 LayerNorm과 **다음 잔차 Add 두 곳**에서 쓰인다. ORT C++ `SkipLayerNormFusion`은 Add 출력의 소비자가 하나일 때만 합치므로, 소비자가 하나뿐인 마지막 `/trunk/norm`만 합쳐진다. 회전·M2 때문이 아니다: Release FP32(`333cad08…`)도 똑같이 25개 중 1개만 합쳐진다.
+- **SkipLayerNorm이 안 합쳐지는 원인:** 잔차 Add의 출력이 LayerNorm과 **다음 잔차 Add 두 곳**에서 쓰인다. ORT C++ `SkipLayerNormFusion`은 Add 출력의 소비자가 하나일 때만 합치므로(ORT 소스의 조건으로 보며, 이 PC에서 소스를 직접 확인하지는 않음), INT8 그래프에서는 소비자가 하나뿐인 마지막 `/trunk/norm`만 합쳐진다(26개 중 1개). 회전·M2 때문이 아니다: ORT 최적화 그래프에서 Release FP32(`333cad08…`)·B16/B32 M2rot FP32는 26개 중 **0개**, B16/B32 기준 INT8은 26개 중 1개가 합쳐진다 (`ortfuse/ortopt_ln_counts.jsonl`). FP32에서는 마지막 norm도 합쳐지지 않는 이유는 확인하지 않았다.
 - **변환 (1) `--skip-ln`:** ORT python 융합기(`onnxruntime.transformers`)의 `FusionSkipLayerNormalization`은 소비자가 여럿이어도 SkipLayerNormalization의 4번째 출력(`input_skip_bias_sum`, Add의 합)으로 처리한다. 이어서 `FusionBiasSkipLayerNormalization`으로 앞 MatMul(proj·fc2)의 bias Add(1차원 상수)를 SkipLayerNorm의 bias 입력으로 흡수한다. 수학적으로 같은 연산이다(덧셈 순서만 커널 안으로).
   - 남는 LayerNorm 2개: 블록 0 norm1(입력이 위치 임베딩 상수와의 Add), MAP 헤드 norm(상수 probe와의 Add). 융합기가 상수 입력 Add는 합치지 않는다.
 - **변환 (2) `--fold-shape`:** Reshape의 모양 입력이 Shape→Gather→Unsqueeze→Concat으로 계산된다(배치 가변 export). 기호 모양 추론으로 출력 모양이 `[batch, 고정값…]`이고 입력 0번 축도 `batch`일 때만 상수 `[0, 고정값…]`으로 바꾼다(Reshape의 0 = 입력 축 크기 그대로, allowzero=0). 쓰이지 않게 된 모양 계산 노드를 지운다.
@@ -62,7 +63,7 @@ ORT CPU, 이 PC(Core Ultra 9 285K, avx_vnni, ORT 1.25.0, 정수 커널) **비공
   2. (후보 − 기준) 고화질 Δtop-1이 "동률" 이상 = 95% 구간 상한 ≥ 0 (구간이 0을 포함하거나 전부 0 위)
   3. CIFAR A 차이(후보 − 기준) ≥ −1.0%p
 - 여러 개면 4스레드 지연이 가장 짧은 것.
-- 채택 후보가 있으면 **"예선 모델 교체 제안"**으로 적되, 교체는 팀이 정한다 (정민 노트북 공식 측정과 test 1회가 필요하다).
+- 채택 후보가 있으면 **"예선 모델 교체 제안"**으로 적되, 교체는 팀이 정한다 (정민 노트북 공식 측정과 test 1회가 필요하다 — 용 요청 문구 그대로. test 재사용 문제는 9절).
 
 ## 5. 구현 (커밋)
 - `8fbd752` `s2_quantize.py --no-matmul-out-q` (O-A)
@@ -73,7 +74,7 @@ ORT CPU, 이 PC(Core Ultra 9 285K, avx_vnni, ORT 1.25.0, 정수 커널) **비공
 
 ### 6-1. 회귀 확인 — 통과 (커밋 `8fbd752`, dirty 아님, `regress/`)
 - 옵션을 끄고 다시 만든 파일의 sha256: B16 **`e84c3727…`**, B32 **`3a46ae8a…`** = 기준 파일과 같다 (`regress/quantize_sha256.txt`).
-- 정확도 실행의 기준·FP32 임베딩 4개(B16·B32 × 기준·FP32)는 G6b 저장 임베딩(`g6b_ort_emb_b16_int8` 등)과 모든 배열이 비트 단위로 같다.
+- 정확도 실행의 기준·FP32 임베딩 4개(B16·B32 × 기준·FP32)는 G6b 저장 임베딩(`g6b_ort_emb_b16_int8` 등)과 모든 배열이 비트 단위로 같다 (`regress/emb_vs_g6b.txt`).
 
 ### 6-2. 옵션 적용 확인 (ORT `ORT_ENABLE_ALL` 최적화 그래프의 노드 수, `quant/quantize_log.jsonl`)
 - **O-A의 `OpTypesToExcludeOutputQuantization`은 ORT 1.25 QDQ 형식에서 실제로 읽힌다** (G8의 `MatMulConstBOnly`와 다름): 결과 파일 sha256이 기준과 다르고(B16 `14747ca3…`, B32 `07772053…`), 아래처럼 `MatMulIntegerToFloat`가 생긴다.
@@ -161,7 +162,7 @@ ORT CPU, 이 PC(Core Ultra 9 285K, avx_vnni, ORT 1.25.0, 정수 커널) **비공
 | B32 | **O-AB** | **30.20** | **18.15** | **12.26** | **−4.9 / −8.4 / −11.4%** | 2.83× / 2.57× / 2.20× |
 
 - 세션별 값은 `o1_summary.json`의 `lat_sessions`에 있다. 같은 PC의 G8(B16 기준 30.30 ms, t4)·G6b(B32 기준 13.61 ms)와 기준 절대값이 1~2% 안에서 비슷하다 (실험끼리 절대값은 비교하지 않는다).
-- O-B 단독 효과는 스레드가 많을수록 커지지만(−0.7 → −2.8%) 3%에 못 미친다. O-A 위에 얹으면 t4에서 B16 −2.6%p, B32 −3.7%p를 더 줄인다.
+- O-B 단독 효과는 스레드가 많을수록 커지지만(−0.7 → −2.8%) 3%에 못 미친다. O-A 위에 얹으면 t4에서 B16 −2.6%p, B32 −3.8%p를 더 줄인다.
 
 ### 6-5. 크기·peak 메모리 (04:40, `s2_model_stats.py` 4스레드, 모델마다 새 프로세스, 1회, `model_stats/model_stats.jsonl`)
 | 모델 | 구성 | 크기 MiB (FP32 대비) | peak 추론 MiB (기준 대비) |
@@ -191,12 +192,12 @@ ORT CPU, 이 PC(Core Ultra 9 285K, avx_vnni, ORT 1.25.0, 정수 커널) **비공
 B16에서 줄어든 4.8 ms의 내역:
 1. **독립 DQ −2.05 ms**: MatMul 출력 DQ 66개가 `MatMulIntegerToFloat` 안으로 들어갔다 (DQ 66 → 1).
 2. **Softmax −1.55 ms**: QLinearSoftmax(2.05) → float Softmax(0.50). QKᵀ 출력을 양자화하지 않으니 정수 Softmax가 없어졌다. G8 S-const와 같은 효과다.
-3. **Add −0.74 ms, LN −0.61 + SkipLN +0.85**: 잔차 Add·bias Add 46개가 SkipLayerNorm 안으로 들어갔다. 합하면 약 −0.5 ms.
-4. **정수 행렬곱 −0.68 ms**: 출력을 다시 8비트로 바꾸는 계산이 없어진 만큼 (QLinearMatMul → MatMulIntegerToFloat).
+3. **Add −0.74 ms, LN −0.61, SkipLN +0.82**: 잔차 Add·bias Add 46개가 SkipLayerNorm 커널로 옮겨졌다. 합한 순감소는 약 −0.5 ms다.
+4. **정수 행렬곱 −0.68 ms**: QLinearMatMul → MatMulIntegerToFloat. 출력을 다시 8비트로 바꾸는 계산이 없어졌기 때문으로 본다 (원인 확인 안 함, 30장 1회 프로파일).
 5. 모양 스칼라 연산 −0.24 ms.
 6. 늘어난 것: Q +0.39 ms (Softmax 출력 Q 13개 추가).
 
-- G8에서 동적 양자화와의 차이로 꼽은 "Q/DQ 3.5 ms + bias Add 1.0 ms" 중 DQ와 bias Add 대부분은 없어졌다. 입력 Q(1.55 ms)는 정적 양자화라 남는다. Transpose(1.15 ms)는 그대로다 (손대지 않음).
+- G8에서 동적 양자화와의 차이로 꼽은 "Q/DQ 3.5 ms + bias Add 1.0 ms" 중 독립 DQ는 거의 없어졌다(2.08 → 0.03 ms). bias Add는 없어진 것이 아니라 SkipLN 커널로 옮겨져 Add+LN+SkipLN 순감소가 약 0.5 ms다. 입력 Q(1.55 ms)는 정적 양자화라 남는다. Transpose(1.15 ms)는 그대로다 (손대지 않음).
 
 ## 7. 판정 (4절 기준 그대로)
 | 모델 | 구성 | ① 1·2·4 모두 ≥ 3% | ② 기준 대비 고화질 상한 ≥ 0 | ③ CIFAR A ≥ −1.0 | 결과 |
@@ -210,7 +211,7 @@ B16에서 줄어든 4.8 ms의 내역:
 
 - **B16: 예선 모델 교체 제안 — M2rot_ort(`e84c3727…`) → O-AB(`db2c1fdd…`).**
 - **B32: 교체 제안 — INT8(`3a46ae8a…`) → O-AB(`7a01044c…`).**
-- 교체는 팀이 정한다. 그 전에 필요한 것: ① 정민 노트북 공식 측정(D-010), ② test 1회(PRD: test는 최종 평가에서 한 번만), ③ 아래 Hailo 대응 결정.
+- 교체는 팀이 정한다. 그 전에 필요한 것: ① 정민 노트북 공식 측정(D-010), ② test 평가 여부 결정 (PRD: test는 최종 평가에서 한 번만인데 G6_test에서 이미 1회 씀 → 팀·PRD 결정), ③ 아래 Hailo 대응 결정.
 
 ## 8. 계획에서 달라진 점
 1. **대상 모델 2개** (용 10/22 지시): B16 M2rot_ort에 더해 B32 INT8(G6b)에도 같은 후보를 적용하고 판정을 따로 냈다. README 0절에 메인 모델 결정용 요약을 넣었다.
@@ -226,7 +227,10 @@ B16에서 줄어든 4.8 ms의 내역:
 - O-B 양자화 결과가 기준과 비트 단위로 다른 원인 (보정 텐서 순서 등).
 - 정민 노트북(공식) 지연, 다른 CPU(avx512·VNNI 없는 CPU)에서 `MatMulIntegerToFloat` 커널의 속도.
 - peak 메모리는 1회 측정이다.
-- test는 쓰지 않았다.
+- test는 쓰지 않았다. **test 재사용 (팀·PRD 결정):** G6_test(10/16~17)에서 fc2L2 최종 모델로 test를 이미 1회 썼다. O-AB(또는 지금의 M2rot_ort 자체)를 test로 재려면 두 번째 사용이 되어 PRD 규칙과 충돌한다.
+- **B32 O-A의 ③ 탈락은 경계값이다:** CIFAR A는 1,000장이라 0.1%p = 1장. −1.1은 기준선 −1.0보다 사진 1장 차이이고, O-AB(−0.7)와의 차이도 4장이다. 판정은 기준대로다.
+- 판정 기준 고정 시점: 기준 고정 커밋 `946628f`(02:52:48)는 정확도 평가 시작(02:52:10, `4841e6e`) 38초 뒤다. 평가가 끝난 03:17 전이라 결과를 보기 전이다 (엄밀히는 "평가 시작 직후 고정").
+- `o1_summarize.py` 판정은 jsonl에 저장된 반올림 값(소수 둘째 자리)을 쓴다. 이번 값은 경계에서 멀어 영향이 없다.
 
 ## 10. 재현
 ```bash

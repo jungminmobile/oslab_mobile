@@ -1,0 +1,5 @@
+{"model": "Release FP32 333cad08", "ORT_ENABLE_ALL": true, "LayerNormalization": 26, "SkipLayerNormalization": 0, "date": "2026-10-22T04:48:07", "ort": "1.25.0"}
+{"model": "B16 M2rot FP32 16ef696e", "ORT_ENABLE_ALL": true, "LayerNormalization": 26, "SkipLayerNormalization": 0, "date": "2026-10-22T04:48:07", "ort": "1.25.0"}
+{"model": "B16 기준 INT8 e84c3727", "ORT_ENABLE_ALL": true, "LayerNormalization": 25, "SkipLayerNormalization": 1, "date": "2026-10-22T04:48:07", "ort": "1.25.0"}
+{"model": "B32 M2rot FP32 23236123", "ORT_ENABLE_ALL": true, "LayerNormalization": 26, "SkipLayerNormalization": 0, "date": "2026-10-22T04:48:07", "ort": "1.25.0"}
+{"model": "B32 기준 INT8 3a46ae8a", "ORT_ENABLE_ALL": true, "LayerNormalization": 25, "SkipLayerNormalization": 1, "date": "2026-10-22T04:48:07", "ort": "1.25.0"}

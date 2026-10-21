@@ -12,6 +12,7 @@ THREADS = [1, 2, 4]
 
 # 지연: s2_g6b_bench가 남긴 speed_*.json (세션 3 × 스레드 3)
 runs = [json.loads(p.read_text()) for p in sorted((D / "speed").glob("speed_*.json"))]
+assert all(not json.loads(l)["dirty"] for l in (D / "speed" / "runs.jsonl").read_text().splitlines())
 lat = {}
 for r in runs:
     t = r["cond"]["threads"]
