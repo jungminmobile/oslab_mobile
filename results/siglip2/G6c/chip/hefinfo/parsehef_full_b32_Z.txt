@@ -1,0 +1,10 @@
+HEF Compatible for: HAILO15H, HAILO10H
+HEF Compiler Version: 5.4.0
+Network group name: siglip2_b_32_256_image_encoder, Multi Context - Number of contexts: 12
+    Network name: siglip2_b_32_256_image_encoder/siglip2_b_32_256_image_encoder
+        Stream infos:
+            Input  siglip2_b_32_256_image_encoder/input_layer1 UINT8, NHCW(256x256x3)
+            Output siglip2_b_32_256_image_encoder/ew_add26 UINT16, NHCW(1x1x768)
+        VStream infos:
+            Input  siglip2_b_32_256_image_encoder/input_layer1 UINT8, NHWC(256x256x3)
+            Output siglip2_b_32_256_image_encoder/ew_add26 UINT16, NHWC(1x1x768)

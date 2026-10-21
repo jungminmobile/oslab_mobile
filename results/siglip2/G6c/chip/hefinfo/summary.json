@@ -1,0 +1,380 @@
+[
+ {
+  "hef": "b16_M2rot2",
+  "n_in_vstreams": 1,
+  "n_out_vstreams": 1,
+  "n_in_streams": 1,
+  "n_out_streams": 1,
+  "any_nms": false,
+  "parsehef_mentions_ops": [],
+  "in_vstream_eq_stream": false,
+  "out_vstream_eq_stream": false,
+  "in": {
+   "type": "FormatType.UINT8",
+   "order": "FormatOrder.NHWC",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    224,
+    224,
+    3
+   ],
+   "q": {
+    "qp_scale": 0.007874015718698502,
+    "qp_zp": 128.0,
+    "limvals_min": -1.0078740119934082,
+    "limvals_max": 1.0
+   }
+  },
+  "in_stream": {
+   "type": "FormatType.UINT8",
+   "order": "FormatOrder.NHCW",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    224,
+    224,
+    3
+   ]
+  },
+  "out": {
+   "type": "FormatType.UINT16",
+   "order": "FormatOrder.NHWC",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    1,
+    1,
+    768
+   ],
+   "q": {
+    "qp_scale": 0.0003026290505658835,
+    "qp_zp": 8156.0,
+    "limvals_min": -2.468242645263672,
+    "limvals_max": 7.448003768920898
+   }
+  },
+  "out_stream": {
+   "type": "FormatType.UINT16",
+   "order": "FormatOrder.NHCW",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    1,
+    1,
+    768
+   ]
+  }
+ },
+ {
+  "hef": "b16_rb_bk",
+  "n_in_vstreams": 1,
+  "n_out_vstreams": 1,
+  "n_in_streams": 1,
+  "n_out_streams": 1,
+  "any_nms": false,
+  "parsehef_mentions_ops": [],
+  "in_vstream_eq_stream": false,
+  "out_vstream_eq_stream": false,
+  "in": {
+   "type": "FormatType.UINT8",
+   "order": "FormatOrder.NHWC",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    224,
+    224,
+    3
+   ],
+   "q": {
+    "qp_scale": 0.007874015718698502,
+    "qp_zp": 128.0,
+    "limvals_min": -1.0078740119934082,
+    "limvals_max": 1.0
+   }
+  },
+  "in_stream": {
+   "type": "FormatType.UINT8",
+   "order": "FormatOrder.NHCW",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    224,
+    224,
+    3
+   ]
+  },
+  "out": {
+   "type": "FormatType.UINT16",
+   "order": "FormatOrder.NHWC",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    1,
+    1,
+    768
+   ],
+   "q": {
+    "qp_scale": 0.0003026290505658835,
+    "qp_zp": 8156.0,
+    "limvals_min": -2.468242645263672,
+    "limvals_max": 7.448003768920898
+   }
+  },
+  "out_stream": {
+   "type": "FormatType.UINT16",
+   "order": "FormatOrder.NHCW",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    1,
+    1,
+    768
+   ]
+  }
+ },
+ {
+  "hef": "b16_both_bk",
+  "n_in_vstreams": 1,
+  "n_out_vstreams": 1,
+  "n_in_streams": 1,
+  "n_out_streams": 1,
+  "any_nms": false,
+  "parsehef_mentions_ops": [],
+  "in_vstream_eq_stream": false,
+  "out_vstream_eq_stream": false,
+  "in": {
+   "type": "FormatType.UINT8",
+   "order": "FormatOrder.NHWC",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    224,
+    224,
+    3
+   ],
+   "q": {
+    "qp_scale": 0.007874015718698502,
+    "qp_zp": 128.0,
+    "limvals_min": -1.0078740119934082,
+    "limvals_max": 1.0
+   }
+  },
+  "in_stream": {
+   "type": "FormatType.UINT8",
+   "order": "FormatOrder.NHCW",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    224,
+    224,
+    3
+   ]
+  },
+  "out": {
+   "type": "FormatType.UINT16",
+   "order": "FormatOrder.NHWC",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    1,
+    1,
+    768
+   ],
+   "q": {
+    "qp_scale": 0.00030262910877354443,
+    "qp_zp": 8156.0,
+    "limvals_min": -2.46824312210083,
+    "limvals_max": 7.448005199432373
+   }
+  },
+  "out_stream": {
+   "type": "FormatType.UINT16",
+   "order": "FormatOrder.NHCW",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    1,
+    1,
+    768
+   ]
+  }
+ },
+ {
+  "hef": "b32_M_both",
+  "n_in_vstreams": 1,
+  "n_out_vstreams": 1,
+  "n_in_streams": 1,
+  "n_out_streams": 1,
+  "any_nms": false,
+  "parsehef_mentions_ops": [],
+  "in_vstream_eq_stream": false,
+  "out_vstream_eq_stream": false,
+  "in": {
+   "type": "FormatType.UINT8",
+   "order": "FormatOrder.NHWC",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    256,
+    256,
+    3
+   ],
+   "q": {
+    "qp_scale": 1.0,
+    "qp_zp": 0.0,
+    "limvals_min": 0.0,
+    "limvals_max": 255.0
+   }
+  },
+  "in_stream": {
+   "type": "FormatType.UINT8",
+   "order": "FormatOrder.NHCW",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    256,
+    256,
+    3
+   ]
+  },
+  "out": {
+   "type": "FormatType.UINT16",
+   "order": "FormatOrder.NHWC",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    1,
+    1,
+    768
+   ],
+   "q": {
+    "qp_scale": 0.0003312529297545552,
+    "qp_zp": 7973.0,
+    "limvals_min": -2.6410796642303467,
+    "limvals_max": 8.213085174560547
+   }
+  },
+  "out_stream": {
+   "type": "FormatType.UINT16",
+   "order": "FormatOrder.NHCW",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    1,
+    1,
+    768
+   ]
+  }
+ },
+ {
+  "hef": "b32_Z",
+  "n_in_vstreams": 1,
+  "n_out_vstreams": 1,
+  "n_in_streams": 1,
+  "n_out_streams": 1,
+  "any_nms": false,
+  "parsehef_mentions_ops": [],
+  "in_vstream_eq_stream": false,
+  "out_vstream_eq_stream": false,
+  "in": {
+   "type": "FormatType.UINT8",
+   "order": "FormatOrder.NHWC",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    256,
+    256,
+    3
+   ],
+   "q": {
+    "qp_scale": 1.0,
+    "qp_zp": 0.0,
+    "limvals_min": 0.0,
+    "limvals_max": 255.0
+   }
+  },
+  "in_stream": {
+   "type": "FormatType.UINT8",
+   "order": "FormatOrder.NHCW",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    256,
+    256,
+    3
+   ]
+  },
+  "out": {
+   "type": "FormatType.UINT16",
+   "order": "FormatOrder.NHWC",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    1,
+    1,
+    768
+   ],
+   "q": {
+    "qp_scale": 0.00029607274336740375,
+    "qp_zp": 8373.0,
+    "limvals_min": -2.4790170192718506,
+    "limvals_max": 7.222398281097412
+   }
+  },
+  "out_stream": {
+   "type": "FormatType.UINT16",
+   "order": "FormatOrder.NHCW",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    1,
+    1,
+    768
+   ]
+  }
+ },
+ {
+  "hef": "s1b16_Z",
+  "n_in_vstreams": 1,
+  "n_out_vstreams": 1,
+  "n_in_streams": 1,
+  "n_out_streams": 1,
+  "any_nms": false,
+  "parsehef_mentions_ops": [],
+  "in_vstream_eq_stream": false,
+  "out_vstream_eq_stream": false,
+  "in": {
+   "type": "FormatType.UINT8",
+   "order": "FormatOrder.NHWC",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    224,
+    224,
+    3
+   ],
+   "q": {
+    "qp_scale": 1.0,
+    "qp_zp": 0.0,
+    "limvals_min": 0.0,
+    "limvals_max": 255.0
+   }
+  },
+  "in_stream": {
+   "type": "FormatType.UINT8",
+   "order": "FormatOrder.NHCW",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    224,
+    224,
+    3
+   ]
+  },
+  "out": {
+   "type": "FormatType.UINT16",
+   "order": "FormatOrder.NHWC",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    1,
+    1,
+    768
+   ],
+   "q": {
+    "qp_scale": 0.0003255005576647818,
+    "qp_zp": 9506.0,
+    "limvals_min": -3.094208240509033,
+    "limvals_max": 7.571468353271484
+   }
+  },
+  "out_stream": {
+   "type": "FormatType.UINT16",
+   "order": "FormatOrder.NHCW",
+   "flags": "FormatFlags.NONE",
+   "shape": [
+    1,
+    1,
+    768
+   ]
+  }
+ }
+]

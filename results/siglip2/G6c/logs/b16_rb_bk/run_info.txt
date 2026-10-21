@@ -1,0 +1,3 @@
+06:23:20 tag=b16_rb_bk commit=855e99f dirty=0 src_har=/home/junyong/siglip2_work/g6/dfc/b16_rb/siglip2_m2rot_optimized.har src_har_sha256=1cdb4a50338b9b3c17f0ed3071397609a411f8089452aa23a458d8fd79032c21 alls=/home/junyong/oslab_g6c/results/siglip2/G6c/alls/g6c_b16_rb_bk.alls alls_sha256=012d747e035e3966780a7782f7c49664ba53f39e1f52d07dad4999f36010f076 (optimize 안 함, compile만)
+06:23:20 compile 잠금 잡음 free=29G load=0.35 0.59 0.93
+07:44:23 compile rc=0 sec=4863 maxrss_kb=9478284 

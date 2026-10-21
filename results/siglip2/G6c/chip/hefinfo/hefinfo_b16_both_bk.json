@@ -1,0 +1,130 @@
+{
+ "hef": "b16_both_bk",
+ "file": "b16_both_bk.hef",
+ "sha256": "32accb8fb6a8d5f6520713e9432fdcf1e239786f67a61a474fdd8e55b8e5b33e",
+ "bytes": 108154880,
+ "network_groups": [
+  "siglip2_m2rot"
+ ],
+ "networks": [
+  "siglip2_m2rot/siglip2_m2rot"
+ ],
+ "input_vstreams": [
+  {
+   "name": "siglip2_m2rot/input_layer1",
+   "direction": "StreamDirection.H2D",
+   "format": {
+    "type": "FormatType.UINT8",
+    "order": "FormatOrder.NHWC",
+    "flags": "FormatFlags.NONE"
+   },
+   "shape": [
+    224,
+    224,
+    3
+   ],
+   "quant_info": {
+    "qp_scale": 0.007874015718698502,
+    "qp_zp": 128.0,
+    "limvals_min": -1.0078740119934082,
+    "limvals_max": 1.0
+   },
+   "nms_shape": null,
+   "original_names": [],
+   "stream_names": [
+    "siglip2_m2rot/input_layer1"
+   ]
+  }
+ ],
+ "output_vstreams": [
+  {
+   "name": "siglip2_m2rot/ew_add57",
+   "direction": "StreamDirection.D2H",
+   "format": {
+    "type": "FormatType.UINT16",
+    "order": "FormatOrder.NHWC",
+    "flags": "FormatFlags.NONE"
+   },
+   "shape": [
+    1,
+    1,
+    768
+   ],
+   "quant_info": {
+    "qp_scale": 0.00030262910877354443,
+    "qp_zp": 8156.0,
+    "limvals_min": -2.46824312210083,
+    "limvals_max": 7.448005199432373
+   },
+   "nms_shape": null,
+   "original_names": [
+    "/trunk/Add_46",
+    "/trunk/Gather"
+   ],
+   "stream_names": [
+    "siglip2_m2rot/ew_add57"
+   ]
+  }
+ ],
+ "input_streams": [
+  {
+   "name": "siglip2_m2rot/input_layer1",
+   "direction": "StreamDirection.H2D",
+   "format": {
+    "type": "FormatType.UINT8",
+    "order": "FormatOrder.NHCW",
+    "flags": "FormatFlags.NONE"
+   },
+   "shape": [
+    224,
+    224,
+    3
+   ],
+   "quant_info": {
+    "qp_scale": 0.007874015718698502,
+    "qp_zp": 128.0,
+    "limvals_min": -1.0078740119934082,
+    "limvals_max": 1.0
+   },
+   "nms_shape": null,
+   "data_bytes": 1,
+   "sys_index": 16
+  }
+ ],
+ "output_streams": [
+  {
+   "name": "siglip2_m2rot/ew_add57",
+   "direction": "StreamDirection.D2H",
+   "format": {
+    "type": "FormatType.UINT16",
+    "order": "FormatOrder.NHCW",
+    "flags": "FormatFlags.NONE"
+   },
+   "shape": [
+    1,
+    1,
+    768
+   ],
+   "quant_info": {
+    "qp_scale": 0.00030262910877354443,
+    "qp_zp": 8156.0,
+    "limvals_min": -2.46824312210083,
+    "limvals_max": 7.448005199432373
+   },
+   "nms_shape": null,
+   "data_bytes": 2,
+   "sys_index": 19
+  }
+ ],
+ "bottleneck_fps": 448.3604578955903,
+ "check": {
+  "n_in_vstreams": 1,
+  "n_out_vstreams": 1,
+  "n_in_streams": 1,
+  "n_out_streams": 1,
+  "any_nms": false,
+  "parsehef_mentions_ops": [],
+  "in_vstream_eq_stream": false,
+  "out_vstream_eq_stream": false
+ }
+}

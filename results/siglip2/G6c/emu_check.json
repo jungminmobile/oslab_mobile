@@ -1,0 +1,74 @@
+[
+ {
+  "set": "cifar_A",
+  "emu_eq_chip_bit": false,
+  "cos_emu_chip": 0.3123,
+  "cos_emu_fp32": 0.9607,
+  "cos_chip_fp32": 0.3072,
+  "cos_rbemu_fp32": 0.9607,
+  "top1_emu": 69.0,
+  "top1_chip": 35.0,
+  "top1_fp32": 74.0,
+  "top1_rbemu": 70.5
+ },
+ {
+  "set": "pets_dev",
+  "emu_eq_chip_bit": false,
+  "cos_emu_chip": 0.4393,
+  "cos_emu_fp32": 0.9897,
+  "cos_chip_fp32": 0.4409,
+  "cos_rbemu_fp32": 0.9897,
+  "top1_emu": 92.5,
+  "top1_chip": 53.5,
+  "top1_fp32": 93.5,
+  "top1_rbemu": 91.5
+ },
+ {
+  "set": "flowers_dev",
+  "emu_eq_chip_bit": false,
+  "cos_emu_chip": 0.369,
+  "cos_emu_fp32": 0.9882,
+  "cos_chip_fp32": 0.368,
+  "cos_rbemu_fp32": 0.9882,
+  "top1_emu": 86.5,
+  "top1_chip": 40.5,
+  "top1_fp32": 85.0,
+  "top1_rbemu": 86.5
+ },
+ {
+  "set": "cars_dev",
+  "emu_eq_chip_bit": false,
+  "cos_emu_chip": 0.4144,
+  "cos_emu_fp32": 0.9868,
+  "cos_chip_fp32": 0.4168,
+  "cos_rbemu_fp32": 0.9868,
+  "top1_emu": 93.5,
+  "top1_chip": 49.5,
+  "top1_fp32": 93.5,
+  "top1_rbemu": 93.0
+ },
+ {
+  "set": "food_dev",
+  "emu_eq_chip_bit": false,
+  "cos_emu_chip": 0.404,
+  "cos_emu_fp32": 0.9838,
+  "cos_chip_fp32": 0.4036,
+  "cos_rbemu_fp32": 0.9838,
+  "top1_emu": 87.0,
+  "top1_chip": 43.5,
+  "top1_fp32": 87.5,
+  "top1_rbemu": 88.0
+ },
+ {
+  "set": "caltech_dev",
+  "emu_eq_chip_bit": false,
+  "cos_emu_chip": 0.3909,
+  "cos_emu_fp32": 0.985,
+  "cos_chip_fp32": 0.391,
+  "cos_rbemu_fp32": 0.985,
+  "top1_emu": 95.0,
+  "top1_chip": 78.5,
+  "top1_fp32": 95.0,
+  "top1_rbemu": 94.5
+ }
+]

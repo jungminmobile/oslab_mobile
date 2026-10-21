@@ -1,0 +1,130 @@
+{
+ "hef": "b32_Z",
+ "file": "b32_Z.hef",
+ "sha256": "c16123297d83a36cc862839ba1b9984d1ab539abe3773f99a332acae39e318cc",
+ "bytes": 102645760,
+ "network_groups": [
+  "siglip2_b_32_256_image_encoder"
+ ],
+ "networks": [
+  "siglip2_b_32_256_image_encoder/siglip2_b_32_256_image_encoder"
+ ],
+ "input_vstreams": [
+  {
+   "name": "siglip2_b_32_256_image_encoder/input_layer1",
+   "direction": "StreamDirection.H2D",
+   "format": {
+    "type": "FormatType.UINT8",
+    "order": "FormatOrder.NHWC",
+    "flags": "FormatFlags.NONE"
+   },
+   "shape": [
+    256,
+    256,
+    3
+   ],
+   "quant_info": {
+    "qp_scale": 1.0,
+    "qp_zp": 0.0,
+    "limvals_min": 0.0,
+    "limvals_max": 255.0
+   },
+   "nms_shape": null,
+   "original_names": [],
+   "stream_names": [
+    "siglip2_b_32_256_image_encoder/input_layer1"
+   ]
+  }
+ ],
+ "output_vstreams": [
+  {
+   "name": "siglip2_b_32_256_image_encoder/ew_add26",
+   "direction": "StreamDirection.D2H",
+   "format": {
+    "type": "FormatType.UINT16",
+    "order": "FormatOrder.NHWC",
+    "flags": "FormatFlags.NONE"
+   },
+   "shape": [
+    1,
+    1,
+    768
+   ],
+   "quant_info": {
+    "qp_scale": 0.00029607274336740375,
+    "qp_zp": 8373.0,
+    "limvals_min": -2.4790170192718506,
+    "limvals_max": 7.222398281097412
+   },
+   "nms_shape": null,
+   "original_names": [
+    "/model/head/Add",
+    "/model/head/Gather"
+   ],
+   "stream_names": [
+    "siglip2_b_32_256_image_encoder/ew_add26"
+   ]
+  }
+ ],
+ "input_streams": [
+  {
+   "name": "siglip2_b_32_256_image_encoder/input_layer1",
+   "direction": "StreamDirection.H2D",
+   "format": {
+    "type": "FormatType.UINT8",
+    "order": "FormatOrder.NHCW",
+    "flags": "FormatFlags.NONE"
+   },
+   "shape": [
+    256,
+    256,
+    3
+   ],
+   "quant_info": {
+    "qp_scale": 1.0,
+    "qp_zp": 0.0,
+    "limvals_min": 0.0,
+    "limvals_max": 255.0
+   },
+   "nms_shape": null,
+   "data_bytes": 1,
+   "sys_index": 16
+  }
+ ],
+ "output_streams": [
+  {
+   "name": "siglip2_b_32_256_image_encoder/ew_add26",
+   "direction": "StreamDirection.D2H",
+   "format": {
+    "type": "FormatType.UINT16",
+    "order": "FormatOrder.NHCW",
+    "flags": "FormatFlags.NONE"
+   },
+   "shape": [
+    1,
+    1,
+    768
+   ],
+   "quant_info": {
+    "qp_scale": 0.00029607274336740375,
+    "qp_zp": 8373.0,
+    "limvals_min": -2.4790170192718506,
+    "limvals_max": 7.222398281097412
+   },
+   "nms_shape": null,
+   "data_bytes": 2,
+   "sys_index": 19
+  }
+ ],
+ "bottleneck_fps": 1321.6412140596192,
+ "check": {
+  "n_in_vstreams": 1,
+  "n_out_vstreams": 1,
+  "n_in_streams": 1,
+  "n_out_streams": 1,
+  "any_nms": false,
+  "parsehef_mentions_ops": [],
+  "in_vstream_eq_stream": false,
+  "out_vstream_eq_stream": false
+ }
+}

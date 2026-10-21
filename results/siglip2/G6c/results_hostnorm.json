@@ -1,0 +1,10 @@
+{
+ "hostnorm_a_normalize_median_ms": {
+  "1": 0.1797,
+  "8": 1.3222
+ },
+ "hostnorm_b_normalize_quantize_median_ms": {
+  "1": 0.5291,
+  "8": 6.5789
+ }
+}
