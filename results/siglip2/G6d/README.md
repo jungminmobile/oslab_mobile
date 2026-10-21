@@ -31,6 +31,15 @@
 - Dmax가 (a) M_both와 출력이 비트 단위로 같고 (b) B32 배치 1 지연을 M_both 대비 3% 이상 줄이면 B16_rb_bk_D를 만든다.
 - (b)는 **결정용 측정**(Dmax와 M_both를 같은 세션에서 번갈아 배치 1 × 3세션, 같은 bench)으로 정한다. 그 값은 최종 속도 표에도 기록한다. 조건을 못 맞추면 건너뛰고 이유를 적는다.
 
+### 1-1. 계획에서 달라진 점: Dmax compile 실패 → Dmax2 (결과 전 최소 수정)
+
+- Dmax (`g6d_b32_Dmax.alls`)는 76초 만에 compile에 실패했다 (`logs/b32_Dmax_fail/compile.log`): `Failed to optimize bucket_0 with error: Performance Flow requires automatic resource utilization`.
+  - `compiler_optimization_level=max`는 `resources_param`으로 자원 상한을 직접 정한 모델에는 쓸 수 없다.
+- 최소 수정: **Dmax2** = M_both .alls에서 `resources_param` 줄만 빼고 `performance_param(compiler_optimization_level=max)`를 남긴 것 (`alls/g6d_b32_Dmax2.alls`).
+  - 16비트 집합 등 양자화 줄은 M_both·M_z16(G6b, resources_param 없음)과 같다. 그래서 같은 M_both optimized HAR에서 compile만 한다.
+  - 비교 기준은 **M_both**(18.38 ms)와 **M_z16**(19.21 ms, D 옵션 없는 같은 꼴) 둘 다다.
+- 조건부 B16_rb_bk_D: B16_rb_bk는 resources_param + 수동 bucket이 있어야 compile되는데, D 옵션은 resources_param과 함께 쓸 수 없다. 그래서 1절의 "B16_rb_bk + D"는 그대로는 만들 수 없다. 다른 형태로 옮길지는 Dmax2 결과를 보고 따로 정한다 (용 확인).
+
 ## 2. 측정
 
 ### 2-1. 정확도 (AGX 실칩, G6 eval 코드·캐시·분류기)

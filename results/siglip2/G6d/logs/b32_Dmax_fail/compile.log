@@ -1,0 +1,26 @@
+[info] Current Time: 12:51:41, 10/21/26
+[info] CPU: Architecture: x86_64, Model: Intel(R) Core(TM) Ultra 9 285K, Number Of Cores: 24, Utilization: 0.0%
+[info] Memory: Total: 30GB, Available: 29GB
+[info] System info: OS: Linux, Kernel: 6.6.114.1-microsoft-standard-WSL2
+[info] Hailo DFC Version: 5.4.0
+[info] HailoRT Version: Not Installed
+[info] PCIe: No Hailo PCIe device was found
+[info] Running `hailo compiler /home/junyong/siglip2_work/g6/dfc/b32_M_both/g6_b32_M_both_optimized.har --hw-arch hailo10h --model-script ../model.alls --output-dir . --output-har-path compiled.har`
+[info] Hailo HW architecture: hailo10h
+[info] Loading model script commands to g6_b32_M_both from ../model.alls
+[info] ParsedPerformanceParam command, setting optimization_level(max=2)
+[info] Compiling network
+[info] Loading network parameters
+[info] Starting Hailo allocation and compilation flow
+[info] g6_b32_M_both Successful Pre Builder (duration: 0s)
+[?25l[F	[F	[?25h
+[info] Running optimization flow for bucket_0
+[info] Building optimization options for network layers...
+	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[info] Successfully built optimization options - 34s 736ms
+[error] g6_b32_M_both Pre Partition Failed (duration: 34s)
+[error] Failed to optimize bucket_0 with error: Performance Flow requires automatic resource utilization
+[error] g6_b32_M_both_bucket_0 Compilation Failed (duration: 47s)
+Performance Flow requires automatic resource utilization
+[?25h
+[error] Failed to produce compiled graph
+[error] BackendAllocatorException: Compilation failed: Performance Flow requires automatic resource utilization
