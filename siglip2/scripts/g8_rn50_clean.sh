@@ -5,18 +5,20 @@
 set -uo pipefail
 B=D:/mokerton/artifacts/rn50_g8/dl
 OUT=D:/mokerton/artifacts/rn50_g8/results
-R=/d/mokerton/wt_g8/results/siglip2/G8_candidates/rn50_clean
+R=D:/mokerton/wt_g8/results/siglip2/G8_candidates/rn50_clean   # Windows python에 넘기므로 D:/ 형식 (MSYS 경로 변환 끔)
 PY="$SIGLIP2_PYTHON"; LOCK=("$PY" D:/mokerton/locks/heavy_lock.py run --owner siglip2 --job)
 export MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL='*' OPENBLAS_NUM_THREADS=1 PYTHONIOENCODING=utf-8
 mkdir -p $OUT $R
-echo "$(date +%T) start repo=$(git -C /d/mokerton/wt_g8 rev-parse --short HEAD) dirty=$(git -C /d/mokerton/wt_g8 status --porcelain -- siglip2 | wc -l)"
+echo "$(date +%T) start repo=$(git -C D:/mokerton/wt_g8 rev-parse --short HEAD) dirty=$(git -C D:/mokerton/wt_g8 status --porcelain -- siglip2 | wc -l)"
+# 묶음 zip에 rn50/prompts/cifar100_templates.json이 빠져 있어 정민 브랜치(=main과 같음)에서 넣었다 (10/22 첫 실행 FileNotFoundError)
+[ -f $B/code/rn50/prompts/cifar100_templates.json ] || { echo "prompts 없음"; exit 2; }
 B2=rn50_image_int8_q1_percentile99999_highres256_s0_B2
 HR="pets_dev flowers_dev cars_dev food_dev caltech_dev"
 cd $B/code/rn50
 RN50_ONNX=$B/onnx RN50_CACHE=$B/cache RN50_RESULTS=$OUT "${LOCK[@]}" "RN50 B2 clean accuracy" -- "$PY" evaluate.py --exec int --threads 4 --save-pred --data cifar_A $HR --models fp32 $B2.onnx > $OUT/eval.log 2>&1
-echo "$(date +%T) evaluate rc=$?"; tail -3 $OUT/eval.log
+rc=$?; echo "$(date +%T) evaluate rc=$rc"; tail -3 $OUT/eval.log; [ $rc -eq 0 ] || exit 1
 RN50_ONNX=$B/onnx RN50_CACHE=$B/cache RN50_RESULTS=$OUT "$PY" bootstrap.py --a fp32 --b $B2 --data $HR > $OUT/boot.log 2>&1
-echo "$(date +%T) bootstrap rc=$?"; tail -3 $OUT/boot.log
+rc=$?; echo "$(date +%T) bootstrap rc=$rc"; tail -3 $OUT/boot.log; [ $rc -eq 0 ] || exit 1
 cp $OUT/*.jsonl $OUT/*.log $R/ 2>/dev/null
 cd /d/mokerton/wt_g8/siglip2
 A=D:/mokerton/artifacts
