@@ -1,0 +1,13 @@
+01:38:47 b32_ALL8 잠금 잡음 har_sha256=c559a1b4a4ad603e7f2040d5c86f68a9e591c9f712a6d0636879be375dfebaae script_sha256=2b1a6705b00950e49c261435345cc1afaaed56c7d9aaf5e3c5c79597c0d4df62
+[info] Hailo HW architecture: hailo10h
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792600782.323591  206894 service.cc:152] XLA service 0x5805f1849280 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1792600782.323635  206894 service.cc:160]   StreamExecutor device (0): Host, Default Version
+I0000 00:00:1792600809.844313  206894 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+cifar_A (200, 768) 73s
+pets_dev (200, 768) 134s
+flowers_dev (200, 768) 195s
+cars_dev (200, 768) 257s
+food_dev (200, 768) 319s
+caltech_dev (200, 768) 381s
+01:45:39 b32_ALL8 rc=0

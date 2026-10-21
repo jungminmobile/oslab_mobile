@@ -1,0 +1,26 @@
+18:52:37 b32_G 잠금 잡음 har_sha256=409b0344ed0a9957866df79184b4db15bb9f60374f8cc7a0af12678c2dc3bc62 script_sha256=2b1a6705b00950e49c261435345cc1afaaed56c7d9aaf5e3c5c79597c0d4df62
+[info] Hailo HW architecture: hailo10h
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792576413.929077 1558045 service.cc:152] XLA service 0x6039809edbb0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1792576413.929126 1558045 service.cc:160]   StreamExecutor device (0): Host, Default Version
+I0000 00:00:1792576439.490934 1558045 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+cifar_A (200, 768) 68s
+pets_dev (200, 768) 123s
+flowers_dev (200, 768) 179s
+cars_dev (200, 768) 236s
+food_dev (200, 768) 293s
+caltech_dev (200, 768) 350s
+18:58:59 b32_G rc=0
+20:12:49 b32_G 잠금 잡음 har_sha256=409b0344ed0a9957866df79184b4db15bb9f60374f8cc7a0af12678c2dc3bc62 script_sha256=2b1a6705b00950e49c261435345cc1afaaed56c7d9aaf5e3c5c79597c0d4df62
+[info] Hailo HW architecture: hailo10h
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792581225.755104 1792814 service.cc:152] XLA service 0x60b953747d00 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1792581225.755146 1792814 service.cc:160]   StreamExecutor device (0): Host, Default Version
+I0000 00:00:1792581251.890027 1792814 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+cifar_A (200, 768) 69s
+pets_dev (200, 768) 127s
+flowers_dev (200, 768) 185s
+cars_dev (200, 768) 244s
+food_dev (200, 768) 303s
+caltech_dev (200, 768) 363s
+20:19:24 b32_G rc=0

@@ -1,0 +1,20 @@
+18:52:38 tag=b32_ALL8 commit=d696320 dirty=0 dfc=5.4.0 onnx=/home/junyong/siglip2_work/g6/onnx/g6_b32_m2rot_b1.onnx onnx_sha256=a0eb502bc6ca0f8da31b29f315a2fd6c8b2a663be2b06e823bdc1a60f8e78eaa parse_only=0
+18:52:38 parse 잠금 대기
+20:19:24 parse 잠금 잡음 free=29G load=3.01 3.01 1.93
+20:19:45 parse rc=0 sec=21 maxrss_kb=4622828
+[info] Hailo HW architecture: hailo10h
+305 layers → layer_map.csv
+20:19:52 alls=/home/junyong/oslab_g6f/results/siglip2/G6f/alls/g6f_b32_ALL8.alls alls_sha256=118876319fbcc546a361298514aa34138048fc681ce1438ae033e5e1262adff5 calib=/home/junyong/siglip2_work/g6/calib256_s0_zoo256_nhwc.npy calib_sha256=d77eed1360c137d34da91e1479bfa559f884bba59a1591254dbbdc4c1bfc62b7 ncal=256
+20:19:53 optimize 잠금 대기
+21:41:24 optimize 잠금 잡음 free=29G load=2.49 2.72 2.92
+21:59:45 optimize rc=0 sec=1101 maxrss_kb=18014256
+[info] Using dataset with 256 entries for calibration
+[info] Using dataset with 256 entries for calibration
+[info] Using dataset with 256 entries for calibration
+[info] Using dataset with 256 entries for Bias Correction
+21:59:45 calib assert OK (256)
+21:59:45 compile 잠금 대기
+00:47:57 compile 잠금 잡음 free=29G load=2.70 2.36 2.27
+01:09:56 compile rc=0 sec=1319 maxrss_kb=5740608
+01:09:56 hef=comp/g6_b32_ALL8.hef bytes=91570176 sha256=f9233665fb823f3f3c921b8726e1bc46363be35b96d6024097f93dc1a5933be0 contexts=11
+01:09:56 G6 DFC DONE b32_ALL8
