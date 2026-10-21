@@ -1,0 +1,2 @@
+2323612341a79717eba5a72eb5c6492557391176a422e6381afdc9c66fde21c2  /home/junyong/siglip2_work/g6/onnx/g6_b32_m2rot_dyn.onnx
+2323612341a79717eba5a72eb5c6492557391176a422e6381afdc9c66fde21c2  /home/junyong/siglip2_work/g6/onnx/g6_b32_m2rot_dyn.onnx.o2bak

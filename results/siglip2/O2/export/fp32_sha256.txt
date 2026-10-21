@@ -1,0 +1,1 @@
+341a40279603218c5f1d67cfaf90888ec6483152ed496338b98d0fd942501a14  /home/junyong/siglip2_work/artifacts/onnx/siglip2_image_fp32_o2_b16_m2rotu.onnx
