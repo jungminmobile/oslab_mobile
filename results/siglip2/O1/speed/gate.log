@@ -1,0 +1,30 @@
+2026-10-22 03:17:45 start commit=946628f dirty=0 gate=WSL(others=0, load1<2, 5분 간격) windows=확인못함(interop 꺼짐)
+2026-10-22 03:17:45 s=1 t=1 대기#1 others=0 load1=3.99
+2026-10-22 03:22:45 s=1 t=1 pre others=0 load=0.02 1.46 2.98
+2026-10-22 03:31:08 s=1 t=1 done post others=0 load=1.00 1.08 2.13
+2026-10-22 03:31:08 s=1 t=2 pre others=0 load=1.00 1.08 2.13
+2026-10-22 03:35:48 s=1 t=2 done post others=0 load=2.07 1.71 2.12
+2026-10-22 03:35:48 s=1 t=4 대기#2 others=0 load1=2.07
+2026-10-22 03:40:48 s=1 t=4 pre others=0 load=0.06 0.65 1.53
+2026-10-22 03:43:35 s=1 t=4 done post others=0 load=4.05 2.21 1.99
+2026-10-22 03:43:35 s=2 t=1 대기#3 others=0 load1=4.05
+2026-10-22 03:48:35 s=2 t=1 pre others=0 load=0.03 0.82 1.44
+2026-10-22 03:56:58 s=2 t=1 done post others=0 load=1.05 1.01 1.26
+2026-10-22 03:56:58 s=2 t=2 pre others=0 load=1.05 1.01 1.26
+2026-10-22 04:01:37 s=2 t=2 done post others=0 load=2.03 1.64 1.47
+2026-10-22 04:01:37 s=2 t=4 대기#4 others=0 load1=2.03
+2026-10-22 04:06:37 s=2 t=4 pre others=0 load=0.01 0.60 1.06
+2026-10-22 04:09:22 s=2 t=4 done post others=0 load=3.88 2.08 1.55
+2026-10-22 04:09:22 s=3 t=1 대기#5 others=0 load1=3.88
+2026-10-22 04:14:22 s=3 t=1 pre others=0 load=0.02 0.75 1.11
+2026-10-22 04:22:42 s=3 t=1 done post others=0 load=1.07 0.99 1.06
+2026-10-22 04:22:42 s=3 t=2 pre others=0 load=1.07 0.99 1.06
+2026-10-22 04:27:20 s=3 t=2 done post others=0 load=2.00 1.62 1.32
+2026-10-22 04:27:20 s=3 t=4 대기#6 others=0 load1=2.00
+2026-10-22 04:32:20 s=3 t=4 pre others=0 load=0.02 0.60 0.95
+2026-10-22 04:35:05 s=3 t=4 done post others=0 load=3.80 2.09 1.47
+2026-10-22 04:35:05 mem 대기#7 others=0 load1=3.80
+2026-10-22 04:40:05 peak memory pre others=0 load=0.04 0.78 1.06
+2026-10-22 04:40:33 O1_SPEED_DONE waits=7
+2026-10-22 04:40:50 profile b16 pre others=0 load=1.96 1.24 1.21
+2026-10-22 04:40:54 profile b32 pre others=0 load=1.88 1.24 1.21
