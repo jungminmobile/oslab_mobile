@@ -1,0 +1,25 @@
+﻿{
+    "checked_at":  "2026-10-22T05:16:12.8005925+09:00",
+    "results":  [
+                    {
+                        "file":  "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+                        "bytes":  96180230,
+                        "sha256":  "e84c3727f51e3b97cd59d9ab9604e01acc78f81493926a0696fbf96dc9c60f9e",
+                        "expected":  "e84c3727f51e3b97cd59d9ab9604e01acc78f81493926a0696fbf96dc9c60f9e",
+                        "match":  true,
+                        "in_release_sums":  false
+                    },
+                    {
+                        "file":  "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx",
+                        "bytes":  96097711,
+                        "sha256":  "db2c1fdd26e0c98fb2ff3bc25d11117dac483b5479dd5c9cb6db75804794a77e",
+                        "expected":  "db2c1fdd26e0c98fb2ff3bc25d11117dac483b5479dd5c9cb6db75804794a77e",
+                        "match":  true,
+                        "in_release_sums":  true
+                    }
+                ],
+    "all_match":  true,
+    "power_scheme":  "전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)",
+    "battery_status":  2,
+    "battery_pct":  100
+}
