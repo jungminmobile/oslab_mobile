@@ -211,6 +211,9 @@ def main():
                          "예: s2_regcache.py export가 만든 siglip2_image_fp32_rc55at5-13at9.onnx (G3R). 출력 이름에 src 표시가 붙는다")
     ap.add_argument("--calib-npy", default="",
                     help="(G6b, 기본 꺼짐) 보정 사진 N×3×H×W float32 파일. 장수는 --calib-n과 같아야 한다 (calib_images 대신)")
+    ap.add_argument("--no-matmul-out-q", action="store_true",
+                    help="(O1, 기본 꺼짐) MatMul 출력에 Q/DQ를 붙이지 않는다 (extra_options OpTypesToExcludeOutputQuantization=[MatMul]). "
+                         "ORT가 DQ→MatMul을 MatMulIntegerToFloat(+bias)로 합칠 수 있게 하려는 것. 입력·가중치 양자화는 그대로")
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--log", default="", help="기본: $RN50_RESULTS/quantize_log.jsonl (RN50_RESULTS 명시 필요)")
     a = ap.parse_args()
@@ -238,6 +241,8 @@ def main():
         ops_tag += "_rr"
     if a.weight_type != "s8":
         ops_tag += f"_w{a.weight_type}"
+    if a.no_matmul_out_q:
+        ops_tag += "_moq0"
     cal = f"{meth}_{a.calib_source}{a.calib_n}_s{a.seed}_{a.act_type}{ops_tag}"
     dst = RC.ONNX_DIR / f"{_p}{cal}{'_' + a.tag if a.tag else ''}.onnx"
     if dst.exists() and not a.overwrite:
@@ -301,6 +306,8 @@ def main():
     if a.method == "percentile":
         # ORT 1.25 Percentile 보정기 기본은 대칭 범위(−t~t)라 한쪽으로 치우친 활성값에서 눈금 절반을 버린다 → 비대칭으로 (PRD 3절)
         extra.update({"CalibPercentile": a.percentile, "CalibTensorRangeSymmetric": False})
+    if a.no_matmul_out_q:
+        extra["OpTypesToExcludeOutputQuantization"] = ["MatMul"]
     assert "CalibMaxIntermediateOutputs" not in extra, "보정 결과를 버리는 옵션 금지 (RN50 16장 버그)"
     if a.u8_match:
         import onnx
