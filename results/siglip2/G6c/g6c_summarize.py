@@ -69,12 +69,12 @@ for r in rows:
     else:
         print(r["model"], r["pair"], r["hr_diff"], r["ci95"], r["verdict"], "cifar", r["cifar_A_diff"])
 # 모델을 넘는 쌍 (같은 사진, 각자의 분류기로 맞힘 여부): B16_both_bk − B32 M_both
-x, y = "b16_both_bk", "b32_M_both"
-if x in P and y in P:
-    diff = {d: P[x][d]["ok"] - P[y][d]["ok"] for d in HR}
-    dm = round(float(np.mean([100 * v.mean() for v in diff.values()])), 2); ci = boot_hr(diff)
-    r = {"what": "g6_pair", "model": "b16-b32", "a": x, "b": y, "pair": f"{x}-{y}", **base, "hr_diff": dm, "ci95": ci,
-         "verdict": "우위" if ci[0] > 0 else ("열위" if ci[1] < 0 else "동률"), "cifar_A_diff": round(100 * float((P[x]["cifar_A"]["ok"] - P[y]["cifar_A"]["ok"]).mean()), 2), "note": "기록용 (판정 아님)"}
-    with open(a.out, "a") as f:
-        f.write(json.dumps(r, ensure_ascii=False) + "\n")
-    print(r["pair"], r["hr_diff"], r["ci95"], r["verdict"], "cifar", r["cifar_A_diff"])
+for x, y in (("b16_both_bk", "b32_M_both"), ("b16_M2rot2", "b32_M_both")):   # 두 번째: B16_rb_bk = M2rot2 (6×200 비트 일치)
+  if x in P and y in P:
+      diff = {d: P[x][d]["ok"] - P[y][d]["ok"] for d in HR}
+      dm = round(float(np.mean([100 * v.mean() for v in diff.values()])), 2); ci = boot_hr(diff)
+      r = {"what": "g6_pair", "model": "b16-b32", "a": x, "b": y, "pair": f"{x}-{y}", **base, "hr_diff": dm, "ci95": ci,
+           "verdict": "우위" if ci[0] > 0 else ("열위" if ci[1] < 0 else "동률"), "cifar_A_diff": round(100 * float((P[x]["cifar_A"]["ok"] - P[y]["cifar_A"]["ok"]).mean()), 2), "note": "기록용 (판정 아님)"}
+      with open(a.out, "a") as f:
+          f.write(json.dumps(r, ensure_ascii=False) + "\n")
+      print(r["pair"], r["hr_diff"], r["ci95"], r["verdict"], "cifar", r["cifar_A_diff"])

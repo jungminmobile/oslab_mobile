@@ -25,6 +25,7 @@
 - 두 구성 모두 잔차 ew_add 26개는 M2rot2와 같은 목록이다 (Zoo `{ew_add*}`를 잔차 26개로 옮기는 G6b 규칙).
 - **Zoo 집합 대응 (G6 대응표 방식):** M2rot 그래프의 conv 번호는 일반 그래프와 같다 (G6 `alls/check_vs_M2rot.log`: conv4·5 = 블록 0 fc1·fc2, conv24·25 = 블록 5 fc1·fc2, conv41 = 블록 9 fc2).
   - 그래서 B16_both는 M2rot2에서 **`conv41`(블록 9 fc2)을 빼고 `conv1_s2d`를 더한 것**이다.
+  - (사후 확인, 독립 검토) optimized HAR을 보면 `conv1_s2d`는 B16_rb에서도 이미 a16_w16_a16이었다. 그래서 실제 차이는 **conv41의 8비트화뿐**이다 (5-2 참고).
   - `conv1_s2d`는 parse 단계 층이 아니라 optimize 때 생기는 층이다. Zoo S1B16 .alls와 G6 S1B16 R에서 같은 이름으로 컴파일됐다.
   - Zoo .alls의 `norm1`은 이 그래프에 없다. 정규화가 HEF 밖이라, M2rot2와 같은 입력 형식을 유지한다.
 - **bucket 3줄을 뺀 이유 (용 확인):** Zoo S1B16 bucket 줄이 가리키는 층 대부분이 optimize 때 DFC가 새로 만드는 이름이다.
@@ -157,7 +158,7 @@
 | **B16_both_bk** | 1차 B16_both의 optimized HAR(`7d22df79…`) + bucket 3줄로 compile만 | 108,154,880 | **16** | `32accb8fb6a8d5f6` | compile 79분 성공 |
 | B16_rb09 | resources_param 0.9 | — | — | — | **보류** (용 지시) |
 
-- 두 bk 빌드의 시작 기록에 `dirty=1`이 찍혔다. B16_rb_bk가 시작할 때는 0, B16_both_bk가 시작할 때는 1이다.
+- bk 빌드의 시작 기록: B16_rb_bk는 `dirty=0`, B16_both_bk는 `dirty=1`이다 (`build.jsonl`).
   - 원인: 앞 커밋에 들어간 `build.jsonl`에 실행 기록이 덧붙었기 때문이다 (`git status`: `M results/siglip2/G6c/build.jsonl`만).
   - 코드·.alls·스크립트는 커밋 `855e99f` 그대로다.
 
@@ -190,17 +191,23 @@
 - 대조
   - B16_rb의 에뮬레이터와 M2rot2 실칩도 비트 단위로는 다르다 (cos(에뮬레이터, 실칩) 0.977~0.991). 그래서 B16_both_bk의 "비트 동일" 확인은 이 방법으로는 할 수 없다. 대신 정확도 수준으로 판단했다.
   - B16_rb에서는 에뮬레이터와 실칩의 FP32 대비 cos가 같은 수준이다 (예: Pets 0.9897 대 0.9899).
-- 같은 bucket 줄을 쓴 B16_rb_bk는 실칩에서 M2rot2와 비트 단위로 같았다. B16_both_bk에서 무엇이 잘못됐는지(16비트 집합이 다른 그래프에 bucket을 적용한 결과, `conv1_s2d`, compiler 이상 등)는 **확인 못 함**.
+- 같은 bucket 줄을 쓴 B16_rb_bk는 실칩에서 M2rot2와 비트 단위로 같았다.
+- **두 optimized HAR의 실제 차이 (독립 검토로 찾고 HAR에서 확인):**
+  - `conv1_s2d`는 둘 다 a16_w16_a16이다 (B16_rb의 .alls에 없어도 16비트) → 차이가 아니다.
+  - B16_rb: `conv41`(블록 9 fc2, a16_w16_a16)에 블록 9 MLP 잔차 덧셈 `/trunk/Add_27`이 **합쳐져 있다** (`conv41` 입력 `conv40, ew_add36`).
+  - B16_both: `conv41`이 a8_w8_a16이 되고, `conv40` 출력은 a8이 된다. 그러면서 `/trunk/Add_27`이 **별도 층 `ew_add38`**(a16_w16_a16)로 떨어져 나왔다 (488 → 489층). `ew_add36`·LN21·`ew_add43`의 연결도 이 층을 거치도록 바뀌었다.
+  - 그래서 B16_both는 사실상 "M2rot2 − conv41 16비트"다. 떨어져 나온 `ew_add38`(bucket 경계 밖)이 HEF 이상의 가장 구체적인 후보다. 다만 그것이 원인인지는 **확인 못 함**.
 
 ### 5-3. 속도 (`results_speed.jsonl`, `chip/bench/`, HEF 6개를 같은 세션에서 번갈아, 배치 1·8 × 3세션)
 
 - AGX Orin + Hailo-10H, HailoRT 5.3.0, G6 최종 `run.sh`·`g6_hailo_chip.py` (sha256 `f6439972…`·`70a5de57…`)
-- 세션·HEF마다 칩 < 64.6 °C에서 시작했다 (최고 시작 64.58 °C, 49번).
+- 세션·HEF마다 칩 < 64.6 °C에서 시작했다 (최고 시작 64.58 °C, `run_g6c.log`의 49번).
+- B16_rb_bk 200장 비트 확인(07:44, run.sh 밖에서 직접 실행)은 로그가 `eval_info.json`과 `temps_g6c.jsonl`의 `pre_rbbk` 48.9 °C → `post_rbbk` 77.4 °C뿐이다. 정확도 출력이라 온도와 무관하다.
 - **최고 온도 94.18 °C**는 B16_both_bk dev 전체 eval이 끝난 직후였다. 속도 측정 중 최고는 88.8 °C였다. 95 °C는 넘지 않았다.
-- 세 세션 사이 차이는 배치 1에서 모든 HEF가 0.3% 이내, 배치 8에서 1.5% 이내다.
+- 세 세션 사이 차이는 배치 1에서 모든 HEF가 0.3% 이내, 배치 8에서 1.6% 이내다 (B16 M2rot2 1.51%).
 - **호스트 정규화** (`results_hostnorm.json`, AGX CPU, 세 세션 중앙값의 중앙값)
   - (a) eval과 같은 구현(`float32 / 127.5 − 1`): 배치 1 **0.180 ms**, 배치 8 **1.322 ms**
-  - (b) 참고: + UINT8 양자화 (bench가 HEF에 넣는 형식): 배치 1 0.529 ms, 배치 8 6.579 ms
+  - (b) 참고: + UINT8 양자화 (bench가 HEF에 넣는 형식, 세션 1 배치 1은 0.835 ms로 튀었고 세션 2·3은 0.53 ms): 배치 1 0.529 ms, 배치 8 6.579 ms
   - 처음에 zp를 127로 잘못 넣고 쟀다 (실제 quant_info zp는 128). 시간에는 영향이 없지만 128로 다시 쟀고, 잘못 넣은 기록은 `chip/hostnorm_g6c_zp127_wrong.json`에 남겼다.
 - 표의 "+ 호스트 정규화"는 HEF 지연 + (a)이다. 정규화가 HEF 안인 HEF(B32·S1B16 Z)는 0이다.
 
@@ -260,3 +267,14 @@
 - B16_rb09(0.9)와, 수동 bucket 없이 resources_param을 완화했을 때의 결과
 - B16_rb_bk의 dev 전체 비트 일치 (6×200만 확인)
 - 빌드 사이 변동
+
+## 8. 3중 확인 기록
+
+1. 자기 검증: B16_rb_bk와 M2rot2의 6×200 비트 일치, 에뮬레이터 대조군(B16_rb), bucket 대응 근거(층 종류·ONNX 이름·이웃), 보정 256장 assert
+2. 독립 재계산: 정확도·쌍 구간·속도를 다른 경로(검토자 자체 코드)로 다시 계산 → 모두 일치
+3. 독립 검토 (맥락 없는 서브에이전트) — 반영한 지적
+   - (a) B16_both의 실제 차이(conv41만, `ew_add38` 분리)를 1·5-2절에 추가
+   - (b) `results_chip.jsonl`의 dirty true → 커밋된 트리에서 다시 정리 (아래 9절)
+   - (c) dirty 설명 모순 정정
+   - (d) B16_rb_bk 200장 확인의 온도 기록
+   - (e) 배치 8 차이 1.6%, 호스트 정규화 (b) 튄 값
