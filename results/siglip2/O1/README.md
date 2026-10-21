@@ -100,6 +100,7 @@ ORT CPU, 이 PC(Core Ultra 9 285K, avx_vnni, ORT 1.25.0, 정수 커널) **비공
 | B32 | `siglip2_image_fp32_g6b_b32_m2rot_o1b.onnx` | `79e797c1…` | 0.99999988 / 0.99999988 | 1.8e-5 (2.4e-6) | 0 |
 
 - FP32 동치 기준(cos ≥ 0.99999) 통과.
+- 독립 검토 뒤 `s2_ortfuse.py`에 안전 assert 2개(하위 그래프 금지, Reshape 원소 수 일치)를 넣었다. 다시 만들어도 두 FP32 파일의 sha256이 같다 (`66e49873…`·`79e797c1…`).
 
 양자화 결과 파일 (`$SIGLIP2_ARTIFACTS/onnx/`, 커밋 `3972f43` dirty 아님. O-A는 처음 `8fbd752`에서 만들 때 작업 중 파일 때문에 dirty로 기록돼 `3972f43`에서 다시 만들었고 sha가 같다):
 
