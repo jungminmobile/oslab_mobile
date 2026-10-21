@@ -28,7 +28,9 @@ SIZE = {"b32": 256, "s1b16": 224, "b16": 224}
 HFKEY = {"b32": "b32", "s1b16": "s1b16", "b16": "ref"}   # s2_g6pre.MODELS 키
 ZOO_ONNX = {"b32": ("dl_b32/siglip2-base-patch32-256_vision_encoder.sim.onnx", "1393"),
             "s1b16": ("dl_b16/siglip_base_patch16_224_vision_encoder.onnx", "1725")}
-UNIFIED = {"b32": ([(15, 6), (7, 10)], [5, 9])}       # G6_pre 13-2: K/V 시작, u_c 시작 (15@6:5, 7@10:9)
+UNIFIED = {"b32": ([(15, 6), (7, 10)], [5, 9]),       # G6_pre 13-2: K/V 시작, u_c 시작 (15@6:5, 7@10:9)
+           "b16": ([(55, 6), (13, 10)], [5, 9])}      # (O2) 우리 B16에 같은 통일 규칙 (G6_pre 13-2 REF 55@6:5, 13@10:9)
+UNIFIED_TAG = {k: ",".join(f"{p}@{b}:{u}" for (p, b), u in zip(*v)) for k, v in UNIFIED.items()}
 
 
 def _pre_args():
@@ -178,9 +180,9 @@ def cmd_ident(a):
 
 # ---------------------------------------------------------------- export (README 4-2·4-4)
 
-def m2_trunk(model, xcal):
+def m2_trunk(model, xcal, key="b32"):
     from s2_regcache import MaskRegCacheTrunk, build_mean_cache, build_uc
-    kv_sinks, u_starts = UNIFIED["b32"]
+    kv_sinks, u_starts = UNIFIED[key]
     trunk = model.visual.trunk
     cache, n1 = build_mean_cache(trunk, xcal, kv_sinks)
     uc, n2 = build_uc(trunk, xcal, [(p, u) for (p, _), u in zip(kv_sinks, u_starts)])
@@ -197,16 +199,16 @@ def cmd_export(a):
     ref_hf = None
     extra = {}
     if a.cfg == "m2rot":
-        assert a.model == "b32", "M은 B32만 (README 2)"
+        assert a.model in UNIFIED, "M은 UNIFIED에 있는 모델만 (G6 README 2: B32, O2: B16 추가)"
         xcal = np.load(PRE / f"cache_zoo{size}" / "calib256_s0_x.npy")
-        rc, cache, uc = m2_trunk(model, xcal)
+        rc, cache, uc = m2_trunk(model, xcal, a.model)
         model.visual.trunk = rc
         # HF G6_pre 구현(같은 sinks·같은 상수 정의, 회전 없음)과 비교 — 회전은 FP32에서 같은 변환
-        vis = P.vis_of(P.load_hf("b32"))
-        sinks = [(p, k, u) for (p, k), u in zip(*UNIFIED["b32"])]
+        vis = P.vis_of(P.load_hf(HFKEY[a.model]))
+        sinks = [(p, k, u) for (p, k), u in zip(*UNIFIED[a.model])]
         kvc, ucs, n = P.build_m2_consts(vis, xcal, sinks)
         ref_hf = P.batched(lambda t: P.hf_forward(vis, t, sinks, kvc, ucs), x)
-        extra["unified"] = "15@6:5,7@10:9"
+        extra["unified"] = UNIFIED_TAG[a.model]
     e_t = feat(model.visual, x)
     stem = f"g6_{a.model}_{a.cfg}"
     p = WORK / "onnx" / (f"{stem}_dyn.onnx" if a.dynamic else f"{stem}_b1.onnx")   # --dynamic (G6b, 기본 꺼짐): 배치 가변
