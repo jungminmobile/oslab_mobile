@@ -224,6 +224,12 @@ B16에서 줄어든 4.8 ms의 내역:
 
 ## 9. 확인 못 한 것 / 팀이 정할 것
 - **Hailo 대응 (팀 결정):** 팀 규칙상 ORT에서 FP32로 남긴 부분은 Hailo에서 `a16_w16`으로 옮긴다. O-A는 MatMul의 입력·가중치는 그대로 INT8이고 **출력(정수 누적값 → float)과 QKᵀ 뒤 Softmax가 float**이다. 그래서 (가) Hailo에서 MatMul 출력·Softmax를 16비트로 바꿀지(본선 지연이 늘 수 있음), (나) Hailo 구성은 그대로 두고 "CPU 커널 형식 차이(ORT 전용)"로 기록할지 정해야 한다. O-B는 그래프 정리(같은 수학)라 Hailo와 관계없다.
+- **대안 (제안만, 실행 안 함, 용 10/22): O-A를 가중치 MatMul에만 적용하는 변형 ("O-A′").** B가 initializer인 가중치 MatMul 53개만 출력 Q/DQ를 빼고, attention 행렬곱(QKᵀ·AV) 출력은 지금처럼 양자화 상태로 둔다.
+  - 기대: ORT의 attention 정밀도가 Hailo와 같은 꼴이 된다 (QKᵀ 출력 8비트 → QLinearSoftmax 유지). Hailo `a16_w16` 대응 문제가 가중치 MatMul 출력으로 줄어든다.
+  - 예상 비용: 6-6의 Softmax 쪽 이득(B16 4스레드 약 −1.55 ms, 프로파일 기준)을 잃는다. Softmax 출력 Q 13개(+0.39 ms)도 없어지므로 순손실은 그보다 작을 수 있다. B16 O-AB 26.21 ms가 대략 27~27.5 ms(기준 대비 약 −9~−10%)가 될 것으로 추정한다 (확인 안 함).
+  - 참고: O-A에서도 AV 13개는 출력이 다음 가중치 MatMul 입력으로 다시 양자화돼 QLinearMatMul로 남아 있다 (6-2). 그래서 이 변형에서 실제로 달라지는 것은 **QKᵀ 13개**(MatMulIntegerToFloat → QLinearMatMul)와 Softmax(float → QLinearSoftmax)다.
+  - 구현 메모: ORT `OpTypesToExcludeOutputQuantization`은 연산 종류 단위라 노드별로 지정할 수 없다. 노드별 방법(예: G8 `--const-b-only`처럼 B가 initializer인지로 고른 뒤 출력 텐서만 제외)을 찾아야 한다. 방법은 확인하지 않았다.
+  - 정확도: O-A의 정확도 향상 중 얼마가 QKᵀ·Softmax에서 왔는지 모르므로(아래 항목), O-A′의 정확도는 O-AB와 기준 사이 어디일지 알 수 없다. 하려면 같은 판정 기준(4절)으로 따로 잰다.
 - O-A가 정확도를 올린 원인(재양자화 제거 vs Softmax float)은 나누지 않았다. B32 O-A의 CIFAR A −1.1과 O-AB −0.7의 차이도 원인을 보지 않았다 (1,000장이라 0.4%p 차이는 잡음일 수 있다, 구간은 내지 않음).
 - O-B 양자화 결과가 기준과 비트 단위로 다른 원인 (보정 텐서 순서 등).
 - 정민 노트북(공식) 지연, 다른 CPU(avx512·VNNI 없는 CPU)에서 `MatMulIntegerToFloat` 커널의 속도.
