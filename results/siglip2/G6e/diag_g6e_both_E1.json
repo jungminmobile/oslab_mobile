@@ -1,0 +1,627 @@
+{
+ "g6e_both_E1": {
+  "har": "/home/junyong/siglip2_work/g6/dfc/g6e_both_E1/comp/compiled.har",
+  "n_layers": 489,
+  "n_contexts": 17,
+  "layers_per_context": {
+   "0": 26,
+   "1": 2,
+   "2": 24,
+   "3": 26,
+   "4": 25,
+   "5": 2,
+   "6": 53,
+   "7": 13,
+   "8": 18,
+   "9": 51,
+   "10": 53,
+   "11": 2,
+   "12": 46,
+   "13": 39,
+   "14": 41,
+   "15": 39,
+   "16": 27
+  },
+  "unassigned": [
+   "input_layer1",
+   "output_layer1"
+  ],
+  "buckets": {
+   "b1": [
+    [
+     "input_layer1",
+     []
+    ],
+    [
+     "const_input1",
+     [
+      0
+     ]
+    ],
+    [
+     "conv17",
+     [
+      5
+     ]
+    ],
+    [
+     "ew_add8",
+     [
+      4
+     ]
+    ]
+   ],
+   "b2": [
+    [
+     "ew_add9",
+     [
+      6
+     ]
+    ],
+    [
+     "reduce_mean1_layer_normalization9",
+     [
+      6
+     ]
+    ],
+    [
+     "ew_sub1_layer_normalization9",
+     [
+      6
+     ]
+    ],
+    [
+     "square1_layer_normalization9",
+     [
+      6
+     ]
+    ],
+    [
+     "conv_var_inv_layer_normalization9",
+     [
+      6
+     ]
+    ],
+    [
+     "ew_mult1_layer_normalization9",
+     [
+      6
+     ]
+    ],
+    [
+     "conv32",
+     [
+      10
+     ]
+    ],
+    [
+     "conv33",
+     [
+      10
+     ]
+    ],
+    [
+     "ew_add26",
+     [
+      10
+     ]
+    ]
+   ],
+   "b3": [
+    [
+     "const_input27",
+     [
+      16
+     ]
+    ],
+    [
+     "reduce_mean1_layer_normalization19",
+     [
+      12
+     ]
+    ],
+    [
+     "ew_sub1_layer_normalization19",
+     [
+      12
+     ]
+    ],
+    [
+     "ew_add36",
+     [
+      12
+     ]
+    ],
+    [
+     "square1_layer_normalization19",
+     [
+      12
+     ]
+    ],
+    [
+     "conv_var_inv_layer_normalization19",
+     [
+      12
+     ]
+    ],
+    [
+     "ew_mult1_layer_normalization19",
+     [
+      12
+     ]
+    ],
+    [
+     "precision_change18",
+     [
+      12
+     ]
+    ],
+    [
+     "conv53",
+     [
+      16
+     ]
+    ],
+    [
+     "ew_add57",
+     [
+      16
+     ]
+    ],
+    [
+     "output_layer1",
+     []
+    ]
+   ]
+  },
+  "focus_rows": [
+   {
+    "layer": "ew_add36",
+    "type": "ew_add",
+    "precision": "a16_w16_a16",
+    "inputs": [
+     [
+      "ew_add31",
+      "a16_w16_a16",
+      [
+       11
+      ]
+     ],
+     [
+      "conv39",
+      "a8_w8_a16",
+      [
+       12
+      ]
+     ]
+    ],
+    "outputs": [
+     [
+      "reduce_mean1_layer_normalization20",
+      [
+       12
+      ]
+     ],
+     [
+      "ew_sub1_layer_normalization20",
+      [
+       12
+      ]
+     ],
+     [
+      "ew_add38",
+      [
+       13
+      ]
+     ]
+    ],
+    "contexts": [
+     12
+    ],
+    "place": [
+     [
+      12,
+      4
+     ]
+    ],
+    "boundary_hops": 0,
+    "original_names": [
+     "/trunk/Add_25"
+    ],
+    "limvals_in": [
+     -9.6708,
+     9.0133
+    ],
+    "limvals_out": [
+     -8.8032,
+     8.4737
+    ],
+    "output_scale": [
+     0.0005,
+     0.0005
+    ],
+    "input_scale": [
+     0.0001,
+     0.0006
+    ],
+    "zp_out": 16696.0,
+    "mult_shift": 0,
+    "slope_e": 10,
+    "bias": [
+     -679191296.0,
+     -624957184.0
+    ],
+    "kernel": [
+     4396.0,
+     32766.0
+    ]
+   },
+   {
+    "layer": "conv41",
+    "type": "conv",
+    "precision": "a8_w8_a16",
+    "inputs": [
+     [
+      "conv40",
+      "a8_w8_a8",
+      [
+       13
+      ]
+     ]
+    ],
+    "outputs": [
+     [
+      "ew_add38",
+      [
+       13
+      ]
+     ]
+    ],
+    "contexts": [
+     13
+    ],
+    "place": [
+     [
+      13,
+      2
+     ],
+     [
+      13,
+      4
+     ]
+    ],
+    "boundary_hops": 1,
+    "original_names": [
+     "/trunk/mlp/fc2_4/MatMul",
+     "/trunk/mlp/fc2_4/Add"
+    ],
+    "limvals_in": [
+     -0.2715,
+     34.351
+    ],
+    "limvals_out": [
+     -4.6793,
+     3.9249
+    ],
+    "output_scale": [
+     0.0001,
+     0.0003
+    ],
+    "input_scale": [
+     0.1358,
+     0.1358
+    ],
+    "zp_out": 17820.0,
+    "mult_shift": 1,
+    "slope_e": 3,
+    "bias": [
+     -32188.0,
+     32300.0
+    ],
+    "kernel": [
+     -127.0,
+     127.0
+    ]
+   },
+   {
+    "layer": "ew_add38",
+    "type": "ew_add",
+    "precision": "a16_w16_a16",
+    "inputs": [
+     [
+      "ew_add36",
+      "a16_w16_a16",
+      [
+       12
+      ]
+     ],
+     [
+      "conv41",
+      "a8_w8_a16",
+      [
+       13
+      ]
+     ]
+    ],
+    "outputs": [
+     [
+      "reduce_mean1_layer_normalization21",
+      [
+       13
+      ]
+     ],
+     [
+      "ew_sub1_layer_normalization21",
+      [
+       13
+      ]
+     ],
+     [
+      "ew_add43",
+      [
+       13
+      ]
+     ]
+    ],
+    "contexts": [
+     13
+    ],
+    "place": [
+     [
+      13,
+      3
+     ]
+    ],
+    "boundary_hops": 0,
+    "original_names": [
+     "/trunk/Add_27"
+    ],
+    "limvals_in": [
+     -8.8032,
+     8.4737
+    ],
+    "limvals_out": [
+     -10.0283,
+     9.3294
+    ],
+    "output_scale": [
+     0.0006,
+     0.0006
+    ],
+    "input_scale": [
+     0.0001,
+     0.0005
+    ],
+    "zp_out": 16975.0,
+    "mult_shift": 0,
+    "slope_e": 11,
+    "bias": [
+     -837847872.0,
+     -690048768.0
+    ],
+    "kernel": [
+     8024.0,
+     32766.0
+    ]
+   },
+   {
+    "layer": "reduce_mean1_layer_normalization21",
+    "type": "reduce_mean",
+    "precision": "a16_w16_a16",
+    "inputs": [
+     [
+      "ew_add38",
+      "a16_w16_a16",
+      [
+       13
+      ]
+     ]
+    ],
+    "outputs": [
+     [
+      "ew_sub1_layer_normalization21",
+      [
+       13
+      ]
+     ]
+    ],
+    "contexts": [
+     13
+    ],
+    "place": [
+     [
+      13,
+      1
+     ]
+    ],
+    "boundary_hops": 1,
+    "original_names": [
+     "/trunk/norm1_5/LayerNormalization"
+    ],
+    "limvals_in": [
+     -10.0283,
+     9.3294
+    ],
+    "limvals_out": [
+     -0.0,
+     0.0
+    ],
+    "output_scale": [
+     0.0,
+     0.0
+    ],
+    "input_scale": [
+     0.0006,
+     0.0006
+    ],
+    "zp_out": 17644.0,
+    "mult_shift": 0,
+    "slope_e": 0,
+    "bias": [
+     20480.0,
+     20480.0
+    ],
+    "kernel": [
+     16384.0,
+     16384.0
+    ]
+   },
+   {
+    "layer": "ew_sub1_layer_normalization21",
+    "type": "ew_sub",
+    "precision": "a16_w16_a16",
+    "inputs": [
+     [
+      "ew_add38",
+      "a16_w16_a16",
+      [
+       13
+      ]
+     ],
+     [
+      "reduce_mean1_layer_normalization21",
+      "a16_w16_a16",
+      [
+       13
+      ]
+     ]
+    ],
+    "outputs": [
+     [
+      "square1_layer_normalization21",
+      [
+       13
+      ]
+     ],
+     [
+      "ew_mult1_layer_normalization21",
+      [
+       13
+      ]
+     ]
+    ],
+    "contexts": [
+     13
+    ],
+    "place": [
+     [
+      13,
+      1
+     ]
+    ],
+    "boundary_hops": 1,
+    "original_names": [
+     "/trunk/norm1_5/LayerNormalization"
+    ],
+    "limvals_in": [
+     -10.0283,
+     9.3294
+    ],
+    "limvals_out": [
+     -10.0283,
+     9.3294
+    ],
+    "output_scale": [
+     0.0006,
+     0.0006
+    ],
+    "input_scale": [
+     NaN,
+     NaN
+    ],
+    "zp_out": 16975.0,
+    "mult_shift": 0,
+    "slope_e": 10,
+    "bias": [
+     -556202880.0,
+     -556202880.0
+    ],
+    "kernel": [
+     0.0,
+     32766.0
+    ]
+   },
+   {
+    "layer": "ew_add43",
+    "type": "ew_add",
+    "precision": "a16_w16_a16",
+    "inputs": [
+     [
+      "ew_add38",
+      "a16_w16_a16",
+      [
+       13
+      ]
+     ],
+     [
+      "conv43",
+      "a8_w8_a16",
+      [
+       13
+      ]
+     ]
+    ],
+    "outputs": [
+     [
+      "reduce_mean1_layer_normalization22",
+      [
+       14
+      ]
+     ],
+     [
+      "ew_sub1_layer_normalization22",
+      [
+       14
+      ]
+     ],
+     [
+      "ew_add45",
+      [
+       14
+      ]
+     ]
+    ],
+    "contexts": [
+     13
+    ],
+    "place": [
+     [
+      13,
+      0
+     ]
+    ],
+    "boundary_hops": 0,
+    "original_names": [
+     "/trunk/Add_32"
+    ],
+    "limvals_in": [
+     -10.0283,
+     9.3294
+    ],
+    "limvals_out": [
+     -8.7001,
+     8.6192
+    ],
+    "output_scale": [
+     0.0005,
+     0.0005
+    ],
+    "input_scale": [
+     0.0001,
+     0.0006
+    ],
+    "zp_out": 16460.0,
+    "mult_shift": 0,
+    "slope_e": 10,
+    "bias": [
+     -710664128.0,
+     -640591552.0
+    ],
+    "kernel": [
+     5205.0,
+     32766.0
+    ]
+   }
+  ]
+ }
+}
