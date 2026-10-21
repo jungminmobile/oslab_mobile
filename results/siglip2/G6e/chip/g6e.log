@@ -1,0 +1,6 @@
+2026-10-21 21:42:20 g6e start commit=f6d2a19 hailort=HailoRT-CLI version 5.3.0 script_sha=82ecd33643ec6e1d 16d1ad73a84173b3 HEFS=b16_g6e_E1
+2026-10-21 21:42:20 hef b16_g6e_E1 sha256=08ccc3edbe893efee37e827228717b8aec6dc46bbe0a908920983fc6ef64e68a bytes=108216320
+2026-10-21 21:42:20 cool eval200_b16_g6e_E1 max=48.24
+2026-10-21 21:42:21 other_hailo=0 eval200 b16_g6e_E1 시작
+2026-10-21 21:43:11 eval200 b16_g6e_E1 끝 max=76.37
+2026-10-21 21:43:11 G6E CHIP200 DONE

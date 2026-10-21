@@ -1,0 +1,18 @@
+18:36:47 tag=g6e_both_E3 commit=8b4890b dirty=0 src_har=/home/junyong/siglip2_work/g6/dfc/b16_both/siglip2_m2rot_optimized.har src_har_sha256=7d22df79aeda3540349d0baa076ba8be963a93f73de32438da1f9eafa731bb6b alls=/home/junyong/oslab_g6e/results/siglip2/G6e/alls/g6e_both_E3.alls alls_sha256=171e415c4176d7df3e320f959bba65bd301386ac0c08b2cd76e7f37a1668fec5 (optimize 안 함, compile만)
+18:58:59 compile 잠금 잡음 free=29G load=6.37 4.84 3.61
+20:12:49 compile rc=1 sec=4430 maxrss_kb=6561288 
+{"date": "2026-10-21T20:12:49", "what": "compile_only", "tag": "g6e_both_E3", "rc": 1, "timeout": false, "commit_dirty": [["8b4890b", "0"]], "src_har_sha256": "7d22df79aeda3540349d0baa076ba8be963a93f73de32438da1f9eafa731bb6b", "alls_sha256": "171e415c4176d7df3e320f959bba65bd301386ac0c08b2cd76e7f37a1668fec5", "compile": [{"rc": 1, "sec": 4430}]}
+G6E COMPILE ONLY DONE g6e_both_E3 20:12:49
+20:12:53 tag=g6e_both_E1 commit=f6d2a19 dirty=0 src_har=/home/junyong/siglip2_work/g6/dfc/b16_both/siglip2_m2rot_optimized.har src_har_sha256=7d22df79aeda3540349d0baa076ba8be963a93f73de32438da1f9eafa731bb6b alls=/home/junyong/oslab_g6e/results/siglip2/G6e/alls/g6e_both_E1.alls alls_sha256=7f2d468e306230cb6d4e645e7a47694d47a0ec89db63b52dcb272963901abec4 (optimize 안 함, compile만)
+20:19:45 compile 잠금 잡음 free=29G load=2.50 2.89 1.91
+21:41:23 compile rc=0 sec=4898 maxrss_kb=8230936 
+{"date": "2026-10-21T21:41:24", "what": "compile_only", "tag": "g6e_both_E1", "rc": 0, "timeout": false, "commit_dirty": [["f6d2a19", "0"]], "src_har_sha256": "7d22df79aeda3540349d0baa076ba8be963a93f73de32438da1f9eafa731bb6b", "alls_sha256": "7f2d468e306230cb6d4e645e7a47694d47a0ec89db63b52dcb272963901abec4", "compile": [{"rc": 0, "sec": 4898}], "hef": "comp/siglip2_m2rot.hef", "bytes": 108216320, "sha256": "08ccc3edbe893efee37e827228717b8aec6dc46bbe0a908920983fc6ef64e68a", "contexts": 17}
+G6E COMPILE ONLY DONE g6e_both_E1 21:41:24
+== g6e_both_E1: 층 489, 컨텍스트 17
+  ew_add38                                   ew_add     a16_w16_a16  ctx=[13] 경계홉=0 in=[('ew_add36', 'a16_w16_a16', [12]), ('conv41', 'a8_w8_a16', [13])] out_rng=[-10.0283, 9.3294]
+21:41:28 tag=g6e_both_E2 commit=f6d2a19 dirty=0 src_har=/home/junyong/siglip2_work/g6/dfc/b16_both/siglip2_m2rot_optimized.har src_har_sha256=7d22df79aeda3540349d0baa076ba8be963a93f73de32438da1f9eafa731bb6b alls=/home/junyong/oslab_g6e/results/siglip2/G6e/alls/g6e_both_E2.alls alls_sha256=cc3c3671b4ee20ab3db2bde5b56c09220843efbf8ca9b36c976fb6604eefe555 (optimize 안 함, compile만)
+21:59:45 compile 잠금 잡음 free=29G load=1.05 1.57 2.07
+00:47:57 compile rc=1 sec=10092 maxrss_kb=6701452 
+{"date": "2026-10-22T00:47:57", "what": "compile_only", "tag": "g6e_both_E2", "rc": 1, "timeout": false, "commit_dirty": [["f6d2a19", "0"]], "src_har_sha256": "7d22df79aeda3540349d0baa076ba8be963a93f73de32438da1f9eafa731bb6b", "alls_sha256": "cc3c3671b4ee20ab3db2bde5b56c09220843efbf8ca9b36c976fb6604eefe555", "compile": [{"rc": 1, "sec": 10092}]}
+G6E COMPILE ONLY DONE g6e_both_E2 00:47:57
+G6E CHAIN DONE 00:47:57
