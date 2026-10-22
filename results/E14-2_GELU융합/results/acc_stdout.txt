@@ -1,0 +1,5 @@
+acc O {'cifar_A': 74.7, 'pets_dev': 91.31, 'flowers_dev': 85.79, 'cars_dev': 91.83, 'food_dev': 85.08, 'caltech_dev': 94.34}
+acc F1 {'cifar_A': 74.5, 'pets_dev': 91.41, 'flowers_dev': 85.68, 'cars_dev': 92.04, 'food_dev': 85.08, 'caltech_dev': 94.34}
+acc F2 {'cifar_A': 74.5, 'pets_dev': 91.41, 'flowers_dev': 85.68, 'cars_dev': 92.04, 'food_dev': 85.08, 'caltech_dev': 94.34}
+{"F1": {"hr_delta": 0.04066842514940561, "ci": [-0.08, 0.14], "changed": {"cifar_A": 2, "pets_dev": 3, "flowers_dev": 1, "cars_dev": 2, "food_dev": 2, "caltech_dev": 0}}, "F2": {"hr_delta": 0.04066842514940561, "ci": [-0.08, 0.14], "changed": {"cifar_A": 2, "pets_dev": 3, "flowers_dev": 1, "cars_dev": 2, "food_dev": 2, "caltech_dev": 0}}}
+[acc] 391s

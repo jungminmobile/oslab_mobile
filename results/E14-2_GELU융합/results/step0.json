@@ -1,0 +1,455 @@
+{
+ "date": "2026-10-23T03:39:30",
+ "sha256": "7a01044c6ba32bf4f5a12aba82eb19e06753f13c8bad43b9f6fcfcd9f484dbf6",
+ "nodes": 766,
+ "op_counts": {
+  "DequantizeLinear": 158,
+  "Conv": 1,
+  "Reshape": 29,
+  "Transpose": 53,
+  "Add": 85,
+  "LayerNormalization": 2,
+  "QuantizeLinear": 105,
+  "MatMul": 79,
+  "Split": 13,
+  "Squeeze": 38,
+  "Mul": 118,
+  "Softmax": 13,
+  "SkipLayerNormalization": 24,
+  "Tanh": 13,
+  "Sub": 27,
+  "Shape": 1,
+  "Gather": 2,
+  "Unsqueeze": 1,
+  "Concat": 1,
+  "Equal": 1,
+  "Where": 1,
+  "Expand": 1
+ },
+ "n_tanh": 13,
+ "n_ok": 13,
+ "n_bias_ok": 13,
+ "sites": [
+  {
+   "tanh": "/trunk/blocks.0/mlp/act/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/blocks.0/mlp/fc1/Add_output_0",
+   "y": "/trunk/blocks.0/mlp/act/Mul_5_output_0",
+   "nodes": [
+    "/trunk/blocks.0/mlp/act/Mul",
+    "/trunk/blocks.0/mlp/act/Mul_1",
+    "/trunk/blocks.0/mlp/act/Mul_2",
+    "/trunk/blocks.0/mlp/act/Add",
+    "/trunk/blocks.0/mlp/act/Mul_3",
+    "/trunk/blocks.0/mlp/act/Tanh",
+    "/trunk/blocks.0/mlp/act/Add_1",
+    "/trunk/blocks.0/mlp/act/Mul_4",
+    "/trunk/blocks.0/mlp/act/Mul_5"
+   ],
+   "y_node": "/trunk/blocks.0/mlp/act/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.blocks.0.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/blocks.0/mlp/fc1/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/blocks.0/mlp/fc1/Add"
+  },
+  {
+   "tanh": "/trunk/blocks.1/mlp/act/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/blocks.1/mlp/fc1/Add_output_0",
+   "y": "/trunk/blocks.1/mlp/act/Mul_5_output_0",
+   "nodes": [
+    "/trunk/blocks.1/mlp/act/Mul",
+    "/trunk/blocks.1/mlp/act/Mul_1",
+    "/trunk/blocks.1/mlp/act/Mul_2",
+    "/trunk/blocks.1/mlp/act/Add",
+    "/trunk/blocks.1/mlp/act/Mul_3",
+    "/trunk/blocks.1/mlp/act/Tanh",
+    "/trunk/blocks.1/mlp/act/Add_1",
+    "/trunk/blocks.1/mlp/act/Mul_4",
+    "/trunk/blocks.1/mlp/act/Mul_5"
+   ],
+   "y_node": "/trunk/blocks.1/mlp/act/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.blocks.1.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/blocks.1/mlp/fc1/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/blocks.1/mlp/fc1/Add"
+  },
+  {
+   "tanh": "/trunk/blocks.2/mlp/act/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/blocks.2/mlp/fc1/Add_output_0",
+   "y": "/trunk/blocks.2/mlp/act/Mul_5_output_0",
+   "nodes": [
+    "/trunk/blocks.2/mlp/act/Mul",
+    "/trunk/blocks.2/mlp/act/Mul_1",
+    "/trunk/blocks.2/mlp/act/Mul_2",
+    "/trunk/blocks.2/mlp/act/Add",
+    "/trunk/blocks.2/mlp/act/Mul_3",
+    "/trunk/blocks.2/mlp/act/Tanh",
+    "/trunk/blocks.2/mlp/act/Add_1",
+    "/trunk/blocks.2/mlp/act/Mul_4",
+    "/trunk/blocks.2/mlp/act/Mul_5"
+   ],
+   "y_node": "/trunk/blocks.2/mlp/act/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.blocks.2.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/blocks.2/mlp/fc1/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/blocks.2/mlp/fc1/Add"
+  },
+  {
+   "tanh": "/trunk/blocks.3/mlp/act/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/blocks.3/mlp/fc1/Add_output_0",
+   "y": "/trunk/blocks.3/mlp/act/Mul_5_output_0",
+   "nodes": [
+    "/trunk/blocks.3/mlp/act/Mul",
+    "/trunk/blocks.3/mlp/act/Mul_1",
+    "/trunk/blocks.3/mlp/act/Mul_2",
+    "/trunk/blocks.3/mlp/act/Add",
+    "/trunk/blocks.3/mlp/act/Mul_3",
+    "/trunk/blocks.3/mlp/act/Tanh",
+    "/trunk/blocks.3/mlp/act/Add_1",
+    "/trunk/blocks.3/mlp/act/Mul_4",
+    "/trunk/blocks.3/mlp/act/Mul_5"
+   ],
+   "y_node": "/trunk/blocks.3/mlp/act/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.blocks.3.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/blocks.3/mlp/fc1/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/blocks.3/mlp/fc1/Add"
+  },
+  {
+   "tanh": "/trunk/blocks.4/mlp/act/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/blocks.4/mlp/fc1/Add_output_0",
+   "y": "/trunk/blocks.4/mlp/act/Mul_5_output_0",
+   "nodes": [
+    "/trunk/blocks.4/mlp/act/Mul",
+    "/trunk/blocks.4/mlp/act/Mul_1",
+    "/trunk/blocks.4/mlp/act/Mul_2",
+    "/trunk/blocks.4/mlp/act/Add",
+    "/trunk/blocks.4/mlp/act/Mul_3",
+    "/trunk/blocks.4/mlp/act/Tanh",
+    "/trunk/blocks.4/mlp/act/Add_1",
+    "/trunk/blocks.4/mlp/act/Mul_4",
+    "/trunk/blocks.4/mlp/act/Mul_5"
+   ],
+   "y_node": "/trunk/blocks.4/mlp/act/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.blocks.4.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/blocks.4/mlp/fc1/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/blocks.4/mlp/fc1/Add"
+  },
+  {
+   "tanh": "/trunk/mlp/act/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/mlp/fc1/Add_output_0",
+   "y": "/trunk/mlp/act/Mul_5_output_0",
+   "nodes": [
+    "/trunk/mlp/act/Mul",
+    "/trunk/mlp/act/Mul_1",
+    "/trunk/mlp/act/Mul_2",
+    "/trunk/mlp/act/Add",
+    "/trunk/mlp/act/Mul_3",
+    "/trunk/mlp/act/Tanh",
+    "/trunk/mlp/act/Add_1",
+    "/trunk/mlp/act/Mul_4",
+    "/trunk/mlp/act/Mul_5"
+   ],
+   "y_node": "/trunk/mlp/act/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.blocks.5.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/mlp/fc1/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/mlp/fc1/Add"
+  },
+  {
+   "tanh": "/trunk/mlp/act_1/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/mlp/fc1_1/Add_output_0",
+   "y": "/trunk/mlp/act_1/Mul_5_output_0",
+   "nodes": [
+    "/trunk/mlp/act_1/Mul",
+    "/trunk/mlp/act_1/Mul_1",
+    "/trunk/mlp/act_1/Mul_2",
+    "/trunk/mlp/act_1/Add",
+    "/trunk/mlp/act_1/Mul_3",
+    "/trunk/mlp/act_1/Tanh",
+    "/trunk/mlp/act_1/Add_1",
+    "/trunk/mlp/act_1/Mul_4",
+    "/trunk/mlp/act_1/Mul_5"
+   ],
+   "y_node": "/trunk/mlp/act_1/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.blocks.6.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/mlp/fc1_1/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/mlp/fc1_1/Add"
+  },
+  {
+   "tanh": "/trunk/mlp/act_2/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/mlp/fc1_2/Add_output_0",
+   "y": "/trunk/mlp/act_2/Mul_5_output_0",
+   "nodes": [
+    "/trunk/mlp/act_2/Mul",
+    "/trunk/mlp/act_2/Mul_1",
+    "/trunk/mlp/act_2/Mul_2",
+    "/trunk/mlp/act_2/Add",
+    "/trunk/mlp/act_2/Mul_3",
+    "/trunk/mlp/act_2/Tanh",
+    "/trunk/mlp/act_2/Add_1",
+    "/trunk/mlp/act_2/Mul_4",
+    "/trunk/mlp/act_2/Mul_5"
+   ],
+   "y_node": "/trunk/mlp/act_2/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.blocks.7.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/mlp/fc1_2/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/mlp/fc1_2/Add"
+  },
+  {
+   "tanh": "/trunk/mlp/act_3/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/mlp/fc1_3/Add_output_0",
+   "y": "/trunk/mlp/act_3/Mul_5_output_0",
+   "nodes": [
+    "/trunk/mlp/act_3/Mul",
+    "/trunk/mlp/act_3/Mul_1",
+    "/trunk/mlp/act_3/Mul_2",
+    "/trunk/mlp/act_3/Add",
+    "/trunk/mlp/act_3/Mul_3",
+    "/trunk/mlp/act_3/Tanh",
+    "/trunk/mlp/act_3/Add_1",
+    "/trunk/mlp/act_3/Mul_4",
+    "/trunk/mlp/act_3/Mul_5"
+   ],
+   "y_node": "/trunk/mlp/act_3/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.blocks.8.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/mlp/fc1_3/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/mlp/fc1_3/Add"
+  },
+  {
+   "tanh": "/trunk/mlp/act_4/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/mlp/fc1_4/Add_output_0",
+   "y": "/trunk/mlp/act_4/Mul_5_output_0",
+   "nodes": [
+    "/trunk/mlp/act_4/Mul",
+    "/trunk/mlp/act_4/Mul_1",
+    "/trunk/mlp/act_4/Mul_2",
+    "/trunk/mlp/act_4/Add",
+    "/trunk/mlp/act_4/Mul_3",
+    "/trunk/mlp/act_4/Tanh",
+    "/trunk/mlp/act_4/Add_1",
+    "/trunk/mlp/act_4/Mul_4",
+    "/trunk/mlp/act_4/Mul_5"
+   ],
+   "y_node": "/trunk/mlp/act_4/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.blocks.9.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/mlp/fc1_4/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/mlp/fc1_4/Add"
+  },
+  {
+   "tanh": "/trunk/mlp/act_5/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/mlp/fc1_5/Add_output_0",
+   "y": "/trunk/mlp/act_5/Mul_5_output_0",
+   "nodes": [
+    "/trunk/mlp/act_5/Mul",
+    "/trunk/mlp/act_5/Mul_1",
+    "/trunk/mlp/act_5/Mul_2",
+    "/trunk/mlp/act_5/Add",
+    "/trunk/mlp/act_5/Mul_3",
+    "/trunk/mlp/act_5/Tanh",
+    "/trunk/mlp/act_5/Add_1",
+    "/trunk/mlp/act_5/Mul_4",
+    "/trunk/mlp/act_5/Mul_5"
+   ],
+   "y_node": "/trunk/mlp/act_5/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.blocks.10.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/mlp/fc1_5/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/mlp/fc1_5/Add"
+  },
+  {
+   "tanh": "/trunk/mlp/act_6/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/mlp/fc1_6/Add_output_0",
+   "y": "/trunk/mlp/act_6/Mul_5_output_0",
+   "nodes": [
+    "/trunk/mlp/act_6/Mul",
+    "/trunk/mlp/act_6/Mul_1",
+    "/trunk/mlp/act_6/Mul_2",
+    "/trunk/mlp/act_6/Add",
+    "/trunk/mlp/act_6/Mul_3",
+    "/trunk/mlp/act_6/Tanh",
+    "/trunk/mlp/act_6/Add_1",
+    "/trunk/mlp/act_6/Mul_4",
+    "/trunk/mlp/act_6/Mul_5"
+   ],
+   "y_node": "/trunk/mlp/act_6/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.blocks.11.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/mlp/fc1_6/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/mlp/fc1_6/Add"
+  },
+  {
+   "tanh": "/trunk/mlp/act_7/Tanh",
+   "ok": true,
+   "why": "",
+   "x": "/trunk/mlp/fc1_7/Add_output_0",
+   "y": "/trunk/mlp/act_7/Mul_5_output_0",
+   "nodes": [
+    "/trunk/mlp/act_7/Mul",
+    "/trunk/mlp/act_7/Mul_1",
+    "/trunk/mlp/act_7/Mul_2",
+    "/trunk/mlp/act_7/Add",
+    "/trunk/mlp/act_7/Mul_3",
+    "/trunk/mlp/act_7/Tanh",
+    "/trunk/mlp/act_7/Add_1",
+    "/trunk/mlp/act_7/Mul_4",
+    "/trunk/mlp/act_7/Mul_5"
+   ],
+   "y_node": "/trunk/mlp/act_7/Mul_5",
+   "y_to": [
+    "QuantizeLinear"
+   ],
+   "x_from": "Add",
+   "x_users": 5,
+   "bias_ok": true,
+   "bias": "trunk.t.attn_pool.mlp.fc1.bias",
+   "bias_shape": [
+    3072
+   ],
+   "mm": "/trunk/mlp/fc1_7/MatMul_output_0",
+   "mm_from": "MatMul",
+   "bias_add": "/trunk/mlp/fc1_7/Add"
+  }
+ ],
+ "git": {
+  "commit": "7017fed",
+  "branch": "jungmin/e14-graph",
+  "dirty": true
+ }
+}

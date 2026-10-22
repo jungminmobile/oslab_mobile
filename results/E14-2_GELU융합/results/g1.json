@@ -1,0 +1,330 @@
+{
+ "date": "2026-10-23T03:39:31",
+ "git": {
+  "commit": "7017fed",
+  "branch": "jungmin/e14-graph",
+  "dirty": true
+ },
+ "O": {
+  "qdq": {
+   "counts": {
+    "QuantizeLinear": 105,
+    "DequantizeLinear": 158
+   },
+   "scale_zp_sha256": "73e6d84978bbe353e907b48fadc6911345d244fed6aa3d784d54b5b534072297",
+   "dq_weight_sha256": "632d3079fe4b36f9047801d8bc995ac66eb1872e973f3546719818da20579aab"
+  },
+  "n_nodes": 766,
+  "n_tanh": 13,
+  "size_MiB": 98.003,
+  "ort_opt": {
+   "n_nodes": 597,
+   "ops": {
+    "ai.onnx::Add": 85,
+    "ai.onnx::Concat": 1,
+    "ai.onnx::DequantizeLinear": 1,
+    "ai.onnx::Equal": 1,
+    "ai.onnx::Expand": 1,
+    "ai.onnx::Gather": 2,
+    "ai.onnx::LayerNormalization": 2,
+    "ai.onnx::Mul": 118,
+    "ai.onnx::QLinearMatMul": 13,
+    "ai.onnx::QuantizeLinear": 92,
+    "ai.onnx::Reshape": 29,
+    "ai.onnx::Shape": 1,
+    "ai.onnx::Softmax": 13,
+    "ai.onnx::Split": 13,
+    "ai.onnx::Squeeze": 38,
+    "ai.onnx::Sub": 27,
+    "ai.onnx::Tanh": 13,
+    "ai.onnx::Transpose": 53,
+    "ai.onnx::Unsqueeze": 1,
+    "ai.onnx::Where": 1,
+    "com.microsoft.nchwc::Conv": 1,
+    "com.microsoft.nchwc::ReorderOutput": 1,
+    "com.microsoft::MatMulIntegerToFloat": 66,
+    "com.microsoft::SkipLayerNormalization": 24
+   },
+   "fused": {
+    "ai.onnx::DequantizeLinear": 1,
+    "ai.onnx::QLinearMatMul": 13,
+    "ai.onnx::QuantizeLinear": 92,
+    "com.microsoft::MatMulIntegerToFloat": 66
+   },
+   "file": "C:\\s2art_b32\\e14\\e14_2_O_ortopt.onnx"
+  }
+ },
+ "F1": {
+  "file": "C:\\s2art_b32\\e14\\e14_2_F1_fastgelu.onnx",
+  "sha256": "92f8dff5390e3269a54c7388ecd7af5cc28ffcf9645cca86991be893a58c6eaa",
+  "size_MiB": 97.97,
+  "n_nodes": 662,
+  "n_tanh": 0,
+  "n_fastgelu": 13,
+  "n_rewritten": 13,
+  "qdq": {
+   "counts": {
+    "QuantizeLinear": 105,
+    "DequantizeLinear": 158
+   },
+   "scale_zp_sha256": "73e6d84978bbe353e907b48fadc6911345d244fed6aa3d784d54b5b534072297",
+   "dq_weight_sha256": "632d3079fe4b36f9047801d8bc995ac66eb1872e973f3546719818da20579aab"
+  },
+  "new_init_bytes": 0,
+  "removed_inits": [
+   "/trunk/mlp/act_5/Constant_output_0",
+   "/trunk/mlp/act_7/Constant_3_output_0",
+   "/trunk/mlp/act_7/Constant_1_output_0",
+   "/trunk/mlp/act_5/Constant_2_output_0"
+  ],
+  "shapes": {
+   "/trunk/blocks.0/mlp/act/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/blocks.1/mlp/act/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/blocks.2/mlp/act/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/blocks.3/mlp/act/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/blocks.4/mlp/act/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_1/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_2/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_3/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_4/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_5/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_6/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_7/Mul_5_output_0": [
+    "batch",
+    1,
+    3072
+   ]
+  },
+  "checks": {
+   "tanh_left_ok": true,
+   "fastgelu_count": true,
+   "qdq_counts_same": true,
+   "qdq_scale_zp_same": true,
+   "qdq_weight_same": true,
+   "shape_same": true,
+   "ort_fused_same": true
+  },
+  "ort_opt": {
+   "n_nodes": 480,
+   "ops": {
+    "ai.onnx::Add": 46,
+    "ai.onnx::Concat": 1,
+    "ai.onnx::DequantizeLinear": 1,
+    "ai.onnx::Equal": 1,
+    "ai.onnx::Expand": 1,
+    "ai.onnx::Gather": 2,
+    "ai.onnx::LayerNormalization": 2,
+    "ai.onnx::Mul": 40,
+    "ai.onnx::QLinearMatMul": 13,
+    "ai.onnx::QuantizeLinear": 92,
+    "ai.onnx::Reshape": 29,
+    "ai.onnx::Shape": 1,
+    "ai.onnx::Softmax": 13,
+    "ai.onnx::Split": 13,
+    "ai.onnx::Squeeze": 38,
+    "ai.onnx::Sub": 27,
+    "ai.onnx::Transpose": 53,
+    "ai.onnx::Unsqueeze": 1,
+    "ai.onnx::Where": 1,
+    "com.microsoft.nchwc::Conv": 1,
+    "com.microsoft.nchwc::ReorderOutput": 1,
+    "com.microsoft::FastGelu": 13,
+    "com.microsoft::MatMulIntegerToFloat": 66,
+    "com.microsoft::SkipLayerNormalization": 24
+   },
+   "fused": {
+    "ai.onnx::DequantizeLinear": 1,
+    "ai.onnx::QLinearMatMul": 13,
+    "ai.onnx::QuantizeLinear": 92,
+    "com.microsoft::MatMulIntegerToFloat": 66
+   },
+   "file": "C:\\s2art_b32\\e14\\e14_2_F1_ortopt.onnx"
+  }
+ },
+ "F2": {
+  "file": "C:\\s2art_b32\\e14\\e14_2_F2_fastgelu_bias.onnx",
+  "sha256": "03f4de18bd7370a099c08315006b81b6b4c1b4a22adfccdcd82cafd53c79e772",
+  "size_MiB": 97.968,
+  "n_nodes": 649,
+  "n_tanh": 0,
+  "n_fastgelu": 13,
+  "n_rewritten": 13,
+  "qdq": {
+   "counts": {
+    "QuantizeLinear": 105,
+    "DequantizeLinear": 158
+   },
+   "scale_zp_sha256": "73e6d84978bbe353e907b48fadc6911345d244fed6aa3d784d54b5b534072297",
+   "dq_weight_sha256": "632d3079fe4b36f9047801d8bc995ac66eb1872e973f3546719818da20579aab"
+  },
+  "new_init_bytes": 0,
+  "removed_inits": [
+   "/trunk/mlp/act_5/Constant_output_0",
+   "/trunk/mlp/act_7/Constant_3_output_0",
+   "/trunk/mlp/act_7/Constant_1_output_0",
+   "/trunk/mlp/act_5/Constant_2_output_0"
+  ],
+  "shapes": {
+   "/trunk/blocks.0/mlp/act/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/blocks.1/mlp/act/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/blocks.2/mlp/act/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/blocks.3/mlp/act/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/blocks.4/mlp/act/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_1/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_2/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_3/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_4/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_5/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_6/Mul_5_output_0": [
+    "batch",
+    64,
+    3072
+   ],
+   "/trunk/mlp/act_7/Mul_5_output_0": [
+    "batch",
+    1,
+    3072
+   ]
+  },
+  "checks": {
+   "tanh_left_ok": true,
+   "fastgelu_count": true,
+   "qdq_counts_same": true,
+   "qdq_scale_zp_same": true,
+   "qdq_weight_same": true,
+   "shape_same": true,
+   "ort_fused_same": true
+  },
+  "ort_opt": {
+   "n_nodes": 480,
+   "ops": {
+    "ai.onnx::Add": 46,
+    "ai.onnx::Concat": 1,
+    "ai.onnx::DequantizeLinear": 1,
+    "ai.onnx::Equal": 1,
+    "ai.onnx::Expand": 1,
+    "ai.onnx::Gather": 2,
+    "ai.onnx::LayerNormalization": 2,
+    "ai.onnx::Mul": 40,
+    "ai.onnx::QLinearMatMul": 13,
+    "ai.onnx::QuantizeLinear": 92,
+    "ai.onnx::Reshape": 29,
+    "ai.onnx::Shape": 1,
+    "ai.onnx::Softmax": 13,
+    "ai.onnx::Split": 13,
+    "ai.onnx::Squeeze": 38,
+    "ai.onnx::Sub": 27,
+    "ai.onnx::Transpose": 53,
+    "ai.onnx::Unsqueeze": 1,
+    "ai.onnx::Where": 1,
+    "com.microsoft.nchwc::Conv": 1,
+    "com.microsoft.nchwc::ReorderOutput": 1,
+    "com.microsoft::FastGelu": 13,
+    "com.microsoft::MatMulIntegerToFloat": 66,
+    "com.microsoft::SkipLayerNormalization": 24
+   },
+   "fused": {
+    "ai.onnx::DequantizeLinear": 1,
+    "ai.onnx::QLinearMatMul": 13,
+    "ai.onnx::QuantizeLinear": 92,
+    "com.microsoft::MatMulIntegerToFloat": 66
+   },
+   "file": "C:\\s2art_b32\\e14\\e14_2_F2_ortopt.onnx"
+  }
+ },
+ "pass": true
+}

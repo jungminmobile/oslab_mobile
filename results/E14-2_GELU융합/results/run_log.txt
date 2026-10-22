@@ -1,0 +1,26 @@
+[2026-10-23T03:39:28] START e14\run_e14_2.py --step 0 git={'commit': '7017fed', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T03:39:30] END --step 0 2s
+[2026-10-23T03:39:30] START e14\run_e14_2.py --step rewrite git={'commit': '7017fed', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T03:39:35] END --step rewrite 4s
+[2026-10-23T03:39:35] START e14\run_e14_2.py --step smoke git={'commit': '7017fed', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T03:39:36] END --step smoke 1s
+[2026-10-23T03:39:58] START e14\run_e14_2.py --step g2 git={'commit': '2395b56', 'branch': 'jungmin/e14-graph', 'dirty': False}
+[2026-10-23 03:5x] 메모: G2 불통과 → 멈춤 (계획서 4절). (a) cos 최소 0.98869 (기준 0.9999), top-1 다른 장 3/1200 (pets 2, food 1; 고화질 정답 수는 pets +1장).
+  1200장 중 약 60%는 O와 임베딩 비트 일치, 나머지는 차이 있음 (cos<0.999 약 24%). F1과 F2 임베딩은 비트 일치 (ORT가 F1의 bias Add+FastGelu를 FastGelu(x,bias)로 합쳐 실행 그래프가 같음, 최적화 후 노드 둘 다 480).
+  (b) 통과: 곳별 FastGelu vs 원래 식 max|Δ|/max|y| 최대 1.9e-7. (c) 2장(pets 앞 2장)에서는 Q 정수 다른 원소 0 (이 2장은 우연히 비트 일치 그룹).
+  해석: FastGelu 차이 자체는 1e-7 수준인데, 일부 사진에서 fc2 입력 Q 정수가 1 바뀌고 그것이 뒤로 퍼져 임베딩 cos가 크게 떨어짐. 정민 판단 대기.
+[2026-10-23 03:5x] 정민 결정: G2(a) cos 기준은 기록만 하고, 정확도는 G2b(dev 전체 + 층화 짝 부트스트랩)와 판정 조건 ④(CI 하한 > −0.3%p)로 판단. 측정 계속. F1·F2 모두 계획대로 잰다(실행 그래프가 같음을 확인하는 대조로도 씀).
+[2026-10-23T03:44:33] START e14\run_e14_2.py --step acc git={'commit': '2395b56', 'branch': 'jungmin/e14-graph', 'dirty': False}
+[2026-10-23T03:51:04] END --step acc 391s
+[2026-10-23T03:51:04] START e14\run_e14_2.py --step mem git={'commit': '2395b56', 'branch': 'jungmin/e14-graph', 'dirty': False}
+[2026-10-23T03:51:18] END --step mem 13s
+[2026-10-23T03:56:10] START e14\run_e14_2.py --step speed --session 1 git={'commit': '2395b56', 'branch': 'jungmin/e14-graph', 'dirty': False}
+[2026-10-23T03:57:09] END --step speed 58s
+[2026-10-23T03:59:10] START e14\run_e14_2.py --step speed --session 2 git={'commit': '2395b56', 'branch': 'jungmin/e14-graph', 'dirty': False}
+[2026-10-23T04:00:10] END --step speed 60s
+[2026-10-23T04:02:12] START e14\run_e14_2.py --step speed --session 3 git={'commit': '2395b56', 'branch': 'jungmin/e14-graph', 'dirty': False}
+[2026-10-23T04:03:10] END --step speed 59s
+[2026-10-23T04:05:20] START e14\run_e14_2.py --step summary git={'commit': '2395b56', 'branch': 'jungmin/e14-graph', 'dirty': False}
+[2026-10-23T04:05:20] END --step summary 0s
+[2026-10-23T04:05:38] START e14\run_e14_2.py --step summary git={'commit': '2395b56', 'branch': 'jungmin/e14-graph', 'dirty': False}
+[2026-10-23T04:05:39] END --step summary 0s

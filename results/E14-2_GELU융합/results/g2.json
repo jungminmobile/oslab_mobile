@@ -1,0 +1,373 @@
+{
+ "date": "2026-10-23T03:39:58",
+ "git": {
+  "commit": "2395b56",
+  "branch": "jungmin/e14-graph",
+  "dirty": false
+ },
+ "a": {
+  "F1": {
+   "per_set": {
+    "cifar_A": {
+     "cos_min": 0.9886899590492249,
+     "cos_mean": 0.9993534088134766,
+     "agree": 100.0,
+     "n_diff": 0,
+     "top1_O": 71.0,
+     "top1": 71.0,
+     "max_abs_raw": 0.24701058864593506,
+     "bit_equal": false
+    },
+    "pets_dev": {
+     "cos_min": 0.9965652227401733,
+     "cos_mean": 0.9995250105857849,
+     "agree": 99.0,
+     "n_diff": 2,
+     "top1_O": 91.0,
+     "top1": 91.5,
+     "max_abs_raw": 0.13594293594360352,
+     "bit_equal": false
+    },
+    "flowers_dev": {
+     "cos_min": 0.9963558912277222,
+     "cos_mean": 0.9996483325958252,
+     "agree": 100.0,
+     "n_diff": 0,
+     "top1_O": 84.0,
+     "top1": 84.0,
+     "max_abs_raw": 0.23394346237182617,
+     "bit_equal": false
+    },
+    "cars_dev": {
+     "cos_min": 0.9961364269256592,
+     "cos_mean": 0.9993907809257507,
+     "agree": 100.0,
+     "n_diff": 0,
+     "top1_O": 92.5,
+     "top1": 92.5,
+     "max_abs_raw": 0.1910872459411621,
+     "bit_equal": false
+    },
+    "food_dev": {
+     "cos_min": 0.9936449527740479,
+     "cos_mean": 0.9993536472320557,
+     "agree": 99.5,
+     "n_diff": 1,
+     "top1_O": 84.5,
+     "top1": 84.5,
+     "max_abs_raw": 0.18926048278808594,
+     "bit_equal": false
+    },
+    "caltech_dev": {
+     "cos_min": 0.9945488572120667,
+     "cos_mean": 0.9994392395019531,
+     "agree": 100.0,
+     "n_diff": 0,
+     "top1_O": 94.5,
+     "top1": 94.5,
+     "max_abs_raw": 0.22698068618774414,
+     "bit_equal": false
+    }
+   },
+   "cos_min": 0.9886899590492249,
+   "n_diff": 3,
+   "bit_equal_all": false,
+   "hr_top1_O": 89.3,
+   "hr_top1": 89.4
+  },
+  "F2": {
+   "per_set": {
+    "cifar_A": {
+     "cos_min": 0.9886899590492249,
+     "cos_mean": 0.9993534088134766,
+     "agree": 100.0,
+     "n_diff": 0,
+     "top1_O": 71.0,
+     "top1": 71.0,
+     "max_abs_raw": 0.24701058864593506,
+     "bit_equal": false
+    },
+    "pets_dev": {
+     "cos_min": 0.9965652227401733,
+     "cos_mean": 0.9995250105857849,
+     "agree": 99.0,
+     "n_diff": 2,
+     "top1_O": 91.0,
+     "top1": 91.5,
+     "max_abs_raw": 0.13594293594360352,
+     "bit_equal": false
+    },
+    "flowers_dev": {
+     "cos_min": 0.9963558912277222,
+     "cos_mean": 0.9996483325958252,
+     "agree": 100.0,
+     "n_diff": 0,
+     "top1_O": 84.0,
+     "top1": 84.0,
+     "max_abs_raw": 0.23394346237182617,
+     "bit_equal": false
+    },
+    "cars_dev": {
+     "cos_min": 0.9961364269256592,
+     "cos_mean": 0.9993907809257507,
+     "agree": 100.0,
+     "n_diff": 0,
+     "top1_O": 92.5,
+     "top1": 92.5,
+     "max_abs_raw": 0.1910872459411621,
+     "bit_equal": false
+    },
+    "food_dev": {
+     "cos_min": 0.9936449527740479,
+     "cos_mean": 0.9993536472320557,
+     "agree": 99.5,
+     "n_diff": 1,
+     "top1_O": 84.5,
+     "top1": 84.5,
+     "max_abs_raw": 0.18926048278808594,
+     "bit_equal": false
+    },
+    "caltech_dev": {
+     "cos_min": 0.9945488572120667,
+     "cos_mean": 0.9994392395019531,
+     "agree": 100.0,
+     "n_diff": 0,
+     "top1_O": 94.5,
+     "top1": 94.5,
+     "max_abs_raw": 0.22698068618774414,
+     "bit_equal": false
+    }
+   },
+   "cos_min": 0.9886899590492249,
+   "n_diff": 3,
+   "bit_equal_all": false,
+   "hr_top1_O": 89.3,
+   "hr_top1": 89.4
+  }
+ },
+ "bc": {
+  "sites": [
+   {
+    "site": "/trunk/blocks.0/mlp/act/Tanh",
+    "order": 0,
+    "O_vs_numpy_rel": 7.058256557002096e-08,
+    "F1_rel_maxabs": 7.058256557002096e-08,
+    "F1_elem_rel_max": 3.0,
+    "F1_bit_equal_frac": 0.5727081298828125,
+    "F1_vs_O_rel_maxabs": 7.058256557002096e-08,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 7.058256557002096e-08,
+    "F2_elem_rel_max": 3.0,
+    "F2_bit_equal_frac": 0.5727081298828125,
+    "F2_vs_O_rel_maxabs": 7.058256557002096e-08,
+    "F2_q_diff_frac": 0.0
+   },
+   {
+    "site": "/trunk/blocks.1/mlp/act/Tanh",
+    "order": 1,
+    "O_vs_numpy_rel": 1.0598525079785759e-07,
+    "F1_rel_maxabs": 1.0598525079785759e-07,
+    "F1_elem_rel_max": 3.0,
+    "F1_bit_equal_frac": 0.6128184000651041,
+    "F1_vs_O_rel_maxabs": 1.6786961509751563e-07,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 1.0598525079785759e-07,
+    "F2_elem_rel_max": 3.0,
+    "F2_bit_equal_frac": 0.6128184000651041,
+    "F2_vs_O_rel_maxabs": 1.6786961509751563e-07,
+    "F2_q_diff_frac": 0.0
+   },
+   {
+    "site": "/trunk/blocks.2/mlp/act/Tanh",
+    "order": 2,
+    "O_vs_numpy_rel": 1.3009346844228276e-07,
+    "F1_rel_maxabs": 1.3009346844228276e-07,
+    "F1_elem_rel_max": 3.0,
+    "F1_bit_equal_frac": 0.6426060994466146,
+    "F1_vs_O_rel_maxabs": 1.3121345432409726e-07,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 1.3009346844228276e-07,
+    "F2_elem_rel_max": 3.0,
+    "F2_bit_equal_frac": 0.6426060994466146,
+    "F2_vs_O_rel_maxabs": 1.3121345432409726e-07,
+    "F2_q_diff_frac": 0.0
+   },
+   {
+    "site": "/trunk/blocks.3/mlp/act/Tanh",
+    "order": 3,
+    "O_vs_numpy_rel": 1.9302842702018097e-07,
+    "F1_rel_maxabs": 1.9302842702018097e-07,
+    "F1_elem_rel_max": 3.0,
+    "F1_bit_equal_frac": 0.5961125691731771,
+    "F1_vs_O_rel_maxabs": 1.4413934934509598e-07,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 1.9302842702018097e-07,
+    "F2_elem_rel_max": 3.0,
+    "F2_bit_equal_frac": 0.5961125691731771,
+    "F2_vs_O_rel_maxabs": 1.4413934934509598e-07,
+    "F2_q_diff_frac": 0.0
+   },
+   {
+    "site": "/trunk/blocks.4/mlp/act/Tanh",
+    "order": 4,
+    "O_vs_numpy_rel": 1.1916811359924395e-07,
+    "F1_rel_maxabs": 1.1916811359924395e-07,
+    "F1_elem_rel_max": 3.0,
+    "F1_bit_equal_frac": 0.5752410888671875,
+    "F1_vs_O_rel_maxabs": 1.325369822779976e-07,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 1.1916811359924395e-07,
+    "F2_elem_rel_max": 3.0,
+    "F2_bit_equal_frac": 0.5752410888671875,
+    "F2_vs_O_rel_maxabs": 1.325369822779976e-07,
+    "F2_q_diff_frac": 0.0
+   },
+   {
+    "site": "/trunk/mlp/act/Tanh",
+    "order": 5,
+    "O_vs_numpy_rel": 5.4611707156482225e-08,
+    "F1_rel_maxabs": 5.4611707156482225e-08,
+    "F1_elem_rel_max": 3.0,
+    "F1_bit_equal_frac": 0.5587132771809896,
+    "F1_vs_O_rel_maxabs": 6.84438248299557e-08,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 5.4611707156482225e-08,
+    "F2_elem_rel_max": 3.0,
+    "F2_bit_equal_frac": 0.5587132771809896,
+    "F2_vs_O_rel_maxabs": 6.84438248299557e-08,
+    "F2_q_diff_frac": 0.0
+   },
+   {
+    "site": "/trunk/mlp/act_1/Tanh",
+    "order": 6,
+    "O_vs_numpy_rel": 2.7755600484624665e-08,
+    "F1_rel_maxabs": 2.7542816027903427e-08,
+    "F1_elem_rel_max": 3.0,
+    "F1_bit_equal_frac": 0.5261052449544271,
+    "F1_vs_O_rel_maxabs": 3.2284003026461505e-08,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 2.7542816027903427e-08,
+    "F2_elem_rel_max": 3.0,
+    "F2_bit_equal_frac": 0.5261052449544271,
+    "F2_vs_O_rel_maxabs": 3.2284003026461505e-08,
+    "F2_q_diff_frac": 0.0
+   },
+   {
+    "site": "/trunk/mlp/act_2/Tanh",
+    "order": 7,
+    "O_vs_numpy_rel": 1.2210378486088302e-07,
+    "F1_rel_maxabs": 1.2210378486088302e-07,
+    "F1_elem_rel_max": 3.0,
+    "F1_bit_equal_frac": 0.4775187174479167,
+    "F1_vs_O_rel_maxabs": 1.632405428608763e-07,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 1.2210378486088302e-07,
+    "F2_elem_rel_max": 3.0,
+    "F2_bit_equal_frac": 0.4775187174479167,
+    "F2_vs_O_rel_maxabs": 1.632405428608763e-07,
+    "F2_q_diff_frac": 0.0
+   },
+   {
+    "site": "/trunk/mlp/act_3/Tanh",
+    "order": 8,
+    "O_vs_numpy_rel": 5.650622725283938e-08,
+    "F1_rel_maxabs": 4.3761037460399166e-08,
+    "F1_elem_rel_max": 3.0,
+    "F1_bit_equal_frac": 0.8708241780598959,
+    "F1_vs_O_rel_maxabs": 5.650622725283938e-08,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 4.3761037460399166e-08,
+    "F2_elem_rel_max": 3.0,
+    "F2_bit_equal_frac": 0.8708241780598959,
+    "F2_vs_O_rel_maxabs": 5.650622725283938e-08,
+    "F2_q_diff_frac": 0.0
+   },
+   {
+    "site": "/trunk/mlp/act_4/Tanh",
+    "order": 9,
+    "O_vs_numpy_rel": 2.955229660983605e-08,
+    "F1_rel_maxabs": 3.6102218103906125e-08,
+    "F1_elem_rel_max": 3.0,
+    "F1_bit_equal_frac": 0.9678675333658854,
+    "F1_vs_O_rel_maxabs": 4.320567725812907e-08,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 3.6102218103906125e-08,
+    "F2_elem_rel_max": 3.0,
+    "F2_bit_equal_frac": 0.9678675333658854,
+    "F2_vs_O_rel_maxabs": 4.320567725812907e-08,
+    "F2_q_diff_frac": 0.0
+   },
+   {
+    "site": "/trunk/mlp/act_5/Tanh",
+    "order": 10,
+    "O_vs_numpy_rel": 2.4430443446021854e-08,
+    "F1_rel_maxabs": 2.4430443446021854e-08,
+    "F1_elem_rel_max": 3.0,
+    "F1_bit_equal_frac": 0.9835027058919271,
+    "F1_vs_O_rel_maxabs": 2.4430443446021854e-08,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 2.4430443446021854e-08,
+    "F2_elem_rel_max": 3.0,
+    "F2_bit_equal_frac": 0.9835027058919271,
+    "F2_vs_O_rel_maxabs": 2.4430443446021854e-08,
+    "F2_q_diff_frac": 0.0
+   },
+   {
+    "site": "/trunk/mlp/act_6/Tanh",
+    "order": 11,
+    "O_vs_numpy_rel": 8.822985009260265e-09,
+    "F1_rel_maxabs": 8.822985009260265e-09,
+    "F1_elem_rel_max": 3.0,
+    "F1_bit_equal_frac": 0.9496103922526041,
+    "F1_vs_O_rel_maxabs": 8.822985009260265e-09,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 8.822985009260265e-09,
+    "F2_elem_rel_max": 3.0,
+    "F2_bit_equal_frac": 0.9496103922526041,
+    "F2_vs_O_rel_maxabs": 8.822985009260265e-09,
+    "F2_q_diff_frac": 0.0
+   },
+   {
+    "site": "/trunk/mlp/act_7/Tanh",
+    "order": 12,
+    "O_vs_numpy_rel": 1.1019722734317838e-07,
+    "F1_rel_maxabs": 1.1019722734317838e-07,
+    "F1_elem_rel_max": 0.05405401811003685,
+    "F1_bit_equal_frac": 0.4777018229166667,
+    "F1_vs_O_rel_maxabs": 1.6495836518970464e-07,
+    "F1_q_diff_frac": 0.0,
+    "F2_rel_maxabs": 1.1019722734317838e-07,
+    "F2_elem_rel_max": 0.05405401811003685,
+    "F2_bit_equal_frac": 0.4777018229166667,
+    "F2_vs_O_rel_maxabs": 1.6495836518970464e-07,
+    "F2_q_diff_frac": 0.0
+   }
+  ],
+  "diag_same": {
+   "O": true,
+   "F1": true,
+   "F2": true
+  },
+  "max_rel": {
+   "F1": 1.9302842702018097e-07,
+   "F2": 1.9302842702018097e-07
+  },
+  "q_diff_frac_max": {
+   "F1": 0,
+   "F2": 0
+  },
+  "q_diff_frac_first": {
+   "F1": 0.0,
+   "F2": 0.0
+  }
+ },
+ "pass_a": false,
+ "pass_b": true,
+ "pass": true,
+ "g2b_needed": true,
+ "pass_original_criteria": false,
+ "revised": {
+  "rule": "(a) cos 기준은 기록만, 정확도는 G2b(dev 전체 CI)와 조건 ④로 판단 (정민 결정 10/23 03:5x)",
+  "pass_b": true
+ }
+}

@@ -1,0 +1,61 @@
+{
+ "date": "2026-10-23T03:51:03",
+ "git": {
+  "commit": "2395b56",
+  "branch": "jungmin/e14-graph",
+  "dirty": false
+ },
+ "O": {
+  "cifar_A": 74.7,
+  "pets_dev": 91.31313131313131,
+  "flowers_dev": 85.7889237199582,
+  "cars_dev": 91.83040330920372,
+  "food_dev": 85.0761421319797,
+  "caltech_dev": 94.3359375,
+  "hr": 89.66890759485457
+ },
+ "F1": {
+  "cifar_A": 74.5,
+  "pets_dev": 91.41414141414141,
+  "flowers_dev": 85.68443051201672,
+  "cars_dev": 92.03722854188211,
+  "food_dev": 85.0761421319797,
+  "caltech_dev": 94.3359375,
+  "hr": 89.70957602000398,
+  "hr_delta": 0.04066842514940561,
+  "hr_delta_ci95": [
+   -0.08,
+   0.14
+  ],
+  "n_changed": {
+   "cifar_A": 2,
+   "pets_dev": 3,
+   "flowers_dev": 1,
+   "cars_dev": 2,
+   "food_dev": 2,
+   "caltech_dev": 0
+  }
+ },
+ "F2": {
+  "cifar_A": 74.5,
+  "pets_dev": 91.41414141414141,
+  "flowers_dev": 85.68443051201672,
+  "cars_dev": 92.03722854188211,
+  "food_dev": 85.0761421319797,
+  "caltech_dev": 94.3359375,
+  "hr": 89.70957602000398,
+  "hr_delta": 0.04066842514940561,
+  "hr_delta_ci95": [
+   -0.08,
+   0.14
+  ],
+  "n_changed": {
+   "cifar_A": 2,
+   "pets_dev": 3,
+   "flowers_dev": 1,
+   "cars_dev": 2,
+   "food_dev": 2,
+   "caltech_dev": 0
+  }
+ }
+}
