@@ -1,0 +1,139 @@
+waiting for lock held by {'owner': 'personal', 'job': 'e25v pc', 'since': '2026-10-22T12:23:27', 'host': '쭌놋북', 'pid': 8868} (queue position 2)
+ACQUIRED {'owner': 'siglip2', 'job': '8 models latency rerun t2/t4 (needs idle PC)', 'since': '2026-10-22T13:11:21', 'host': '쭌놋북', 'pid': 22188}
+13:11:59 gate cpu30s=8% probe t=4 median=161.3 ms  p10=115.8  freq=2803MHz
+{"date": "2026-10-22T13:12:00", "platform": "Windows-10-10.0.26300-SP0", "python": "3.11.9", "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel", "ort": "1.25.0", "numpy": "2.4.4", "logical_cores": 8, "cpu_name": "11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz", "power_scheme": "전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)", "battery": "plugged=True batt=100%"}
+session 1 t=2 load=6.0% rn50_fp32=65.74  rn50_b2=28.32  b16_fp32=218.80  b16_m2rot=107.96  b16_oab=88.39  b32_fp32=79.81  b32_m2rot=35.90  b32_oab=33.15
+RELEASED
+1 t=4 load=10.7% rn50_fp32=51.08  rn50_b2=22.55  b16_fp32=174.32  b16_m2rot=84.41  b16_oab=75.47  b32_fp32=70.10  b32_m2rot=34.46  b32_oab=30.00
+session 2 t=2 load=14.8% rn50_fp32=61.45  rn50_b2=28.51  b16_fp32=216.67  b16_m2rot=99.46  b16_oab=83.91  b32_fp32=74.01  b32_m2rot=34.65  b32_oab=30.01
+session 2 t=4 load=12.8% rn50_fp32=49.50  rn50_b2=21.72  b16_fp32=171.42  b16_m2rot=80.74  b16_oab=68.99  b32_fp32=64.11  b32_m2rot=31.96  b32_oab=27.82
+session 3 t=2 load=18.1% rn50_fp32=69.35  rn50_b2=30.30  b16_fp32=235.36  b16_m2rot=117.42  b16_oab=100.17  b32_fp32=88.89  b32_m2rot=40.65  b32_oab=39.88
+session 3 t=4 load=9.3% rn50_fp32=70.23  rn50_b2=28.29  b16_fp32=206.63  b16_m2rot=107.00  b16_oab=87.89  b32_fp32=77.21  b32_m2rot=37.04  b32_oab=33.67
+{
+ "summary": {
+  "rn50_fp32": {
+   "2": {
+    "median_ms": 64.92,
+    "fps_b1": 15.4,
+    "p50_ms": 63.59,
+    "p95_ms": 83.7
+   },
+   "4": {
+    "median_ms": 51.08,
+    "fps_b1": 19.58,
+    "p50_ms": 49.96,
+    "p95_ms": 66.83
+   }
+  },
+  "rn50_b2": {
+   "2": {
+    "median_ms": 28.51,
+    "fps_b1": 35.08,
+    "p50_ms": 28.07,
+    "p95_ms": 40.2,
+    "vs_fp32_pct": -56.1
+   },
+   "4": {
+    "median_ms": 22.55,
+    "fps_b1": 44.34,
+    "p50_ms": 22.7,
+    "p95_ms": 27.18,
+    "vs_fp32_pct": -55.9
+   }
+  },
+  "b16_fp32": {
+   "2": {
+    "median_ms": 235.36,
+    "fps_b1": 4.25,
+    "p50_ms": 230.38,
+    "p95_ms": 330.05
+   },
+   "4": {
+    "median_ms": 174.32,
+    "fps_b1": 5.74,
+    "p50_ms": 170.98,
+    "p95_ms": 221.93
+   }
+  },
+  "b16_m2rot": {
+   "2": {
+    "median_ms": 109.56,
+    "fps_b1": 9.13,
+    "p50_ms": 108.95,
+    "p95_ms": 134.37,
+    "vs_fp32_pct": -53.5
+   },
+   "4": {
+    "median_ms": 84.41,
+    "fps_b1": 11.85,
+    "p50_ms": 82.06,
+    "p95_ms": 105.84,
+    "vs_fp32_pct": -51.6
+   }
+  },
+  "b16_oab": {
+   "2": {
+    "median_ms": 91.87,
+    "fps_b1": 10.89,
+    "p50_ms": 91.43,
+    "p95_ms": 112.1,
+    "vs_fp32_pct": -61.0
+   },
+   "4": {
+    "median_ms": 75.47,
+    "fps_b1": 13.25,
+    "p50_ms": 76.92,
+    "p95_ms": 89.58,
+    "vs_fp32_pct": -56.7
+   }
+  },
+  "b32_fp32": {
+   "2": {
+    "median_ms": 79.09,
+    "fps_b1": 12.64,
+    "p50_ms": 77.58,
+    "p95_ms": 99.95
+   },
+   "4": {
+    "median_ms": 70.1,
+    "fps_b1": 14.27,
+    "p50_ms": 70.74,
+    "p95_ms": 86.18
+   }
+  },
+  "b32_m2rot": {
+   "2": {
+    "median_ms": 36.96,
+    "fps_b1": 27.06,
+    "p50_ms": 36.09,
+    "p95_ms": 46.55,
+    "vs_fp32_pct": -53.3
+   },
+   "4": {
+    "median_ms": 34.46,
+    "fps_b1": 29.02,
+    "p50_ms": 33.01,
+    "p95_ms": 40.44,
+    "vs_fp32_pct": -50.8
+   }
+  },
+  "b32_oab": {
+   "2": {
+    "median_ms": 33.34,
+    "fps_b1": 29.99,
+    "p50_ms": 33.61,
+    "p95_ms": 41.9,
+    "vs_fp32_pct": -57.8
+   },
+   "4": {
+    "median_ms": 30.0,
+    "fps_b1": 33.33,
+    "p50_ms": 31.11,
+    "p95_ms": 35.93,
+    "vs_fp32_pct": -57.2
+   }
+  }
+ },
+ "peak_mem": null
+}
+RELEASED

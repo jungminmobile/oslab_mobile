@@ -1,0 +1,270 @@
+{
+ "device": {
+  "date": "2026-10-22T03:08:30",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "python": "3.11.9",
+  "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+  "ort": "1.25.0",
+  "numpy": "2.4.4",
+  "logical_cores": 8,
+  "cpu_name": "11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz",
+  "power_scheme": "전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)",
+  "battery": "plugged=True batt=100%"
+ },
+ "cond": {
+  "models": [
+   "rn50_fp32=D:/mokerton/artifacts/rn50_g8/dl/onnx/rn50_image_fp32_q1.onnx",
+   "rn50_b2=D:/mokerton/artifacts/rn50_g8/dl/onnx/rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx",
+   "b16_fp32=D:/mokerton/artifacts/siglip2/onnx/siglip2_image_fp32.onnx",
+   "b16_m2rot=D:/mokerton/artifacts/siglip2/onnx/siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+   "b32_fp32=D:/mokerton/artifacts/siglip2_b32/onnx/siglip2_image_fp32.onnx",
+   "b32_m2rot=D:/mokerton/artifacts/siglip2_b32/onnx/siglip2_image_int8_rcmaskbcmlp15at6u5-7at10u9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx"
+  ],
+  "out": "D:/mokerton/wt_g8/results/siglip2/G8_candidates/rn50_clean/latency",
+  "threads": [
+   1,
+   2,
+   4
+  ],
+  "sessions": 3,
+  "n": 200,
+  "repeats": 3,
+  "warmup": 20,
+  "mem": true
+ },
+ "files": {
+  "rn50_fp32": {
+   "path": "D:\\mokerton\\artifacts\\rn50_g8\\dl\\onnx\\rn50_image_fp32_q1.onnx",
+   "bytes": 153204287,
+   "MiB": 146.11
+  },
+  "rn50_b2": {
+   "path": "D:\\mokerton\\artifacts\\rn50_g8\\dl\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx",
+   "bytes": 39515613,
+   "MiB": 37.69
+  },
+  "b16_fp32": {
+   "path": "D:\\mokerton\\artifacts\\siglip2\\onnx\\siglip2_image_fp32.onnx",
+   "bytes": 371672881,
+   "MiB": 354.45
+  },
+  "b16_m2rot": {
+   "path": "D:\\mokerton\\artifacts\\siglip2\\onnx\\siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+   "bytes": 96180230,
+   "MiB": 91.72
+  },
+  "b32_fp32": {
+   "path": "D:\\mokerton\\artifacts\\siglip2_b32\\onnx\\siglip2_image_fp32.onnx",
+   "bytes": 378356721,
+   "MiB": 360.83
+  },
+  "b32_m2rot": {
+   "path": "D:\\mokerton\\artifacts\\siglip2_b32\\onnx\\siglip2_image_int8_rcmaskbcmlp15at6u5-7at10u9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+   "bytes": 102847637,
+   "MiB": 98.08
+  }
+ },
+ "sessions": [
+  {
+   "session": 1,
+   "threads": 1,
+   "cpu_load_before_pct": 12.4,
+   "results": {
+    "rn50_fp32": {
+     "ms_per_img_mean": 115.956,
+     "repeats_ms": [
+      97.063,
+      128.995,
+      121.812
+     ],
+     "lat_p50": 106.49,
+     "lat_p95": 151.889
+    },
+    "rn50_b2": {
+     "ms_per_img_mean": 50.234,
+     "repeats_ms": [
+      40.828,
+      58.516,
+      51.357
+     ],
+     "lat_p50": 44.498,
+     "lat_p95": 69.186
+    },
+    "b16_fp32": {
+     "ms_per_img_mean": 415.784,
+     "repeats_ms": [
+      380.34,
+      451.732,
+      415.279
+     ],
+     "lat_p50": 405.135,
+     "lat_p95": 511.989
+    },
+    "b16_m2rot": {
+     "ms_per_img_mean": 198.541,
+     "repeats_ms": [
+      184.205,
+      206.417,
+      205.0
+     ],
+     "lat_p50": 195.033,
+     "lat_p95": 261.402
+    },
+    "b32_fp32": {
+     "ms_per_img_mean": 148.012,
+     "repeats_ms": [
+      149.091,
+      142.9,
+      152.046
+     ],
+     "lat_p50": 148.768,
+     "lat_p95": 177.298
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 71.718,
+     "repeats_ms": [
+      78.671,
+      72.05,
+      64.433
+     ],
+     "lat_p50": 70.2,
+     "lat_p95": 98.224
+    }
+   }
+  },
+  {
+   "session": 1,
+   "threads": 2,
+   "cpu_load_before_pct": 24.5,
+   "results": {
+    "rn50_fp32": {
+     "ms_per_img_mean": 84.489,
+     "repeats_ms": [
+      75.809,
+      95.288,
+      82.371
+     ],
+     "lat_p50": 80.757,
+     "lat_p95": 115.277
+    },
+    "rn50_b2": {
+     "ms_per_img_mean": 38.765,
+     "repeats_ms": [
+      41.611,
+      37.49,
+      37.193
+     ],
+     "lat_p50": 37.965,
+     "lat_p95": 51.553
+    },
+    "b16_fp32": {
+     "ms_per_img_mean": 277.616,
+     "repeats_ms": [
+      293.609,
+      271.732,
+      267.506
+     ],
+     "lat_p50": 275.639,
+     "lat_p95": 340.94
+    },
+    "b16_m2rot": {
+     "ms_per_img_mean": 149.549,
+     "repeats_ms": [
+      160.861,
+      140.277,
+      147.51
+     ],
+     "lat_p50": 147.631,
+     "lat_p95": 193.73
+    },
+    "b32_fp32": {
+     "ms_per_img_mean": 104.977,
+     "repeats_ms": [
+      113.853,
+      99.469,
+      101.61
+     ],
+     "lat_p50": 103.694,
+     "lat_p95": 133.376
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 56.537,
+     "repeats_ms": [
+      63.958,
+      49.466,
+      56.189
+     ],
+     "lat_p50": 52.338,
+     "lat_p95": 75.504
+    }
+   }
+  },
+  {
+   "session": 1,
+   "threads": 4,
+   "cpu_load_before_pct": 30.5,
+   "results": {
+    "rn50_fp32": {
+     "ms_per_img_mean": 77.357,
+     "repeats_ms": [
+      69.918,
+      75.09,
+      87.063
+     ],
+     "lat_p50": 73.064,
+     "lat_p95": 101.826
+    },
+    "rn50_b2": {
+     "ms_per_img_mean": 31.331,
+     "repeats_ms": [
+      26.635,
+      32.436,
+      34.921
+     ],
+     "lat_p50": 30.829,
+     "lat_p95": 40.687
+    },
+    "b16_fp32": {
+     "ms_per_img_mean": 274.456,
+     "repeats_ms": [
+      243.871,
+      285.012,
+      294.483
+     ],
+     "lat_p50": 259.725,
+     "lat_p95": 376.371
+    },
+    "b16_m2rot": {
+     "ms_per_img_mean": 134.576,
+     "repeats_ms": [
+      123.003,
+      138.164,
+      142.561
+     ],
+     "lat_p50": 126.419,
+     "lat_p95": 176.328
+    },
+    "b32_fp32": {
+     "ms_per_img_mean": 107.36,
+     "repeats_ms": [
+      94.289,
+      118.396,
+      109.396
+     ],
+     "lat_p50": 100.903,
+     "lat_p95": 152.502
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 55.808,
+     "repeats_ms": [
+      51.699,
+      58.524,
+      57.202
+     ],
+     "lat_p50": 53.746,
+     "lat_p95": 75.811
+    }
+   }
+  }
+ ]
+}

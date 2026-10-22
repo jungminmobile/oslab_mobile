@@ -1,0 +1,7 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'O-AB profile n200 #3', 'since': '2026-10-22T13:25:51', 'host': '쭌놋북', 'pid': 3156}
+13:26:30 gate cpu30s=10% probe t=4 median=161.2 ms  p10=130.9  freq=2803MHz
+t=1 M2rot      wall   159.0 ms  kernel   156.6 ms  int_matmul=91.91  QLinearSoftmax=16.41  qdq=10.45  BiasGelu=10.3  Add=7.29  LayerNormalization=6.94
+t=1 OAB        wall   148.3 ms  kernel   146.4 ms  int_matmul=99.06  BiasGelu=11.38  SkipLayerNormalization=8.06  qdq=6.17  Add=4.58  Softmax=3.43
+t=4 M2rot      wall   103.1 ms  kernel   100.0 ms  int_matmul=50.94  qdq=13.36  QLinearSoftmax=6.91  BiasGelu=5.7  Add=5.65  Transpose=3.85
+t=4 OAB        wall    81.3 ms  kernel    79.0 ms  int_matmul=48.04  BiasGelu=6.29  qdq=4.46  SkipLayerNormalization=3.93  Transpose=3.79  Add=2.99
+RELEASED

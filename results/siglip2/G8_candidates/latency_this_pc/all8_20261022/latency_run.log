@@ -1,0 +1,243 @@
+waiting for lock held by {'owner': 'siglip2', 'job': 'E12-1 재현 (M2rot·O-AB, C0~C4)', 'since': '2026-10-22T09:36:32', 'host': '쭌놋북', 'pid': 1664} (queue position 1)
+ACQUIRED {'owner': 'siglip2', 'job': '8 models latency+mem (needs idle PC)', 'since': '2026-10-22T10:40:04', 'host': '쭌놋북', 'pid': 344}
+10:40:45 gate cpu30s=20% probe t=4 median=195.7 ms  p10=167.8  freq=2803MHz
+{"date": "2026-10-22T10:40:45", "platform": "Windows-10-10.0.26300-SP0", "python": "3.11.9", "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel", "ort": "1.25.0", "numpy": "2.4.4", "logical_cores": 8, "cpu_name": "11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz", "power_scheme": "전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)", "battery": "plugged=True batt=100%"}
+session 1 t=1 load=15.4% rn50_fp32=107.33  rn50_b2=48.62  b16_fp32=383.64  b16_m2rot=161.09  b16_oab=145.30  b32_fp32=132.81  b32_m2rot=51.44  b32_oab=47.89
+session 1 t=2 load=13.5% rn50_fp32=79.14  rn50_b2=34.44  b16_fp32=264.30  b16_m2rot=125.21  b16_oab=121.34  b32_fp32=126.66  b32_m2rot=65.55  b32_oab=47.17
+session 1 t=4 load=18.3% rn50_fp32=61.12  rn50_b2=28.50  b16_fp32=202.37  b16_m2rot=110.45  b16_oab=90.58  b32_fp32=75.85  b32_m2rot=40.47  b32_oab=35.41
+session 2 t=1 load=33.2% rn50_fp32=111.73  rn50_b2=46.10  b16_fp32=386.94  b16_m2rot=154.41  b16_oab=151.28  b32_fp32=137.45  b32_m2rot=53.76  b32_oab=52.38
+session 2 t=2 load=12.7% rn50_fp32=63.01  rn50_b2=28.24  b16_fp32=210.88  b16_m2rot=104.47  b16_oab=88.36  b32_fp32=73.88  b32_m2rot=36.40  b32_oab=31.27
+session 2 t=4 load=11.9% rn50_fp32=45.47  rn50_b2=19.59  b16_fp32=160.25  b16_m2rot=77.72  b16_oab=67.08  b32_fp32=58.86  b32_m2rot=30.18  b32_oab=24.96
+session 3 t=1 load=12.1% rn50_fp32=104.47  rn50_b2=43.83  b16_fp32=377.93  b16_m2rot=151.94  b16_oab=137.94  b32_fp32=128.53  b32_m2rot=49.06  b32_oab=46.50
+session 3 t=2 load=38.6% rn50_fp32=62.33  rn50_b2=26.73  b16_fp32=208.17  b16_m2rot=97.68  b16_oab=82.27  b32_fp32=71.42  b32_m2rot=33.94  b32_oab=30.16
+session 3 t=4 load=11.9% rn50_fp32=45.09  rn50_b2=20.03  b16_fp32=156.79  b16_m2rot=77.25  b16_oab=66.44  b32_fp32=57.60  b32_m2rot=30.90  b32_oab=26.08
+{
+ "summary": {
+  "rn50_fp32": {
+   "1": {
+    "median_ms": 107.33,
+    "fps_b1": 9.32,
+    "p50_ms": 99.28,
+    "p95_ms": 137.96
+   },
+   "2": {
+    "median_ms": 63.01,
+    "fps_b1": 15.87,
+    "p50_ms": 63.59,
+    "p95_ms": 83.85
+   },
+   "4": {
+    "median_ms": 45.47,
+    "fps_b1": 21.99,
+    "p50_ms": 44.36,
+    "p95_ms": 63.03
+   }
+  },
+  "rn50_b2": {
+   "1": {
+    "median_ms": 46.1,
+    "fps_b1": 21.69,
+    "p50_ms": 41.17,
+    "p95_ms": 57.02,
+    "vs_fp32_pct": -57.0
+   },
+   "2": {
+    "median_ms": 28.24,
+    "fps_b1": 35.41,
+    "p50_ms": 29.98,
+    "p95_ms": 38.86,
+    "vs_fp32_pct": -55.2
+   },
+   "4": {
+    "median_ms": 20.03,
+    "fps_b1": 49.92,
+    "p50_ms": 19.45,
+    "p95_ms": 25.3,
+    "vs_fp32_pct": -55.9
+   }
+  },
+  "b16_fp32": {
+   "1": {
+    "median_ms": 383.64,
+    "fps_b1": 2.61,
+    "p50_ms": 344.7,
+    "p95_ms": 465.79
+   },
+   "2": {
+    "median_ms": 210.88,
+    "fps_b1": 4.74,
+    "p50_ms": 201.96,
+    "p95_ms": 247.86
+   },
+   "4": {
+    "median_ms": 160.25,
+    "fps_b1": 6.24,
+    "p50_ms": 159.59,
+    "p95_ms": 191.03
+   }
+  },
+  "b16_m2rot": {
+   "1": {
+    "median_ms": 154.41,
+    "fps_b1": 6.48,
+    "p50_ms": 150.42,
+    "p95_ms": 207.55,
+    "vs_fp32_pct": -59.8
+   },
+   "2": {
+    "median_ms": 104.47,
+    "fps_b1": 9.57,
+    "p50_ms": 109.5,
+    "p95_ms": 140.99,
+    "vs_fp32_pct": -50.5
+   },
+   "4": {
+    "median_ms": 77.72,
+    "fps_b1": 12.87,
+    "p50_ms": 76.98,
+    "p95_ms": 100.33,
+    "vs_fp32_pct": -51.5
+   }
+  },
+  "b16_oab": {
+   "1": {
+    "median_ms": 145.3,
+    "fps_b1": 6.88,
+    "p50_ms": 132.27,
+    "p95_ms": 182.57,
+    "vs_fp32_pct": -62.1
+   },
+   "2": {
+    "median_ms": 88.36,
+    "fps_b1": 11.32,
+    "p50_ms": 88.69,
+    "p95_ms": 121.12,
+    "vs_fp32_pct": -58.1
+   },
+   "4": {
+    "median_ms": 67.08,
+    "fps_b1": 14.91,
+    "p50_ms": 66.44,
+    "p95_ms": 86.03,
+    "vs_fp32_pct": -58.1
+   }
+  },
+  "b32_fp32": {
+   "1": {
+    "median_ms": 132.81,
+    "fps_b1": 7.53,
+    "p50_ms": 119.16,
+    "p95_ms": 157.15
+   },
+   "2": {
+    "median_ms": 73.88,
+    "fps_b1": 13.54,
+    "p50_ms": 71.53,
+    "p95_ms": 94.8
+   },
+   "4": {
+    "median_ms": 58.86,
+    "fps_b1": 16.99,
+    "p50_ms": 58.73,
+    "p95_ms": 75.03
+   }
+  },
+  "b32_m2rot": {
+   "1": {
+    "median_ms": 51.44,
+    "fps_b1": 19.44,
+    "p50_ms": 48.64,
+    "p95_ms": 67.72,
+    "vs_fp32_pct": -61.3
+   },
+   "2": {
+    "median_ms": 36.4,
+    "fps_b1": 27.47,
+    "p50_ms": 38.36,
+    "p95_ms": 50.86,
+    "vs_fp32_pct": -50.7
+   },
+   "4": {
+    "median_ms": 30.9,
+    "fps_b1": 32.36,
+    "p50_ms": 30.44,
+    "p95_ms": 38.56,
+    "vs_fp32_pct": -47.5
+   }
+  },
+  "b32_oab": {
+   "1": {
+    "median_ms": 47.89,
+    "fps_b1": 20.88,
+    "p50_ms": 45.54,
+    "p95_ms": 62.08,
+    "vs_fp32_pct": -63.9
+   },
+   "2": {
+    "median_ms": 31.27,
+    "fps_b1": 31.98,
+    "p50_ms": 33.66,
+    "p95_ms": 41.31,
+    "vs_fp32_pct": -57.7
+   },
+   "4": {
+    "median_ms": 26.08,
+    "fps_b1": 38.34,
+    "p50_ms": 25.89,
+    "p95_ms": 32.47,
+    "vs_fp32_pct": -55.7
+   }
+  }
+ },
+ "peak_mem": {
+  "rn50_fp32": {
+   "rss_before_MiB": 47.0,
+   "after_load_MiB": 205.9,
+   "peak_sampled_MiB": 220.4,
+   "peak_wset_MiB": 316.2
+  },
+  "rn50_b2": {
+   "rss_before_MiB": 47.1,
+   "after_load_MiB": 100.4,
+   "peak_sampled_MiB": 113.0,
+   "peak_wset_MiB": 113.0
+  },
+  "b16_fp32": {
+   "rss_before_MiB": 46.9,
+   "after_load_MiB": 415.9,
+   "peak_sampled_MiB": 428.9,
+   "peak_wset_MiB": 428.9
+  },
+  "b16_m2rot": {
+   "rss_before_MiB": 46.9,
+   "after_load_MiB": 163.2,
+   "peak_sampled_MiB": 204.9,
+   "peak_wset_MiB": 204.9
+  },
+  "b16_oab": {
+   "rss_before_MiB": 46.9,
+   "after_load_MiB": 158.8,
+   "peak_sampled_MiB": 202.1,
+   "peak_wset_MiB": 202.1
+  },
+  "b32_fp32": {
+   "rss_before_MiB": 46.8,
+   "after_load_MiB": 422.5,
+   "peak_sampled_MiB": 428.5,
+   "peak_wset_MiB": 453.7
+  },
+  "b32_m2rot": {
+   "rss_before_MiB": 46.9,
+   "after_load_MiB": 168.2,
+   "peak_sampled_MiB": 182.1,
+   "peak_wset_MiB": 195.3
+  },
+  "b32_oab": {
+   "rss_before_MiB": 47.0,
+   "after_load_MiB": 164.8,
+   "peak_sampled_MiB": 178.7,
+   "peak_wset_MiB": 193.0
+  }
+ }
+}
+RELEASED
