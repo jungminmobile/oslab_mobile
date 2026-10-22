@@ -1,0 +1,472 @@
+{
+ "device": {
+  "date": "2026-10-22T17:49:15",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "python": "3.11.9",
+  "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+  "ort": "1.25.0",
+  "numpy": "2.4.4",
+  "logical_cores": 8,
+  "cpu_name": "11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz",
+  "power_scheme": "전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)",
+  "battery": "plugged=True batt=100%"
+ },
+ "cond": {
+  "models": [
+   "b32_fp32=D:/mokerton/artifacts/siglip2_b32/onnx/siglip2_image_fp32.onnx",
+   "b32_m2rot=D:/mokerton/artifacts/siglip2_b32/onnx/siglip2_image_int8_rcmaskbcmlp15at6u5-7at10u9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+   "b32_oab=D:/mokerton/artifacts/siglip2_b32/onnx/siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx"
+  ],
+  "out": "D:/mokerton/wt_g8/results/siglip2/G8_candidates/latency_this_pc/b32_submit_20261022",
+  "threads": [
+   1,
+   2,
+   4
+  ],
+  "sessions": 3,
+  "n": 200,
+  "repeats": 3,
+  "warmup": 20,
+  "mem": true
+ },
+ "files": {
+  "b32_fp32": {
+   "path": "D:\\mokerton\\artifacts\\siglip2_b32\\onnx\\siglip2_image_fp32.onnx",
+   "bytes": 378356721,
+   "MiB": 360.83
+  },
+  "b32_m2rot": {
+   "path": "D:\\mokerton\\artifacts\\siglip2_b32\\onnx\\siglip2_image_int8_rcmaskbcmlp15at6u5-7at10u9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+   "bytes": 102847637,
+   "MiB": 98.08
+  },
+  "b32_oab": {
+   "path": "D:\\mokerton\\artifacts\\siglip2_b32\\onnx\\siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx",
+   "bytes": 102763369,
+   "MiB": 98.0
+  }
+ },
+ "sessions": [
+  {
+   "session": 1,
+   "threads": 1,
+   "cpu_load_before_pct": 9.5,
+   "results": {
+    "b32_fp32": {
+     "ms_per_img_mean": 124.408,
+     "repeats_ms": [
+      119.22,
+      124.425,
+      129.58
+     ],
+     "lat_p50": 123.259,
+     "lat_p95": 137.321
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 54.253,
+     "repeats_ms": [
+      51.964,
+      54.175,
+      56.621
+     ],
+     "lat_p50": 53.547,
+     "lat_p95": 62.259
+    },
+    "b32_oab": {
+     "ms_per_img_mean": 50.053,
+     "repeats_ms": [
+      47.744,
+      49.813,
+      52.601
+     ],
+     "lat_p50": 49.378,
+     "lat_p95": 57.048
+    }
+   }
+  },
+  {
+   "session": 1,
+   "threads": 2,
+   "cpu_load_before_pct": 8.7,
+   "results": {
+    "b32_fp32": {
+     "ms_per_img_mean": 104.379,
+     "repeats_ms": [
+      100.413,
+      105.14,
+      107.584
+     ],
+     "lat_p50": 107.438,
+     "lat_p95": 139.277
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 48.672,
+     "repeats_ms": [
+      46.225,
+      51.618,
+      48.173
+     ],
+     "lat_p50": 52.04,
+     "lat_p95": 63.093
+    },
+    "b32_oab": {
+     "ms_per_img_mean": 43.66,
+     "repeats_ms": [
+      43.38,
+      45.135,
+      42.464
+     ],
+     "lat_p50": 46.352,
+     "lat_p95": 57.296
+    }
+   }
+  },
+  {
+   "session": 1,
+   "threads": 4,
+   "cpu_load_before_pct": 9.0,
+   "results": {
+    "b32_fp32": {
+     "ms_per_img_mean": 86.501,
+     "repeats_ms": [
+      83.479,
+      86.107,
+      89.916
+     ],
+     "lat_p50": 86.296,
+     "lat_p95": 96.213
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 43.467,
+     "repeats_ms": [
+      42.64,
+      43.92,
+      43.842
+     ],
+     "lat_p50": 43.541,
+     "lat_p95": 48.29
+    },
+    "b32_oab": {
+     "ms_per_img_mean": 37.263,
+     "repeats_ms": [
+      36.462,
+      38.331,
+      36.997
+     ],
+     "lat_p50": 37.263,
+     "lat_p95": 41.638
+    }
+   }
+  },
+  {
+   "session": 2,
+   "threads": 1,
+   "cpu_load_before_pct": 5.9,
+   "results": {
+    "b32_fp32": {
+     "ms_per_img_mean": 129.397,
+     "repeats_ms": [
+      129.912,
+      130.703,
+      127.577
+     ],
+     "lat_p50": 126.564,
+     "lat_p95": 146.348
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 53.423,
+     "repeats_ms": [
+      53.266,
+      55.057,
+      51.947
+     ],
+     "lat_p50": 52.715,
+     "lat_p95": 60.03
+    },
+    "b32_oab": {
+     "ms_per_img_mean": 50.648,
+     "repeats_ms": [
+      50.936,
+      52.331,
+      48.677
+     ],
+     "lat_p50": 49.858,
+     "lat_p95": 57.476
+    }
+   }
+  },
+  {
+   "session": 2,
+   "threads": 2,
+   "cpu_load_before_pct": 6.7,
+   "results": {
+    "b32_fp32": {
+     "ms_per_img_mean": 110.607,
+     "repeats_ms": [
+      104.065,
+      112.633,
+      115.122
+     ],
+     "lat_p50": 117.912,
+     "lat_p95": 138.7
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 46.144,
+     "repeats_ms": [
+      45.267,
+      49.837,
+      43.329
+     ],
+     "lat_p50": 41.892,
+     "lat_p95": 62.745
+    },
+    "b32_oab": {
+     "ms_per_img_mean": 43.562,
+     "repeats_ms": [
+      40.911,
+      48.939,
+      40.835
+     ],
+     "lat_p50": 41.97,
+     "lat_p95": 62.339
+    }
+   }
+  },
+  {
+   "session": 2,
+   "threads": 4,
+   "cpu_load_before_pct": 9.3,
+   "results": {
+    "b32_fp32": {
+     "ms_per_img_mean": 88.572,
+     "repeats_ms": [
+      94.631,
+      86.98,
+      84.105
+     ],
+     "lat_p50": 85.878,
+     "lat_p95": 103.769
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 42.446,
+     "repeats_ms": [
+      42.606,
+      43.594,
+      41.139
+     ],
+     "lat_p50": 42.332,
+     "lat_p95": 47.385
+    },
+    "b32_oab": {
+     "ms_per_img_mean": 36.759,
+     "repeats_ms": [
+      38.039,
+      37.608,
+      34.63
+     ],
+     "lat_p50": 37.017,
+     "lat_p95": 40.851
+    }
+   }
+  },
+  {
+   "session": 3,
+   "threads": 1,
+   "cpu_load_before_pct": 7.3,
+   "results": {
+    "b32_fp32": {
+     "ms_per_img_mean": 126.676,
+     "repeats_ms": [
+      127.191,
+      128.44,
+      124.396
+     ],
+     "lat_p50": 125.124,
+     "lat_p95": 140.126
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 53.441,
+     "repeats_ms": [
+      54.19,
+      53.794,
+      52.34
+     ],
+     "lat_p50": 52.424,
+     "lat_p95": 60.09
+    },
+    "b32_oab": {
+     "ms_per_img_mean": 50.36,
+     "repeats_ms": [
+      51.893,
+      49.688,
+      49.498
+     ],
+     "lat_p50": 49.315,
+     "lat_p95": 57.656
+    }
+   }
+  },
+  {
+   "session": 3,
+   "threads": 2,
+   "cpu_load_before_pct": 6.7,
+   "results": {
+    "b32_fp32": {
+     "ms_per_img_mean": 103.565,
+     "repeats_ms": [
+      105.253,
+      105.042,
+      100.401
+     ],
+     "lat_p50": 103.445,
+     "lat_p95": 138.533
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 49.556,
+     "repeats_ms": [
+      50.929,
+      48.026,
+      49.712
+     ],
+     "lat_p50": 52.665,
+     "lat_p95": 62.785
+    },
+    "b32_oab": {
+     "ms_per_img_mean": 43.935,
+     "repeats_ms": [
+      47.182,
+      40.741,
+      43.882
+     ],
+     "lat_p50": 46.956,
+     "lat_p95": 58.189
+    }
+   }
+  },
+  {
+   "session": 3,
+   "threads": 4,
+   "cpu_load_before_pct": 8.3,
+   "results": {
+    "b32_fp32": {
+     "ms_per_img_mean": 100.082,
+     "repeats_ms": [
+      101.2,
+      100.997,
+      98.048
+     ],
+     "lat_p50": 94.077,
+     "lat_p95": 140.75
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 53.395,
+     "repeats_ms": [
+      51.893,
+      52.03,
+      56.261
+     ],
+     "lat_p50": 50.354,
+     "lat_p95": 77.427
+    },
+    "b32_oab": {
+     "ms_per_img_mean": 48.344,
+     "repeats_ms": [
+      50.893,
+      46.367,
+      47.77
+     ],
+     "lat_p50": 45.451,
+     "lat_p95": 69.296
+    }
+   }
+  }
+ ],
+ "summary": {
+  "b32_fp32": {
+   "1": {
+    "median_ms": 126.68,
+    "fps_b1": 7.89,
+    "p50_ms": 125.12,
+    "p95_ms": 140.13
+   },
+   "2": {
+    "median_ms": 104.38,
+    "fps_b1": 9.58,
+    "p50_ms": 107.44,
+    "p95_ms": 138.7
+   },
+   "4": {
+    "median_ms": 88.57,
+    "fps_b1": 11.29,
+    "p50_ms": 86.3,
+    "p95_ms": 103.77
+   }
+  },
+  "b32_m2rot": {
+   "1": {
+    "median_ms": 53.44,
+    "fps_b1": 18.71,
+    "p50_ms": 52.72,
+    "p95_ms": 60.09,
+    "vs_fp32_pct": -57.8
+   },
+   "2": {
+    "median_ms": 48.67,
+    "fps_b1": 20.55,
+    "p50_ms": 52.04,
+    "p95_ms": 62.78,
+    "vs_fp32_pct": -53.4
+   },
+   "4": {
+    "median_ms": 43.47,
+    "fps_b1": 23.01,
+    "p50_ms": 43.54,
+    "p95_ms": 48.29,
+    "vs_fp32_pct": -50.9
+   }
+  },
+  "b32_oab": {
+   "1": {
+    "median_ms": 50.36,
+    "fps_b1": 19.86,
+    "p50_ms": 49.38,
+    "p95_ms": 57.48,
+    "vs_fp32_pct": -60.2
+   },
+   "2": {
+    "median_ms": 43.66,
+    "fps_b1": 22.9,
+    "p50_ms": 46.35,
+    "p95_ms": 58.19,
+    "vs_fp32_pct": -58.2
+   },
+   "4": {
+    "median_ms": 37.26,
+    "fps_b1": 26.84,
+    "p50_ms": 37.26,
+    "p95_ms": 41.64,
+    "vs_fp32_pct": -57.9
+   }
+  }
+ },
+ "peak_mem": {
+  "b32_fp32": {
+   "rss_before_MiB": 46.9,
+   "after_load_MiB": 422.7,
+   "peak_sampled_MiB": 428.7,
+   "peak_wset_MiB": 453.9
+  },
+  "b32_m2rot": {
+   "rss_before_MiB": 46.9,
+   "after_load_MiB": 168.2,
+   "peak_sampled_MiB": 182.0,
+   "peak_wset_MiB": 195.3
+  },
+  "b32_oab": {
+   "rss_before_MiB": 47.0,
+   "after_load_MiB": 163.9,
+   "peak_sampled_MiB": 177.8,
+   "peak_wset_MiB": 192.8
+  }
+ }
+}

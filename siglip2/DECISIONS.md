@@ -370,3 +370,10 @@
 - 남은 위험 (결정과 함께 기록): ① 학술부 1번(본선 모델 교체 허용)·2번(개선율/절대값) 답 전에 정함 ② Hailo 정확도 손실이 B/16보다 큼(−0.84~−2.42 vs −0.41), 절대 top-1도 약 1.8~2.3%p 낮음 ③ B/32는 빌드·시드 흔들림, 여러 PC 재현, test가 아직 없음 ④ O-AB는 x86 CPU마다 사진별 결과가 조금 다를 수 있음(i7 vs 285K, 데이터셋별 0.1~0.2%p) ⑤ O-A의 float 출력을 Hailo에서 어떻게 대응할지 미결 ⑥ 일정 9일
 - 제출 ONNX 파일·본선 HEF(GF/ALL8F 등)·test 실행은 따로 확정한다 (다음 결정)
 - D-046(B/16 제출)·D-047(본선 HEF B16_rb_bk)은 이 결정으로 **폐기**. 기록은 그대로 둔다
+
+## D-049 예선 제출 ONNX = B/32 O-AB (`7a01044c…`), B/32 test 1회
+- 상태: **확정** / 2026-10-22 / 쭈리 승인 ("O-AB로 정하고 push")
+- **결정: 예선 제출 ONNX는 준용 O1의 B/32 O-AB** `siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx` (sha256 `7a01044c6ba32bf4f5a12aba82eb19e06753f13c8bad43b9f6fcfcd9f484dbf6`, Release `siglip2-oab-20261022`). 바탕 FP32는 준용 데스크탑의 통일 규칙 B/32 M2rot(`23236123…`, Release 업로드 요청). 이 파일로 **test 7종을 1회** 쓴다(B/32 첫 사용).
+- 근거 (이 PC, dev 전체·정수 커널): O-AB −0.27 [−0.62, +0.09] vs M2rot −0.79 [−1.26, −0.34]; 같은 바탕 짝 비교 +0.57 [+0.17, +0.97] (준용 O1). 4T 지연 FP32 대비 −56.9% vs −49.4% (8모델 같은 실행). 메모리 192.8 MiB(−57.5%). 입력 변형 8종에서 유의한 손실 없음(M2rot INT8은 흑백·90도 회전에서 유의한 손실) — `results/siglip2/G8_candidates/b32/submit_prep/`
+- 알려진 위험: ① SkipLayerNormalization(com.microsoft)이라 onnxruntime 전용 — 학술부 6번 답이 "ORT 아님"이면 M2rot(이 PC 빌드 `9783d7de…`)으로 바꾼다 ② x86 CPU마다 사진별 결과가 조금 다를 수 있음(i7 vs 285K, 데이터셋별 0.1~0.2%p) — 재현 문서에 범위와 사진별 예측을 함께 낸다 ③ O-A의 float 출력을 Hailo에서 어떻게 대응할지 미결(본선 HEF 결정과 함께)
+- 본선 HEF(GF·ALL8F 등)는 준용과 따로 확정
