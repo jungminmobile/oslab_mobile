@@ -1,0 +1,12 @@
+[2026-10-23T01:38:32] START e13\run_e13_1.py --step 0 git={'commit': 'df5ad34', 'branch': 'jungmin/e13-prune', 'dirty': False}
+[2026-10-23T01:48:53] END --step 0 622s
+[2026-10-23T01:49:30] START e13\run_e13_1.py --step smoke git={'commit': 'df5ad34', 'branch': 'jungmin/e13-prune', 'dirty': False}
+[2026-10-23T01:49:38] END --step smoke 8s
+[2026-10-23T01:49:49] START e13\run_e13_1.py --step score git={'commit': 'df5ad34', 'branch': 'jungmin/e13-prune', 'dirty': False}
+[2026-10-23T02:06:50] END --step score 1021s
+[2026-10-23T02:06:53] START e13\run_e13_1.py --step cumul git={'commit': 'df5ad34', 'branch': 'jungmin/e13-prune', 'dirty': False}
+[2026-10-23T02:09:34] END --step cumul 162s
+[2026-10-23T02:10:29] START e13\run_e13_1.py --step gate git={'commit': 'df5ad34', 'branch': 'jungmin/e13-prune', 'dirty': False}
+[2026-10-23T02:10:36] END --step gate 7s
+[2026-10-23T02:10:39] START e13\run_e13_1.py --step summary git={'commit': 'df5ad34', 'branch': 'jungmin/e13-prune', 'dirty': False}
+[2026-10-23T02:10:39] END --step summary 0s

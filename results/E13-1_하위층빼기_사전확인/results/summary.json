@@ -1,0 +1,45 @@
+{
+ "decision": "중단",
+ "configs": [
+  {
+   "P": "P1",
+   "subs": [
+    "attn9"
+   ],
+   "share_exact_pct": 2.74,
+   "share_plan_pct": 2.8,
+   "screen_hr_dtop1": -10.3,
+   "screen_pass": false,
+   "pass": false
+  },
+  {
+   "P": "P2",
+   "subs": [
+    "attn9",
+    "attn8"
+   ],
+   "share_exact_pct": 5.48,
+   "share_plan_pct": 5.6,
+   "screen_hr_dtop1": -74.6,
+   "screen_pass": false,
+   "pass": false
+  },
+  {
+   "P": "P3",
+   "subs": [
+    "attn9",
+    "attn8",
+    "mlp6"
+   ],
+   "share_exact_pct": 10.73,
+   "share_plan_pct": 11.1,
+   "screen_hr_dtop1": -75.4,
+   "screen_pass": false,
+   "pass": false
+  }
+ ],
+ "rule": "Δ ≥ −0.2k (점추정) AND CI 하한 ≥ −0.5k AND 연산 몫 ≥ 5% (계획서 5절)",
+ "commit": "df5ad34",
+ "branch": "jungmin/e13-prune",
+ "dirty": false
+}

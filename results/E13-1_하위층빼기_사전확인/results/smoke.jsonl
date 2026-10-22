@@ -1,0 +1,1 @@
+{"date": "2026-10-23T01:49:38", "commit": "df5ad34", "branch": "jungmin/e13-prune", "dirty": false, "model_id": "hf-hub:timm/ViT-B-32-SigLIP2-256", "threads": 4, "what": "smoke", "sub": "attn1", "cos_full_vs_ref": [1.0, 1.0], "cos_skip_vs_ref": [0.543817400932312, 0.41992586851119995], "restore_maxdiff": 0.0, "subcos_keys": 24, "params": 2363904, "share": 2.74}
