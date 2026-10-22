@@ -1,0 +1,24 @@
+waiting for lock held by {'owner': 'siglip2', 'job': 'SigLIP2 B16 gen H5', 'since': '2026-10-23T00:20:12', 'host': 'Âà³òºÏ', 'pid': 1604} (queue position 1)
+ACQUIRED {'owner': 'siglip2', 'job': 'SigLIP2 B32 repro procedure check', 'since': '2026-10-23T00:57:06', 'host': 'Âà³òºÏ', 'pid': 21304}
+fp32 cifar_A {"n": 200, "top1": 71.5, "fp32_top1": 71.5, "cos_mean": 1.0}
+fp32 pets_dev {"n": 200, "top1": 91.5, "fp32_top1": 91.5, "cos_mean": 1.0}
+fp32 flowers_dev {"n": 200, "top1": 84.0, "fp32_top1": 84.0, "cos_mean": 1.0}
+fp32 cars_dev {"n": 200, "top1": 91.0, "fp32_top1": 91.0, "cos_mean": 1.0}
+fp32 food_dev {"n": 200, "top1": 84.5, "fp32_top1": 84.5, "cos_mean": 1.0}
+fp32 caltech_dev {"n": 200, "top1": 93.5, "fp32_top1": 93.5, "cos_mean": 1.0}
+fp32 hr_dtop1 0.0 hr_cos 1.0
+oab cifar_A {"n": 200, "top1": 71.0, "fp32_top1": 71.5, "cos_mean": 0.9605}
+oab pets_dev {"n": 200, "top1": 91.0, "fp32_top1": 91.5, "cos_mean": 0.9927}
+oab flowers_dev {"n": 200, "top1": 84.0, "fp32_top1": 84.0, "cos_mean": 0.9915}
+oab cars_dev {"n": 200, "top1": 92.5, "fp32_top1": 91.0, "cos_mean": 0.9875}
+oab food_dev {"n": 200, "top1": 84.5, "fp32_top1": 84.5, "cos_mean": 0.9901}
+oab caltech_dev {"n": 200, "top1": 94.5, "fp32_top1": 93.5, "cos_mean": 0.9848}
+oab hr_dtop1 0.4 hr_cos 0.9893
+m2rot cifar_A {"n": 200, "top1": 73.0, "fp32_top1": 71.5, "cos_mean": 0.9114}
+m2rot pets_dev {"n": 200, "top1": 91.0, "fp32_top1": 91.5, "cos_mean": 0.9818}
+m2rot flowers_dev {"n": 200, "top1": 84.0, "fp32_top1": 84.0, "cos_mean": 0.9849}
+m2rot cars_dev {"n": 200, "top1": 90.0, "fp32_top1": 91.0, "cos_mean": 0.9698}
+m2rot food_dev {"n": 200, "top1": 83.5, "fp32_top1": 84.5, "cos_mean": 0.9814}
+m2rot caltech_dev {"n": 200, "top1": 95.5, "fp32_top1": 93.5, "cos_mean": 0.9682}
+m2rot hr_dtop1 -0.1 hr_cos 0.9772
+RELEASED
