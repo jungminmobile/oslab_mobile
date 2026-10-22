@@ -1,0 +1,326 @@
+{
+ "G1_pass": true,
+ "models": {
+  "m2rot": {
+   "C0": {
+    "M_peak": 227.2,
+    "dPeak_pct": 0.0,
+    "all_lower": null,
+    "M_create": 160.2,
+    "M_infer": 227.2,
+    "M_private": 203.6,
+    "base": 45.2,
+    "p50_1T": 148.432,
+    "ratio_1T": 1.0,
+    "ratio_1T_sessions": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "p50_2T": 107.314,
+    "ratio_2T": 1.0,
+    "ratio_2T_sessions": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "p50_4T": 74.66,
+    "ratio_4T": 1.0,
+    "ratio_4T_sessions": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "C1": {
+    "M_peak": 222.9,
+    "dPeak_pct": -1.89,
+    "all_lower": true,
+    "M_create": 160.1,
+    "M_infer": 222.9,
+    "M_private": 290.9,
+    "base": 45.3,
+    "p50_1T": 159.063,
+    "ratio_1T": 1.0689,
+    "ratio_1T_sessions": [
+     1.0735,
+     1.0689,
+     1.0637
+    ],
+    "p50_2T": 104.007,
+    "ratio_2T": 0.9821,
+    "ratio_2T_sessions": [
+     0.9692,
+     0.9821,
+     1.1057
+    ],
+    "p50_4T": 84.934,
+    "ratio_4T": 1.1132,
+    "ratio_4T_sessions": [
+     1.1132,
+     1.1376,
+     0.9946
+    ],
+    "cond2": false,
+    "cond3": false,
+    "cond4": true,
+    "verdict": "효과 없음"
+   },
+   "C2": {
+    "M_peak": 202.8,
+    "dPeak_pct": -10.74,
+    "all_lower": true,
+    "M_create": 160.1,
+    "M_infer": 202.2,
+    "M_private": 157.1,
+    "base": 45.2,
+    "p50_1T": 172.406,
+    "ratio_1T": 1.1664,
+    "ratio_1T_sessions": [
+     1.1615,
+     1.1691,
+     1.1664
+    ],
+    "p50_2T": 119.961,
+    "ratio_2T": 1.1861,
+    "ratio_2T_sessions": [
+     1.0919,
+     1.1861,
+     1.1912
+    ],
+    "p50_4T": 100.601,
+    "ratio_4T": 1.3475,
+    "ratio_4T_sessions": [
+     1.3876,
+     1.3475,
+     1.1955
+    ],
+    "cond2": true,
+    "cond3": false,
+    "cond4": false,
+    "verdict": "부분 채택"
+   },
+   "C3": {
+    "M_peak": 206.0,
+    "dPeak_pct": -9.33,
+    "all_lower": true,
+    "M_create": 160.3,
+    "M_infer": 206.0,
+    "M_private": 169.3,
+    "base": 45.3,
+    "p50_1T": 147.848,
+    "ratio_1T": 0.9982,
+    "ratio_1T_sessions": [
+     0.9915,
+     1.0093,
+     0.9982
+    ],
+    "p50_2T": 108.992,
+    "ratio_2T": 1.0156,
+    "ratio_2T_sessions": [
+     1.0156,
+     1.0754,
+     1.0146
+    ],
+    "p50_4T": 77.4,
+    "ratio_4T": 0.9785,
+    "ratio_4T_sessions": [
+     1.1045,
+     0.9726,
+     0.9785
+    ],
+    "cond2": true,
+    "cond3": true,
+    "cond4": true,
+    "verdict": "채택"
+   },
+   "C4": {
+    "M_peak": 202.4,
+    "dPeak_pct": -10.92,
+    "all_lower": true,
+    "M_create": 160.1,
+    "M_infer": 202.4,
+    "M_private": 156.5,
+    "base": 45.3,
+    "p50_1T": 184.453,
+    "ratio_1T": 1.2581,
+    "ratio_1T_sessions": [
+     1.2427,
+     1.2581,
+     1.2694
+    ],
+    "p50_2T": 127.626,
+    "ratio_2T": 1.1689,
+    "ratio_2T_sessions": [
+     1.1471,
+     1.27,
+     1.1689
+    ],
+    "p50_4T": 106.251,
+    "ratio_4T": 1.4469,
+    "ratio_4T_sessions": [
+     1.5162,
+     1.4469,
+     1.1498
+    ],
+    "cond2": true,
+    "cond3": false,
+    "cond4": false,
+    "verdict": "부분 채택"
+   }
+  },
+  "oab": {
+   "C0": {
+    "M_peak": 224.8,
+    "dPeak_pct": 0.0,
+    "all_lower": null,
+    "M_create": 158.4,
+    "M_infer": 224.8,
+    "M_private": 199.3,
+    "base": 45.4,
+    "p50_1T": 131.434,
+    "ratio_1T": 1.0,
+    "ratio_1T_sessions": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "p50_2T": 82.15,
+    "ratio_2T": 1.0,
+    "ratio_2T_sessions": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "p50_4T": 72.304,
+    "ratio_4T": 1.0,
+    "ratio_4T_sessions": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "C1": {
+    "M_peak": 222.6,
+    "dPeak_pct": -0.98,
+    "all_lower": true,
+    "M_create": 157.8,
+    "M_infer": 222.6,
+    "M_private": 288.7,
+    "base": 45.3,
+    "p50_1T": 141.932,
+    "ratio_1T": 1.0643,
+    "ratio_1T_sessions": [
+     1.0643,
+     0.8759,
+     1.1095
+    ],
+    "p50_2T": 88.879,
+    "ratio_2T": 1.0808,
+    "ratio_2T_sessions": [
+     1.0808,
+     1.3643,
+     1.0188
+    ],
+    "p50_4T": 74.827,
+    "ratio_4T": 1.1131,
+    "ratio_4T_sessions": [
+     1.1131,
+     1.0349,
+     1.1633
+    ]
+   },
+   "C2": {
+    "M_peak": 201.8,
+    "dPeak_pct": -10.23,
+    "all_lower": true,
+    "M_create": 158.6,
+    "M_infer": 199.5,
+    "M_private": 155.8,
+    "base": 45.4,
+    "p50_1T": 142.731,
+    "ratio_1T": 1.0735,
+    "ratio_1T_sessions": [
+     1.0735,
+     0.8808,
+     1.0958
+    ],
+    "p50_2T": 102.902,
+    "ratio_2T": 1.1796,
+    "ratio_2T_sessions": [
+     1.1425,
+     1.3954,
+     1.1796
+    ],
+    "p50_4T": 90.367,
+    "ratio_4T": 1.2273,
+    "ratio_4T_sessions": [
+     1.1887,
+     1.2618,
+     1.2273
+    ]
+   },
+   "C3": {
+    "M_peak": 205.6,
+    "dPeak_pct": -8.54,
+    "all_lower": true,
+    "M_create": 158.4,
+    "M_infer": 205.6,
+    "M_private": 167.7,
+    "base": 45.3,
+    "p50_1T": 137.741,
+    "ratio_1T": 0.993,
+    "ratio_1T_sessions": [
+     0.993,
+     0.9771,
+     1.048
+    ],
+    "p50_2T": 81.951,
+    "ratio_2T": 0.9856,
+    "ratio_2T_sessions": [
+     0.9856,
+     1.0432,
+     0.9394
+    ],
+    "p50_4T": 69.078,
+    "ratio_4T": 1.038,
+    "ratio_4T_sessions": [
+     1.1259,
+     1.038,
+     0.9382
+    ]
+   },
+   "C4": {
+    "M_peak": 201.4,
+    "dPeak_pct": -10.41,
+    "all_lower": true,
+    "M_create": 158.4,
+    "M_infer": 200.1,
+    "M_private": 155.3,
+    "base": 45.3,
+    "p50_1T": 154.719,
+    "ratio_1T": 1.1379,
+    "ratio_1T_sessions": [
+     1.1379,
+     1.1171,
+     1.1772
+    ],
+    "p50_2T": 103.877,
+    "ratio_2T": 1.2645,
+    "ratio_2T_sessions": [
+     1.4448,
+     1.2645,
+     1.1546
+    ],
+    "p50_4T": 79.998,
+    "ratio_4T": 1.2328,
+    "ratio_4T_sessions": [
+     1.3227,
+     1.2328,
+     1.0865
+    ]
+   }
+  }
+ },
+ "selected": "C3"
+}

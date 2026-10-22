@@ -1,0 +1,173 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'E12-1 재현 (M2rot·O-AB, C0~C4)', 'since': '2026-10-22T09:36:32', 'host': '쭌놋북', 'pid': 1664}
+09:37:12 gate cpu30s=15% probe t=4 median=167.4 ms  p10=138.8  freq=2803MHz
+C0 done 85.7s
+C1 done 85.2s
+C2 done 114.7s
+C3 done 87.6s
+C4 done 117.3s
+C1 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C2 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C3 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C4 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+G1_pass: True
+C0 done 68.5s
+C1 done 69.0s
+C2 done 74.7s
+C3 done 64.2s
+C4 done 81.4s
+C1 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C2 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C3 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+C4 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+G1_pass: True
+m2rot rep0 C0 peak=227.4 infer=227.4 create=160.2 priv=203.6 base=45.2
+m2rot rep0 C1 peak=222.9 infer=222.9 create=160.0 priv=290.9 base=45.3
+m2rot rep0 C2 peak=202.9 infer=202.9 create=160.2 priv=157.4 base=45.2
+m2rot rep0 C3 peak=208.1 infer=208.1 create=160.4 priv=171.4 base=45.4
+m2rot rep0 C4 peak=202.4 infer=201.8 create=160.0 priv=156.5 base=45.2
+m2rot rep1 C0 peak=227.2 infer=227.2 create=160.6 priv=203.6 base=45.2
+m2rot rep1 C1 peak=223.2 infer=223.2 create=160.1 priv=291.2 base=45.3
+m2rot rep1 C2 peak=202.8 infer=202.2 create=160.1 priv=156.7 base=45.2
+m2rot rep1 C3 peak=206.0 infer=206.0 create=159.9 priv=169.3 base=45.1
+m2rot rep1 C4 peak=202.4 infer=202.4 create=160.1 priv=156.6 base=45.3
+m2rot rep2 C0 peak=226.9 infer=226.9 create=160.1 priv=203.1 base=45.2
+m2rot rep2 C1 peak=222.9 infer=222.9 create=160.2 priv=290.9 base=45.2
+m2rot rep2 C2 peak=202.8 infer=201.7 create=160.0 priv=157.1 base=45.2
+m2rot rep2 C3 peak=205.8 infer=205.8 create=160.3 priv=169.0 base=45.3
+m2rot rep2 C4 peak=202.4 infer=202.4 create=160.3 priv=156.5 base=45.3
+SUMMARY m2rot C0 {"base_MiB": 45.2, "base_peak_MiB": 45.2, "create_peak_MiB": 160.2, "create_wset_MiB": 156.8, "create_private_MiB": 139.4, "infer_wset_max_MiB": 227.2, "infer_private_max_MiB": 203.6, "peak_MiB": 227.2} dPeak% 0.0 all_lower None
+SUMMARY m2rot C1 {"base_MiB": 45.3, "base_peak_MiB": 45.3, "create_peak_MiB": 160.1, "create_wset_MiB": 151.5, "create_private_MiB": 225.7, "infer_wset_max_MiB": 222.9, "infer_private_max_MiB": 290.9, "peak_MiB": 222.9} dPeak% -1.89 all_lower True
+SUMMARY m2rot C2 {"base_MiB": 45.2, "base_peak_MiB": 45.2, "create_peak_MiB": 160.1, "create_wset_MiB": 155.3, "create_private_MiB": 137.7, "infer_wset_max_MiB": 202.2, "infer_private_max_MiB": 157.1, "peak_MiB": 202.8} dPeak% -10.74 all_lower True
+SUMMARY m2rot C3 {"base_MiB": 45.3, "base_peak_MiB": 45.3, "create_peak_MiB": 160.3, "create_wset_MiB": 155.6, "create_private_MiB": 138.2, "infer_wset_max_MiB": 206.0, "infer_private_max_MiB": 169.3, "peak_MiB": 206.0} dPeak% -9.33 all_lower True
+SUMMARY m2rot C4 {"base_MiB": 45.3, "base_peak_MiB": 45.3, "create_peak_MiB": 160.1, "create_wset_MiB": 151.5, "create_private_MiB": 133.9, "infer_wset_max_MiB": 202.4, "infer_private_max_MiB": 156.5, "peak_MiB": 202.4} dPeak% -10.92 all_lower True
+oab rep0 C0 peak=224.8 infer=224.8 create=158.1 priv=199.3 base=45.4
+oab rep0 C1 peak=222.8 infer=222.8 create=158.5 priv=289.1 base=45.2
+oab rep0 C2 peak=201.8 infer=199.5 create=158.6 priv=155.2 base=45.4
+oab rep0 C3 peak=204.3 infer=204.3 create=158.4 priv=166.5 base=45.3
+oab rep0 C4 peak=201.4 infer=200.2 create=157.9 priv=155.2 base=45.4
+oab rep1 C0 peak=223.9 infer=223.9 create=158.4 priv=198.4 base=45.4
+oab rep1 C1 peak=222.4 infer=222.4 create=157.8 priv=288.5 base=45.3
+oab rep1 C2 peak=201.9 infer=200.2 create=158.7 priv=155.8 base=45.5
+oab rep1 C3 peak=205.6 infer=205.6 create=158.6 priv=167.7 base=45.3
+oab rep1 C4 peak=201.5 infer=200.1 create=158.4 priv=155.3 base=45.2
+oab rep2 C0 peak=227.3 infer=227.3 create=158.5 priv=201.9 base=45.4
+oab rep2 C1 peak=222.6 infer=222.6 create=157.7 priv=288.7 base=45.4
+oab rep2 C2 peak=201.6 infer=198.8 create=158.6 priv=157.6 base=45.3
+oab rep2 C3 peak=207.3 infer=207.3 create=158.2 priv=169.5 base=45.3
+oab rep2 C4 peak=201.4 infer=198.5 create=158.4 priv=155.3 base=45.3
+SUMMARY oab C0 {"base_MiB": 45.4, "base_peak_MiB": 45.4, "create_peak_MiB": 158.4, "create_wset_MiB": 152.7, "create_private_MiB": 135.1, "infer_wset_max_MiB": 224.8, "infer_private_max_MiB": 199.3, "peak_MiB": 224.8} dPeak% 0.0 all_lower None
+SUMMARY oab C1 {"base_MiB": 45.3, "base_peak_MiB": 45.3, "create_peak_MiB": 157.8, "create_wset_MiB": 149.4, "create_private_MiB": 223.4, "infer_wset_max_MiB": 222.6, "infer_private_max_MiB": 288.7, "peak_MiB": 222.6} dPeak% -0.98 all_lower True
+SUMMARY oab C2 {"base_MiB": 45.4, "base_peak_MiB": 45.4, "create_peak_MiB": 158.6, "create_wset_MiB": 153.8, "create_private_MiB": 136.1, "infer_wset_max_MiB": 199.5, "infer_private_max_MiB": 155.8, "peak_MiB": 201.8} dPeak% -10.23 all_lower True
+SUMMARY oab C3 {"base_MiB": 45.3, "base_peak_MiB": 45.3, "create_peak_MiB": 158.4, "create_wset_MiB": 154.2, "create_private_MiB": 136.6, "infer_wset_max_MiB": 205.6, "infer_private_max_MiB": 167.7, "peak_MiB": 205.6} dPeak% -8.54 all_lower True
+SUMMARY oab C4 {"base_MiB": 45.3, "base_peak_MiB": 45.3, "create_peak_MiB": 158.4, "create_wset_MiB": 149.8, "create_private_MiB": 132.2, "infer_wset_max_MiB": 200.1, "infer_private_max_MiB": 155.3, "peak_MiB": 201.4} dPeak% -10.41 all_lower True
+09:54:37 gate cpu30s=10% probe t=4 median=156.8 ms  p10=124.8  freq=2803MHz
+S1 #0 m2rot 1T C0 p50=148.432 ms p95=153.138 (33.7s)
+S1 #1 m2rot 1T C1 p50=159.338 ms p95=167.101 (35.8s)
+S1 #2 m2rot 1T C2 p50=172.406 ms p95=242.997 (40.0s)
+S1 #3 m2rot 1T C3 p50=147.171 ms p95=154.403 (33.2s)
+S1 #4 m2rot 1T C4 p50=184.453 ms p95=192.864 (41.7s)
+S1 #5 m2rot 2T C0 p50=107.314 ms p95=120.013 (22.9s)
+S1 #6 m2rot 2T C1 p50=104.007 ms p95=130.748 (23.9s)
+S1 #7 m2rot 2T C2 p50=117.172 ms p95=151.81 (28.0s)
+S1 #8 m2rot 2T C3 p50=108.992 ms p95=125.336 (22.6s)
+S1 #9 m2rot 2T C4 p50=123.104 ms p95=164.284 (30.0s)
+S1 #10 m2rot 4T C0 p50=70.079 ms p95=97.031 (17.0s)
+S1 #11 m2rot 4T C1 p50=78.01 ms p95=101.086 (18.5s)
+S1 #12 m2rot 4T C2 p50=97.241 ms p95=125.836 (23.0s)
+S1 #13 m2rot 4T C3 p50=77.4 ms p95=98.468 (17.8s)
+S1 #14 m2rot 4T C4 p50=106.251 ms p95=131.696 (23.9s)
+S1 #15 oab 1T C0 p50=130.957 ms p95=178.555 (32.0s)
+S1 #16 oab 1T C1 p50=139.379 ms p95=193.236 (32.4s)
+S1 #17 oab 1T C2 p50=140.579 ms p95=196.076 (32.6s)
+S1 #18 oab 1T C3 p50=130.041 ms p95=177.398 (30.2s)
+S1 #19 oab 1T C4 p50=149.018 ms p95=155.114 (33.4s)
+S1 #20 oab 2T C0 p50=77.746 ms p95=102.903 (18.5s)
+S1 #21 oab 2T C1 p50=84.028 ms p95=110.965 (20.1s)
+S1 #22 oab 2T C2 p50=88.823 ms p95=113.124 (21.3s)
+S1 #23 oab 2T C3 p50=76.626 ms p95=98.811 (18.5s)
+S1 #24 oab 2T C4 p50=112.33 ms p95=128.835 (23.2s)
+S1 #25 oab 4T C0 p50=58.441 ms p95=79.151 (13.7s)
+S1 #26 oab 4T C1 p50=65.053 ms p95=81.395 (15.4s)
+S1 #27 oab 4T C2 p50=69.47 ms p95=87.331 (16.3s)
+S1 #28 oab 4T C3 p50=65.799 ms p95=84.208 (15.2s)
+S1 #29 oab 4T C4 p50=77.301 ms p95=97.95 (17.7s)
+SESSION 1 DONE 10:07:12
+10:09:51 gate cpu30s=4% probe t=4 median=145.8 ms  p10=108.8  freq=2803MHz
+S2 #0 m2rot 1T C2 p50=171.254 ms p95=243.413 (40.0s)
+S2 #1 m2rot 1T C1 p50=156.585 ms p95=221.275 (36.4s)
+S2 #2 m2rot 1T C4 p50=184.295 ms p95=192.66 (41.3s)
+S2 #3 m2rot 1T C3 p50=147.848 ms p95=206.598 (35.5s)
+S2 #4 m2rot 1T C0 p50=146.485 ms p95=154.007 (33.1s)
+S2 #5 m2rot 2T C2 p50=119.961 ms p95=157.639 (28.5s)
+S2 #6 m2rot 2T C1 p50=99.329 ms p95=128.995 (24.1s)
+S2 #7 m2rot 2T C4 p50=128.446 ms p95=175.718 (31.1s)
+S2 #8 m2rot 2T C3 p50=108.76 ms p95=152.203 (25.7s)
+S2 #9 m2rot 2T C0 p50=101.136 ms p95=130.564 (24.3s)
+S2 #10 m2rot 4T C2 p50=100.601 ms p95=122.385 (23.4s)
+S2 #11 m2rot 4T C1 p50=84.934 ms p95=106.69 (19.7s)
+S2 #12 m2rot 4T C4 p50=108.028 ms p95=134.734 (24.4s)
+S2 #13 m2rot 4T C3 p50=72.614 ms p95=92.283 (16.9s)
+S2 #14 m2rot 4T C0 p50=74.66 ms p95=93.587 (17.1s)
+S2 #15 oab 1T C2 p50=142.731 ms p95=197.608 (34.5s)
+S2 #16 oab 1T C1 p50=141.932 ms p95=194.192 (33.3s)
+S2 #17 oab 1T C4 p50=181.021 ms p95=272.542 (43.7s)
+S2 #18 oab 1T C3 p50=158.323 ms p95=204.372 (39.3s)
+S2 #19 oab 1T C0 p50=162.039 ms p95=219.362 (38.2s)
+S2 #20 oab 2T C2 p50=114.629 ms p95=153.565 (26.6s)
+S2 #21 oab 2T C1 p50=112.078 ms p95=158.001 (26.8s)
+S2 #22 oab 2T C4 p50=103.877 ms p95=138.527 (24.5s)
+S2 #23 oab 2T C3 p50=85.697 ms p95=117.16 (20.6s)
+S2 #24 oab 2T C0 p50=82.15 ms p95=109.846 (19.7s)
+S2 #25 oab 4T C2 p50=91.23 ms p95=101.923 (20.2s)
+S2 #26 oab 4T C1 p50=74.827 ms p95=97.095 (17.3s)
+S2 #27 oab 4T C4 p50=89.139 ms p95=105.157 (20.2s)
+S2 #28 oab 4T C3 p50=75.051 ms p95=120.757 (18.1s)
+S2 #29 oab 4T C0 p50=72.304 ms p95=93.644 (17.1s)
+SESSION 2 DONE 10:23:35
+10:26:14 gate cpu30s=6% probe t=4 median=136.9 ms  p10=110.9  freq=2803MHz
+S3 #0 m2rot 1T C4 p50=189.829 ms p95=257.367 (44.4s)
+S3 #1 m2rot 1T C3 p50=149.271 ms p95=207.391 (35.7s)
+S3 #2 m2rot 1T C2 p50=174.423 ms p95=243.357 (41.8s)
+S3 #3 m2rot 1T C1 p50=159.063 ms p95=165.334 (35.8s)
+S3 #4 m2rot 1T C0 p50=149.54 ms p95=206.947 (35.1s)
+S3 #5 m2rot 2T C4 p50=127.626 ms p95=175.667 (30.0s)
+S3 #6 m2rot 2T C3 p50=110.778 ms p95=129.672 (23.8s)
+S3 #7 m2rot 2T C2 p50=130.063 ms p95=167.541 (29.8s)
+S3 #8 m2rot 2T C1 p50=120.732 ms p95=156.902 (28.3s)
+S3 #9 m2rot 2T C0 p50=109.188 ms p95=143.732 (25.8s)
+S3 #10 m2rot 4T C4 p50=105.005 ms p95=138.591 (25.1s)
+S3 #11 m2rot 4T C3 p50=89.357 ms p95=111.151 (20.8s)
+S3 #12 m2rot 4T C2 p50=109.177 ms p95=132.699 (25.2s)
+S3 #13 m2rot 4T C1 p50=90.835 ms p95=105.249 (20.6s)
+S3 #14 m2rot 4T C0 p50=91.325 ms p95=115.991 (21.0s)
+S3 #15 oab 1T C4 p50=154.719 ms p95=221.089 (37.3s)
+S3 #16 oab 1T C3 p50=137.741 ms p95=149.468 (32.5s)
+S3 #17 oab 1T C2 p50=144.029 ms p95=194.805 (33.7s)
+S3 #18 oab 1T C1 p50=145.82 ms p95=200.56 (35.0s)
+S3 #19 oab 1T C0 p50=131.434 ms p95=181.117 (31.8s)
+S3 #20 oab 2T C4 p50=100.728 ms p95=131.694 (23.4s)
+S3 #21 oab 2T C3 p50=81.951 ms p95=103.301 (19.4s)
+S3 #22 oab 2T C2 p50=102.902 ms p95=137.284 (22.8s)
+S3 #23 oab 2T C1 p50=88.879 ms p95=122.918 (21.6s)
+S3 #24 oab 2T C0 p50=87.237 ms p95=114.981 (20.3s)
+S3 #25 oab 4T C4 p50=79.998 ms p95=111.207 (19.2s)
+S3 #26 oab 4T C3 p50=69.078 ms p95=85.046 (15.8s)
+S3 #27 oab 4T C2 p50=90.367 ms p95=103.981 (20.3s)
+S3 #28 oab 4T C1 p50=85.658 ms p95=97.586 (19.1s)
+S3 #29 oab 4T C0 p50=73.631 ms p95=85.509 (17.1s)
+SESSION 3 DONE 10:39:49
+| 모델 | 설정 | M-peak (MiB) | Δ vs C0 | 3회 모두↓ | M-create | M-infer | M-private | 4T p50 (ms) | 4T Δ | 1T Δ | 2T Δ | 판정 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| m2rot | C0 | 227.2 | +0.0% |  | 160.2 | 227.2 | 203.6 | 74.66 | +0.0% | +0.0% | +0.0% |  |
+| m2rot | C1 | 222.9 | -1.9% | True | 160.1 | 222.9 | 290.9 | 84.93 | +11.3% | +6.9% | -1.8% | 효과 없음 |
+| m2rot | C2 | 202.8 | -10.7% | True | 160.1 | 202.2 | 157.1 | 100.60 | +34.7% | +16.6% | +18.6% | 부분 채택 |
+| m2rot | C3 | 206.0 | -9.3% | True | 160.3 | 206.0 | 169.3 | 77.40 | -2.1% | -0.2% | +1.6% | 채택 |
+| m2rot | C4 | 202.4 | -10.9% | True | 160.1 | 202.4 | 156.5 | 106.25 | +44.7% | +25.8% | +16.9% | 부분 채택 |
+| oab | C0 | 224.8 | +0.0% |  | 158.4 | 224.8 | 199.3 | 72.30 | +0.0% | +0.0% | +0.0% |  |
+| oab | C1 | 222.6 | -1.0% | True | 157.8 | 222.6 | 288.7 | 74.83 | +11.3% | +6.4% | +8.1% |  |
+| oab | C2 | 201.8 | -10.2% | True | 158.6 | 199.5 | 155.8 | 90.37 | +22.7% | +7.3% | +18.0% |  |
+| oab | C3 | 205.6 | -8.5% | True | 158.4 | 205.6 | 167.7 | 69.08 | +3.8% | -0.7% | -1.4% |  |
+| oab | C4 | 201.4 | -10.4% | True | 158.4 | 200.1 | 155.3 | 80.00 | +23.3% | +13.8% | +26.4% |  |
+
+G1_pass: True  selected: C3
+RELEASED
