@@ -1,0 +1,7 @@
+﻿W1 노드 766 → 739 Sub 0 Where 1 바꾼 곳 27 새 상수 5315328 B {'sub_left_eq_other': True, 'qdq_counts_same': True, 'qdq_scale_zp_same': True, 'qdq_weight_same': True, 'shape_same': True}
+W2 노드 766 → 712 Sub 0 Where 28 바꾼 곳 27 새 상수 1728 B {'sub_left_eq_other': True, 'qdq_counts_same': True, 'qdq_scale_zp_same': True, 'qdq_weight_same': True, 'shape_same': True}
+O ORT 최적화 후 노드 597 {'ai.onnx::DequantizeLinear': 1, 'ai.onnx::QLinearMatMul': 13, 'ai.onnx::QuantizeLinear': 92, 'com.microsoft::MatMulIntegerToFloat': 66}
+W1 ORT 최적화 후 노드 570 {'ai.onnx::DequantizeLinear': 1, 'ai.onnx::QLinearMatMul': 13, 'ai.onnx::QuantizeLinear': 92, 'com.microsoft::MatMulIntegerToFloat': 66}
+W2 ORT 최적화 후 노드 543 {'ai.onnx::DequantizeLinear': 1, 'ai.onnx::QLinearMatMul': 13, 'ai.onnx::QuantizeLinear': 92, 'com.microsoft::MatMulIntegerToFloat': 66}
+G1 통과 {'W1': {'sub_left_eq_other': True, 'qdq_counts_same': True, 'qdq_scale_zp_same': True, 'qdq_weight_same': True, 'shape_same': True, 'ort_fused_same': True}, 'W2': {'sub_left_eq_other': True, 'qdq_counts_same': True, 'qdq_scale_zp_same': True, 'qdq_weight_same': True, 'shape_same': True, 'ort_fused_same': True}}
+[rewrite] 4s

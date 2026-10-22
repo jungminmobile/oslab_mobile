@@ -1,0 +1,32 @@
+"""mem_child.py — E14-1 메모리 1회분 (E12-1 bench_mem_session.py CHILD와 같은 정의, 입력만 B/32용 256 dev 캐시)
+사용: python mem_child.py <model> <combo> <threads> <n> <interval_ms>
+"""
+import sys, json, time, threading
+from pathlib import Path
+import numpy as np, psutil
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "e12")); import session_opts as SO
+import onnxruntime  # noqa: F401
+model, combo, threads, n, interval = sys.argv[1], sys.argv[2], int(sys.argv[3]), int(sys.argv[4]), float(sys.argv[5]) / 1000
+P = psutil.Process(); MiB = 2 ** 20
+pix = np.load(r"C:\s2art_b32\dev256\pets_dev_pix.npy", mmap_mode="r")[:n]
+x = np.ascontiguousarray((np.asarray(pix, np.float32) / 127.5 - 1.0).transpose(0, 3, 1, 2))
+m = P.memory_info(); base, base_peak = m.wset / MiB, m.peak_wset / MiB
+t0 = time.perf_counter(); s = SO.make_session(model, combo, threads); t_create = time.perf_counter() - t0
+m = P.memory_info(); create_peak, create_wset, create_priv = m.peak_wset / MiB, m.wset / MiB, m.private / MiB
+mx = {"wset": 0.0, "priv": 0.0}; stop = threading.Event()
+def sample():
+    while True:
+        mi = P.memory_info(); mx["wset"] = max(mx["wset"], mi.wset / MiB); mx["priv"] = max(mx["priv"], mi.private / MiB)
+        if stop.wait(interval): break
+th = threading.Thread(target=sample, daemon=True); th.start()
+name = s.get_inputs()[0].name; t0 = time.perf_counter()
+for i in range(n):
+    s.run(None, {name: x[i:i + 1]})
+t_infer = time.perf_counter() - t0
+stop.set(); th.join()
+m = P.memory_info()
+mx["wset"] = max(mx["wset"], m.wset / MiB); mx["priv"] = max(mx["priv"], m.private / MiB)
+r = {"base_MiB": base, "base_peak_MiB": base_peak, "create_peak_MiB": create_peak, "create_wset_MiB": create_wset,
+     "create_private_MiB": create_priv, "infer_wset_max_MiB": mx["wset"], "infer_private_max_MiB": mx["priv"],
+     "peak_MiB": m.peak_wset / MiB, "t_create_s": t_create, "t_infer_s": t_infer}
+print(json.dumps({k: round(v, 3 if k.startswith("t_") else 1) for k, v in r.items()}))

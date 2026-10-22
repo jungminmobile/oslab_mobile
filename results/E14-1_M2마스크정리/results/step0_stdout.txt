@@ -1,0 +1,31 @@
+﻿?ㅻⅨ python (MCP ?쒖쇅): ?놁쓬
+O sha 7a01044c6ba32bf4f5a12aba82eb19e06753f13c8bad43b9f6fcfcd9f484dbf6 OK
+    /trunk/Sub simple m=trunk.zm_b5 pos=[15] Y=X 
+  /trunk/Sub_1 simple m=trunk.m_b6_0 pos=[15] Y=X 
+  /trunk/Sub_2 simple m=Transpose_token_48_out0 pos=[15] Y=X 
+  /trunk/Sub_3 simple m=trunk.zm_b5 pos=[15] Y=X 
+  /trunk/Sub_4 simple m=trunk.m_b6_0 pos=[15] Y=X 
+  /trunk/Sub_5 simple m=Transpose_token_48_out0 pos=[15] Y=X 
+  /trunk/Sub_6 simple m=trunk.zm_b5 pos=[15] Y=X 
+  /trunk/Sub_7 simple m=trunk.m_b6_0 pos=[15] Y=X 
+  /trunk/Sub_8 simple m=Transpose_token_48_out0 pos=[15] Y=X 
+  /trunk/Sub_9 simple m=trunk.zm_b5 pos=[15] Y=X 
+ /trunk/Sub_10 simple m=trunk.m_b6_0 pos=[15] Y=X 
+ /trunk/Sub_11 simple m=Transpose_token_48_out0 pos=[15] Y=X 
+ /trunk/Sub_12 simple m=trunk.zm_b9 pos=[7, 15] Y=X 
+ /trunk/Sub_15 chain  m=trunk.m_b10_1 pos=[7] Y=/trunk/Add_24  up=['/trunk/Sub_13'] overlap=0
+ /trunk/Sub_13 simple m=trunk.m_b6_0 pos=[15] Y=X 
+ /trunk/Sub_16 chain  m=Transpose_token_89_out0 pos=[7] Y=/trunk/Add_25_output_0  up=['/trunk/Sub_14'] overlap=0
+ /trunk/Sub_14 simple m=Transpose_token_48_out0 pos=[15] Y=X 
+ /trunk/Sub_17 simple m=trunk.zm_b9 pos=[7, 15] Y=X 
+ /trunk/Sub_20 chain  m=trunk.m_b10_1 pos=[7] Y=/trunk/Add_31  up=['/trunk/Sub_18'] overlap=0
+ /trunk/Sub_18 simple m=trunk.m_b6_0 pos=[15] Y=X 
+ /trunk/Sub_21 chain  m=Transpose_token_89_out0 pos=[7] Y=/trunk/Add_32_output_0  up=['/trunk/Sub_19'] overlap=0
+ /trunk/Sub_19 simple m=Transpose_token_48_out0 pos=[15] Y=X 
+ /trunk/Sub_22 simple m=trunk.zm_b9 pos=[7, 15] Y=X 
+ /trunk/Sub_25 chain  m=trunk.m_b10_1 pos=[7] Y=/trunk/Add_38  up=['/trunk/Sub_23'] overlap=0
+ /trunk/Sub_23 simple m=trunk.m_b6_0 pos=[15] Y=X 
+ /trunk/Sub_26 chain  m=Transpose_token_89_out0 pos=[7] Y=/trunk/Add_39_output_0  up=['/trunk/Sub_24'] overlap=0
+ /trunk/Sub_24 simple m=Transpose_token_48_out0 pos=[15] Y=X 
+Sub 27 醫낅쪟 {'simple': 21, 'chain': 6} 留덉뒪??0/1 True
+[0] 2s

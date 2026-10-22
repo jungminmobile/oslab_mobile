@@ -1,0 +1,315 @@
+{
+ "date": "2026-10-23T03:01:28",
+ "disable_opt": true,
+ "git": {
+  "commit": "5cd39a5",
+  "branch": "jungmin/e14-graph",
+  "dirty": true
+ },
+ "sites": [
+  {
+   "site": "/trunk/Sub",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 1416.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.4524739583333333,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_1",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 470.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.2923177083333333,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_2",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 2024.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.6634114583333334,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_3",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 136.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.4440104166666667,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_4",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 6464.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.3828125,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_5",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 1811.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.7545572916666666,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_6",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 390.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.443359375,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_7",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 131.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.3580729166666667,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_8",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 2464.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.7291666666666666,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_9",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 249.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.5436197916666666,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_10",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 490.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.4127604166666667,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_11",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 489.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.7063802083333334,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_12",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 1809.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.5159505208333334,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_15",
+   "kind": "chain",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 124.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.3483072916666667,
+   "O_vs_W2_nonsink_max_abs": 2.384185791015625e-07
+  },
+  {
+   "site": "/trunk/Sub_13",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 212.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.3984375,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_16",
+   "kind": "chain",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 895.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.3580729166666667,
+   "O_vs_W2_nonsink_max_abs": 2.384185791015625e-07
+  },
+  {
+   "site": "/trunk/Sub_14",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 1906.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.6653645833333334,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_17",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 329.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.4645182291666667,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_20",
+   "kind": "chain",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 10784.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.3287760416666667,
+   "O_vs_W2_nonsink_max_abs": 1.1920928955078125e-07
+  },
+  {
+   "site": "/trunk/Sub_18",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 352.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.34375,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_21",
+   "kind": "chain",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 103.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.3645833333333333,
+   "O_vs_W2_nonsink_max_abs": 4.76837158203125e-07
+  },
+  {
+   "site": "/trunk/Sub_19",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 872.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.4596354166666667,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_22",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 797.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.3759765625,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_25",
+   "kind": "chain",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 696.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.2923177083333333,
+   "O_vs_W2_nonsink_max_abs": 2.384185791015625e-07
+  },
+  {
+   "site": "/trunk/Sub_23",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 2144.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.6490885416666666,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  },
+  {
+   "site": "/trunk/Sub_26",
+   "kind": "chain",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 744.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.373046875,
+   "O_vs_W2_nonsink_max_abs": 1.7881393432617188e-07
+  },
+  {
+   "site": "/trunk/Sub_24",
+   "kind": "simple",
+   "W1_eq_select": true,
+   "W2_eq_select": true,
+   "O_nonsink_eq_Y": true,
+   "O_sink_max_ulp": 120.0,
+   "O_sink_max_ulp_of_max_abs_X_c": 1.0,
+   "O_sink_frac_ne_c": 0.490234375,
+   "O_vs_W2_nonsink_max_abs": 0.0
+  }
+ ],
+ "diag_same": {
+  "O": true,
+  "W1": true,
+  "W2": true
+ },
+ "pass": false,
+ "pass_ulp_of_max_abs_X_c": true
+}

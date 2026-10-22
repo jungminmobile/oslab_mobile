@@ -1,0 +1,33 @@
+S1 #0 O 1T p50 38.849 p90 39.692 throttle_off True (9.6s)
+S1 #1 O 2T p50 24.217 p90 26.489 throttle_off True (6.5s)
+S1 #2 O 4T p50 17.179 p90 19.517 throttle_off True (5.0s)
+S1 #3 W1 1T p50 38.567 p90 39.854 throttle_off True (9.7s)
+S1 #4 W1 2T p50 21.799 p90 22.816 throttle_off True (5.9s)
+S1 #5 W1 4T p50 16.182 p90 16.686 throttle_off True (4.7s)
+S1 #6 W2 1T p50 38.533 p90 39.743 throttle_off True (9.6s)
+S1 #7 W2 2T p50 22.137 p90 23.183 throttle_off True (6.0s)
+S1 #8 W2 4T p50 16.297 p90 17.2 throttle_off True (4.7s)
+SESSION 1 DONE 03:13:26
+[speed] 63s
+S2 #0 W2 4T p50 16.405 p90 17.383 throttle_off True (4.7s)
+S2 #1 W2 2T p50 21.926 p90 22.685 throttle_off True (5.9s)
+S2 #2 W2 1T p50 39.083 p90 39.756 throttle_off True (9.7s)
+S2 #3 O 4T p50 16.412 p90 17.994 throttle_off True (4.7s)
+S2 #4 O 2T p50 22.246 p90 23.257 throttle_off True (6.0s)
+S2 #5 O 1T p50 37.471 p90 38.175 throttle_off True (9.3s)
+S2 #6 W1 4T p50 16.218 p90 17.356 throttle_off True (4.7s)
+S2 #7 W1 2T p50 21.931 p90 22.704 throttle_off True (5.9s)
+S2 #8 W1 1T p50 38.267 p90 39.452 throttle_off True (9.5s)
+SESSION 2 DONE 03:16:30
+[speed] 62s
+S3 #0 W1 2T p50 21.959 p90 22.814 throttle_off True (5.9s)
+S3 #1 W1 4T p50 16.133 p90 17.117 throttle_off True (4.7s)
+S3 #2 W1 1T p50 37.231 p90 38.074 throttle_off True (9.3s)
+S3 #3 W2 2T p50 22.045 p90 22.862 throttle_off True (6.0s)
+S3 #4 W2 4T p50 16.267 p90 16.768 throttle_off True (4.7s)
+S3 #5 W2 1T p50 37.428 p90 38.201 throttle_off True (9.3s)
+S3 #6 O 2T p50 22.003 p90 22.774 throttle_off True (5.9s)
+S3 #7 O 4T p50 16.378 p90 18.072 throttle_off True (4.7s)
+S3 #8 O 1T p50 38.947 p90 39.853 throttle_off True (9.7s)
+SESSION 3 DONE 03:19:34
+[speed] 62s

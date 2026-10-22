@@ -1,0 +1,983 @@
+{
+ "date": "2026-10-23T02:57:35",
+ "O": {
+  "qdq": {
+   "counts": {
+    "QuantizeLinear": 105,
+    "DequantizeLinear": 158
+   },
+   "scale_zp_sha256": "73e6d84978bbe353e907b48fadc6911345d244fed6aa3d784d54b5b534072297",
+   "dq_weight_sha256": "632d3079fe4b36f9047801d8bc995ac66eb1872e973f3546719818da20579aab"
+  },
+  "n_nodes": 766,
+  "n_sub": 27,
+  "size_MiB": 98.003,
+  "ort_opt": {
+   "n_nodes": 597,
+   "ops": {
+    "ai.onnx::Add": 85,
+    "ai.onnx::Concat": 1,
+    "ai.onnx::DequantizeLinear": 1,
+    "ai.onnx::Equal": 1,
+    "ai.onnx::Expand": 1,
+    "ai.onnx::Gather": 2,
+    "ai.onnx::LayerNormalization": 2,
+    "ai.onnx::Mul": 118,
+    "ai.onnx::QLinearMatMul": 13,
+    "ai.onnx::QuantizeLinear": 92,
+    "ai.onnx::Reshape": 29,
+    "ai.onnx::Shape": 1,
+    "ai.onnx::Softmax": 13,
+    "ai.onnx::Split": 13,
+    "ai.onnx::Squeeze": 38,
+    "ai.onnx::Sub": 27,
+    "ai.onnx::Tanh": 13,
+    "ai.onnx::Transpose": 53,
+    "ai.onnx::Unsqueeze": 1,
+    "ai.onnx::Where": 1,
+    "com.microsoft.nchwc::Conv": 1,
+    "com.microsoft.nchwc::ReorderOutput": 1,
+    "com.microsoft::MatMulIntegerToFloat": 66,
+    "com.microsoft::SkipLayerNormalization": 24
+   },
+   "fused": {
+    "ai.onnx::DequantizeLinear": 1,
+    "ai.onnx::QLinearMatMul": 13,
+    "ai.onnx::QuantizeLinear": 92,
+    "com.microsoft::MatMulIntegerToFloat": 66
+   },
+   "file": "C:\\s2art_b32\\e14\\e14_1_O_ortopt.onnx"
+  }
+ },
+ "git": {
+  "commit": "5cd39a5",
+  "branch": "jungmin/e14-graph",
+  "dirty": true
+ },
+ "W1": {
+  "file": "C:\\s2art_b32\\e14\\e14_1_W1_mulAdd.onnx",
+  "sha256": "a08fd06c21419d4fa24f7ff2d5a0c1f7c160a8b9df89afd3193b4acffb0d028b",
+  "size_MiB": 102.974,
+  "n_nodes": 739,
+  "n_sub": 0,
+  "n_where": 1,
+  "n_rewritten": 27,
+  "kinds_rewritten": {
+   "simple": 21,
+   "chain": 6
+  },
+  "qdq": {
+   "counts": {
+    "QuantizeLinear": 105,
+    "DequantizeLinear": 158
+   },
+   "scale_zp_sha256": "73e6d84978bbe353e907b48fadc6911345d244fed6aa3d784d54b5b534072297",
+   "dq_weight_sha256": "632d3079fe4b36f9047801d8bc995ac66eb1872e973f3546719818da20579aab"
+  },
+  "new_init_bytes": 5315328,
+  "removed_inits": [
+   "trunk.zm_b5",
+   "trunk.uc_b5",
+   "trunk.uc_b6",
+   "trunk.uc_b7",
+   "trunk.uc_b8",
+   "trunk.zm_b9",
+   "trunk.uc_b9",
+   "trunk.uc_b10",
+   "trunk.uc_b11",
+   "trunk.kc_b6_0",
+   "trunk.vc_b6_0",
+   "trunk.vc_b7_0",
+   "trunk.vc_b8_0",
+   "trunk.vc_b9_0",
+   "trunk.m_b10_1",
+   "trunk.vc_b10_0",
+   "trunk.kc_b10_1",
+   "trunk.vc_b10_1",
+   "trunk.kc_b11_1",
+   "trunk.vc_b11_0",
+   "trunk.vc_b11_1",
+   "trunk.kc_pool_1",
+   "trunk.vc_pool_0",
+   "trunk.vc_pool_1",
+   "trunk.m_b6_0",
+   "trunk.kc_b7_0",
+   "trunk.kc_b8_0",
+   "trunk.kc_b9_0",
+   "trunk.kc_b10_0",
+   "trunk.kc_b11_0",
+   "trunk.kc_pool_0",
+   "Transpose_token_48_out0",
+   "Transpose_token_89_out0"
+  ],
+  "shape_same": true,
+  "shapes": {
+   "/trunk/Add_2_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_4": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_5_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_7_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_9": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_10_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_12_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_14": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_15_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_17_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_19": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_20_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_22_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_26": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_24": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_27_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_25_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_29_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_33": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_31": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_34_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_32_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_36_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_40": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_38": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_41_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_39_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ]
+  },
+  "neighbors": [
+   {
+    "site": "/trunk/Sub",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_1",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_2",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_3",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_4",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_5",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_6",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_7",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_8",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_9",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_10",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_11",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_12",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_15",
+    "kind": "chain",
+    "Y_from": "Add",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_13",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Add"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_16",
+    "kind": "chain",
+    "Y_from": "Add",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_14",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Add"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_17",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_20",
+    "kind": "chain",
+    "Y_from": "Add",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_18",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Add"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_21",
+    "kind": "chain",
+    "Y_from": "Add",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_19",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Add"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_22",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_25",
+    "kind": "chain",
+    "Y_from": "Add",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_23",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Add"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_26",
+    "kind": "chain",
+    "Y_from": "Add",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_24",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Add"
+    ]
+   }
+  ],
+  "checks": {
+   "sub_left_eq_other": true,
+   "qdq_counts_same": true,
+   "qdq_scale_zp_same": true,
+   "qdq_weight_same": true,
+   "shape_same": true,
+   "ort_fused_same": true
+  },
+  "ort_opt": {
+   "n_nodes": 570,
+   "ops": {
+    "ai.onnx::Add": 85,
+    "ai.onnx::Concat": 1,
+    "ai.onnx::DequantizeLinear": 1,
+    "ai.onnx::Equal": 1,
+    "ai.onnx::Expand": 1,
+    "ai.onnx::Gather": 2,
+    "ai.onnx::LayerNormalization": 2,
+    "ai.onnx::Mul": 118,
+    "ai.onnx::QLinearMatMul": 13,
+    "ai.onnx::QuantizeLinear": 92,
+    "ai.onnx::Reshape": 29,
+    "ai.onnx::Shape": 1,
+    "ai.onnx::Softmax": 13,
+    "ai.onnx::Split": 13,
+    "ai.onnx::Squeeze": 38,
+    "ai.onnx::Tanh": 13,
+    "ai.onnx::Transpose": 53,
+    "ai.onnx::Unsqueeze": 1,
+    "ai.onnx::Where": 1,
+    "com.microsoft.nchwc::Conv": 1,
+    "com.microsoft.nchwc::ReorderOutput": 1,
+    "com.microsoft::MatMulIntegerToFloat": 66,
+    "com.microsoft::SkipLayerNormalization": 24
+   },
+   "fused": {
+    "ai.onnx::DequantizeLinear": 1,
+    "ai.onnx::QLinearMatMul": 13,
+    "ai.onnx::QuantizeLinear": 92,
+    "com.microsoft::MatMulIntegerToFloat": 66
+   },
+   "file": "C:\\s2art_b32\\e14\\e14_1_W1_ortopt.onnx"
+  }
+ },
+ "W2": {
+  "file": "C:\\s2art_b32\\e14\\e14_1_W2_where.onnx",
+  "sha256": "393a4e9ef0f741841263382c32723660c7f688c2a0952e73bdb120f48421820e",
+  "size_MiB": 97.985,
+  "n_nodes": 712,
+  "n_sub": 0,
+  "n_where": 28,
+  "n_rewritten": 27,
+  "kinds_rewritten": {
+   "simple": 21,
+   "chain": 6
+  },
+  "qdq": {
+   "counts": {
+    "QuantizeLinear": 105,
+    "DequantizeLinear": 158
+   },
+   "scale_zp_sha256": "73e6d84978bbe353e907b48fadc6911345d244fed6aa3d784d54b5b534072297",
+   "dq_weight_sha256": "632d3079fe4b36f9047801d8bc995ac66eb1872e973f3546719818da20579aab"
+  },
+  "new_init_bytes": 1728,
+  "removed_inits": [
+   "trunk.zm_b5",
+   "trunk.zm_b9",
+   "trunk.m_b10_1",
+   "trunk.m_b6_0",
+   "Transpose_token_48_out0",
+   "Transpose_token_89_out0"
+  ],
+  "shape_same": true,
+  "shapes": {
+   "/trunk/Add_2_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_4": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_5_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_7_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_9": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_10_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_12_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_14": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_15_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_17_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_19": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_20_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_22_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_26": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_24": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_27_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_25_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_29_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_33": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_31": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_34_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_32_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_36_output_0": [
+    "batch",
+    64,
+    768
+   ],
+   "/trunk/Add_40": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_38": [
+    "batch",
+    64,
+    12,
+    64
+   ],
+   "/trunk/Add_41_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ],
+   "/trunk/Add_39_output_0": [
+    "batch",
+    12,
+    64,
+    64
+   ]
+  },
+  "neighbors": [
+   {
+    "site": "/trunk/Sub",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_1",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_2",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_3",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_4",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_5",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_6",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_7",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_8",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_9",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_10",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_11",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_12",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_15",
+    "kind": "chain",
+    "Y_from": "Add",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_13",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Add"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_16",
+    "kind": "chain",
+    "Y_from": "Add",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_14",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Add"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_17",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_20",
+    "kind": "chain",
+    "Y_from": "Add",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_18",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Add"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_21",
+    "kind": "chain",
+    "Y_from": "Add",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_19",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Add"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_22",
+    "kind": "simple",
+    "Y_from": "SkipLayerNormalization",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_25",
+    "kind": "chain",
+    "Y_from": "Add",
+    "out_to": [
+     "Transpose"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_23",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Add"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_26",
+    "kind": "chain",
+    "Y_from": "Add",
+    "out_to": [
+     "QuantizeLinear"
+    ]
+   },
+   {
+    "site": "/trunk/Sub_24",
+    "kind": "simple",
+    "Y_from": "Squeeze",
+    "out_to": [
+     "Add"
+    ]
+   }
+  ],
+  "checks": {
+   "sub_left_eq_other": true,
+   "qdq_counts_same": true,
+   "qdq_scale_zp_same": true,
+   "qdq_weight_same": true,
+   "shape_same": true,
+   "ort_fused_same": true
+  },
+  "ort_opt": {
+   "n_nodes": 543,
+   "ops": {
+    "ai.onnx::Add": 58,
+    "ai.onnx::Concat": 1,
+    "ai.onnx::DequantizeLinear": 1,
+    "ai.onnx::Equal": 1,
+    "ai.onnx::Expand": 1,
+    "ai.onnx::Gather": 2,
+    "ai.onnx::LayerNormalization": 2,
+    "ai.onnx::Mul": 91,
+    "ai.onnx::QLinearMatMul": 13,
+    "ai.onnx::QuantizeLinear": 92,
+    "ai.onnx::Reshape": 29,
+    "ai.onnx::Shape": 1,
+    "ai.onnx::Softmax": 13,
+    "ai.onnx::Split": 13,
+    "ai.onnx::Squeeze": 38,
+    "ai.onnx::Tanh": 13,
+    "ai.onnx::Transpose": 53,
+    "ai.onnx::Unsqueeze": 1,
+    "ai.onnx::Where": 28,
+    "com.microsoft.nchwc::Conv": 1,
+    "com.microsoft.nchwc::ReorderOutput": 1,
+    "com.microsoft::MatMulIntegerToFloat": 66,
+    "com.microsoft::SkipLayerNormalization": 24
+   },
+   "fused": {
+    "ai.onnx::DequantizeLinear": 1,
+    "ai.onnx::QLinearMatMul": 13,
+    "ai.onnx::QuantizeLinear": 92,
+    "com.microsoft::MatMulIntegerToFloat": 66
+   },
+   "file": "C:\\s2art_b32\\e14\\e14_1_W2_ortopt.onnx"
+  }
+ },
+ "pass": true
+}

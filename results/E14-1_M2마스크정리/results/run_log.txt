@@ -1,0 +1,25 @@
+[2026-10-23T02:57:18] START e14\run_e14_1.py --step 0 git={'commit': '5cd39a5', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T02:57:20] END --step 0 2s
+[2026-10-23T02:57:35] START e14\run_e14_1.py --step rewrite git={'commit': '5cd39a5', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T02:57:39] END --step rewrite 4s
+[2026-10-23T02:57:39] START e14\run_e14_1.py --step smoke git={'commit': '5cd39a5', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T02:57:40] END --step smoke 1s
+[2026-10-23T02:58:01] START e14\run_e14_1.py --step g2 git={'commit': '5cd39a5', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T03:01:25] START e14\run_e14_1.py --step g2c --disable-opt git={'commit': '5cd39a5', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T03:01:29] END --step g2c 4s
+[2026-10-23 03:2x] 메모: G2 불통과 → 멈춤 (계획서 4절). (a) cos 최소 0.99999976 / top-1 0/1200 다름, (b) W1 vs W2 max|Δ| 0 → 통과.
+  (c)만 불통과: ① K 자리 7곳(Sub_1·4·7·10·15·20·25)은 ORT_ENABLE_ALL 진단 사본에서 O 자신도 식 값과 0.025 다름(ORT 최적화가 그 중간 텐서 값을 바꿈, ORT_DISABLE_ALL에선 정확) → e14/dbg_g2c.py
+  ② O의 sink 값은 c와 최대 2464 ulp(c 기준) 다름. 원래 식 X+(c−X)의 오차 한계는 1 ulp(max(|X|,|c|))이고 이 기준으로는 27곳 모두 정확히 1.0 → 계획서의 "1 ulp(c 기준)"은 검토 때 잘못 쓴 기준.
+  진단 재실행: --step g2c --disable-opt → 27곳 모두 W1·W2 = 정확한 선택, O 비sink = Y, 1ulp(max|X|,|c|) 기준 통과 (g2c_disable.json). 정민 판단 대기.
+[2026-10-23 03:07] 정민 승인: G2(c) 기준 수정 — 중간값 검사는 ORT_DISABLE_ALL로, sink 자리 O 오차 한계는 1 ulp(max(|X|,|c|)). 수정 기준 결과(g2c_disable.json) 27곳 모두 통과 → G2 통과로 보고 측정 계속. 원래 기준 결과(g2.json)는 그대로 둔다.
+  참고: G2(a)에서 W1·W2 임베딩이 O와 비트 단위로 같음(6×200 전부 max|Δ| 0) → G2b 생략.
+[2026-10-23T03:07:38] START e14\run_e14_1.py --step mem git={'commit': '5cd39a5', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T03:07:53] END --step mem 15s
+[2026-10-23T03:12:22] START e14\run_e14_1.py --step speed --session 1 git={'commit': '5cd39a5', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T03:13:26] END --step speed 63s
+[2026-10-23T03:15:28] START e14\run_e14_1.py --step speed --session 2 git={'commit': '5cd39a5', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T03:16:30] END --step speed 62s
+[2026-10-23T03:18:32] START e14\run_e14_1.py --step speed --session 3 git={'commit': '5cd39a5', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T03:19:34] END --step speed 62s
+[2026-10-23T03:21:00] START e14\run_e14_1.py --step summary git={'commit': '5cd39a5', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-23T03:21:00] END --step summary 0s

@@ -1,0 +1,931 @@
+{
+ "date": "2026-10-23T02:57:20",
+ "sha256": "7a01044c6ba32bf4f5a12aba82eb19e06753f13c8bad43b9f6fcfcd9f484dbf6",
+ "sha_ok": true,
+ "nodes": 766,
+ "op_counts": {
+  "DequantizeLinear": 158,
+  "Conv": 1,
+  "Reshape": 29,
+  "Transpose": 53,
+  "Add": 85,
+  "LayerNormalization": 2,
+  "QuantizeLinear": 105,
+  "MatMul": 79,
+  "Split": 13,
+  "Squeeze": 38,
+  "Mul": 118,
+  "Softmax": 13,
+  "SkipLayerNormalization": 24,
+  "Tanh": 13,
+  "Sub": 27,
+  "Shape": 1,
+  "Gather": 2,
+  "Unsqueeze": 1,
+  "Concat": 1,
+  "Equal": 1,
+  "Where": 1,
+  "Expand": 1
+ },
+ "n_sub": 27,
+ "kinds": {
+  "simple": 21,
+  "chain": 6
+ },
+ "masks": {
+  "Transpose_token_48_out0": {
+   "shape": [
+    1,
+    1,
+    64,
+    1
+   ],
+   "unique": [
+    0.0,
+    1.0
+   ],
+   "ones_pos": [
+    15
+   ]
+  },
+  "Transpose_token_89_out0": {
+   "shape": [
+    1,
+    1,
+    64,
+    1
+   ],
+   "unique": [
+    0.0,
+    1.0
+   ],
+   "ones_pos": [
+    7
+   ]
+  },
+  "trunk.m_b10_1": {
+   "shape": [
+    1,
+    64,
+    1,
+    1
+   ],
+   "unique": [
+    0.0,
+    1.0
+   ],
+   "ones_pos": [
+    7
+   ]
+  },
+  "trunk.m_b6_0": {
+   "shape": [
+    1,
+    64,
+    1,
+    1
+   ],
+   "unique": [
+    0.0,
+    1.0
+   ],
+   "ones_pos": [
+    15
+   ]
+  },
+  "trunk.zm_b5": {
+   "shape": [
+    1,
+    64,
+    1
+   ],
+   "unique": [
+    0.0,
+    1.0
+   ],
+   "ones_pos": [
+    15
+   ]
+  },
+  "trunk.zm_b9": {
+   "shape": [
+    1,
+    64,
+    1
+   ],
+   "unique": [
+    0.0,
+    1.0
+   ],
+   "ones_pos": [
+    7,
+    15
+   ]
+  }
+ },
+ "all_masks_binary": true,
+ "sites": [
+  {
+   "sub": "/trunk/Sub",
+   "c": "trunk.uc_b5",
+   "X": "/trunk/norm2/LayerNormalization_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_1",
+   "add": "/trunk/Add_2",
+   "m": "trunk.zm_b5",
+   "Y": "/trunk/norm2/LayerNormalization_output_0",
+   "out": "/trunk/Add_2_output_0",
+   "m_shape": [
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    768
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_1",
+   "c": "trunk.kc_b6_0",
+   "X": "/trunk/Squeeze_4",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_2",
+   "add": "/trunk/Add_4",
+   "m": "trunk.m_b6_0",
+   "Y": "/trunk/Squeeze_4",
+   "out": "/trunk/Add_4",
+   "m_shape": [
+    1,
+    64,
+    1,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    12,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_2",
+   "c": "trunk.vc_b6_0",
+   "X": "/trunk/Squeeze_5_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_3",
+   "add": "/trunk/Add_5",
+   "m": "Transpose_token_48_out0",
+   "Y": "/trunk/Squeeze_5_output_0",
+   "out": "/trunk/Add_5_output_0",
+   "m_shape": [
+    1,
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    12,
+    1,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_3",
+   "c": "trunk.uc_b6",
+   "X": "/trunk/norm2_1/LayerNormalization_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_5",
+   "add": "/trunk/Add_7",
+   "m": "trunk.zm_b5",
+   "Y": "/trunk/norm2_1/LayerNormalization_output_0",
+   "out": "/trunk/Add_7_output_0",
+   "m_shape": [
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    768
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_4",
+   "c": "trunk.kc_b7_0",
+   "X": "/trunk/Squeeze_7",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_6",
+   "add": "/trunk/Add_9",
+   "m": "trunk.m_b6_0",
+   "Y": "/trunk/Squeeze_7",
+   "out": "/trunk/Add_9",
+   "m_shape": [
+    1,
+    64,
+    1,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    12,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_5",
+   "c": "trunk.vc_b7_0",
+   "X": "/trunk/Squeeze_8_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_7",
+   "add": "/trunk/Add_10",
+   "m": "Transpose_token_48_out0",
+   "Y": "/trunk/Squeeze_8_output_0",
+   "out": "/trunk/Add_10_output_0",
+   "m_shape": [
+    1,
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    12,
+    1,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_6",
+   "c": "trunk.uc_b7",
+   "X": "/trunk/norm2_2/LayerNormalization_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_9",
+   "add": "/trunk/Add_12",
+   "m": "trunk.zm_b5",
+   "Y": "/trunk/norm2_2/LayerNormalization_output_0",
+   "out": "/trunk/Add_12_output_0",
+   "m_shape": [
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    768
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_7",
+   "c": "trunk.kc_b8_0",
+   "X": "/trunk/Squeeze_10",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_10",
+   "add": "/trunk/Add_14",
+   "m": "trunk.m_b6_0",
+   "Y": "/trunk/Squeeze_10",
+   "out": "/trunk/Add_14",
+   "m_shape": [
+    1,
+    64,
+    1,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    12,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_8",
+   "c": "trunk.vc_b8_0",
+   "X": "/trunk/Squeeze_11_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_11",
+   "add": "/trunk/Add_15",
+   "m": "Transpose_token_48_out0",
+   "Y": "/trunk/Squeeze_11_output_0",
+   "out": "/trunk/Add_15_output_0",
+   "m_shape": [
+    1,
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    12,
+    1,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_9",
+   "c": "trunk.uc_b8",
+   "X": "/trunk/norm2_3/LayerNormalization_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_13",
+   "add": "/trunk/Add_17",
+   "m": "trunk.zm_b5",
+   "Y": "/trunk/norm2_3/LayerNormalization_output_0",
+   "out": "/trunk/Add_17_output_0",
+   "m_shape": [
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    768
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_10",
+   "c": "trunk.kc_b9_0",
+   "X": "/trunk/Squeeze_13",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_14",
+   "add": "/trunk/Add_19",
+   "m": "trunk.m_b6_0",
+   "Y": "/trunk/Squeeze_13",
+   "out": "/trunk/Add_19",
+   "m_shape": [
+    1,
+    64,
+    1,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    12,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_11",
+   "c": "trunk.vc_b9_0",
+   "X": "/trunk/Squeeze_14_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_15",
+   "add": "/trunk/Add_20",
+   "m": "Transpose_token_48_out0",
+   "Y": "/trunk/Squeeze_14_output_0",
+   "out": "/trunk/Add_20_output_0",
+   "m_shape": [
+    1,
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    12,
+    1,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_12",
+   "c": "trunk.uc_b9",
+   "X": "/trunk/norm2_4/LayerNormalization_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_17",
+   "add": "/trunk/Add_22",
+   "m": "trunk.zm_b9",
+   "Y": "/trunk/norm2_4/LayerNormalization_output_0",
+   "out": "/trunk/Add_22_output_0",
+   "m_shape": [
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    768
+   ],
+   "m_binary": true,
+   "m_ones": 2,
+   "m_pos": [
+    7,
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_15",
+   "c": "trunk.kc_b10_1",
+   "X": "/trunk/Squeeze_16",
+   "kind": "chain",
+   "why": "",
+   "mul": "/trunk/Mul_20",
+   "add": "/trunk/Add_26",
+   "m": "trunk.m_b10_1",
+   "Y": "/trunk/Add_24",
+   "out": "/trunk/Add_26",
+   "m_shape": [
+    1,
+    64,
+    1,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    12,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    7
+   ],
+   "chain_up": [
+    "/trunk/Sub_13"
+   ],
+   "overlap": 0
+  },
+  {
+   "sub": "/trunk/Sub_13",
+   "c": "trunk.kc_b10_0",
+   "X": "/trunk/Squeeze_16",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_18",
+   "add": "/trunk/Add_24",
+   "m": "trunk.m_b6_0",
+   "Y": "/trunk/Squeeze_16",
+   "out": "/trunk/Add_24",
+   "m_shape": [
+    1,
+    64,
+    1,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    12,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_16",
+   "c": "trunk.vc_b10_1",
+   "X": "/trunk/Squeeze_17_output_0",
+   "kind": "chain",
+   "why": "",
+   "mul": "/trunk/Mul_21",
+   "add": "/trunk/Add_27",
+   "m": "Transpose_token_89_out0",
+   "Y": "/trunk/Add_25_output_0",
+   "out": "/trunk/Add_27_output_0",
+   "m_shape": [
+    1,
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    12,
+    1,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    7
+   ],
+   "chain_up": [
+    "/trunk/Sub_14"
+   ],
+   "overlap": 0
+  },
+  {
+   "sub": "/trunk/Sub_14",
+   "c": "trunk.vc_b10_0",
+   "X": "/trunk/Squeeze_17_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_19",
+   "add": "/trunk/Add_25",
+   "m": "Transpose_token_48_out0",
+   "Y": "/trunk/Squeeze_17_output_0",
+   "out": "/trunk/Add_25_output_0",
+   "m_shape": [
+    1,
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    12,
+    1,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_17",
+   "c": "trunk.uc_b10",
+   "X": "/trunk/norm2_5/LayerNormalization_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_23",
+   "add": "/trunk/Add_29",
+   "m": "trunk.zm_b9",
+   "Y": "/trunk/norm2_5/LayerNormalization_output_0",
+   "out": "/trunk/Add_29_output_0",
+   "m_shape": [
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    768
+   ],
+   "m_binary": true,
+   "m_ones": 2,
+   "m_pos": [
+    7,
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_20",
+   "c": "trunk.kc_b11_1",
+   "X": "/trunk/Squeeze_19",
+   "kind": "chain",
+   "why": "",
+   "mul": "/trunk/Mul_26",
+   "add": "/trunk/Add_33",
+   "m": "trunk.m_b10_1",
+   "Y": "/trunk/Add_31",
+   "out": "/trunk/Add_33",
+   "m_shape": [
+    1,
+    64,
+    1,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    12,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    7
+   ],
+   "chain_up": [
+    "/trunk/Sub_18"
+   ],
+   "overlap": 0
+  },
+  {
+   "sub": "/trunk/Sub_18",
+   "c": "trunk.kc_b11_0",
+   "X": "/trunk/Squeeze_19",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_24",
+   "add": "/trunk/Add_31",
+   "m": "trunk.m_b6_0",
+   "Y": "/trunk/Squeeze_19",
+   "out": "/trunk/Add_31",
+   "m_shape": [
+    1,
+    64,
+    1,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    12,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_21",
+   "c": "trunk.vc_b11_1",
+   "X": "/trunk/Squeeze_20_output_0",
+   "kind": "chain",
+   "why": "",
+   "mul": "/trunk/Mul_27",
+   "add": "/trunk/Add_34",
+   "m": "Transpose_token_89_out0",
+   "Y": "/trunk/Add_32_output_0",
+   "out": "/trunk/Add_34_output_0",
+   "m_shape": [
+    1,
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    12,
+    1,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    7
+   ],
+   "chain_up": [
+    "/trunk/Sub_19"
+   ],
+   "overlap": 0
+  },
+  {
+   "sub": "/trunk/Sub_19",
+   "c": "trunk.vc_b11_0",
+   "X": "/trunk/Squeeze_20_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_25",
+   "add": "/trunk/Add_32",
+   "m": "Transpose_token_48_out0",
+   "Y": "/trunk/Squeeze_20_output_0",
+   "out": "/trunk/Add_32_output_0",
+   "m_shape": [
+    1,
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    12,
+    1,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_22",
+   "c": "trunk.uc_b11",
+   "X": "/trunk/norm2_6/LayerNormalization_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_29",
+   "add": "/trunk/Add_36",
+   "m": "trunk.zm_b9",
+   "Y": "/trunk/norm2_6/LayerNormalization_output_0",
+   "out": "/trunk/Add_36_output_0",
+   "m_shape": [
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    768
+   ],
+   "m_binary": true,
+   "m_ones": 2,
+   "m_pos": [
+    7,
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_25",
+   "c": "trunk.kc_pool_1",
+   "X": "/trunk/Squeeze_21",
+   "kind": "chain",
+   "why": "",
+   "mul": "/trunk/Mul_33",
+   "add": "/trunk/Add_40",
+   "m": "trunk.m_b10_1",
+   "Y": "/trunk/Add_38",
+   "out": "/trunk/Add_40",
+   "m_shape": [
+    1,
+    64,
+    1,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    12,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    7
+   ],
+   "chain_up": [
+    "/trunk/Sub_23"
+   ],
+   "overlap": 0
+  },
+  {
+   "sub": "/trunk/Sub_23",
+   "c": "trunk.kc_pool_0",
+   "X": "/trunk/Squeeze_21",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_31",
+   "add": "/trunk/Add_38",
+   "m": "trunk.m_b6_0",
+   "Y": "/trunk/Squeeze_21",
+   "out": "/trunk/Add_38",
+   "m_shape": [
+    1,
+    64,
+    1,
+    1
+   ],
+   "c_shape": [
+    1,
+    1,
+    12,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  },
+  {
+   "sub": "/trunk/Sub_26",
+   "c": "trunk.vc_pool_1",
+   "X": "/trunk/Squeeze_22_output_0",
+   "kind": "chain",
+   "why": "",
+   "mul": "/trunk/Mul_34",
+   "add": "/trunk/Add_41",
+   "m": "Transpose_token_89_out0",
+   "Y": "/trunk/Add_39_output_0",
+   "out": "/trunk/Add_41_output_0",
+   "m_shape": [
+    1,
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    12,
+    1,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    7
+   ],
+   "chain_up": [
+    "/trunk/Sub_24"
+   ],
+   "overlap": 0
+  },
+  {
+   "sub": "/trunk/Sub_24",
+   "c": "trunk.vc_pool_0",
+   "X": "/trunk/Squeeze_22_output_0",
+   "kind": "simple",
+   "why": "",
+   "mul": "/trunk/Mul_32",
+   "add": "/trunk/Add_39",
+   "m": "Transpose_token_48_out0",
+   "Y": "/trunk/Squeeze_22_output_0",
+   "out": "/trunk/Add_39_output_0",
+   "m_shape": [
+    1,
+    1,
+    64,
+    1
+   ],
+   "c_shape": [
+    1,
+    12,
+    1,
+    64
+   ],
+   "m_binary": true,
+   "m_ones": 1,
+   "m_pos": [
+    15
+   ]
+  }
+ ],
+ "other_python": [],
+ "git": {
+  "commit": "5cd39a5",
+  "branch": "jungmin/e14-graph",
+  "dirty": true
+ }
+}

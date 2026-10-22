@@ -1,0 +1,10 @@
+mem rep0 O peak 239.2 infer 212.4 create 239.2
+mem rep0 W1 peak 244.2 infer 218.6 create 244.2
+mem rep0 W2 peak 239.0 infer 216.2 create 239.0
+mem rep1 W2 peak 238.3 infer 213.8 create 238.3
+mem rep1 W1 peak 243.9 infer 218.2 create 243.9
+mem rep1 O peak 239.4 infer 214.3 create 239.4
+mem rep2 O peak 239.5 infer 216.7 create 239.5
+mem rep2 W1 peak 244.0 infer 218.9 create 244.0
+mem rep2 W2 peak 239.3 infer 215.9 create 239.3
+[mem] 15s
