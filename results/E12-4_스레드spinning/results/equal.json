@@ -1,0 +1,52 @@
+{
+ "control": {
+  "1": 0.0,
+  "2": 0.0,
+  "3": 0.0,
+  "4": 0.0
+ },
+ "compare": {
+  "A1_1T": 0.0,
+  "A2_1T": 0.0,
+  "A3_1T": 0.0,
+  "A4_1T": 0.0,
+  "A1_2T": 0.0,
+  "A2_2T": 0.0,
+  "A3_2T": 0.0,
+  "A4_2T": 0.0,
+  "A1_3T": 0.0,
+  "A2_3T": 0.0,
+  "A3_3T": 0.0,
+  "A4_3T": 0.0,
+  "A1_4T": 0.0,
+  "A2_4T": 0.0,
+  "A3_4T": 0.0,
+  "A4_4T": 0.0
+ },
+ "keys": {
+  "A1": {
+   "session.intra_op.allow_spinning": "0",
+   "session.dynamic_block_base": "0"
+  },
+  "A2": {
+   "session.intra_op.allow_spinning": "1",
+   "session.dynamic_block_base": "4"
+  },
+  "A3": {
+   "session.intra_op.allow_spinning": "0",
+   "session.dynamic_block_base": "4"
+  },
+  "A4": {
+   "session.intra_op.allow_spinning": "1",
+   "session.dynamic_block_base": "0",
+   "session.force_spinning_stop": "1"
+  }
+ },
+ "A0_3T_vs_4T": 0.0,
+ "pass": {
+  "A1": true,
+  "A2": true,
+  "A3": true,
+  "A4": true
+ }
+}

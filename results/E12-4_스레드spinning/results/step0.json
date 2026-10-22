@@ -1,0 +1,87 @@
+{
+ "date": "2026-10-23T00:58:09",
+ "sha_ok": true,
+ "sha256": "7a01044c6ba32bf4f5a12aba82eb19e06753f13c8bad43b9f6fcfcd9f484dbf6",
+ "header_keys_v1.25.0": {
+  "session.intra_op.allow_spinning": true,
+  "session.dynamic_block_base": true,
+  "session.force_spinning_stop": true
+ },
+ "header_spin_lines": [
+  "// Configure whether to allow the inter_op/intra_op threads spinning a number of times before blocking",
+  "// \"1\": thread will spin a number of times before blocking",
+  "// Thread spinning is disabled by default for client/on-device workloads to reduce cpu utilization and improve power efficiency.",
+  "static const char* const kOrtSessionOptionsConfigAllowInterOpSpinning = \"session.inter_op.allow_spinning\";",
+  "static const char* const kOrtSessionOptionsConfigAllowIntraOpSpinning = \"session.intra_op.allow_spinning\";",
+  "// N / (num_of_threads * dynamic_block_base)",
+  "static const char* const kOrtSessionOptionsConfigDynamicBlockBase = \"session.dynamic_block_base\";",
+  "// requests and forces any TP threads spinning stop immediately when the last of",
+  "// Spinning is restarted on the next Run() call.",
+  "static const char* const kOrtSessionOptionsConfigForceSpinningStop = \"session.force_spinning_stop\";"
+ ],
+ "a0_vs_1": [
+  {
+   "rep": 0,
+   "tcombo": "A0",
+   "p50_ms": 16.76,
+   "p90_ms": 17.808,
+   "p99_ms": 18.86,
+   "mean_ms": 16.896,
+   "min_ms": 16.081,
+   "loop_wall_s": 0.338,
+   "cpu_ms_per_img": 120.312,
+   "cpu_ms_per_img_loop": 68.75,
+   "tail_cpu_ms": 1031.25,
+   "keys": {}
+  },
+  {
+   "rep": 0,
+   "tcombo": "A0_1",
+   "p50_ms": 16.478,
+   "p90_ms": 17.098,
+   "p99_ms": 19.239,
+   "mean_ms": 16.721,
+   "min_ms": 16.121,
+   "loop_wall_s": 0.334,
+   "cpu_ms_per_img": 116.406,
+   "cpu_ms_per_img_loop": 65.625,
+   "tail_cpu_ms": 1015.625,
+   "keys": {
+    "session.intra_op.allow_spinning": "1"
+   }
+  },
+  {
+   "rep": 1,
+   "tcombo": "A0",
+   "p50_ms": 16.8,
+   "p90_ms": 18.115,
+   "p99_ms": 20.48,
+   "mean_ms": 17.188,
+   "min_ms": 16.346,
+   "loop_wall_s": 0.344,
+   "cpu_ms_per_img": 114.844,
+   "cpu_ms_per_img_loop": 65.625,
+   "tail_cpu_ms": 984.375,
+   "keys": {}
+  },
+  {
+   "rep": 1,
+   "tcombo": "A0_1",
+   "p50_ms": 16.603,
+   "p90_ms": 17.494,
+   "p99_ms": 18.566,
+   "mean_ms": 16.804,
+   "min_ms": 16.025,
+   "loop_wall_s": 0.336,
+   "cpu_ms_per_img": 117.969,
+   "cpu_ms_per_img_loop": 65.625,
+   "tail_cpu_ms": 1046.875,
+   "keys": {
+    "session.intra_op.allow_spinning": "1"
+   }
+  }
+ ],
+ "d_p50": 0.014479610652640362,
+ "d_cpu": 0.003332266666666639,
+ "A0_equals_spin1": true
+}

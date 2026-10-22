@@ -1,0 +1,9 @@
+{"rep": 0, "threads": 1, "no_throttle": false, "p50_ms": 39.032, "p90_ms": 39.719, "throttle_off": null}
+{"rep": 0, "threads": 1, "no_throttle": true, "p50_ms": 39.384, "p90_ms": 40.245, "throttle_off": false}
+{"rep": 0, "threads": 4, "no_throttle": false, "p50_ms": 16.525, "p90_ms": 17.111, "throttle_off": null}
+{"rep": 0, "threads": 4, "no_throttle": true, "p50_ms": 16.462, "p90_ms": 18.704, "throttle_off": false}
+{"rep": 1, "threads": 1, "no_throttle": false, "p50_ms": 39.744, "p90_ms": 40.594, "throttle_off": null}
+{"rep": 1, "threads": 1, "no_throttle": true, "p50_ms": 39.54, "p90_ms": 40.534, "throttle_off": false}
+{"rep": 1, "threads": 4, "no_throttle": false, "p50_ms": 16.679, "p90_ms": 19.05, "throttle_off": null}
+{"rep": 1, "threads": 4, "no_throttle": true, "p50_ms": 16.461, "p90_ms": 18.904, "throttle_off": false}
+DONE

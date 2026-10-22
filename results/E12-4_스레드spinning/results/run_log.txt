@@ -1,0 +1,26 @@
+E12-4 실행 기록 (실행: Claude, 2026-10-23, 정민 노트북 Core Ultra 7 258V, s2_venv Python 3.11.9 / ORT 1.25.0)
+브랜치 jungmin/e12-runtime (시작 HEAD fcf1efd). 시작 전: 측정용 python 프로세스 없음(MCP 서버만), 전원 연결(BatteryStatus 2).
+
+[계획서와 다른 점]
+- e12_4_equal.py를 따로 만들지 않고 e12_4_speed.py에 mode=equal로 합침 (비교는 run_e12_4.py --step g1).
+- session_opts.py에는 THREAD_COMBOS·make_thread_options를 파일 끝에 추가만 함 (E12-1 조합 C0~C4 동작 변화 없음).
+- A1~A4는 계획서 표의 키를 모두 명시적으로 넣음(A1·A3: allow_spinning·dynamic_block_base, A2: 둘 다, A4: 셋 다). A0은 키 미지정. 실제 들어간 값은 결과 행의 keys 필드(get_session_config_entry로 읽음).
+- 0단계 A0 미지정 vs "1"은 4T 워밍업 10장 + 20장을 번갈아 2회씩(새 프로세스), 중앙값 비교.
+- CPU 시간: Windows의 프로세스 CPU 시간 해상도는 15.625 ms → 200장 기준 장당 0.08 ms 단위.
+
+[실행 명령] (cwd = oslab_mobile, OPENBLAS_NUM_THREADS=1, PYTHONIOENCODING=utf-8)
+..\s2_venv\Scripts\python.exe -u e12\run_e12_4.py --step 0
+..\s2_venv\Scripts\python.exe -u e12\run_e12_4.py --step smoke
+..\s2_venv\Scripts\python.exe -u e12\run_e12_4.py --step g1
+..\s2_venv\Scripts\python.exe -u e12\run_e12_4.py --step speed --session 1   (이후 ping 120초 휴식)
+..\s2_venv\Scripts\python.exe -u e12\run_e12_4.py --step speed --session 2   (이후 ping 120초 휴식)
+..\s2_venv\Scripts\python.exe -u e12\run_e12_4.py --step speed --session 3
+..\s2_venv\Scripts\python.exe -u e12\run_e12_4.py --step summary
+(3세션은 start /min cmd /c 로 묶어 실행, 출력 results\speed_stdout.txt)
+
+[실행 중 생긴 일]
+- 1차 3세션 시도(01:02~01:04): A0 1T p50 62.4 ms (E12-3·0단계 39 ms) → 세션 1의 5행에서 중단, speed_aborted_try1.jsonl / speed_stdout_aborted_try1.txt로 이름 바꿔 보관.
+- 확인: e12\\e12_4_throttle_check.py를 최소화 창에서 실행 (1T·4T, 전원 절약 끔/그대로 × 2회) → 1T 39.0~39.7 ms, 4T 16.5~16.7 ms, 재현 안 됨 (throttle_check.jsonl). 이때 끄기 API는 인자 타입 문제로 실패(throttle_off false).
+- e12_4_speed.py에 no_power_throttle() 추가 (SetProcessInformation ProcessPowerThrottling, EXECUTION_SPEED 끔), argtypes 고친 뒤 True 확인. 본 측정 80행 모두 throttle_off true.
+- 3세션 재시작 01:05, 세션 1·2·3 완료 01:15:59. 세션 2에서 1T 대조군 규칙 발동(A1 +2.5%, A2 +2.4%) → 세션 2를 같은 순서로 재측정 = 세션 12 (run_e12_4.py: ORDERS[session % 10], summary는 재측정 세션이 있으면 원래 세션 대신 사용). 01:20:25 완료, 1T 차이 ±0.3% 이내.
+- summary: run_e12_4.py --step summary → 판정 세션 [1, 3, 12].

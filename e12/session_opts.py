@@ -67,3 +67,22 @@ def parse_models(items):
         assert Path(f).exists(), f
         out.append((k, Path(f)))
     return out
+
+
+# ---- E12-4 스레드 풀 설정 조합 (계획서 3절). C3 위에 세션 설정 키만 추가. 키는 ORT v1.25.0 헤더로 확인 ----
+SPIN, BLOCK, FSTOP = "session.intra_op.allow_spinning", "session.dynamic_block_base", "session.force_spinning_stop"
+THREAD_COMBOS = {
+    "A0": {},                                   # 기준 (현재 제출 설정, 키 미지정)
+    "A0_1": {SPIN: "1"},                        # 0단계 확인용: spinning 명시 1
+    "A1": {SPIN: "0", BLOCK: "0"},
+    "A2": {SPIN: "1", BLOCK: "4"},
+    "A3": {SPIN: "0", BLOCK: "4"},
+    "A4": {SPIN: "1", BLOCK: "0", FSTOP: "1"},
+}
+
+
+def make_thread_options(tcombo, threads, base="C3"):
+    so = make_options(base, threads)
+    for k, v in THREAD_COMBOS[tcombo].items():
+        so.add_session_config_entry(k, v)
+    return so
