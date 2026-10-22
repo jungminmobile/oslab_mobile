@@ -24,7 +24,8 @@ need $ART/onnx/$OAB db2c1fdd26e0c98fb2ff3bc25d11117dac483b5479dd5c9cb6db75804794
 need $ART/onnx_h1/$FMR 16ef696e8016f4d1f85f1cafc1d98d32882a813d83e75c179f2cfffa55c36401
 need $ART/onnx_g8/$M2 009ea9d5403e8cba09e98c168d12e0bcad3466898969df707d95ce0ecdb8e956
 
-# B1 재분석 (가벼움, 잠금 없이)
+# B1 재분석 (가벼움, 잠금 없이). 이미 결과가 있으면 건너뜀 (10/22 14:06 끝남, O2 확인을 앞에 넣느라 다시 시작)
+if [ ! -f $R/B1_reanalysis/reanalysis.json ]; then
 chk B1; "$PY" -u scripts/g8_reanalysis.py --test-r0 D:/mokerton/oslab_mobile/results/siglip2/G6_test --test-m2 D:/mokerton/oslab_mobile/results/siglip2/G6_m2rot_ort/test \
   --dev-dirs $R/O_AB/dev_full $RR/G6_m2rot_ort/dev_full D:/mokerton/oslab_mobile/results/siglip2/G6_m2rot_ort/dev_full --results-root $RR --out $R/B1_reanalysis > $L/more_B1.log 2>&1
 echo "$(date +%T) [B1] rc=$?"; tail -12 $L/more_B1.log
@@ -32,6 +33,7 @@ echo "$(date +%T) [B1] rc=$?"; tail -12 $L/more_B1.log
 FP=$RR/G8_candidates/repro_fingerprint
 "$PY" -u scripts/repro_fingerprint.py --art $ART --out $FP/fp_jjury_b16_v2.json > $L/more_B2.log 2>&1; echo "$(date +%T) [B2 b16] rc=$?"
 S2_MODEL_ID=hf-hub:timm/ViT-B-32-SigLIP2-256 "$PY" -u scripts/repro_fingerprint.py --art $ART32 --out $FP/fp_jjury_b32_v2.json >> $L/more_B2.log 2>&1; echo "$(date +%T) [B2 b32] rc=$?"
+else echo "$(date +%T) [B1·B2] 이미 끝남 — 건너뜀"; fi
 
 # H5 배포 눈금 층별 SNR (B16: A1 2×2 + 배포 + O-AB + R0, B32: 2×2 + R0)
 G=$ART/onnx_g8; JY=$ART/onnx_jy/siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad_pre.onnx
@@ -59,7 +61,7 @@ step H1 env RN50_ONNX=$H1 RN50_RESULTS=$R/H1_m2rot_fp32 "$PY" -u s2_paired_ci.py
 
 # B7 입력 변형 8종 × (FP32, M2rot FP32, M2rot_ort, O-AB, R0), 고화질 5종 × 200장
 step B7 env RN50_RESULTS=$R/B7_input_shift "$PY" -u s2_input_shift.py --k 200 --models fp32=siglip2_image_fp32.onnx \
-  m2rot_fp32=$H1/$FMR m2rot_ort=$M2 oab=$OAB r0=$R0
+  m2rot_fp32=$H1/$FMR m2rot_ort=$M2 oab=$OAB oabu=siglip2_image_int8_o2_b16_m2rotu_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx r0=$R0
 
 # H6 M2 캐시 상수 시드 1·2 (회전 행렬·FP32·양자화 옵션은 A1과 같게, 캐시 시드만 바꿈) → dev 전체, A1(시드 0)과 짝 비교
 QOPT=(--calib-source highres --calib-n 256 --op-types MatMul --method percentile --percentile 99.999 --hist-chunk 16 --act-type u8 --reduce-range --tag all --dump-ops --threads 4)
