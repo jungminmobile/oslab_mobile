@@ -71,9 +71,18 @@
 | `siglip2_image_fp32_g6b_b32_m2rot.onnx` | `23236123` | B/32 M2rot FP32 (G6b `s2_g6.py export --cfg m2rot --dynamic`, 커밋 `e7cd97c`) |
 | `siglip2_image_fp32_g6b_b32_m2rot_o1b_pre.onnx` | `506e9fe4` | O-AB가 실제로 쓴 `_pre` (`s2_quantize.py --src …_o1b.onnx`의 `quant_pre_process` 출력, 커밋 `3972f43`) |
 | `SHA256SUMS_v2.txt` | — | 기존 `SHA256SUMS.txt` 11줄 + 위 2줄 |
-- 순서: `23236123` →(`s2_ortfuse.py --skip-ln --fold-shape`, `3972f43`) `_o1b.onnx` `79e797c1`(올리지 않음) →(`quant_pre_process`) `_o1b_pre` `506e9fe4` →(`quantize_static`, `--no-matmul-out-q` 등) O-AB `7a01044c`.
+| `siglip2_image_fp32_g6b_b32_m2rot_o1b.onnx` | `79e797c1` | O-B 그래프 정리 FP32 (`s2_ortfuse.py --skip-ln --fold-shape`, 커밋 `3972f43`), `_pre`의 입력. **10/23 두 번째로 추가** |
+| `SHA256SUMS_v3.txt` | — | `SHA256SUMS_v2.txt` 13줄 + `_o1b` 1줄 (앞 11줄 = 기존 `SHA256SUMS.txt`, 앞 13줄 = v2) |
+- 순서: `23236123` →(`s2_ortfuse.py --skip-ln --fold-shape`, `3972f43`) `_o1b.onnx` `79e797c1`(Release에 있음) →(`quant_pre_process`) `_o1b_pre` `506e9fe4` →(`quantize_static`, `--no-matmul-out-q` 등) O-AB `7a01044c`.
 - `_pre`는 O1의 O-B 양자화(02:50) 때 만들어졌고 O-AB(02:51)가 재사용했다 (src보다 새 파일이면 재사용하는 코드, quantize 로그의 `src`와 파일 시각으로 확인). 10/23에 `_o1b.onnx`로 `quant_pre_process`를 다시 돌리니 sha256이 같았다.
 - 올린 뒤 빈 새 폴더에 다시 내려받아 sha256 2개가 모두 OK인 것을 확인했고, Release 설명 끝에 만드는 순서를 덧붙였다(원래 설명은 바꾸지 않음).
+- 이어서 `_o1b.onnx`도 같은 방식으로 추가했다(덮어쓰기 없음, 빈 새 폴더에 다시 내려받아 sha256 OK, v3 앞부분이 v1·v2와 같은 것 확인). Release 설명의 재현 순서 2단계에 "이 파일도 Release에 있음"을 표시하고 표·SHA256SUMS 안내를 v3으로 고쳤다(내가 덧붙인 절만 고침, 원래 설명 부분은 바이트 단위로 같음).
+
+## 6. AGX numpy 2.4.4 고정 재실행 (`out_junyong_agx_np244/`)
+- 목적: AGX만 numpy 2.4.6이었으므로, ARM 차이가 numpy 때문인지 확인한다.
+- 기존 venv(2.4.6)는 그대로 두고 새 venv `~/ssd/junyong/b32_submit_20261023/venv_ort125_np244`(Python 3.11.17, `numpy==2.4.4 onnxruntime==1.25.0`)를 만들어 같은 파일·같은 명령으로 실행했다. 실행 직전 `/dev/hailo*`를 연 프로세스 0개, 1분 부하 0.03.
+- 결과: 2.4.6 결과(`out_junyong_agx/`)와 **pred_*.npz 3개의 모든 배열(사진별 예측·cos·정답)이 비트 단위로 같다.** 사진별 top-1이 다른 사진 0장(세 모델 모두), 사진별 cos 차이 최대 0.0. result.json의 데이터셋별 값도 모두 같다(걸린 시간도 118/47/50초로 같음).
+- **ARM 차이는 numpy가 아니라 ORT ARM 커널 차이로 보인다.** (numpy는 출력 정규화·argmax만 하므로 예상과 맞다. ORT 커널 안의 어느 연산이 다른지는 확인하지 않았다.)
 
 ## 실행 명령
 ```bash
