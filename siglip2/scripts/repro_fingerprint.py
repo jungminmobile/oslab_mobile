@@ -56,7 +56,8 @@ def main():
         import cpuinfo
         ci = cpuinfo.get_cpu_info()
         res["cpu"] = ci.get("brand_raw")
-        res["cpu_flags"] = {k: k in ci.get("flags", []) for k in ["avx2", "avx512f", "avx512_vnni", "avx_vnni", "fma"]}
+        have = {f.replace("_", "") for f in ci.get("flags", [])}      # py-cpuinfo는 avx512vnni처럼 밑줄 없이 줌 (10/22 검토: 전에는 VNNI를 false로 잘못 기록)
+        res["cpu_flags"] = {k: k.replace("_", "") in have for k in ["avx2", "avx512f", "avx512_vnni", "avx_vnni", "fma"]}
     except Exception as e:
         res["cpu"] = f"? {e!r}"
     buf = io.StringIO()
