@@ -1,0 +1,18 @@
+E12-3 실행 기록 (실행: Claude, 2026-10-23, 정민 노트북 Core Ultra 7 258V, s2_venv Python 3.11.9 / ORT 1.25.0 / numpy 2.4.4 / onnx 1.23.1 / PIL 12.2.0)
+브랜치 jungmin/e12-runtime (시작 HEAD 9f3a19a). 시작 전 확인: 측정용 python 프로세스 없음(MCP 서버만), 전원 연결(BatteryStatus 2), 전원 구성표 SAMSUNG MODE.
+
+[계획서 명령과 다른 점]
+- 모델 위치: C:\s2art\onnx\e12_3\ (S), C:\s2art\onnx\e12_3\b32\ (F). 두 Release의 SHA256SUMS.txt 이름이 겹쳐 폴더를 나눔. 파일·sha는 계획서와 같음.
+- 스크립트 이름: e12\e12_3_check_env.py, e12\e12_3_profile_ort.py, e12\e12_3_summary.py, e12\run_e12_3.bat (계획서의 check_env.py/profile_ort.py/profile_summary.py에 해당).
+- 입력: pets 원본 사진 대신 pets_dev_x.npy[0] (224 캐시)을 [0,255]로 되돌려 PIL bilinear로 256 → x/127.5-1. 실제 사진 1장이며 시간 측정용.
+- 정수 커널 확인: 처음 probe가 onnx 1.23 기본 IR 14 때문에 모두 실패 → ir_version=9로 고쳐 재실행 (check_env.json은 재실행 값).
+- 무프로파일 기준은 같은 자식 프로세스에서 프로파일 세션과 연달아 실행. 순서는 세션 1·3 = 프로파일 먼저, 세션 2 = 무프로파일 먼저 (2b 세션은 프로파일 먼저).
+
+[실행 명령]
+0) python -u e12\e12_3_check_env.py --S <S> --F <F> --F_sums C:\s2art\onnx\e12_3\b32\SHA256SUMS.txt --out results\E12-3_ORT프로파일\results
+1) 시험: e12_3_profile_ort.py S·F 4T --n 4 --discard 2 --noprof-baseline --session 0 / S 4T·1T --affinity-pcores --session smoke_pin → smoke.jsonl
+2·2b) 처음 e12\run_e12_3.bat로 시작했으나 cmd가 한글 경로를 코드페이지 949로 읽어 즉시 실패(00:30:34, 측정 0건) → bat 삭제, 같은 명령·순서를 e12\run_e12_3.py로 실행 (00:30:59 ~ 00:40:44, 출력 run_stdout.txt)
+3) python e12\e12_3_summary.py --in results\profile.jsonl --affinity results\affinity.jsonl --env results\check_env.json --out results\summary.json
+   summary.py 묶음 정의: GELU 묶음에 Tanh·Pow 추가 (측정 전, 시험 데이터에서 GELU가 분해돼 있음을 보고 추가)
+4) 사후 민감도(사전 등록 아님): python e12\e12_3_overhead_adj.py (같은 인자) --out results\overhead_adj.json
+원본 프로파일 JSON: C:\s2art\e12_3_prof\ (커밋 안 함)

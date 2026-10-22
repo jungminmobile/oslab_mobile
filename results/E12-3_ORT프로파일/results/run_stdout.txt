@@ -1,0 +1,35 @@
+START 2026-10-23T00:30:59
+CMD C:\study\3\2\2026 모바일 학술대회\s2_venv\Scripts\python.exe -u C:\study\3\2\2026 모바일 학술대회\oslab_mobile\e12\e12_3_profile_ort.py --models S=C:\s2art\onnx\e12_3\siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx:C3 F=C:\s2art\onnx\e12_3\b32\siglip2_b32_image_fp32.onnx:C0 --threads 1 2 4 --img 256 --n 120 --discard 20 --noprof-baseline --session 1 --out C:\study\3\2\2026 모바일 학술대회\oslab_mobile\results\E12-3_ORT프로파일\results\profile.jsonl
+S1 #0 S 1T model_run p50=42.48 kernel=40.984 outside=1.598 | wall prof=42.536 noprof=38.652 (11.5s)
+S1 #1 S 2T model_run p50=28.526 kernel=27.079 outside=1.551 | wall prof=28.579 noprof=22.582 (8.4s)
+S1 #2 S 4T model_run p50=22.816 kernel=21.326 outside=1.619 | wall prof=22.872 noprof=16.266 (7.0s)
+S1 #3 F 1T model_run p50=103.616 kernel=102.111 outside=1.444 | wall prof=103.678 noprof=100.991 (26.8s)
+S1 #4 F 2T model_run p50=59.74 kernel=58.262 outside=1.487 | wall prof=59.805 noprof=54.852 (16.5s)
+S1 #5 F 4T model_run p50=39.695 kernel=38.271 outside=1.532 | wall prof=39.79 noprof=33.617 (11.7s)
+SESSION 1 DONE 00:32:23
+CMD C:\study\3\2\2026 모바일 학술대회\s2_venv\Scripts\python.exe -u C:\study\3\2\2026 모바일 학술대회\oslab_mobile\e12\e12_3_profile_ort.py --models F=C:\s2art\onnx\e12_3\b32\siglip2_b32_image_fp32.onnx:C0 S=C:\s2art\onnx\e12_3\siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx:C3 --threads 1 2 4 --img 256 --n 120 --discard 20 --noprof-baseline --session 2 --out C:\study\3\2\2026 모바일 학술대회\oslab_mobile\results\E12-3_ORT프로파일\results\profile.jsonl
+S2 #0 F 1T model_run p50=107.682 kernel=106.117 outside=1.517 | wall prof=107.74 noprof=104.08 (27.8s)
+S2 #1 F 2T model_run p50=59.852 kernel=58.42 outside=1.51 | wall prof=59.913 noprof=54.609 (16.4s)
+S2 #2 F 4T model_run p50=39.635 kernel=38.636 outside=1.559 | wall prof=39.692 noprof=33.432 (11.7s)
+S2 #3 S 1T model_run p50=42.117 kernel=40.677 outside=1.543 | wall prof=42.173 noprof=39.072 (11.5s)
+S2 #4 S 2T model_run p50=28.0 kernel=26.444 outside=1.544 | wall prof=28.058 noprof=22.699 (8.2s)
+S2 #5 S 4T model_run p50=22.816 kernel=21.382 outside=1.637 | wall prof=22.875 noprof=16.235 (7.0s)
+SESSION 2 DONE 00:35:47
+CMD C:\study\3\2\2026 모바일 학술대회\s2_venv\Scripts\python.exe -u C:\study\3\2\2026 모바일 학술대회\oslab_mobile\e12\e12_3_profile_ort.py --models S=C:\s2art\onnx\e12_3\siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx:C3 F=C:\s2art\onnx\e12_3\b32\siglip2_b32_image_fp32.onnx:C0 --threads 4 2 1 --img 256 --n 120 --discard 20 --noprof-baseline --session 3 --out C:\study\3\2\2026 모바일 학술대회\oslab_mobile\results\E12-3_ORT프로파일\results\profile.jsonl
+S3 #0 S 4T model_run p50=22.666 kernel=21.368 outside=1.596 | wall prof=22.727 noprof=16.285 (7.0s)
+S3 #1 S 2T model_run p50=28.526 kernel=27.008 outside=1.544 | wall prof=28.581 noprof=22.648 (8.4s)
+S3 #2 S 1T model_run p50=42.385 kernel=40.907 outside=1.53 | wall prof=42.45 noprof=39.086 (11.5s)
+S3 #3 F 4T model_run p50=39.473 kernel=38.193 outside=1.506 | wall prof=39.575 noprof=33.532 (11.7s)
+S3 #4 F 2T model_run p50=59.785 kernel=58.37 outside=1.489 | wall prof=59.888 noprof=55.26 (16.5s)
+S3 #5 F 1T model_run p50=107.208 kernel=105.596 outside=1.482 | wall prof=107.268 noprof=105.015 (27.9s)
+SESSION 3 DONE 00:39:12
+CMD C:\study\3\2\2026 모바일 학술대회\s2_venv\Scripts\python.exe -u C:\study\3\2\2026 모바일 학술대회\oslab_mobile\e12\e12_3_profile_ort.py --models S=C:\s2art\onnx\e12_3\siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx:C3 --threads 4 --img 256 --n 120 --discard 20 --noprof-baseline --session affinity_none --out C:\study\3\2\2026 모바일 학술대회\oslab_mobile\results\E12-3_ORT프로파일\results\affinity.jsonl
+Saffinity_none #0 S 4T model_run p50=23.078 kernel=21.556 outside=1.625 | wall prof=23.137 noprof=16.426 (7.1s)
+SESSION affinity_none DONE 00:40:21
+CMD C:\study\3\2\2026 모바일 학술대회\s2_venv\Scripts\python.exe -u C:\study\3\2\2026 모바일 학술대회\oslab_mobile\e12\e12_3_profile_ort.py --models S=C:\s2art\onnx\e12_3\siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx:C3 --threads 4 --img 256 --n 120 --discard 20 --noprof-baseline --affinity-pcores --env C:\study\3\2\2026 모바일 학술대회\oslab_mobile\results\E12-3_ORT프로파일\results\check_env.json --session affinity_p4 --out C:\study\3\2\2026 모바일 학술대회\oslab_mobile\results\E12-3_ORT프로파일\results\affinity.jsonl
+Saffinity_p4 #0 S 4T pin model_run p50=24.035 kernel=22.993 outside=1.663 | wall prof=24.091 noprof=16.604 (7.4s)
+SESSION affinity_p4 DONE 00:40:31
+CMD C:\study\3\2\2026 모바일 학술대회\s2_venv\Scripts\python.exe -u C:\study\3\2\2026 모바일 학술대회\oslab_mobile\e12\e12_3_profile_ort.py --models S=C:\s2art\onnx\e12_3\siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx:C3 --threads 1 --img 256 --n 120 --discard 20 --noprof-baseline --affinity-pcores --env C:\study\3\2\2026 모바일 학술대회\oslab_mobile\results\E12-3_ORT프로파일\results\check_env.json --session affinity_p1 --out C:\study\3\2\2026 모바일 학술대회\oslab_mobile\results\E12-3_ORT프로파일\results\affinity.jsonl
+Saffinity_p1 #0 S 1T pin model_run p50=41.98 kernel=40.491 outside=1.513 | wall prof=42.038 noprof=38.535 (11.4s)
+SESSION affinity_p1 DONE 00:40:44
+ALL_DONE 2026-10-23T00:40:44
