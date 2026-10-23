@@ -1,0 +1,772 @@
+{
+ "b16_orig": {
+  "act": {
+   "min": 0.28,
+   "mean": 31.18,
+   "low5": [
+    [
+     0.28,
+     "b9:mlp/fc2"
+    ],
+    [
+     7.92,
+     "b10:mlp/fc2"
+    ],
+    [
+     10.68,
+     "b5:mlp/fc2"
+    ],
+    [
+     13.72,
+     "b11:mlp/fc2"
+    ],
+    [
+     19.52,
+     "b10:MatMul_1"
+    ]
+   ]
+  },
+  "w": {
+   "min": 30.98,
+   "mean": 37.69,
+   "low5": [
+    [
+     30.98,
+     "b10:mlp/fc2"
+    ],
+    [
+     31.88,
+     "b9:mlp/fc2"
+    ],
+    [
+     33.38,
+     "b2:mlp/fc2"
+    ],
+    [
+     33.41,
+     "b4:mlp/fc2"
+    ],
+    [
+     33.57,
+     "b3:mlp/fc2"
+    ]
+   ]
+  },
+  "both": {
+   "min": 0.28,
+   "mean": 30.35,
+   "low5": [
+    [
+     0.28,
+     "b9:mlp/fc2"
+    ],
+    [
+     7.91,
+     "b10:mlp/fc2"
+    ],
+    [
+     10.66,
+     "b5:mlp/fc2"
+    ],
+    [
+     13.66,
+     "b11:mlp/fc2"
+    ],
+    [
+     19.52,
+     "b10:MatMul_1"
+    ]
+   ]
+  },
+  "full": {
+   "min": 0.09,
+   "mean": 27.85,
+   "low5": [
+    [
+     0.09,
+     "b9:mlp/fc2"
+    ],
+    [
+     6.88,
+     "b10:mlp/fc2"
+    ],
+    [
+     10.4,
+     "b5:mlp/fc2"
+    ],
+    [
+     10.43,
+     "b11:mlp/fc2"
+    ],
+    [
+     14.22,
+     "b5:mlp/fc1"
+    ]
+   ]
+  },
+  "matmul_in_int8": 79,
+  "matmul_matched": 79,
+  "name_mismatch": 0,
+  "out_requant_n": 79
+ },
+ "b16_rot": {
+  "act": {
+   "min": 0.28,
+   "mean": 34.94,
+   "low5": [
+    [
+     0.28,
+     "b9:mlp/fc2"
+    ],
+    [
+     7.93,
+     "b10:mlp/fc2"
+    ],
+    [
+     10.68,
+     "b5:mlp/fc2"
+    ],
+    [
+     13.72,
+     "b11:mlp/fc2"
+    ],
+    [
+     19.52,
+     "b10:MatMul_1"
+    ]
+   ]
+  },
+  "w": {
+   "min": 28.36,
+   "mean": 38.07,
+   "low5": [
+    [
+     28.36,
+     "b0:mlp/fc1"
+    ],
+    [
+     31.04,
+     "b10:mlp/fc2"
+    ],
+    [
+     31.88,
+     "b9:mlp/fc2"
+    ],
+    [
+     33.8,
+     "b11:mlp/fc2"
+    ],
+    [
+     34.44,
+     "b0:mlp/fc2"
+    ]
+   ]
+  },
+  "both": {
+   "min": 0.28,
+   "mean": 32.7,
+   "low5": [
+    [
+     0.28,
+     "b9:mlp/fc2"
+    ],
+    [
+     7.91,
+     "b10:mlp/fc2"
+    ],
+    [
+     10.68,
+     "b5:mlp/fc2"
+    ],
+    [
+     13.68,
+     "b11:mlp/fc2"
+    ],
+    [
+     19.52,
+     "b10:MatMul_1"
+    ]
+   ]
+  },
+  "full": {
+   "min": 0.26,
+   "mean": 29.82,
+   "low5": [
+    [
+     0.26,
+     "b9:mlp/fc2"
+    ],
+    [
+     7.88,
+     "b10:mlp/fc2"
+    ],
+    [
+     9.59,
+     "b9:mlp/fc1"
+    ],
+    [
+     10.45,
+     "b5:mlp/fc2"
+    ],
+    [
+     13.55,
+     "b11:mlp/fc2"
+    ]
+   ]
+  },
+  "matmul_in_int8": 79,
+  "matmul_matched": 79,
+  "name_mismatch": 0,
+  "out_requant_n": 79
+ },
+ "b16_m2": {
+  "act": {
+   "min": 18.36,
+   "mean": 32.32,
+   "low5": [
+    [
+     18.36,
+     "m:mlp/fc2_6"
+    ],
+    [
+     19.51,
+     "other:trunk"
+    ],
+    [
+     20.37,
+     "other:trunk"
+    ],
+    [
+     20.7,
+     "other:trunk"
+    ],
+    [
+     21.68,
+     "m:mlp/fc2"
+    ]
+   ]
+  },
+  "w": {
+   "min": 31.29,
+   "mean": 37.6,
+   "low5": [
+    [
+     31.29,
+     "m:mlp/fc2_5"
+    ],
+    [
+     33.28,
+     "m:mlp/fc2_6"
+    ],
+    [
+     33.38,
+     "b2:mlp/fc2"
+    ],
+    [
+     33.41,
+     "b4:mlp/fc2"
+    ],
+    [
+     33.57,
+     "b3:mlp/fc2"
+    ]
+   ]
+  },
+  "both": {
+   "min": 18.19,
+   "mean": 31.33,
+   "low5": [
+    [
+     18.19,
+     "m:mlp/fc2_6"
+    ],
+    [
+     19.51,
+     "other:trunk"
+    ],
+    [
+     20.37,
+     "other:trunk"
+    ],
+    [
+     20.7,
+     "other:trunk"
+    ],
+    [
+     21.43,
+     "m:mlp/fc2"
+    ]
+   ]
+  },
+  "full": {
+   "min": 12.92,
+   "mean": 28.94,
+   "low5": [
+    [
+     12.92,
+     "m:mlp/fc2"
+    ],
+    [
+     15.13,
+     "m:mlp/fc2_6"
+    ],
+    [
+     17.54,
+     "m:mlp/fc2_1"
+    ],
+    [
+     19.28,
+     "other:trunk"
+    ],
+    [
+     20.14,
+     "other:trunk"
+    ]
+   ]
+  },
+  "matmul_in_int8": 79,
+  "matmul_matched": 79,
+  "name_mismatch": 0,
+  "out_requant_n": 79
+ },
+ "b16_m2rot_a1": {
+  "act": {
+   "min": 18.36,
+   "mean": 35.9,
+   "low5": [
+    [
+     18.36,
+     "m:mlp/fc2_6"
+    ],
+    [
+     19.51,
+     "other:trunk"
+    ],
+    [
+     20.37,
+     "other:trunk"
+    ],
+    [
+     20.7,
+     "other:trunk"
+    ],
+    [
+     21.68,
+     "m:mlp/fc2"
+    ]
+   ]
+  },
+  "w": {
+   "min": 28.36,
+   "mean": 37.98,
+   "low5": [
+    [
+     28.36,
+     "b0:mlp/fc1"
+    ],
+    [
+     31.36,
+     "m:mlp/fc2_5"
+    ],
+    [
+     33.36,
+     "m:mlp/fc2_6"
+    ],
+    [
+     33.71,
+     "m:mlp/fc2_4"
+    ],
+    [
+     34.44,
+     "b0:mlp/fc2"
+    ]
+   ]
+  },
+  "both": {
+   "min": 18.23,
+   "mean": 33.52,
+   "low5": [
+    [
+     18.23,
+     "m:mlp/fc2_6"
+    ],
+    [
+     19.51,
+     "other:trunk"
+    ],
+    [
+     20.37,
+     "other:trunk"
+    ],
+    [
+     20.7,
+     "other:trunk"
+    ],
+    [
+     21.52,
+     "m:mlp/fc2"
+    ]
+   ]
+  },
+  "full": {
+   "min": 18.07,
+   "mean": 30.99,
+   "low5": [
+    [
+     18.07,
+     "m:mlp/fc2_6"
+    ],
+    [
+     19.28,
+     "other:trunk"
+    ],
+    [
+     20.14,
+     "other:trunk"
+    ],
+    [
+     20.35,
+     "m:mlp/fc2"
+    ],
+    [
+     20.39,
+     "other:trunk"
+    ]
+   ]
+  },
+  "matmul_in_int8": 79,
+  "matmul_matched": 79,
+  "name_mismatch": 0,
+  "out_requant_n": 79
+ },
+ "b16_m2rot_ort": {
+  "act": {
+   "min": 18.36,
+   "mean": 35.9,
+   "low5": [
+    [
+     18.36,
+     "m:mlp/fc2_6"
+    ],
+    [
+     19.51,
+     "other:trunk"
+    ],
+    [
+     20.37,
+     "other:trunk"
+    ],
+    [
+     20.7,
+     "other:trunk"
+    ],
+    [
+     21.68,
+     "m:mlp/fc2"
+    ]
+   ]
+  },
+  "w": {
+   "min": 28.36,
+   "mean": 37.98,
+   "low5": [
+    [
+     28.36,
+     "b0:mlp/fc1"
+    ],
+    [
+     31.36,
+     "m:mlp/fc2_5"
+    ],
+    [
+     33.36,
+     "m:mlp/fc2_6"
+    ],
+    [
+     33.71,
+     "m:mlp/fc2_4"
+    ],
+    [
+     34.44,
+     "b0:mlp/fc2"
+    ]
+   ]
+  },
+  "both": {
+   "min": 18.23,
+   "mean": 33.52,
+   "low5": [
+    [
+     18.23,
+     "m:mlp/fc2_6"
+    ],
+    [
+     19.51,
+     "other:trunk"
+    ],
+    [
+     20.37,
+     "other:trunk"
+    ],
+    [
+     20.7,
+     "other:trunk"
+    ],
+    [
+     21.52,
+     "m:mlp/fc2"
+    ]
+   ]
+  },
+  "full": {
+   "min": 18.07,
+   "mean": 30.99,
+   "low5": [
+    [
+     18.07,
+     "m:mlp/fc2_6"
+    ],
+    [
+     19.28,
+     "other:trunk"
+    ],
+    [
+     20.14,
+     "other:trunk"
+    ],
+    [
+     20.35,
+     "m:mlp/fc2"
+    ],
+    [
+     20.39,
+     "other:trunk"
+    ]
+   ]
+  },
+  "matmul_in_int8": 79,
+  "matmul_matched": 79,
+  "name_mismatch": 0,
+  "out_requant_n": 79
+ },
+ "b16_oab": {
+  "act": {
+   "min": 18.36,
+   "mean": 35.9,
+   "low5": [
+    [
+     18.36,
+     "m:mlp/fc2_6"
+    ],
+    [
+     19.51,
+     "other:trunk"
+    ],
+    [
+     20.37,
+     "other:trunk"
+    ],
+    [
+     20.7,
+     "other:trunk"
+    ],
+    [
+     21.68,
+     "m:mlp/fc2"
+    ]
+   ]
+  },
+  "w": {
+   "min": 28.36,
+   "mean": 37.98,
+   "low5": [
+    [
+     28.36,
+     "b0:mlp/fc1"
+    ],
+    [
+     31.36,
+     "m:mlp/fc2_5"
+    ],
+    [
+     33.36,
+     "m:mlp/fc2_6"
+    ],
+    [
+     33.71,
+     "m:mlp/fc2_4"
+    ],
+    [
+     34.44,
+     "b0:mlp/fc2"
+    ]
+   ]
+  },
+  "both": {
+   "min": 18.23,
+   "mean": 33.52,
+   "low5": [
+    [
+     18.23,
+     "m:mlp/fc2_6"
+    ],
+    [
+     19.51,
+     "other:trunk"
+    ],
+    [
+     20.37,
+     "other:trunk"
+    ],
+    [
+     20.7,
+     "other:trunk"
+    ],
+    [
+     21.52,
+     "m:mlp/fc2"
+    ]
+   ]
+  },
+  "full": {
+   "min": 18.23,
+   "mean": 33.52,
+   "low5": [
+    [
+     18.23,
+     "m:mlp/fc2_6"
+    ],
+    [
+     19.51,
+     "other:trunk"
+    ],
+    [
+     20.37,
+     "other:trunk"
+    ],
+    [
+     20.7,
+     "other:trunk"
+    ],
+    [
+     21.52,
+     "m:mlp/fc2"
+    ]
+   ]
+  },
+  "matmul_in_int8": 79,
+  "matmul_matched": 79,
+  "name_mismatch": 0,
+  "out_requant_n": 0
+ },
+ "b16_r0": {
+  "act": {
+   "min": 7.92,
+   "mean": 31.85,
+   "low5": [
+    [
+     7.92,
+     "b10:mlp/fc2"
+    ],
+    [
+     13.72,
+     "b11:mlp/fc2"
+    ],
+    [
+     19.52,
+     "b10:MatMul_1"
+    ],
+    [
+     20.11,
+     "b11:MatMul_1"
+    ],
+    [
+     20.66,
+     "b9:MatMul_1"
+    ]
+   ]
+  },
+  "w": {
+   "min": 30.98,
+   "mean": 37.75,
+   "low5": [
+    [
+     30.98,
+     "b10:mlp/fc2"
+    ],
+    [
+     33.38,
+     "b2:mlp/fc2"
+    ],
+    [
+     33.41,
+     "b4:mlp/fc2"
+    ],
+    [
+     33.57,
+     "b3:mlp/fc2"
+    ],
+    [
+     33.72,
+     "b0:mlp/fc2"
+    ]
+   ]
+  },
+  "both": {
+   "min": 7.91,
+   "mean": 31.0,
+   "low5": [
+    [
+     7.91,
+     "b10:mlp/fc2"
+    ],
+    [
+     13.66,
+     "b11:mlp/fc2"
+    ],
+    [
+     19.52,
+     "b10:MatMul_1"
+    ],
+    [
+     20.11,
+     "b11:MatMul_1"
+    ],
+    [
+     20.66,
+     "b9:MatMul_1"
+    ]
+   ]
+  },
+  "full": {
+   "min": 6.88,
+   "mean": 28.43,
+   "low5": [
+    [
+     6.88,
+     "b10:mlp/fc2"
+    ],
+    [
+     10.43,
+     "b11:mlp/fc2"
+    ],
+    [
+     14.22,
+     "b5:mlp/fc1"
+    ],
+    [
+     16.9,
+     "b9:mlp/fc1"
+    ],
+    [
+     17.56,
+     "b6:mlp/fc2"
+    ]
+   ]
+  },
+  "matmul_in_int8": 77,
+  "matmul_matched": 77,
+  "name_mismatch": 0,
+  "out_requant_n": 77
+ }
+}

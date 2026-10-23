@@ -1,0 +1,103 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'SigLIP2 B32 cool latency (needs idle PC)', 'since': '2026-10-23T03:38:38', 'host': '쭌놋북', 'pid': 12024}
+03:39:17 gate cpu30s=7% (B16 FP32 probe) probe t=4 median=169.3 ms  p10=132.3  freq=2803MHz
+{"date": "2026-10-23T03:39:17", "platform": "Windows-10-10.0.26300-SP0", "python": "3.11.9", "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel", "ort": "1.25.0", "numpy": "2.4.4", "logical_cores": 8, "cpu_name": "11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz", "power_scheme": "전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)", "battery": "plugged=True batt=100%"}
+session 1 t=1 load=5.0% b32_fp32=122.00  b32_m2rot=52.63  b32_oab=48.82
+session 1 t=2 load=5.1% b32_fp32=101.59  b32_m2rot=50.09  b32_oab=42.74
+session 1 t=4 load=6.6% b32_fp32=83.21  b32_m2rot=42.08  b32_oab=36.71
+session 2 t=1 load=6.9% b32_fp32=126.55  b32_m2rot=58.06  b32_oab=49.72
+session 2 t=2 load=7.4% b32_fp32=97.70  b32_m2rot=46.65  b32_oab=43.28
+session 2 t=4 load=6.3% b32_fp32=83.16  b32_m2rot=42.80  b32_oab=36.64
+session 3 t=1 load=4.5% b32_fp32=127.38  b32_m2rot=53.23  b32_oab=49.55
+session 3 t=2 load=4.6% b32_fp32=97.32  b32_m2rot=45.20  b32_oab=40.41
+session 3 t=4 load=5.2% b32_fp32=82.48  b32_m2rot=41.29  b32_oab=35.94
+{
+ "summary": {
+  "b32_fp32": {
+   "1": {
+    "median_ms": 126.55,
+    "fps_b1": 7.9,
+    "p50_ms": 124.83,
+    "p95_ms": 142.28
+   },
+   "2": {
+    "median_ms": 97.7,
+    "fps_b1": 10.23,
+    "p50_ms": 96.7,
+    "p95_ms": 129.18
+   },
+   "4": {
+    "median_ms": 83.16,
+    "fps_b1": 12.03,
+    "p50_ms": 84.07,
+    "p95_ms": 93.3
+   }
+  },
+  "b32_m2rot": {
+   "1": {
+    "median_ms": 53.23,
+    "fps_b1": 18.79,
+    "p50_ms": 52.31,
+    "p95_ms": 63.72,
+    "vs_fp32_pct": -57.9
+   },
+   "2": {
+    "median_ms": 46.65,
+    "fps_b1": 21.44,
+    "p50_ms": 45.55,
+    "p95_ms": 61.98,
+    "vs_fp32_pct": -52.3
+   },
+   "4": {
+    "median_ms": 42.08,
+    "fps_b1": 23.76,
+    "p50_ms": 42.53,
+    "p95_ms": 46.21,
+    "vs_fp32_pct": -49.4
+   }
+  },
+  "b32_oab": {
+   "1": {
+    "median_ms": 49.55,
+    "fps_b1": 20.18,
+    "p50_ms": 48.75,
+    "p95_ms": 56.04,
+    "vs_fp32_pct": -60.8
+   },
+   "2": {
+    "median_ms": 42.74,
+    "fps_b1": 23.39,
+    "p50_ms": 42.01,
+    "p95_ms": 56.41,
+    "vs_fp32_pct": -56.3
+   },
+   "4": {
+    "median_ms": 36.64,
+    "fps_b1": 27.29,
+    "p50_ms": 36.66,
+    "p95_ms": 40.33,
+    "vs_fp32_pct": -55.9
+   }
+  }
+ },
+ "peak_mem": {
+  "b32_fp32": {
+   "rss_before_MiB": 46.8,
+   "after_load_MiB": 422.6,
+   "peak_sampled_MiB": 428.5,
+   "peak_wset_MiB": 453.7
+  },
+  "b32_m2rot": {
+   "rss_before_MiB": 46.9,
+   "after_load_MiB": 166.3,
+   "peak_sampled_MiB": 180.2,
+   "peak_wset_MiB": 195.1
+  },
+  "b32_oab": {
+   "rss_before_MiB": 47.1,
+   "after_load_MiB": 164.5,
+   "peak_sampled_MiB": 178.5,
+   "peak_wset_MiB": 193.3
+  }
+ }
+}
+RELEASED

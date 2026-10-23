@@ -1,0 +1,9 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'SigLIP2 B32 cool profile (needs idle PC)', 'since': '2026-10-23T03:58:23', 'host': '쭌놋북', 'pid': 16600}
+03:59:02 gate cpu30s=6% (B16 FP32 probe) probe t=4 median=166.6 ms  p10=129.7  freq=2803MHz
+t=1 FP32       wall   122.0 ms  kernel   120.1 ms  float_matmul=102.21  Add=4.13  LayerNormalization=4.09  Mul=3.41  Conv=2.7  Transpose=0.85
+t=1 M2rot      wall    57.1 ms  kernel    54.5 ms  int_matmul=31.33  Mul=4.82  Add=4.03  qdq=3.14  Conv=2.88  LayerNormalization=2.47
+t=1 OAB        wall    55.4 ms  kernel    53.3 ms  int_matmul=32.59  Mul=5.22  Add=3.48  Conv=3.04  SkipLayerNormalization=2.83  qdq=1.9
+t=4 FP32       wall    93.1 ms  kernel    90.1 ms  float_matmul=68.45  Add=5.58  Mul=3.4  Transpose=2.51  LayerNormalization=2.01  Conv=1.9
+t=4 M2rot      wall    61.7 ms  kernel    57.8 ms  int_matmul=22.79  qdq=6.75  Add=6.05  Mul=5.91  QLinearSoftmax=3.49  Transpose=2.14
+t=4 OAB        wall    52.4 ms  kernel    49.3 ms  int_matmul=22.94  Mul=6.03  Add=4.14  qdq=3.88  SkipLayerNormalization=2.37  Transpose=2.22
+RELEASED
