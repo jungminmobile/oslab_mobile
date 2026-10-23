@@ -114,13 +114,13 @@ def cmd_eval(a, out, models):
         r = Runner(hef, float_io=True)
         H = r.in_shape[0]
         assert r.in_shape == (H, H, 3) and H in (224, 256), r.in_shape
-        dd = Path(a.data) / f"dev_zoo{H}"
+        dd = Path(a.data) / (a.subdir or f"dev_zoo{H}")      # --subdir (B32 HEF test, 기본 꺼짐 = dev_zoo<H>)
         pix = r.pixel_domain()
         embs = {}
         for d in (a.sets.split(",") if a.sets else SETS):     # --sets (G6d, 기본 전부): 데이터셋을 나눠 사이에 냉각
             x = np.load(dd / f"{d}_pix.npy", mmap_mode="r")
-            if a.k:
-                x = x[: a.k]
+            if a.k or a.start:                                # --start (B32 HEF test, 기본 0): 앞 start장 건너뜀 (덩어리 eval)
+                x = x[a.start: a.start + a.k if a.k else None]
             assert x.dtype == np.uint8 and x.shape[1:] == (H, H, 3), (d, x.shape)
             e = []
             for i in range(len(x)):
@@ -131,7 +131,7 @@ def cmd_eval(a, out, models):
             print(name, d, embs[f"{d}_emb"].shape, f"{time.time() - t0:.0f}s", flush=True)
         res["models"][name] = {"input_domain": "pixel_0_255" if pix else "normalized", "hef": Path(hef).name, "hef_sha256": sha256(hef),
                                "in_shape": r.in_shape, "out_shape": r.out_shape, "quant_in": r.qin, "quant_out": r.qout,
-                               "data": str(dd), "k": a.k, "sec": round(time.time() - t0)}
+                               "data": str(dd), "k": a.k, **({"start": a.start} if a.start else {}), "sec": round(time.time() - t0)}
         r.close()
         np.savez_compressed(out / f"emb_{name}.npz", **embs)
     (out / "eval_info.json").write_text(json.dumps(res, ensure_ascii=False, indent=1))
@@ -177,6 +177,8 @@ def main():
     ap.add_argument("--models", nargs="+", required=True, help="이름=HEF 경로")
     ap.add_argument("--k", type=int, default=0, help="eval: 데이터셋마다 앞 k장 (0 = 전부)")
     ap.add_argument("--sets", default="", help="(G6d, 기본 전부) eval: 쉼표로 고른 데이터셋만")
+    ap.add_argument("--start", type=int, default=0, help="(B32 HEF test, 기본 0) eval: 데이터셋마다 앞 start장 건너뜀 (--k와 함께 덩어리)")
+    ap.add_argument("--subdir", default="", help="(B32 HEF test, 기본 꺼짐) eval: --data 아래 읽을 폴더 (예: test_zoo256). 비우면 dev_zoo<H>")
     ap.add_argument("--batch", type=int, default=1)
     ap.add_argument("--warmup", type=int, default=20)
     ap.add_argument("--n", type=int, default=200)

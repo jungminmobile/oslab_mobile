@@ -137,3 +137,13 @@
 
 ### B-6. 결과 위치
 `B_test/` (data_list.json, fp32 기준 요약, chip eval_info·온도 로그, test_summary.json). 큰 파일(픽셀·임베딩)은 `~/siglip2_work/b32t/`와 AGX에 두고 커밋하지 않는다 (사진별 예측 npz는 작으면 커밋).
+
+### B-7. 사후 변경 (test 실칩 전, 결과 전 — 2026-10-24)
+1. **덩어리 eval + 덩어리마다 냉각 (B-4 보강, 안전 목적):** 감시 점검(dev pets·cars·food 전체 2,942장, GF) 중 칩이 1분 만에 76 °C까지 올랐다. 과거 긴 연속 eval(G6/G6d, 5,900장)은 94~96 °C까지 갔다. 데이터셋 단위로만 식히면 Food(25,250장, 약 23분 연속)에서 95 °C 중단이 거의 확실하다. 그래서 **데이터셋마다 2,000장 덩어리로 나눠** 덩어리마다 다른 Hailo 작업 확인·64.6 °C 미만 냉각을 하고, 끝나면 이어 붙인다. 실칩 출력은 결정적이고(덩어리·순서와 무관) 아래 점검으로 확인했으므로 결과 값은 바뀌지 않는다.
+   - `g6_hailo_chip.py eval --start`(기본 0 = 기존과 같음; 0이면 `eval_info.json`에 키도 추가하지 않음)를 추가했다.
+2. **감시 점검 결과 (dev만, test 아님):**
+   - ① 200장(pets_dev): G6f GF eval 임베딩과 비트 동일. 그런데 eval이 4초라 온도 읽기와 겹치지 않아 감시 점검으로는 무효 → ② 다시 함.
+   - ② pets·cars·food dev 전체 2,942장(약 55초): 실행 중 온도 읽기 3회(64.2 → 71.0 → 76.0 °C), 읽기 오류 0, **G6d G dev 전체 임베딩과 비트 동일**(GF = G).
+   - ③ 덩어리 경로(`--start 0/500 --k 500`, pets_dev 990장): 이어 붙인 것이 G 임베딩과 비트 동일.
+3. **사진 대조 결과 (B-2, 실칩 전):** `B_test/data_check.json` **all_ok = true**. 7종 모두 장수·클래스 수·템플릿 수와 FP32 ONNX top-1·top-5가 준혁 `test.jsonl`과 소수 둘째 자리까지 같고, ImageNetV2 tar sha256 = `f0c37fdf…`. ImageNetV2 tar는 이 PC에 없어 HF `vaishaal/ImageNetV2`의 `imagenetv2-matched-frequency.tar.gz`(실제로는 압축 안 된 tar)를 받아 sha256을 대조했다. 데이터 준비 커밋 `f187204`, 코드 `~/oslab_b32p` `3356672`(siglip2 코드 = g8-candidates `092a4ab`), 모두 dirty 아님.
+   - ImageNetV2 FP32 top-1은 `topk_metrics`(argsort) 65.83 = 준혁, argmax로는 65.85 (G6_test에 적힌 같은 이름 클래스 동점 문제). B-5 요약은 세 모델 모두 argmax로 계산한다.

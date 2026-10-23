@@ -1,0 +1,171 @@
+{
+ "all_ok": true,
+ "sets": {
+  "pets": {
+   "ok": true,
+   "n": {
+    "mine": 3669,
+    "junhyuk": 3669
+   },
+   "classes": {
+    "mine": 37,
+    "junhyuk": 37
+   },
+   "n_templates": {
+    "mine": 1,
+    "junhyuk": 1
+   },
+   "fp32_top1": {
+    "mine": 93.54,
+    "junhyuk": 93.54
+   },
+   "fp32_top5": {
+    "mine": 99.81,
+    "junhyuk": 99.81
+   }
+  },
+  "caltech": {
+   "ok": true,
+   "n": {
+    "mine": 6084,
+    "junhyuk": 6084
+   },
+   "classes": {
+    "mine": 102,
+    "junhyuk": 102
+   },
+   "n_templates": {
+    "mine": 34,
+    "junhyuk": 34
+   },
+   "fp32_top1": {
+    "mine": 84.81,
+    "junhyuk": 84.81
+   },
+   "fp32_top5": {
+    "mine": 94.84,
+    "junhyuk": 94.84
+   }
+  },
+  "flowers": {
+   "ok": true,
+   "n": {
+    "mine": 6149,
+    "junhyuk": 6149
+   },
+   "classes": {
+    "mine": 102,
+    "junhyuk": 102
+   },
+   "n_templates": {
+    "mine": 1,
+    "junhyuk": 1
+   },
+   "fp32_top1": {
+    "mine": 84.49,
+    "junhyuk": 84.49
+   },
+   "fp32_top5": {
+    "mine": 94.39,
+    "junhyuk": 94.39
+   }
+  },
+  "cars": {
+   "ok": true,
+   "n": {
+    "mine": 8041,
+    "junhyuk": 8041
+   },
+   "classes": {
+    "mine": 196,
+    "junhyuk": 196
+   },
+   "n_templates": {
+    "mine": 8,
+    "junhyuk": 8
+   },
+   "fp32_top1": {
+    "mine": 90.8,
+    "junhyuk": 90.8
+   },
+   "fp32_top5": {
+    "mine": 99.65,
+    "junhyuk": 99.65
+   }
+  },
+  "food": {
+   "ok": true,
+   "n": {
+    "mine": 25250,
+    "junhyuk": 25250
+   },
+   "classes": {
+    "mine": 101,
+    "junhyuk": 101
+   },
+   "n_templates": {
+    "mine": 1,
+    "junhyuk": 1
+   },
+   "fp32_top1": {
+    "mine": 88.9,
+    "junhyuk": 88.9
+   },
+   "fp32_top5": {
+    "mine": 98.35,
+    "junhyuk": 98.35
+   }
+  },
+  "cifar_test": {
+   "ok": true,
+   "n": {
+    "mine": 10000,
+    "junhyuk": 10000
+   },
+   "classes": {
+    "mine": 100,
+    "junhyuk": 100
+   },
+   "n_templates": {
+    "mine": 18,
+    "junhyuk": 18
+   },
+   "fp32_top1": {
+    "mine": 76.05,
+    "junhyuk": 76.05
+   },
+   "fp32_top5": {
+    "mine": 93.21,
+    "junhyuk": 93.21
+   }
+  },
+  "imagenetv2": {
+   "ok": true,
+   "n": {
+    "mine": 10000,
+    "junhyuk": 10000
+   },
+   "classes": {
+    "mine": 1000,
+    "junhyuk": 1000
+   },
+   "n_templates": {
+    "mine": 7,
+    "junhyuk": 7
+   },
+   "fp32_top1": {
+    "mine": 65.83,
+    "junhyuk": 65.83
+   },
+   "fp32_top5": {
+    "mine": 88.94,
+    "junhyuk": 88.94
+   },
+   "tar_sha256": {
+    "mine": "f0c37fdf925916b19ea1323cd9a2208cdb6959ba2c32eef2a7fc393835c9ca7c",
+    "junhyuk": "f0c37fdf925916b19ea1323cd9a2208cdb6959ba2c32eef2a7fc393835c9ca7c"
+   }
+  }
+ },
+ "ref": "/home/junyong/siglip2_work/b32t/junhyuk_test.jsonl"
+}
