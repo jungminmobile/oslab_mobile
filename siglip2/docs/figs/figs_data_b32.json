@@ -1,0 +1,153 @@
+{
+ "F3b": {
+  "pct_vs_fp32": {
+   "10/22 낮 (8모델 같은 실행)": {
+    "크기": -72.8,
+    "피크 메모리": -57.5,
+    "지연 1T": -63.8,
+    "지연 2T": -57.8,
+    "지연 4T": -56.9
+   },
+   "10/22 저녁 (연속 실행 발열)": {
+    "크기": -72.8,
+    "피크 메모리": -57.5,
+    "지연 1T": -60.2,
+    "지연 2T": -58.2,
+    "지연 4T": -56.9
+   },
+   "10/23 새벽 (PC 쉬는 중)": {
+    "크기": -72.8,
+    "피크 메모리": -57.4,
+    "지연 1T": -60.7,
+    "지연 2T": -57.9,
+    "지연 4T": -55.9
+   }
+  },
+  "source": [
+   "results\\siglip2\\G8_candidates\\latency_this_pc\\all8_20261022\\cross_latency.json",
+   "results\\siglip2\\G8_candidates\\latency_this_pc\\b32_submit_20261022\\cross_latency.json",
+   "results\\siglip2\\G8_candidates\\latency_this_pc\\b32_cool_20261023\\cross_latency.json"
+  ]
+ },
+ "F4b": [
+  {
+   "name": "B/32 원래",
+   "min_snr_db": 0.79,
+   "mean_snr_db": 28.53,
+   "dev_dtop1": -60.96
+  },
+  {
+   "name": "B/32 회전만",
+   "min_snr_db": 0.96,
+   "mean_snr_db": 30.59,
+   "dev_dtop1": -54.52
+  },
+  {
+   "name": "B/32 M2만",
+   "min_snr_db": 14.89,
+   "mean_snr_db": 29.49,
+   "dev_dtop1": -1.58
+  },
+  {
+   "name": "B/32 회전+M2",
+   "min_snr_db": 20.54,
+   "mean_snr_db": 31.56,
+   "dev_dtop1": -0.79
+  },
+  {
+   "name": "B/32 예전 방식(R0)",
+   "min_snr_db": 13.06,
+   "mean_snr_db": 29.04,
+   "dev_dtop1": -2.36
+  },
+  {
+   "name": "B/16 원래",
+   "min_snr_db": 0.09,
+   "mean_snr_db": 27.85,
+   "dev_dtop1": -63.49
+  },
+  {
+   "name": "B/16 회전만",
+   "min_snr_db": 0.26,
+   "mean_snr_db": 29.82,
+   "dev_dtop1": -48.97
+  },
+  {
+   "name": "B/16 M2만",
+   "min_snr_db": 12.92,
+   "mean_snr_db": 28.94,
+   "dev_dtop1": -0.62
+  },
+  {
+   "name": "B/16 회전+M2",
+   "min_snr_db": 18.07,
+   "mean_snr_db": 30.99,
+   "dev_dtop1": -0.23
+  },
+  {
+   "name": "B/16 O-AB",
+   "min_snr_db": 18.23,
+   "mean_snr_db": 33.52,
+   "dev_dtop1": -0.18
+  },
+  {
+   "name": "B/16 예전 방식(R0)",
+   "min_snr_db": 6.88,
+   "mean_snr_db": 28.43,
+   "dev_dtop1": -0.78
+  }
+ ],
+ "F5": {
+  "points": [
+   {
+    "hef": "b32_Z",
+    "b1_ms": 16.494,
+    "b1_vs_Z_pct": 0.0,
+    "dev_dtop1": -4.22,
+    "ci95": [
+     -4.95,
+     -3.45
+    ],
+    "note": ""
+   },
+   {
+    "hef": "b32_G",
+    "b1_ms": 15.63,
+    "b1_vs_Z_pct": -5.23,
+    "dev_dtop1": -1.55,
+    "ci95": [
+     -2.09,
+     -1.03
+    ],
+    "note": ""
+   },
+   {
+    "hef": "b32_GF",
+    "b1_ms": 14.931,
+    "b1_vs_Z_pct": -9.48,
+    "dev_dtop1": -1.55,
+    "ci95": [
+     -2.09,
+     -1.03
+    ],
+    "note": "= G (비트 동일)"
+   },
+   {
+    "hef": "b32_ALL8F",
+    "b1_ms": 13.384,
+    "b1_vs_Z_pct": -18.85,
+    "dev_dtop1": -2.42,
+    "ci95": [
+     -3.04,
+     -1.77
+    ],
+    "note": ""
+   }
+  ],
+  "source": [
+   "origin/siglip2/g6f-ceiling:results/siglip2/G6f/results_speed.jsonl (같은 세션)",
+   "origin/siglip2/g6f-ceiling:results/siglip2/G6f/results_devfull.jsonl",
+   "origin/siglip2/g6e-b16-g:results/siglip2/G6b/results_chip.jsonl (Z)"
+  ]
+ }
+}
