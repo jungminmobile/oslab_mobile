@@ -23,7 +23,7 @@
  팀명·학번·준용 성명·대표 연락처·제출일 / 저장소 공개 방법 / prelim-submit 태그 / 최종 제출 Release 태그 / 모델 라이선스 /
  B/32 HEF의 호스트 실행 층 0개 문구 / 본선 Pi HailoRT 버전 / 실칩 결과를 예선 보고서에 넣어도 되는지(학술부) /
  채점 PC·실행 방식(onnxruntime 사용 여부, 학술부 6번) / 다른 PC(VNNI 없는 x86·ARM) 재현 결과(정민·준용) /
- siglip2/README.md B/32 갱신 / 새 환경에서 9장 B/32 명령 그대로 실행 확인 /
+ 새 환경에서 9장 B/32 명령 그대로 실행 확인 /
  디스크 필요량(B/32 기준) / 참고문헌 5번 채택·9~17 서지 확인 (본선 HEF·O-A Hailo 대응은 미정 사항으로 본문 3.3·7.1·7.2에 적음)
 
 [불확실했던 점]
@@ -402,7 +402,7 @@
 | 4 | 모델 포맷 및 버전 정보 명시 | ONNX opset 17 + `com.microsoft` 1(SkipLayerNormalization). 입력 `image` float32 N×3×256×256(전처리 후), 출력 `embedding` 768차원. onnxruntime 1.25.0 CPU, `ORT_ENABLE_ALL` | □ |
 | 5 | 벤치마크 실행 스크립트 | `siglip2/scripts/portable_eval.py`(소규모 묶음), `siglip2/s2_paired_ci.py`(dev), `siglip2/s2_test_eval.py`·`s2_test_summary.py`(test), `siglip2/scripts/cross_latency.py`(지연·메모리), `siglip2/s2_model_stats.py`(크기·파라미터·GFLOPs) | □ |
 | 6 | 의존성 목록 | `siglip2/requirements.txt` (+ `rn50/requirements.txt` 공통 평가 코드) | □ |
-| 7 | 실행 방법 README | `siglip2/README.md` [확인 필요: B/32 기준으로 갱신] | □ |
+| 7 | 실행 방법 README | `siglip2/README.md` (v4, B/32 기준) | □ |
 | 8 | 데이터셋 경로 또는 다운로드 방법 | 실행 때 자동 다운로드(`rn50/datasets.py`, 출처 6.1). 소규모 묶음 dev 6종 × 200장 | □ |
 
 - 모델 파일·묶음은 GitHub Release로 낸다: [확인 필요: 최종 제출 Release 태그]. 지금 내부 확인용 pre-release `siglip2-b32-submit-20261023`에 FP32·제출 모델·비교용 M2rot·dev200 묶음·`portable_eval.py`·`SHA256SUMS.txt`가 있다.
