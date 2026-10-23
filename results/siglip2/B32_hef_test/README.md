@@ -78,3 +78,62 @@
 ### A 판정
 - 2 (145/145 비트 동일), 3 (같음), 4 (같음), 5 (0.99999999981 ≥ 0.999999) → **"같은 모델"**. 보고서 문장은 그대로 써도 된다.
 - 덧붙일 것(선택): "두 ONNX는 배치 축 처리(모양 계산 Constant)만 다르고 initializer 145개가 비트 동일하다. HEF는 DFC parser가 단순화한 `a0eb502b`의 `.sim.onnx`로 parse했다."
+
+---
+
+## B. 본선 HEF 확정 기록 + test 1회 — 설계 (결과 전 고정, 2026-10-24)
+
+> A가 "같은 모델"로 판정되어 진행한다. test 사진은 이 설계 커밋 **뒤에만** 처음 읽는다.
+
+### B-1. 팀 결정 기록 문안 (`siglip2/DECISIONS.md`에 붙일 안 — **그 파일은 고치지 않는다**)
+여러 브랜치(`g8-candidates`·`report-b32`·`b32-portable-junyong`)에서 마지막 번호는 D-049다 → 다음 번호 D-050·D-051.
+
+```markdown
+## D-050 본선 Hailo HEF(B/32) = GF (G6f, `0c2e04a6…`) — D-047(B16_rb_bk)을 B/32로 바꿈
+- 상태: **확정** / 2026-10-24 / 팀 결정 (준용 기록)
+- **결정: 본선 HEF는 G6f GF** `g6_b32_G.hef` (GF 빌드, sha256 `0c2e04a6ef9bfb6055c249ad969f07546711d6130ce401800fcc7fdc61c8b29a`, 99,876,864 B, 컨텍스트 13). G optimized HAR(`409b0344…`) + G .alls + F의 compile 두 줄(`allocator_param`·`context_switch_param`), compile만. 바탕 ONNX `g6_b32_m2rot_b1.onnx` (`a0eb502b…`) = 예선 제출 ONNX 바탕 `23236123…`와 같은 모델 (initializer 145/145 비트 동일, 회전 `3a6391a2…`, sink 15@6:5·7@10:9; `results/siglip2/B32_hef_test/README.md` A절).
+- 근거: GF는 G와 출력이 비트 동일(G6f, 6×200 = 1,200장)이므로 정확도는 G(dev 전체 G − Z +2.67 [+1.92, +3.46]%p 우위, G6d)와 같고, 배치 1 14.93 ms로 Zoo 공개 HEF(Z) 16.49 ms 대비 −9.5% (G6f 같은 세션). 더 빠른 ALL8F(13.38 ms)는 dev 전체에서 GF 대비 −0.87 [−1.46, −0.28]%p 열위이고 CIFAR A 손실도 더 크다(FP32 대비 −5.3, G6f 9절) → 채택하지 않음.
+- test 1회: `results/siglip2/B32_hef_test/` B절 (GF·Z 실칩, 결과는 HEF 선택에 쓰지 않음).
+
+## D-051 예선 ONNX(O-AB)의 float 출력(QKᵀ·Softmax)은 Hailo에서 a16으로 맞추지 않는다 — 기록만
+- 상태: **확정** / 2026-10-24 / 팀 결정 (준용 기록). D-049 위험 ③을 닫는다.
+- **결정:** O-A(`--no-matmul-out-q`)로 ORT에서 float이 된 QKᵀ 출력·Softmax를 본선 HEF에서 `a16_w16`으로 맞추지 않는다. 차이는 보고서에 기록만 한다.
+- 근거: Hailo는 float ONNX(`a0eb502b`)에서 DFC로 따로 양자화하므로 ORT 양자화 그래프의 정밀도 배치를 따를 필요가 없다. 맞추려면 HEF를 다시 빌드(optimize·compile 약 1시간 + 실칩 재측정)해야 하고, D-050의 GF 근거(정확도·지연)가 다시 확인되어야 한다.
+- 팀 규칙("ORT에서 FP32로 남긴 층은 Hailo에서 a16_w16") 예외로 보고서에 적는다.
+```
+
+### B-2. test 데이터 (데스크탑 WSL, `b32t_data.py`)
+- **사진:** 준혁 ORT test(`siglip2/g8-candidates`, 커밋 `72784d1`, `results/siglip2/G8_candidates/b32/test/`)와 같은 7종을 **같은 코드**로 고른다: `s2_test_eval.rows_names_templates()` (g8-candidates `092a4ab` 코드, worktree `~/oslab_b32p`에서 import). 고화질 5종 공식 test 전체(Food는 validation = 공식 test), CIFAR-100 test 1만, ImageNetV2 matched-frequency 1만.
+- **같은 사진인지 확인 (`siglip2/g8-candidates`에 사진별 목록·sha256 파일이 없어서 아래로 대신한다):**
+  1. 데이터셋별 장수·클래스 수·템플릿 수 = 준혁 `test.jsonl`
+  2. ImageNetV2 tar sha256 = `f0c37fdf…` (`results/siglip2/G6_test/data_sha256.txt`, g8-candidates)
+  3. **준혁 FP32 재현:** 같은 FP32 ONNX(`siglip2_image_fp32.onnx` B/32, `be19a8ad…`), 같은 timm 전처리·open_clip 분류기·ORT 4스레드·배치 50으로 FP32 top-1·top-5를 내서 준혁 `test.jsonl`의 FP32 값과 **소수 둘째 자리까지 같아야** 한다. 7종 중 하나라도 다르면 **실칩 전에 멈추고 보고**한다. (FP32는 후보가 아니므로 선택에 쓰이지 않는다.)
+  4. 기록: parquet 조각·tar·CIFAR 파일 sha256, 사진별 Zoo 픽셀 sha1 목록의 sha256, 정답 배열 sha256 → `data_list.json` (다음 재현용)
+- **Zoo 전처리 (G6 `s2_g6.py data`와 같음):** `img.convert("RGB").resize((256, 256), BICUBIC)` → uint8 NHWC, crop 없음. `test_zoo256/<set>_pix.npy`, `<set>_y.npy`.
+- 1회 보장: 데이터셋마다 `done_data_<set>.json`. 있으면 그 데이터셋은 다시 읽지 않는다.
+
+### B-3. FP32 기준 (데스크탑, `b32t_fp32hf.py`)
+- G6 `s2_g6.py fp32`와 같은 계산: HF `google/siglip2-base-patch32-256` FP32 비전 인코더 `pooler_output`, 입력 = 위 Zoo 픽셀 → `x/127.5 − 1`. 분류기 = HF 텍스트 인코더 FP32(`s2_g6pre.classifier`, G6과 같음), 클래스 이름·템플릿 = B-2와 같은 것(준혁 test와 같음). M2 없음(원래 FP32).
+- 출력: `ref/<set>_ref.npy`, `<set>_clf.npy`, `<set>_y.npy`, `done_fp32_<set>.json`.
+
+### B-4. 실칩 (AGX, `~/ssd/junyong/hailo_b32t/`)
+- HEF: **GF** `b32_GF.hef` (`0c2e04a6…`), **Z** Zoo v5.4.0 공개 `b32_Z.hef` (`c1612329…`, G6과 같은 파일). 시작 전 sha256 대조, 다르면 멈춤.
+- 코드: G6 `g6_hailo_chip.py eval` 그대로 (입력 FLOAT32 픽셀 0~255, HEF 안 정규화, 배치 1, 출력 정규화 전 임베딩). 추가 옵션 `--subdir`(기본 꺼짐 = 기존 `dev_zoo<H>`)로 `test_zoo256/`을 읽는다.
+- 순서: GF 7종 → Z 7종 (데이터셋마다 따로 실행).
+- **AGX 규칙:** 시작 전과 데이터셋마다 다른 Hailo 프로세스 0개(있으면 대기, 3시간 넘으면 멈춤). 데이터셋마다 칩 max(ts0, ts1) < **64.6 °C**까지 냉각(90분 넘으면 멈춤). **실행 중 온도 감시**: 별도 프로세스가 15초마다 온도를 읽어 **95 °C를 넘으면 즉시 eval을 죽이고 멈춘다**(`HOT_STOP` 기록). tmux 금지, `setsid nohup` + 로그 + `timeout`.
+- 감시 점검(test 전, dev만): GF로 pets_dev 앞 200장을 감시를 켠 채 eval → G6f GF eval 임베딩(같은 200장)과 비트 동일해야 하고, 온도 읽기 오류가 없어야 한다. 실패하면 감시 방식을 바꾼 뒤 다시 점검하고, test는 시작하지 않는다.
+- 1회 보장: HEF·데이터셋마다 `done_<HEF>_<set>.json`.
+
+### B-5. 판정·보고 (결과 전 고정, **결과를 보고 HEF 선택을 바꾸지 않는다**)
+- top-1: 각 임베딩을 L2 정규화 → HF 분류기(B-3)와 곱해 argmax. FP32 = HF FP32 기준 임베딩.
+- 지표 (`b32t_summary.py`): **GF − Z, GF − FP32, Z − FP32**
+  - 고화질 5종 평균 Δtop-1 (주 지표)과 쌍 비교 95% 구간: `s2_paired_ci.boot_hr` (층화 짝 부트스트랩, 시드 0, 1,000회 — 준혁 `s2_test_summary.py`와 같은 방법)
+  - CIFAR-100, ImageNetV2 따로 (Δ와 95% 구간)
+  - 데이터셋별 top-1, FP32 대비 cos 평균
+- 문구: 구간 하한 > 0 "우위", 상한 < 0 "열위"(FP32 대비면 "유의한 손실"), 0 포함 "동률(유의차 없음)".
+- 함께 적는 것(비교용, 판정 아님): 준혁 ORT test(O-AB −0.23 [−0.36, −0.08], ONNX FP32 기준이라 FP32 정의가 다름), dev 결과(G − Z +2.67, G FP32 대비 −1.55).
+- 속도는 다시 재지 않는다: GF 배치 1 14.93 ms, Z 16.49 ms (G6f 같은 세션), GF 99.9 MB·Z 102.6 MB.
+- 결과가 dev와 달라도(예: GF − Z가 동률·열위) 그대로 보고하고, HEF는 D-050대로 GF.
+
+### B-6. 결과 위치
+`B_test/` (data_list.json, fp32 기준 요약, chip eval_info·온도 로그, test_summary.json). 큰 파일(픽셀·임베딩)은 `~/siglip2_work/b32t/`와 AGX에 두고 커밋하지 않는다 (사진별 예측 npz는 작으면 커밋).
