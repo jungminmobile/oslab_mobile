@@ -15,12 +15,12 @@
 
 **판정:** 2에서 배치 축과 무관한 initializer가 **모두 비트 동일**, 3·4가 같고, 5의 cos 최소 ≥ 0.999999 → **"같은 모델"**. 하나라도 다르면 무엇이 다른지와 보고서 문장을 어떻게 고칠지 적는다. B(test)는 "같은 모델"일 때만 진행한다.
 
-## A. 결과 — **판정: "같은 모델"** (2026-10-24, `A_same_model/a_result.json`, 커밋 `0f1ea0e`… 아래 표 참고)
+## A. 결과 — **판정: "같은 모델"** (2026-10-24, `A_same_model/a_result.json`, 스크립트 커밋 `6b228e5` dirty 아님)
 
 ### A-1. 계보 (GF HEF → parse한 ONNX)
 | 단계 | 파일 | sha256 | 근거 |
 |---|---|---|---|
-| GF HEF (본선) | `~/siglip2_work/g6f/…/comp/g6_b32_G.hef` (GF compile 결과) | `0c2e04a6ef9bfb60…` | G6f `build.jsonl` (`tag b32_GF`, compile만, 커밋 `d696320` dirty 0) |
+| GF HEF (본선) | `~/siglip2_work/g6/dfc/b32_GF/comp/g6_b32_G.hef` | `0c2e04a6ef9bfb60…` | G6f `build.jsonl` (`tag b32_GF`, compile만, 커밋 `d696320` dirty 0) |
 | ← G optimized HAR | `~/siglip2_work/g6/dfc/b32_G/g6_b32_G_optimized.har` | `409b0344…` | 위 줄의 `src_har_sha256`, 오늘 파일 sha256 다시 계산해 같음 |
 | ← G parse | `g6_b32_G.har` ← `hailo parser onnx …/g6_b32_m2rot_b1.onnx` | — | G6d `build.jsonl`·`run_info.txt` (`tag b32_G`, 커밋 `ddf9b5f` **dirty 1**), `parse.log` |
 | ← **ONNX** | `~/siglip2_work/g6/onnx/g6_b32_m2rot_b1.onnx` | **`a0eb502b…`** | `run_info.txt`의 `onnx_sha256`, optimized HAR 안 `original_model_meta.json`의 `original_model_path`, 오늘 파일 sha256 → **맞음** |
