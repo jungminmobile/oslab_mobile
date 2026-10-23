@@ -1,0 +1,7 @@
+{"date": "2026-10-24T06:14:00", "set": "pets", "n": 3669, "classes": 37, "n_templates": 1, "fp32_hf_top1_argmax": 93.54, "hf": "google/siglip2-base-patch32-256", "commit": "a235e40", "dirty": false, "sec": 67}
+{"date": "2026-10-24T06:16:42", "set": "caltech", "n": 6084, "classes": 102, "n_templates": 34, "fp32_hf_top1_argmax": 84.83, "hf": "google/siglip2-base-patch32-256", "commit": "a235e40", "dirty": false, "sec": 162}
+{"date": "2026-10-24T06:18:33", "set": "flowers", "n": 6149, "classes": 102, "n_templates": 1, "fp32_hf_top1_argmax": 84.49, "hf": "google/siglip2-base-patch32-256", "commit": "a235e40", "dirty": false, "sec": 111}
+{"date": "2026-10-24T06:21:20", "set": "cars", "n": 8041, "classes": 196, "n_templates": 8, "fp32_hf_top1_argmax": 90.8, "hf": "google/siglip2-base-patch32-256", "commit": "a235e40", "dirty": false, "sec": 167}
+{"date": "2026-10-24T06:28:51", "set": "food", "n": 25250, "classes": 101, "n_templates": 1, "fp32_hf_top1_argmax": 88.9, "hf": "google/siglip2-base-patch32-256", "commit": "a235e40", "dirty": false, "sec": 451}
+{"date": "2026-10-24T06:32:17", "set": "cifar_test", "n": 10000, "classes": 100, "n_templates": 18, "fp32_hf_top1_argmax": 76.05, "hf": "google/siglip2-base-patch32-256", "commit": "a235e40", "dirty": false, "sec": 206}
+{"date": "2026-10-24T06:37:09", "set": "imagenetv2", "n": 10000, "classes": 1000, "n_templates": 7, "fp32_hf_top1_argmax": 65.85, "hf": "google/siglip2-base-patch32-256", "commit": "a235e40", "dirty": false, "sec": 292}
