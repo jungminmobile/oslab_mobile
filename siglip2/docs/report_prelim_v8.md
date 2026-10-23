@@ -497,7 +497,6 @@ python scripts/cross_latency.py --out out_speed --mem \
 | 회전+M2(M2rot_ort) dev / test | −0.23 [−0.64, +0.18] / −0.34 [−0.50, −0.18] (test는 이 파일로 1회) | G6_m2rot_ort |
 | 개선율 (이 PC, B/32와 같은 실행, O-AB) | 지연 1/2/4스레드 −62.1 / −60.5 / −57.9%, 크기 −74.1%, 메모리 −52.9% | latency_this_pc/all8 |
 | 보정·빌드 흔들림 | 빌드 5개 dev −0.23 ~ −0.49 (폭 0.26) | b16/E5_calib_seed |
-
 | 배포 눈금 층별 SNR (6구성) | 가장 나쁜 층 SNR 순서 = 정확도 순서 (원래 0.1 → 회전만 0.3 → R0 6.9 → M2만 12.9 → M2rot 18.1 → O-AB 18.2 dB). **B/32 5구성과 합쳐 11구성 모두 일치**, 평균은 일치 안 함 (그림 F4b) | b16/generalization/H5_qdq_snr |
 | M2·회전 근사 손실 (FP32) | +0.10 [0.00, +0.22], cos 0.9999 (두 PC 빌드 사진별 예측 동일) | b16/generalization/m2rot_fp32_devfull |
 | 입력 변형 8종 (O-AB) | 흑백·JPEG 20에서 −1.2 (유의), 나머지는 유의하지 않음. M2 근사는 모든 변형에서 cos ≥ 0.9998. B/32 O-AB(8종 모두 유의하지 않음)보다 덜 견고 | b16/generalization/input_shift |
