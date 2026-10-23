@@ -23,13 +23,27 @@ def sha(p):
     return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 
+def block_of(g):
+    """노드 이름 → 블록 번호 (그래프는 위상 순서. 그 노드 앞에 있는 Softmax 수 = 블록 번호, 12 = MAP 헤드)."""
+    out, k = {}, 0
+    for n in g.node:
+        out[n.name] = k
+        if n.op_type == "Softmax":
+            k += 1
+    return out
+
+
 def tensors(g):
-    """{키: (배열, 이름, 소비자 목록)}. 키는 이름이 안정적이면 이름, onnx::* 같은 자동 이름이면 첫 소비 노드 이름·입력 위치."""
+    """{키: (배열, 이름, 소비자 목록)}.
+    initializer: 이름이 안정적이면 이름, onnx::* 자동 이름이면 소비 노드 이름·입력 위치 (MatMul 노드 이름은 두 그래프에서 같음).
+    Constant 노드: 노드 이름의 번호가 배치 가변 export의 모양 계산 노드 때문에 밀리므로
+      (첫 소비 노드 op, 입력 위치, 블록, 그 키 안의 순번)으로 대응한다."""
     cons = defaultdict(list)
     for n in g.node:
         for i, x in enumerate(n.input):
             cons[x].append((n.name, n.op_type, i))
-    out = {}
+    blk = block_of(g)
+    out, seq = {}, defaultdict(int)
     for t in g.initializer:
         k = t.name if not t.name.startswith("onnx::") else "@" + "|".join(f"{a}:{i}" for a, _, i in sorted(cons[t.name]))
         out[("init", k)] = (nh.to_array(t), t.name, cons[t.name])
@@ -38,7 +52,11 @@ def tensors(g):
             a = [x for x in n.attribute if x.name == "value"]
             if not a:
                 continue
-            out[("const", n.name)] = (nh.to_array(a[0].t), n.output[0], cons[n.output[0]])
+            c = cons[n.output[0]]
+            c0 = c[0] if c else ("", "unused", -1)
+            base = (c0[1], c0[2], blk.get(c0[0], -1))
+            out[("const", f"{base[0]}:{base[1]}@blk{base[2]}#{seq[base]}")] = (nh.to_array(a[0].t), n.name, c)
+            seq[base] += 1
     return out
 
 
@@ -86,19 +104,24 @@ def cmp_tensors(g1, g2):
 
 
 def sink_rules(g):
-    """마스크 상수 값과 쓰는 노드. zm_bX: u_c 대체 시작 블록 X의 토큰 행 마스크, m_bX_i: K/V 대체 블록 X의 i번째 sink 마스크."""
+    """M2 상수(마스크 zm_*·m_*, K/V kc_*·vc_*, u_c uc_*)의 값 요약과 쓰는 노드의 블록 (Identity 별칭은 빼고, 노드 이름 번호 대신 블록·op로)."""
     cons = defaultdict(list)
     for n in g.node:
         for x in n.input:
-            cons[x].append(n.name)
+            cons[x].append(n)
+    blk = block_of(g)
     out = {}
     for t in g.initializer:
+        if not re.match(r"trunk\.(zm|m|kc|vc|uc)_", t.name):
+            continue
+        a = nh.to_array(t)
+        users = sorted((blk[n.name], n.op_type) for n in cons[t.name] if n.op_type != "Identity")
+        r = {"shape": list(a.shape), "sha256": hashlib.sha256(a.tobytes()).hexdigest()[:16], "users_block_op": users,
+             "n_identity_alias": sum(n.op_type == "Identity" for n in cons[t.name])}
         if re.match(r"trunk\.(zm|m)_b", t.name):
-            a = nh.to_array(t).reshape(-1)
-            out[t.name] = {"n": int(a.size), "unique": sorted(set(a.tolist())), "zero_rows": [int(i) for i in np.where(a == 0)[0]],
-                           "one_rows": [int(i) for i in np.where(a == 1)[0]], "used_by": cons[t.name]}
-        elif re.match(r"trunk\.(kc|vc|uc)_", t.name):
-            out.setdefault("_const_users", {})[t.name] = cons[t.name]
+            v = a.reshape(-1)
+            r.update(unique=sorted(set(v.tolist())), one_rows=[int(i) for i in np.where(v == 1)[0]])
+        out[t.name] = r
     return out
 
 
