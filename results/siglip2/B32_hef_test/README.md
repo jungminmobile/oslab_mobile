@@ -52,10 +52,13 @@
 | 그 밖의 파라미터 (bias, pos_embed, latent 등) | **56** | 0 |
 | **initializer 합계** | **145 / 145** | **0** |
 | float Constant (attention 0.125 배율 등) | 65 | 0 |
-| int Constant, 계산 경로 (Split 크기·Squeeze 축·Gather 인덱스) | 52 (양쪽 같은 값) | 0 |
+| int Constant, 짝이 맞은 것 (Split 크기·Squeeze 축·Gather 인덱스 52 + 모양 경로의 공통 상수 5) | 57 (양쪽 같은 값) | 1 (아래 줄의 Reshape 목표 모양) |
 | int Constant, **배치 축 모양 경로** | — | b1에만 28 (Reshape 목표 모양 `[1,64,768]` 등 26 + latent Expand용 ConstantOfShape·Equal 2), dyn에만 138 (Shape→Gather→Unsqueeze→Concat 모양 계산), 짝이 맞았지만 값 다름 1 (b1 `[1,64,768]` vs dyn `[-1]`, 둘 다 Reshape 목표 모양) |
 - Constant 노드는 이름 번호가 dyn의 모양 계산 노드 때문에 밀려서, (첫 소비 op·입력 위치·블록·순번)으로 대응했다. 처음 실행(이름 대응, `a_result_v1_name_mismatch.json`)에서 나온 "다름"은 이 이름 밀림 때문이었다.
 - 판정 조건 "배치 축과 무관한 initializer가 모두 비트 동일" → **충족 (145/145)**. 다른 Constant는 모두 배치 축 모양 계산이다.
+- `a_result.json`의 `tensor_summary`에서 `|only_b1`·`|only_dyn` 칸의 "same"은 "한쪽에만 있는 개수"를 센 것이다(비교한 것 아님).
+- **사후 변경 (A, 독립 검토에서 지적):** Constant 대응 방식은 첫 실행(이름 대응) 결과를 본 뒤 (소비 op·입력 위치·블록·순번)으로 바꿨다. 첫 결과는 `a_result_v1_name_mismatch.json`에 남겼다.
+- **보충 (독립 검토 반영, `a_ops_check.py` → `a_ops_check.json`):** 두 그래프 모두 opset 17. 모양 계산 op(Shape·Gather·Unsqueeze·Concat·Reshape·Constant 등)를 뺀 계산 노드 503개의 (op, 속성) 다중집합이 **같다**. op 개수가 다른 것은 Concat 1/29, Constant 151/261, Gather 1/28, Reshape 28/29, Shape 1/29, Unsqueeze 0/54뿐이다.
 
 ### A-3. 회전 행렬
 - 두 export 기록 `rotq_sha256` = `3a6391a2091db60d…` (같음), 파일 `$SIGLIP2_ARTIFACTS/onnx/rotq_rothad.npy` sha256 `3a6391a2…` (수정 시각 10/18, 두 export(10/20)보다 앞) → **같음**.
@@ -90,13 +93,13 @@
 
 ```markdown
 ## D-050 본선 Hailo HEF(B/32) = GF (G6f, `0c2e04a6…`) — D-047(B16_rb_bk)을 B/32로 바꿈
-- 상태: **확정** / 2026-10-24 / 팀 결정 (준용 기록)
+- 상태: **확정** / 2026-10-24 / 팀 결정 — 용이 10/24 작업 요청에 "팀 결정: 본선 HEF = GF(G6f, G와 출력 비트 동일)"로 전달 (승인자·회의 기록은 DECISIONS.md에 옮길 때 채울 것. 확인 안 되면 "제안"으로)
 - **결정: 본선 HEF는 G6f GF** `g6_b32_G.hef` (GF 빌드, sha256 `0c2e04a6ef9bfb6055c249ad969f07546711d6130ce401800fcc7fdc61c8b29a`, 99,876,864 B, 컨텍스트 13). G optimized HAR(`409b0344…`) + G .alls + F의 compile 두 줄(`allocator_param`·`context_switch_param`), compile만. 바탕 ONNX `g6_b32_m2rot_b1.onnx` (`a0eb502b…`) = 예선 제출 ONNX 바탕 `23236123…`와 같은 모델 (initializer 145/145 비트 동일, 회전 `3a6391a2…`, sink 15@6:5·7@10:9; `results/siglip2/B32_hef_test/README.md` A절).
 - 근거: GF는 G와 출력이 비트 동일(G6f, 6×200 = 1,200장)이므로 정확도는 G(dev 전체 G − Z +2.67 [+1.92, +3.46]%p 우위, G6d)와 같고, 배치 1 14.93 ms로 Zoo 공개 HEF(Z) 16.49 ms 대비 −9.5% (G6f 같은 세션). 더 빠른 ALL8F(13.38 ms)는 dev 전체에서 GF 대비 −0.87 [−1.46, −0.28]%p 열위이고 CIFAR A 손실도 더 크다(FP32 대비 −5.3, G6f 9절) → 채택하지 않음.
 - test 1회: `results/siglip2/B32_hef_test/` B절 (GF·Z 실칩, 결과는 HEF 선택에 쓰지 않음).
 
 ## D-051 예선 ONNX(O-AB)의 float 출력(QKᵀ·Softmax)은 Hailo에서 a16으로 맞추지 않는다 — 기록만
-- 상태: **확정** / 2026-10-24 / 팀 결정 (준용 기록). D-049 위험 ③을 닫는다.
+- 상태: **확정** / 2026-10-24 / 팀 결정 — 용이 10/24 작업 요청에 "O-A의 float 출력은 Hailo에서 a16으로 맞추지 않고 기록만 한다"로 전달 (승인자 기록은 옮길 때 채울 것, 팀 규칙의 예외라 확인 필수). D-049 위험 ③을 닫는다.
 - **결정:** O-A(`--no-matmul-out-q`)로 ORT에서 float이 된 QKᵀ 출력·Softmax를 본선 HEF에서 `a16_w16`으로 맞추지 않는다. 차이는 보고서에 기록만 한다.
 - 근거: Hailo는 float ONNX(`a0eb502b`)에서 DFC로 따로 양자화하므로 ORT 양자화 그래프의 정밀도 배치를 따를 필요가 없다. 맞추려면 HEF를 다시 빌드(optimize·compile 약 1시간 + 실칩 재측정)해야 하고, D-050의 GF 근거(정확도·지연)가 다시 확인되어야 한다.
 - 팀 규칙("ORT에서 FP32로 남긴 층은 Hailo에서 a16_w16") 예외로 보고서에 적는다.
@@ -164,16 +167,17 @@
 | ImageNetV2 (별도) | 10,000 | 65.85 | 63.84 | 60.76 | +3.08 [+2.39, +3.77] 우위 | −2.01 [−2.57, −1.50] | −5.09 [−5.75, −4.45] | 0.973 / 0.929 |
 
 - top-1은 argmax(L2 정규화 임베딩 @ HF 분류기), 95% 구간은 층화 짝 부트스트랩(시드 0, 1,000회). 사진별 예측·cos는 `B_test/preds_<set>.npz`.
-- **FP32 기준:** HF FP32(Zoo 전처리)의 고화질 평균 88.51은 준혁 ONNX FP32(timm 전처리) 88.51과 같다. 데이터셋별로는 Caltech만 84.83 vs 84.81로 다르다(전처리·분류기가 달라 같을 필요는 없음).
+- **FP32 기준:** HF FP32(Zoo 전처리)의 고화질 평균 88.51은 준혁 ONNX FP32(timm 전처리) 88.51과 같다. 고화질 5종 중에서는 Caltech만 84.83 vs 84.81로 다르고, ImageNetV2도 65.85(argmax) vs 65.83(준혁, argsort)로 다르다(전처리·분류기·동점 처리가 달라 같을 필요는 없음).
 - **Caltech만 GF ≈ Z이고 둘 다 FP32보다 약간 높다** (+0.38, +0.39, 유의). 다른 4종은 GF가 Z보다 2~4.5%p 높다. 원인은 확인하지 않았다.
 - **CIFAR-100 손실이 가장 크다** (GF −3.87). dev CIFAR A에서도 GF(= G)가 가장 큰 손실을 낸 데이터셋이었다(G6d).
-- **dev와 비교 (판정 아님):** GF(= G) dev 전체 FP32 대비 −1.55 [−2.09, −1.03], G − Z +2.67 [+1.92, +3.46] → test −1.04, +2.73. 우위 크기는 같고, FP32 대비 손실은 test가 작다.
+- **dev와 비교 (판정 아님):** GF(= G) dev 전체 FP32 대비 −1.55 [−2.09, −1.03], G − Z +2.67 [+1.92, +3.46] → test −1.04, +2.73. 우위 크기는 같고, FP32 대비 손실은 test 점추정이 작다(두 구간이 겹쳐 차이가 있다고 할 수는 없음).
 - **ORT 예선 제출 모델과 (FP32 정의가 달라 직접 비교 아님):** 준혁 ORT test O-AB −0.23 [−0.36, −0.08] (ONNX FP32 기준), CIFAR-100 +0.93, ImageNetV2 −0.20. Hailo GF는 ORT O-AB보다 FP32 대비 손실이 약 0.8%p 크다(고화질). 같은 FP32 기준(88.51)으로 보면 GF 87.47, O-AB 88.28.
 - **속도 (다시 재지 않음, G6f 같은 세션):** GF 배치 1 14.93 ms, Z 16.49 ms (−9.5%). HEF 크기 GF 99,876,864 B, Z 102,645,760 B (−2.7%).
+- **FP32 대비 (CLAUDE.md):** 정확도 GF −1.04%p (위). 크기는 FP32 ONNX(`a0eb502b`, 378,243,038 B) 대비 GF HEF −73.6%. Hailo에는 FP32 HEF가 없어 지연 감소율은 FP32 기준으로 낼 수 없다 (ORT FP32 CPU 지연과는 장치가 달라 비교하지 않음).
 
 ### 실칩 실행 기록 (`B_test/chip/out/`)
-- 시작 전·데이터셋·덩어리마다 다른 Hailo 프로세스 0개. 덩어리(2,000장) 70개(HEF 2 × 35)마다 64.6 °C 미만에서 시작.
-- **최고 온도 83.05 °C** (실행 중 감시 342회 읽기, 오류 0), 덩어리 끝 최고 80.26 °C. HOT_STOP 없음, eval 실패 없음.
+- 시작 전·데이터셋·덩어리마다 다른 Hailo 프로세스 0개. 덩어리(2,000장) **76개(HEF 2 × 38: Pets 2·Caltech 4·Flowers 4·Cars 5·Food 13·CIFAR 5·ImageNetV2 5)**마다 64.6 °C 미만에서 시작.
+- **최고 온도 83.05 °C** (07:23:23, 감시가 냉각 시간까지 포함해 세션 내내 15초마다 읽은 342회, 오류 0), 덩어리 끝 최고 80.26 °C. HOT_STOP 없음, eval 실패 없음.
 - HEF sha256 시작 전 대조 (GF `0c2e04a6…`, Z `c1612329…`), 입력 FLOAT32 픽셀 0~255(HEF 안 정규화), test 픽셀 14개 파일 sha256을 AGX에서 다시 확인(`~/siglip2_work/b32t/test_zoo256_SHA256SUMS`). 임베딩 파일 sha256 `chip/out/emb_sha256.txt` (임베딩은 커밋하지 않음, 데스크탑 `~/siglip2_work/b32t/chip_out/`, AGX `~/ssd/junyong/hailo_b32t/out/`).
 - 걸린 시간: GF 06:12~06:55, Z 06:55~07:40 (냉각 포함).
 - test 사용: 데스크탑에서 사진 준비 1회(+ 준혁 FP32 재현 대조), HF FP32 1회, 실칩 HEF마다 1회. 모두 done 파일로 1회만.

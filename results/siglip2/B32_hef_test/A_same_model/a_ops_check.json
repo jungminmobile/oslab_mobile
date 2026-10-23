@@ -1,0 +1,45 @@
+{
+ "opset_b1": [
+  [
+   "",
+   17
+  ]
+ ],
+ "opset_dyn": [
+  [
+   "",
+   17
+  ]
+ ],
+ "compute_nodes_b1": 503,
+ "compute_nodes_dyn": 503,
+ "compute_op_attr_multiset_equal": true,
+ "only_b1": {},
+ "only_dyn": {},
+ "op_count_diff": {
+  "Concat": [
+   1,
+   29
+  ],
+  "Constant": [
+   151,
+   261
+  ],
+  "Gather": [
+   1,
+   28
+  ],
+  "Reshape": [
+   28,
+   29
+  ],
+  "Shape": [
+   1,
+   29
+  ],
+  "Unsqueeze": [
+   0,
+   54
+  ]
+ }
+}
