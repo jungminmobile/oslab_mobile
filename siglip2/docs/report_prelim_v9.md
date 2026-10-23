@@ -242,7 +242,7 @@ R/G6_pre, 준용 브랜치 R/G6b·G6d·G6f·O1. [확인 필요]는 본문 표시
 - **공개 데이터셋만** 쓰고, 실행 때 Hugging Face Hub·torchvision에서 자동으로 받는다(`rn50/datasets.py`, 사진 선택 규칙 포함).
 - **소규모 평가 묶음**: dev 6종 × 200장(전처리 끝난 256×256 입력, 정답, FP32 텍스트 분류기, FP32 임베딩) + numpy·onnxruntime만 쓰는 `portable_eval.py` + FP32·제출 모델 + sha256 목록. 몇 분이면 돈다(9.2 (가)).
 - **모델 파일·sha256 공개**: FP32 `be19a8ad…`, 제출 O-AB `7a01044c…`. 실행 환경에 따라 사진 몇 장 결과가 다를 수 있어(7.1-3) 사진별 예측도 함께 낸다.
-- **깨끗한 폴더 재현 확인**: 새 폴더에 Release 파일만 받아 sha256 13개 확인 → `portable_eval.py` 실행. FP32·제출 모델·M2rot 모두 기준 결과와 사진 1,200장 예측이 비트 단위로 같고 cos 차이 0이었다(`b32/xplat/repro_check`). 같은 PC에서는 Release와 절차만으로 완전히 재현된다.
+- **깨끗한 폴더 재현 확인**: 새 폴더에 Release 파일만 받아 sha256 13개 확인 → `portable_eval.py` 실행. FP32·제출 모델·M2rot 모두 기준 결과와 사진 1,200장 예측이 비트 단위로 같고 cos 차이 0이었다(`b32/xplat/repro_check`). 같은 PC에서는 Release와 절차만으로 완전히 재현된다. 새 clone·새 가상환경에서 dev 캐시부터 다시 만들어도 dev 전체 사진별 예측이 같았다(9.1).
 - **채점은 배포한 ONNX 파일로** 한다. 처음부터 다시 만들면 PC마다 float64 행렬 곱 반올림이 달라 파일이 달라진다(B/16에서 확인).
 
 ### 6.4 측정 프로토콜
@@ -381,7 +381,7 @@ mkdir -p $SIGLIP2_ARTIFACTS/onnx && cp release/*.onnx $SIGLIP2_ARTIFACTS/onnx/
 ```
 - `<제출 Release 태그>` = [확인 필요: 최종 제출 Release 태그]. Windows(PowerShell)는 `export` 대신 `$env:S2_MODEL_ID="..."` 형식이다.
 - **`S2_MODEL_ID`를 꼭 지정한다.** 지정하지 않으면 코드가 B/16(224)으로 동작한다.
-- [확인 필요: 새 폴더·새 가상환경에서 이 절의 B/32 명령을 그대로 실행해 확인]
+- 확인 기록: 새 clone·새 가상환경(시스템 Python 3.11.9 + requirements)에서 이 절과 9.2 (가)·(나)를 그대로 실행해, 빠른 확인과 dev 전체(학습 데이터를 Hugging Face에서 새로 받아 캐시부터 생성) 모두 사진별 예측이 기존 결과와 비트 단위로 같았다(`b32/xplat/fresh_env`).
 
 ### 9.2 벤치마크 실행 명령
 

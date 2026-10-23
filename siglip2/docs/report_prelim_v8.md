@@ -278,7 +278,7 @@
 - **소규모 평가 묶음을 함께 낸다**: dev 6종 × 200장(전처리 끝난 256×256 입력, 정답, FP32 텍스트 분류기, FP32 임베딩) + numpy·onnxruntime만 쓰는 `portable_eval.py` + FP32·제출 모델 + sha256 목록. 몇 분이면 돈다(9.2 (가)).
 - **모델 파일과 sha256 공개**: FP32 `be19a8ad…`, 제출 O-AB `7a01044c…`.
 - **사진별 예측을 함께 낸다.** O-AB는 실행 환경에 따라 사진 몇 장의 결과가 다를 수 있다(9.4). 같은 파일이 i7(Windows)과 285K(WSL)에서 dev Cars만 91.93 / 91.83(순 약 1장)이고 나머지 데이터셋은 같았다(고화질 평균 89.69 / 89.67). 두 측정은 CPU뿐 아니라 OS·평가 코드·입력 캐시도 달라 원인은 아직 가리지 않았다. 같은 묶음으로 다른 PC에서 사진별 비교를 진행 중이다. <!-- src: b32/O_AB/dev_full/paired_ci.jsonl vs O1 6-3 표 -->
-- **깨끗한 폴더에서 재현 절차를 확인했다.** 새 폴더에 Release 파일만 내려받아 sha256 13개 확인 → `portable_eval.py` 실행. FP32·제출 모델·M2rot 모두 기준 결과와 사진 1,200장의 예측이 비트 단위로 같고 cos 차이 0이었다(`b32/xplat/repro_check`). 같은 PC에서는 Release와 절차만으로 완전히 재현된다.
+- **깨끗한 폴더에서 재현 절차를 확인했다.** 새 폴더에 Release 파일만 내려받아 sha256 13개 확인 → `portable_eval.py` 실행. FP32·제출 모델·M2rot 모두 기준 결과와 사진 1,200장의 예측이 비트 단위로 같고 cos 차이 0이었다(`b32/xplat/repro_check`). 같은 PC에서는 Release와 절차만으로 완전히 재현된다. 새 clone·새 가상환경에서 dev 캐시부터 다시 만들어도 dev 전체 사진별 예측이 같았다(9.1).
 - **채점은 배포한 ONNX 파일로 한다.** 처음부터 다시 만들면 PC마다 float64 행렬 곱 반올림이 달라 파일이 달라진다(B/16에서 확인).
 
 ### 6.4 측정 프로토콜
@@ -428,7 +428,7 @@ mkdir -p $SIGLIP2_ARTIFACTS/onnx && cp release/*.onnx $SIGLIP2_ARTIFACTS/onnx/
 ```
 - `<제출 Release 태그>` = [확인 필요: 최종 제출 Release 태그]. Windows(PowerShell)는 `export` 대신 `$env:S2_MODEL_ID="..."` 형식이다.
 - **`S2_MODEL_ID`를 꼭 지정한다.** 지정하지 않으면 코드가 B/16(224)으로 동작한다.
-- [확인 필요: 새 폴더·새 가상환경에서 이 절의 B/32 명령을 그대로 실행해 확인]
+- 확인 기록: 새 clone·새 가상환경(시스템 Python 3.11.9 + requirements)에서 이 절과 9.2 (가)·(나)를 그대로 실행해, 빠른 확인과 dev 전체(학습 데이터를 Hugging Face에서 새로 받아 캐시부터 생성) 모두 사진별 예측이 기존 결과와 비트 단위로 같았다(`b32/xplat/fresh_env`).
 
 ### 9.2 벤치마크 실행 명령
 
