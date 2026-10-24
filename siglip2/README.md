@@ -3,8 +3,8 @@
 대회 안내 4.2절 "재현용 코드 및 실행 환경"과 예선 결과보고서 9장에 해당하는 문서다 (v4, 2026-10-23 — 제출 모델 B/32 O-AB, D-048·D-049).
 실험 기록·결정은 `ROADMAP.md`, `DECISIONS.md`, `PROGRESS.md`, 결과는 루트 `results/siglip2/`에 있다.
 
-> **제출 모델 = SigLIP2 B/32 O-AB** (D-048·D-049): 레지스터 캐시 M2 + 회전 + O-A(MatMul 출력 재반올림 생략) + O-B(SkipLayerNorm 융합), 이미지 인코더 MatMul 79개 전부 INT8. test는 이 파일로 1회 썼다 (`results/siglip2/G8_candidates/b32/test`).
-> **본선 Hailo HEF**: 같은 PyTorch 모델(같은 회전 행렬·sink 규칙·M2 상수)에서 배치 1로 export한 FP32를 Hailo DFC로 컴파일한다. 최종 HEF(GF·ALL8F 등)는 팀이 정한다 (준용 G6d·G6f).
+> **제출 모델 = SigLIP2 B/32 O-AB** (D-048·D-049): 레지스터 캐시 M2 + 회전 + O-A(MatMul 출력 재반올림 생략) + O-B(SkipLayerNorm 융합), 이미지 인코더 MatMul 79개 전부 INT8. 제출 모델 B/32의 test는 이 파일로 ORT 1회(`results/siglip2/G8_candidates/b32/test`), 본선 HEF로 Hailo 1회(준용 `B32_hef_test`) 썼다. 개발 초기 B/16 단계 이력은 보고서 부록 E.
+> **본선 Hailo HEF**: 같은 PyTorch 모델(같은 회전 행렬·sink 규칙·M2 상수)에서 배치 1로 export한 FP32를 Hailo DFC로 컴파일한다. 본선 HEF는 GF로 정했다(D-050). ALL8F는 절제 실험이다 (준용 G6d·G6f·B32_hef_test).
 > **채점·재현은 배포한 ONNX 파일로 한다.** 다른 PC에서 다시 만들면 파일이 달라진다 (3절, 7절).
 > **onnxruntime으로 실행한다.** 제출 모델에 `com.microsoft` 연산(SkipLayerNormalization)이 있다.
 
@@ -14,12 +14,13 @@
 |---|---|---|---|
 | 베이스라인 FP32 | `siglip2_image_fp32.onnx` | 378.36 MB (360.83 MiB) | `be19a8ada01055df…` |
 | **최적화 (제출)** | `siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx` | 102.76 MB (98.00 MiB) | `7a01044c6ba32bf4f5a12aba82eb19e06753f13c8bad43b9f6fcfcd9f484dbf6` |
-| (비교용) M2rot INT8, 이 PC 빌드 | `siglip2_image_int8_rcmaskbcmlp15at6u5-7at10u9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx` | 102.85 MB | `9783d7defe8c0735…` |
+| 비상 대체: M2rot INT8, 표준 연산만 (채점 환경이 com.microsoft 연산을 못 돌릴 때) | `siglip2_image_int8_g6b_b32_m2rot_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx` | 102.85 MB | `3a46ae8af54f3119…` (제출 모델과 같은 바탕 `23236123…`, 본선 HEF와 이어짐) |
+| (비교용) M2rot INT8, 이 PC 빌드 | `siglip2_image_int8_rcmaskbcmlp15at6u5-7at10u9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx` | 102.85 MB | `9783d7defe8c0735…` (회전 행렬이 달라 본선 HEF와 이어지지 않음 — 대체 파일 아님) |
 
-- Release: 지금은 내부 확인용 pre-release `siglip2-b32-submit-20261023` (위 세 파일 + dev 6종 × 200장 묶음 + `portable_eval.py` + `SHA256SUMS.txt` + 이 PC 결과). 최종 제출 Release는 따로 만든다.
+- Release: 지금은 내부 확인용 pre-release `siglip2-b32-submit-20261023` (위 네 파일 + dev 6종 × 200장 묶음 + `portable_eval.py` + `SHA256SUMS*.txt` + 이 PC 결과 + 제출 파일을 만든 중간 파일 `23236123…` → `79e797c1…` → `506e9fe4…`). 최종 제출 Release는 따로 만든다.
 - 포맷: ONNX opset 17 + `com.microsoft` 1, 입력 `image` float32 N×3×256×256 (SigLIP2 전처리 후: 256×256, 평균·표준편차 0.5 정규화), 출력 `embedding` 768차원.
 - 실행: onnxruntime 1.25.0 CPU, 기본 그래프 최적화(`ORT_ENABLE_ALL`, 정수 커널).
-- 같은 파일이 i7-1165G7(Windows)과 Ultra 9 285K(WSL)에서 dev 고화질 평균 89.69 / 89.67%로, Cars에서만 순 약 1장 달랐다 (원인 미확정, 사진별 비교 진행 중).
+- 다른 CPU: 같은 묶음(1,200장)에서 x86 두 대(i7-1165G7 AVX-512 VNNI, Ultra 9 285K AVX-VNNI)는 제출 모델 사진 1장만 달랐다(정답 여부 같음). dev 전체 고화질 평균은 89.69 / 89.67%(Cars만 순 약 1장). ARM(Jetson AGX Orin)은 1,200장 중 25~26장(2.2%) 달랐지만 고화질 평균 Δ는 같았다. FP32는 세 대 모두 같았다 (`results/siglip2/G8_candidates/b32/xplat/compare_3way`).
 
 ## 1. 빠른 확인 (저장소 코드·데이터 없이, 내려받기 약 5분 + 실행 약 6분)
 
@@ -95,9 +96,9 @@ python scripts/cross_latency.py --out out_speed --mem \
            b32_oab=$SIGLIP2_ARTIFACTS/onnx/siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx
 ```
 - 배치 1, 워밍업 20, 200장 × 3회 모델 번갈아, 스레드 1·2·4 × 세션 3 → 중앙값. 전원 구성표·충전 상태가 결과에 기록된다.
-- 기대값: FP32 대비 4스레드 약 −56~−57%, 1스레드 약 −60~−64% (절대 ms는 PC·실행마다 다름, 같은 PC에서도 2·4스레드 최대 약 40%), 피크 메모리 약 −57%, 크기 378.36 → 102.76 MB (−72.8%).
+- 기대값: FP32 대비 4스레드 약 −55~−57%, 1스레드 약 −60~−65% (절대 ms는 PC·실행마다 다름, 같은 PC에서도 2·4스레드 최대 약 40%), 피크 메모리 약 −57% (ORT 기본 세션), 크기 378.36 → 102.76 MB (−72.8%). 보고서 대표값은 10/23 새벽 실행(4스레드 −55.9%, 1스레드 −60.7%, 메모리 −57.4%).
 - **지연은 같은 실행 안의 FP32 대비 비율로 본다.** 노트북은 고성능 모드·충전 상태, 다른 프로그램 없이.
-- ORT 세션 설정 `enable_mem_pattern=False`(정민 E12-1, 브랜치 `exp/E12-1-jjury`)를 쓰면 메모리가 약 9% 더 준다(출력 비트 동일). 제출 실행 스크립트에 넣을지는 팀이 정한다.
+- (선택 사항) ORT 세션 설정 `enable_mem_pattern=False`(정민 E12-1, 브랜치 `exp/E12-1-jjury`)를 쓰면 제출 모델 피크 메모리가 4.0% 더 준다(같은 E12-1 스크립트로 214.5 → 206.0 MiB, 출력 비트 동일, `results/siglip2/G8_candidates/b32/submit_prep/mem_pattern`). 우리 스크립트로 실행할 때만 적용되고 채점 측이 세션을 직접 만들면 적용되지 않으므로, 보고서 메모리 수치는 기본 세션 값이다.
 
 ## 7. 실행 환경 기록
 

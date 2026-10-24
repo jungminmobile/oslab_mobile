@@ -4,9 +4,9 @@ make_report_figs_b32.py — D-048(B/32 제출) 보고서 그림 추가분 (raw�
 실행: D:/mokerton/venvs/figs/Scripts/python.exe siglip2/scripts/make_report_figs_b32.py   (저장소 루트에서, git 필요)
 출력: siglip2/docs/figs/F3b_improvement_b32.png, F4b_min_snr_vs_acc.png, F5_hailo_b32.png + figs_data_b32.json
   F3b 제출 모델(B/32 O-AB) FP32 대비 개선율: 크기·피크 메모리·지연 1/2/4스레드, 이 PC 측정 3회(낮 8모델·저녁·새벽)
-  F4b 배포 눈금 층별 SNR 최솟값 vs dev 정확도 손실: B/32 5구성 + B/16 6구성
+  F4b 배포 눈금 층별 SNR 최솟값 vs dev 정확도 손실: 제출 모델 B/32 5구성 (B/16 6구성 값은 figs_data_b32.json에만, 그리지 않음)
   F5  Hailo-10H 실칩 B/32: 배치 1 지연 vs dev 정확도 손실 (Zoo 공개 HEF Z와 우리 구성) — 준용 브랜치 raw를 git show로 읽음
-기존 F1(민감도, B/16·B/32)·F2(2×2, B/16·B/32)는 make_report_figs.py 그대로 쓴다.
+F1(민감도)·F2(2×2)는 make_report_figs.py (10/24부터 B/32만 그림).
 """
 import json
 import statistics as st
@@ -67,9 +67,10 @@ def ratios(rows, a, b, ref_key=None):
 
 L = G / "latency_this_pc"
 day = sessions(L / "all8_20261022/cross_latency.json") + sessions(L / "all8_20261022_rerun_t24/cross_latency_recovered.json", True)
-runs = {"10/22 낮 (8모델 같은 실행)": (ratios(day, "b32_oab", "b32_fp32", ref_key="b16_fp32"), L / "all8_20261022/cross_latency.json"),
-        "10/22 저녁 (연속 실행 발열)": (ratios(sessions(L / "b32_submit_20261022/cross_latency.json"), "b32_oab", "b32_fp32"), L / "b32_submit_20261022/cross_latency.json"),
-        "10/23 새벽 (PC 쉬는 중)": (ratios(sessions(L / "b32_cool_20261023/cross_latency.json"), "b32_oab", "b32_fp32"), L / "b32_cool_20261023/cross_latency.json")}
+# 대표값 = 10/23 새벽 (10/24 준용 검토 M9 안 A: 이상치 규칙 없이 9구간 모두 정상). 나머지 두 번은 재현 범위
+runs = {"10/23 새벽 (대표, PC 쉬는 중)": (ratios(sessions(L / "b32_cool_20261023/cross_latency.json"), "b32_oab", "b32_fp32"), L / "b32_cool_20261023/cross_latency.json"),
+        "10/22 낮 (8모델 같은 실행)": (ratios(day, "b32_oab", "b32_fp32", ref_key="b16_fp32"), L / "all8_20261022/cross_latency.json"),
+        "10/22 저녁 (연속 실행 발열)": (ratios(sessions(L / "b32_submit_20261022/cross_latency.json"), "b32_oab", "b32_fp32"), L / "b32_submit_20261022/cross_latency.json")}
 f3 = {}
 for name, (lat, p) in runs.items():
     d = json.load(open(p, encoding="utf-8"))
@@ -85,7 +86,7 @@ for i, (name, v) in enumerate(f3.items()):
     xs = [j + (i - 1) * w for j in range(len(items))]
     bars = ax.bar(xs, [v[k] for k in items], w, label=name, color=cols[i])
     for x, y in zip(xs, [v[k] for k in items]):
-        ax.text(x, y + 1.5, f"{y:.0f}", ha="center", va="bottom", fontsize=6.5, color="white", fontweight="bold")
+        ax.text(x, y + 1.5, f"{y:.1f}", ha="center", va="bottom", fontsize=5.2, color="white", fontweight="bold", rotation=90)
 ax.set_xticks(range(len(items)), items)
 ax.set_ylabel("FP32 대비 변화율 (%)")
 ax.set_ylim(-80, 0)
@@ -104,14 +105,15 @@ pts = [("B/32 원래", "b32", s32["b32_orig"], hr(P32, "int8__percentile")),
        ("B/32 회전만", "b32", s32["b32_rot"], hr(P32, "int8_rothad_")),
        ("B/32 M2만", "b32", s32["b32_m2"], hr(P32, "15at6u5-7at10u9_percentile")),
        ("B/32 회전+M2", "b32", s32["b32_m2rot"], hr(P32, "15at6u5-7at10u9_rothad")),
-       ("B/32 예전 방식(R0)", "b32", s32["b32_r0"], hr(P32, "fc2L2")),
-       ("B/16 원래", "b16", s16["b16_orig"], hr(P16a, "int8__percentile")),
+       ("B/32 예전 방식(R0)", "b32", s32["b32_r0"], hr(P32, "fc2L2"))]
+pts16 = [("B/16 원래", "b16", s16["b16_orig"], hr(P16a, "int8__percentile")),
        ("B/16 회전만", "b16", s16["b16_rot"], hr(P16a, "int8_rothad_")),
        ("B/16 M2만", "b16", s16["b16_m2"], hr(P16a, "55at5-13at9_percentile")),
        ("B/16 회전+M2", "b16", s16["b16_m2rot_ort"], hr(P16o, "55at5-13at9_rothad_percentile", exclude="o1b")),
        ("B/16 O-AB", "b16", s16["b16_oab"], hr(P16o, "o1b")),
        ("B/16 예전 방식(R0)", "b16", s16["b16_r0"], hr(P16r, "fc2L2"))]
 data["F4b"] = [{"name": n, "min_snr_db": s["full"]["min"], "mean_snr_db": s["full"]["mean"], "dev_dtop1": a} for n, _, s, a in pts]
+data["F4b_dev_model_not_drawn"] = [{"name": n, "min_snr_db": s["full"]["min"], "mean_snr_db": s["full"]["mean"], "dev_dtop1": a} for n, _, s, a in pts16]
 fig, axs = plt.subplots(1, 2, figsize=(6.8, 2.9), sharey=True)
 for ax, key, lab in ((axs[0], "min", "가장 나쁜 층 SNR (dB)"), (axs[1], "mean", "79개 층 평균 SNR (dB)")):
     for n, m, s, a in pts:
@@ -119,21 +121,20 @@ for ax, key, lab in ((axs[0], "min", "가장 나쁜 층 SNR (dB)"), (axs[1], "me
     ax.set_yscale("log")
     ax.set_xlabel(lab)
 axs[0].invert_yaxis()          # sharey라 한 번만 뒤집는다 (작은 손실이 위)
-ticks = [0.2, 0.5, 1, 2, 5, 10, 20, 50]
+ticks = [0.5, 1, 2, 5, 10, 20, 50]
 axs[0].set_yticks(ticks, [f"{t:g}" for t in ticks])
 axs[0].minorticks_off()
 axs[1].minorticks_off()
 for n, m, s, a in pts:
-    if -a > 10:                # 붕괴한 4개는 한 덩어리라 라벨을 따로 단다
+    lab = n.split(" ", 1)[1]
+    axs[1].annotate(lab, (s["full"]["mean"], -a), fontsize=5.8, xytext=(3, 3), textcoords="offset points", color=MUTED,
+                    ha="right" if s["full"]["mean"] > 31 else "left")
+    if -a > 10:                # 붕괴한 두 점은 왼쪽 패널에서 한 라벨로 단다
         continue
-    dy = {"B/16 O-AB": 6, "B/16 회전+M2": -9}.get(n, 3)   # O-AB(−0.18)가 회전+M2(−0.23)보다 위
-    axs[0].annotate(n.split(" ", 1)[1], (s["full"]["min"], -a), fontsize=5.8, xytext=(3, dy), textcoords="offset points", color=MUTED)
-axs[0].annotate("원래·회전만 (두 모델, 붕괴)", (1.0, 55), fontsize=5.8, xytext=(8, 0), textcoords="offset points", color=MUTED, va="center")
-axs[0].set_ylabel("dev 정확도 손실 (%p, 로그 눈금, 위가 좋음)")
-axs[1].scatter([], [], color=B32, label="B/32 (제출)")
-axs[1].scatter([], [], color=B16, label="B/16")
-axs[1].legend(fontsize=7, frameon=False, loc="center right")
-fig.suptitle("배포 파일 눈금으로 잰 층별 8비트 출력 SNR과 정확도 — 최솟값은 순서가 맞고, 평균은 맞지 않는다", fontsize=8.5)
+    axs[0].annotate(lab, (s["full"]["min"], -a), fontsize=5.8, xytext=(3, 3), textcoords="offset points", color=MUTED)
+axs[0].annotate("원래·회전만 (붕괴)", (1.0, 57), fontsize=5.8, xytext=(8, 0), textcoords="offset points", color=MUTED, va="center")
+axs[0].set_ylabel("dev 손실 (%p, 로그, 위가 좋음)")
+fig.suptitle("SigLIP2 B/32: 배포 파일 눈금으로 잰 층별 8비트 출력 SNR과 정확도 — 최솟값은 순서가 맞고, 평균은 맞지 않는다", fontsize=8)
 fig.tight_layout()
 fig.savefig(OUT / "F4b_min_snr_vs_acc.png")
 plt.close(fig)

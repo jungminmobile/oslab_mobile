@@ -4,8 +4,9 @@ make_report_figs.py — 예선 보고서 그림 (raw에서 바로 그림, 숫자
 실행: D:/mokerton/venvs/figs/Scripts/python.exe siglip2/scripts/make_report_figs.py   (저장소 루트에서)
   그림 전용 가상환경(matplotlib)을 쓴다 — 실험 환경(siglip2 venv)은 건드리지 않음
 출력: siglip2/docs/figs/*.png (300 dpi) + figs_data.json (그림에 쓴 숫자 전부)
-  F1 민감도 지도 (B/16·B/32): 하나만 INT8일 때 고화질 cos — 블록 14개 + 연산 유형 6개
-  F2 2×2 단독 효과 (B/16·B/32): 원래 / 회전만 / M2만 / 회전+M2, dev 전체 Δtop-1과 95% 구간
+  F1 민감도 지도 (제출 모델 B/32): 하나만 INT8일 때 고화질 cos — 블록 14개 + 연산 유형 6개
+  F2 2×2 단독 효과 (제출 모델 B/32): 원래 / 회전만 / M2만 / 회전+M2, dev 전체 Δtop-1과 95% 구간
+  (10/24 준용 검토 M1: 본문 그림은 제출 모델만. B/16 값은 figs_data.json에만 남긴다)
   F3 FP32 대비 개선율 (B/16 최종): 크기·피크 메모리·지연(1·2·4스레드), 기기 4개
   F4 처방별 8비트 출력 SNR (원래·회전만·M2만·회전+M2): fc1·fc2 입력, 블록별 (E4b)
 """
@@ -54,19 +55,18 @@ olabels = ["QKV", "QKᵀ", "AV", "출력 투영", "MLP fc1", "MLP fc2"]
 data["F1"] = {"b16": {k: s16[k] for k in blocks + ops}, "b32": {k: s32[k] for k in blocks + ops},
               "source": ["G3_sensitivity/screen.jsonl", "G8_candidates/b32/G3_sensitivity/screen.jsonl"]}
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(7.2, 2.7), gridspec_kw={"width_ratios": [14, 6]})
-w = 0.38
+w = 0.62
 for ax, keys, labels, title in [(a1, blocks, blabels, "블록 하나만 INT8 (나머지 FP32)"), (a2, ops, olabels, "연산 유형 하나만 INT8")]:
     x = range(len(keys))
-    ax.bar([i - w / 2 - 0.01 for i in x], [s16[k] for k in keys], w, color=B16, label="B/16 (제출)")
-    ax.bar([i + w / 2 + 0.01 for i in x], [s32[k] for k in keys], w, color=B32, label="B/32 (비교)")
+    ax.bar(list(x), [s32[k] for k in keys], w, color=B32)
     ax.set_xticks(list(x), labels, rotation=0 if ax is a1 else 30, ha="center" if ax is a1 else "right")
     ax.set_ylim(0, 1.05)
     ax.axhline(0.95, color=MUTED, lw=0.8, ls="--")
     ax.set_title(title, fontsize=9, color=INK, loc="left")
 a1.set_ylabel("FP32 대비 임베딩 cos (고화질 5종)")
 a1.text(13.6, 0.955, "0.95", color=MUTED, fontsize=7, va="bottom", ha="right")
-a1.legend(loc="lower left", frameon=False, fontsize=8)
-a1.annotate("블록 5부터 붕괴", xy=(6, 0.52), xytext=(7.5, 0.80), fontsize=8, color=INK, arrowprops=dict(arrowstyle="->", color=MUTED, lw=0.8))
+a1.annotate("블록 0과 5~11이 민감", xy=(6, 0.52), xytext=(7.5, 0.80), fontsize=8, color=INK, arrowprops=dict(arrowstyle="->", color=MUTED, lw=0.8))
+fig.suptitle("SigLIP2 B/32 민감도 지도 — 하나만 INT8로 바꿨을 때 FP32 대비 cos (dev 6×200)", fontsize=9, x=0.01, ha="left", color=INK)
 fig.tight_layout()
 fig.savefig(OUT / "F1_sensitivity.png")
 plt.close(fig)
@@ -90,12 +90,12 @@ order = ["원래", "회전만", "M2만", "회전+M2"]
 data["F2"] = {"b16": t16, "b32": t32, "source": ["G8_candidates/b16/A1_ablation/dev_full/paired_ci.jsonl", "G8_candidates/b32/G3RQ/dev_full/paired_ci.jsonl"]}
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(7.2, 2.6), gridspec_kw={"width_ratios": [1, 1]})
 for ax, ylim, title in [(a1, (-70, 2), "전체 범위"), (a2, (-2.4, 0.4), "확대 (M2를 쓴 구성)")]:
-    for j, (t, c, lab) in enumerate([(t16, B16, "B/16 (제출)"), (t32, B32, "B/32 (비교)")]):
-        xs = [i + (j - 0.5) * 0.36 for i in range(4)]
+    for t, c in [(t32, B32)]:
+        xs = list(range(4))
         ys = [t[k][0] for k in order]
         lo = [t[k][0] - t[k][1][0] for k in order]
         hi = [t[k][1][1] - t[k][0] for k in order]
-        ax.bar(xs, ys, 0.34, color=c, label=lab)
+        ax.bar(xs, ys, 0.6, color=c)
         ax.errorbar(xs, ys, yerr=[lo, hi], fmt="none", ecolor=INK, elinewidth=0.8, capsize=2)
         if ax is a2:
             for xx, yy, k in zip(xs, ys, order):
@@ -108,8 +108,7 @@ for ax, ylim, title in [(a1, (-70, 2), "전체 범위"), (a2, (-2.4, 0.4), "확�
     ax.axhline(0, color=INK, lw=0.8)
     ax.set_title(title, fontsize=9, color=INK, loc="left")
 a1.set_ylabel("FP32 대비 Δtop-1 (%p, dev 전체)")
-a1.legend(loc="lower right", frameon=False, fontsize=8)
-fig.suptitle("MatMul 전부 INT8에서 기법 하나씩 켜기 (오차 막대 = 95% 구간)", fontsize=9, x=0.01, ha="left", color=INK)
+fig.suptitle("SigLIP2 B/32: MatMul 전부 INT8에서 기법 하나씩 켜기 (오차 막대 = 95% 구간)", fontsize=9, x=0.01, ha="left", color=INK)
 fig.tight_layout()
 fig.savefig(OUT / "F2_ablation_2x2.png")
 plt.close(fig)

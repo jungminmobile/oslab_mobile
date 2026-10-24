@@ -1,6 +1,13 @@
 {
  "F3b": {
   "pct_vs_fp32": {
+   "10/23 새벽 (대표, PC 쉬는 중)": {
+    "크기": -72.8,
+    "피크 메모리": -57.4,
+    "지연 1T": -60.7,
+    "지연 2T": -57.9,
+    "지연 4T": -55.9
+   },
    "10/22 낮 (8모델 같은 실행)": {
     "크기": -72.8,
     "피크 메모리": -57.5,
@@ -14,19 +21,12 @@
     "지연 1T": -60.2,
     "지연 2T": -58.2,
     "지연 4T": -56.9
-   },
-   "10/23 새벽 (PC 쉬는 중)": {
-    "크기": -72.8,
-    "피크 메모리": -57.4,
-    "지연 1T": -60.7,
-    "지연 2T": -57.9,
-    "지연 4T": -55.9
    }
   },
   "source": [
+   "results\\siglip2\\G8_candidates\\latency_this_pc\\b32_cool_20261023\\cross_latency.json",
    "results\\siglip2\\G8_candidates\\latency_this_pc\\all8_20261022\\cross_latency.json",
-   "results\\siglip2\\G8_candidates\\latency_this_pc\\b32_submit_20261022\\cross_latency.json",
-   "results\\siglip2\\G8_candidates\\latency_this_pc\\b32_cool_20261023\\cross_latency.json"
+   "results\\siglip2\\G8_candidates\\latency_this_pc\\b32_submit_20261022\\cross_latency.json"
   ]
  },
  "F4b": [
@@ -59,7 +59,9 @@
    "min_snr_db": 13.06,
    "mean_snr_db": 29.04,
    "dev_dtop1": -2.36
-  },
+  }
+ ],
+ "F4b_dev_model_not_drawn": [
   {
    "name": "B/16 원래",
    "min_snr_db": 0.09,
