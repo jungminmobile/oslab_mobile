@@ -270,3 +270,11 @@
 - 보고서 v8(전체)·v9(축약, 본문 약 3.3만 자) + 그림 F3b·F4b·F5 + README v4 → 브랜치 `siglip2/report-b32` (독립 검토 반영)
 - 팀원에게 카톡 업데이트 보냄 (portable_eval 결과, 준용 FP32 바탕 업로드·HEF·O-A 대응·바탕 동일성 확인, 보고서 v9 검토, 1장 팀 정보)
 - 다음 (답이 오면): 팀 정보 → 양식 docx·PDF(약 15쪽), 정민·준용 portable_eval 사진별 비교 → 보고서 7.1·9.4, 준용 HEF·학술부 답 반영 → 최종 Release, main 병합·`prelim-submit` 태그 (쭈리 승인)
+
+## 2026-10-24 — 준용 v9 검토 반영, D-050·D-051 동의
+- 준용 검토(`siglip2/report-b32-review-junyong`, 숫자 120개 틀린 것 0, 규칙 위험 위주) 1~9번 전부 반영 → 보고서 v9 `8e04c6b` (`siglip2/report-b32`): 그림 B/32만, 10장 → 부록 D, test 이력 부록 E, 실칩 부록 F, 대표 효율 10/23 새벽(4T −55.9%·1T −60.7%·메모리 −57.4%), 컴파일 설정 출처(Zoo 레시피), ARM·세 CPU 재현, mem pattern 선택 사항
+- **결정 (쭈리 동의): D-050 본선 HEF = GF, D-051 O-A float 출력은 Hailo에서 a16으로 맞추지 않음** → DECISIONS.md 반영은 준용
+- 새로 확인: 세 CPU 사진별 비교(`b32/xplat/compare_3way`: x86 두 대 O-AB 1장·M2rot 비트 동일, ARM 25~26장), mem pattern B/32 −4.0%(`b32/submit_prep/mem_pattern`, B/16의 −8.5~−9.3%보다 작음), ONNX 개수 출처(`model_stats/onnx_counts.json`)
+- 실수·정정 (숨기지 않음): ① 보고서 "레지스터 캐시 상수 약 0.16M"은 틀림 → 실제 20,992개(0.02M), 0.16M은 눈금·영점 포함 차이였음 ② 10/23 지연 README의 10/22 저녁 4T −57.9%는 중앙값 ms 비율 → 세션 비율 중앙값 −56.9%로 정정 ③ 보고서 수정 스크립트 하나가 셸 따옴표 문제로 실행 안 됨(파일 변경 없음) → 파일로 저장해 다시 실행
+- 독립 검토(서브에이전트): 숫자 약 160개 틀린 것 0, 표현·참조 15건 반영
+- 다음: 1장 팀 정보 → 양식 docx·PDF, 정민 검토·258V portable_eval, 학술부 답(onnxruntime 여부·실칩 부록) → 최종 Release, main 병합·`prelim-submit` 태그 (쭈리 승인)
