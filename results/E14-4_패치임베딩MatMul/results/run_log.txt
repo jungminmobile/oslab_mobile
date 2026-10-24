@@ -1,0 +1,24 @@
+[2026-10-25T00:36:07] START e14\run_e14_4.py --step 0 git={'commit': '6ded541', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-25T00:36:19] END --step 0 12s
+[2026-10-25T00:36:26] START e14\run_e14_4.py --step rewrite git={'commit': '6ded541', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-25T00:36:34] END --step rewrite 8s
+[2026-10-25T00:36:45] START e14\run_e14_4.py --step smoke git={'commit': '6ded541', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-25T00:36:47] END --step smoke 2s
+[2026-10-25T00:36:57] START e14\run_e14_4.py --step g2 git={'commit': 'eeabc2e', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-25T00:38:23] END --step g2 86s
+[2026-10-25T00:38:42] START e14\run_e14_4.py --step g3 --session 1 git={'commit': 'eeabc2e', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-25T00:39:07] END --step g3 25s
+[2026-10-25T00:41:13] START e14\run_e14_4.py --step g3 --session 2 git={'commit': 'eeabc2e', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-25T00:41:37] END --step g3 24s
+[2026-10-25T00:41:48] START e14\run_e14_4.py --step acc git={'commit': 'eeabc2e', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-25T00:45:02] END --step acc 194s
+[2026-10-25T00:45:18] START e14\run_e14_4.py --step mem git={'commit': 'eeabc2e', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-25T00:45:35] END --step mem 17s
+[2026-10-25T00:48:52] START e14\run_e14_4.py --step speed --session 1 git={'commit': 'eeabc2e', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-25T00:50:15] END --step speed 83s
+[2026-10-25T00:52:16] START e14\run_e14_4.py --step speed --session 2 git={'commit': 'eeabc2e', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-25T00:53:39] END --step speed 83s
+[2026-10-25T00:55:39] START e14\run_e14_4.py --step speed --session 3 git={'commit': 'eeabc2e', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-25T00:57:02] END --step speed 83s
+[2026-10-25T00:57:03] START e14\run_e14_4.py --step summary git={'commit': 'eeabc2e', 'branch': 'jungmin/e14-graph', 'dirty': True}
+[2026-10-25T00:57:03] END --step summary 0s

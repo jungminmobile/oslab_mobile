@@ -1,0 +1,113 @@
+{
+ "date": "2026-10-25T00:36:19",
+ "F2_sha256": "03f4de18bd7370a099c08315006b81b6b4c1b4a22adfccdcd82cafd53c79e772",
+ "O_sha256": "7a01044c6ba32bf4f5a12aba82eb19e06753f13c8bad43b9f6fcfcd9f484dbf6",
+ "inspect_F2": {
+  "n_conv": 1,
+  "conv_input": "image",
+  "attrs": {
+   "auto_pad": "NOTSET",
+   "dilations": [
+    1,
+    1
+   ],
+   "group": 1,
+   "strides": [
+    32,
+    32
+   ],
+   "kernel_shape": [
+    32,
+    32
+   ],
+   "pads": [
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "W_shape": [
+   768,
+   3,
+   32,
+   32
+  ],
+  "W_absmax": 0.04356265068054199,
+  "b_shape": [
+   768
+  ],
+  "b_absmax": 1.2881988286972046,
+  "attrs_ok": true,
+  "chain": [
+   "Reshape",
+   "Transpose",
+   "Add"
+  ],
+  "reshape_shape": [
+   0,
+   768,
+   64
+  ],
+  "transpose_perm": [
+   0,
+   2,
+   1
+  ],
+  "pos_name": "trunk.t.pos_embed",
+  "pos_is_init": true,
+  "pos_n_consumers": 1,
+  "pos_shape": [
+   1,
+   64,
+   768
+  ],
+  "add_name": "/trunk/Add",
+  "graph_input_direct": true,
+  "ok": true
+ },
+ "inspect_O_ok": true,
+ "weight_format": {
+  "n_weight_dq": 53,
+  "kinds": {
+   "('int8', True, 1, ('int8', True))": 53
+  },
+  "int_min": -64,
+  "int_max": 64
+ },
+ "input_integer": {
+  "a_dev_cache": {
+   "per_set": {
+    "cifar_A": 0.0,
+    "pets_dev": 0.0,
+    "flowers_dev": 0.0,
+    "cars_dev": 0.0,
+    "food_dev": 0.0,
+    "caltech_dev": 0.0
+   },
+   "max": 0.0,
+   "pix_dtype": "uint8",
+   "path": "C:/s2art_b32/dev256/<set>_pix.npy → run_e14_1.to_x (pix/127.5 − 1)"
+  },
+  "b_portable_eval": {
+   "frac_nonint": 0.0,
+   "x_shape": [
+    200,
+    3,
+    256,
+    256
+   ],
+   "x_dtype": "float32",
+   "func": "copy of zoo_pre (import 실패: KeyError: 'SIGLIP2_DATA')",
+   "note": "B/32 256 dev200 묶음(npz)은 이 노트북에 없음 → 묶음을 만드는 전처리 함수를 리사이즈 200장에 적용해 확인"
+  },
+  "branch": "그대로"
+ },
+ "other_python": [],
+ "git": {
+  "commit": "6ded541",
+  "branch": "jungmin/e14-graph",
+  "dirty": true
+ },
+ "pass": true
+}
