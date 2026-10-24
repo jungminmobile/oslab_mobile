@@ -88,18 +88,20 @@
 
 > A가 "같은 모델"로 판정되어 진행한다. test 사진은 이 설계 커밋 **뒤에만** 처음 읽는다.
 
-### B-1. 팀 결정 기록 문안 (`siglip2/DECISIONS.md`에 붙일 안 — **그 파일은 고치지 않는다**)
+### B-1. 결정 기록 문안 — 상태 "제안" (`siglip2/DECISIONS.md`에 붙일 안 — **그 파일은 고치지 않는다**)
 여러 브랜치(`g8-candidates`·`report-b32`·`b32-portable-junyong`)에서 마지막 번호는 D-049다 → 다음 번호 D-050·D-051.
 
 ```markdown
 ## D-050 본선 Hailo HEF(B/32) = GF (G6f, `0c2e04a6…`) — D-047(B16_rb_bk)을 B/32로 바꿈
-- 상태: **확정** / 2026-10-24 / 팀 결정 — 용이 10/24 작업 요청에 "팀 결정: 본선 HEF = GF(G6f, G와 출력 비트 동일)"로 전달 (승인자·회의 기록은 DECISIONS.md에 옮길 때 채울 것. 확인 안 되면 "제안"으로)
+- 상태: **제안** (10/24, 용) / 승인자: 
+- 준혁 동의를 받으면 DECISIONS.md로 옮기면서 승인자를 채운다.
 - **결정: 본선 HEF는 G6f GF** `g6_b32_G.hef` (GF 빌드, sha256 `0c2e04a6ef9bfb6055c249ad969f07546711d6130ce401800fcc7fdc61c8b29a`, 99,876,864 B, 컨텍스트 13). G optimized HAR(`409b0344…`) + G .alls + F의 compile 두 줄(`allocator_param`·`context_switch_param`), compile만. 바탕 ONNX `g6_b32_m2rot_b1.onnx` (`a0eb502b…`) = 예선 제출 ONNX 바탕 `23236123…`와 같은 모델 (initializer 145/145 비트 동일, 회전 `3a6391a2…`, sink 15@6:5·7@10:9; `results/siglip2/B32_hef_test/README.md` A절).
 - 근거: GF는 G와 출력이 비트 동일(G6f, 6×200 = 1,200장)이므로 정확도는 G(dev 전체 G − Z +2.67 [+1.92, +3.46]%p 우위, G6d)와 같고, 배치 1 14.93 ms로 Zoo 공개 HEF(Z) 16.49 ms 대비 −9.5% (G6f 같은 세션). 더 빠른 ALL8F(13.38 ms)는 dev 전체에서 GF 대비 −0.87 [−1.46, −0.28]%p 열위이고 CIFAR A 손실도 더 크다(FP32 대비 −5.3, G6f 9절) → 채택하지 않음.
 - test 1회: `results/siglip2/B32_hef_test/` B절 (GF·Z 실칩, 결과는 HEF 선택에 쓰지 않음).
 
 ## D-051 예선 ONNX(O-AB)의 float 출력(QKᵀ·Softmax)은 Hailo에서 a16으로 맞추지 않는다 — 기록만
-- 상태: **확정** / 2026-10-24 / 팀 결정 — 용이 10/24 작업 요청에 "O-A의 float 출력은 Hailo에서 a16으로 맞추지 않고 기록만 한다"로 전달 (승인자 기록은 옮길 때 채울 것, 팀 규칙의 예외라 확인 필수). D-049 위험 ③을 닫는다.
+- 상태: **제안** (10/24, 용) / 승인자: 
+- 준혁 동의를 받으면 DECISIONS.md로 옮기면서 승인자를 채운다. 팀 규칙("ORT에서 FP32로 남긴 층은 Hailo에서 a16_w16")의 예외다. 확정되면 D-049 위험 ③을 닫는다.
 - **결정:** O-A(`--no-matmul-out-q`)로 ORT에서 float이 된 QKᵀ 출력·Softmax를 본선 HEF에서 `a16_w16`으로 맞추지 않는다. 차이는 보고서에 기록만 한다.
 - 근거: Hailo는 float ONNX(`a0eb502b`)에서 DFC로 따로 양자화하므로 ORT 양자화 그래프의 정밀도 배치를 따를 필요가 없다. 맞추려면 HEF를 다시 빌드(optimize·compile 약 1시간 + 실칩 재측정)해야 하고, D-050의 GF 근거(정확도·지연)가 다시 확인되어야 한다.
 - 팀 규칙("ORT에서 FP32로 남긴 층은 Hailo에서 a16_w16") 예외로 보고서에 적는다.
