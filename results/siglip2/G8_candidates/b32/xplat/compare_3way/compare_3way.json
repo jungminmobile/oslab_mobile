@@ -1,0 +1,167 @@
+{
+ "branch_junyong": "3356672",
+ "commit": "a4a2795",
+ "models": {
+  "fp32": {
+   "i7_vs_285k": {
+    "n": 1200,
+    "pred_diff": 0,
+    "correct_flip": 0,
+    "per_set": {
+     "caltech_dev": 0,
+     "cars_dev": 0,
+     "cifar_A": 0,
+     "flowers_dev": 0,
+     "food_dev": 0,
+     "pets_dev": 0
+    },
+    "max_abs_cos_diff": 2.384185791015625e-07,
+    "bit_identical_pred": true
+   },
+   "i7_vs_agx": {
+    "n": 1200,
+    "pred_diff": 0,
+    "correct_flip": 0,
+    "per_set": {
+     "caltech_dev": 0,
+     "cars_dev": 0,
+     "cifar_A": 0,
+     "flowers_dev": 0,
+     "food_dev": 0,
+     "pets_dev": 0
+    },
+    "max_abs_cos_diff": 2.980232238769531e-07,
+    "bit_identical_pred": true
+   },
+   "285k_vs_agx": {
+    "n": 1200,
+    "pred_diff": 0,
+    "correct_flip": 0,
+    "per_set": {
+     "caltech_dev": 0,
+     "cars_dev": 0,
+     "cifar_A": 0,
+     "flowers_dev": 0,
+     "food_dev": 0,
+     "pets_dev": 0
+    },
+    "max_abs_cos_diff": 2.384185791015625e-07,
+    "bit_identical_pred": true
+   }
+  },
+  "oab": {
+   "i7_vs_285k": {
+    "n": 1200,
+    "pred_diff": 1,
+    "correct_flip": 0,
+    "per_set": {
+     "caltech_dev": 0,
+     "cars_dev": 0,
+     "cifar_A": 0,
+     "flowers_dev": 0,
+     "food_dev": 0,
+     "pets_dev": 1
+    },
+    "max_abs_cos_diff": 0.004802405834197998,
+    "bit_identical_pred": false
+   },
+   "i7_vs_agx": {
+    "n": 1200,
+    "pred_diff": 25,
+    "correct_flip": 17,
+    "per_set": {
+     "caltech_dev": 2,
+     "cars_dev": 6,
+     "cifar_A": 12,
+     "flowers_dev": 1,
+     "food_dev": 3,
+     "pets_dev": 1
+    },
+    "max_abs_cos_diff": 0.026083827018737793,
+    "bit_identical_pred": false
+   },
+   "285k_vs_agx": {
+    "n": 1200,
+    "pred_diff": 26,
+    "correct_flip": 17,
+    "per_set": {
+     "caltech_dev": 2,
+     "cars_dev": 6,
+     "cifar_A": 12,
+     "flowers_dev": 1,
+     "food_dev": 3,
+     "pets_dev": 2
+    },
+    "max_abs_cos_diff": 0.0256921648979187,
+    "bit_identical_pred": false
+   }
+  },
+  "m2rot": {
+   "i7_vs_285k": {
+    "n": 1200,
+    "pred_diff": 0,
+    "correct_flip": 0,
+    "per_set": {
+     "caltech_dev": 0,
+     "cars_dev": 0,
+     "cifar_A": 0,
+     "flowers_dev": 0,
+     "food_dev": 0,
+     "pets_dev": 0
+    },
+    "max_abs_cos_diff": 0.0,
+    "bit_identical_pred": true
+   },
+   "i7_vs_agx": {
+    "n": 1200,
+    "pred_diff": 47,
+    "correct_flip": 26,
+    "per_set": {
+     "caltech_dev": 4,
+     "cars_dev": 9,
+     "cifar_A": 14,
+     "flowers_dev": 7,
+     "food_dev": 8,
+     "pets_dev": 5
+    },
+    "max_abs_cos_diff": 0.04187268018722534,
+    "bit_identical_pred": false
+   },
+   "285k_vs_agx": {
+    "n": 1200,
+    "pred_diff": 47,
+    "correct_flip": 26,
+    "per_set": {
+     "caltech_dev": 4,
+     "cars_dev": 9,
+     "cifar_A": 14,
+     "flowers_dev": 7,
+     "food_dev": 8,
+     "pets_dev": 5
+    },
+    "max_abs_cos_diff": 0.04187268018722534,
+    "bit_identical_pred": false
+   }
+  }
+ },
+ "keys": [
+  "cifar_A_pred",
+  "cifar_A_cos",
+  "cifar_A_y",
+  "pets_dev_pred",
+  "pets_dev_cos",
+  "pets_dev_y",
+  "flowers_dev_pred",
+  "flowers_dev_cos",
+  "flowers_dev_y",
+  "cars_dev_pred",
+  "cars_dev_cos",
+  "cars_dev_y",
+  "food_dev_pred",
+  "food_dev_cos",
+  "food_dev_y",
+  "caltech_dev_pred",
+  "caltech_dev_cos",
+  "caltech_dev_y"
+ ]
+}
