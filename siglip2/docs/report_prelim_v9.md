@@ -493,7 +493,7 @@ python scripts/cross_latency.py --out out_speed --mem \
 1. `F1_sensitivity.png` 민감도 지도(블록·연산별 cos) → 5.3 단계 2
 2. `F4b_min_snr_vs_acc.png` 배포 눈금 층별 SNR(가장 나쁜 층·평균) vs dev 정확도 손실, 5구성 → 5.3 단계 5
 3. `F2_ablation_2x2.png` 2×2 단독 효과 → 5.1·5.3 단계 4
-4. `F3b_improvement_b32.png` 제출 모델 FP32 대비 개선율(크기·메모리·지연 1/2/4T), 이 PC 3회(10/23 새벽 대표) → 2장 또는 6.5
+4. `F3b_improvement_b32.png` 제출 모델 P2의 FP32 대비 개선율(크기·메모리·지연 1/2/4T, 10/27 대표 실행)과 이전 단계 O-AB 3회(비율 안정성) → 2장 또는 6.5
 5. `F5_hailo_b32.png` Hailo-10H 실칩 배치 1 지연 vs dev 정확도(Zoo 공개 HEF Z, G, GF, ALL8F, 같은 세션) → 부록 F.2
 - `F3_improvement.png`·`F4_activation_snr.png`는 개발 초기 모델 시절 그림이라 쓰지 않는다.
 

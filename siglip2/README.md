@@ -1,41 +1,45 @@
 # SigLIP2 ViT-B/32 이미지 인코더 양자화 — 재현 방법
 
-대회 안내 4.2절 "재현용 코드 및 실행 환경"과 예선 결과보고서 9장에 해당하는 문서다 (v4, 2026-10-23 — 제출 모델 B/32 O-AB, D-048·D-049).
+대회 안내 4.2절 "재현용 코드 및 실행 환경"과 예선 결과보고서 9장에 해당하는 문서다 (v5, 2026-10-27 — 제출 모델 B/32 P2, D-048·D-052).
 실험 기록·결정은 `ROADMAP.md`, `DECISIONS.md`, `PROGRESS.md`, 결과는 루트 `results/siglip2/`에 있다.
 
-> **제출 모델 = SigLIP2 B/32 O-AB** (D-048·D-049): 레지스터 캐시 M2 + 회전 + O-A(MatMul 출력 재반올림 생략) + O-B(SkipLayerNorm 융합), 이미지 인코더 MatMul 79개 전부 INT8. 제출 모델 B/32의 test는 이 파일로 ORT 1회(`results/siglip2/G8_candidates/b32/test`), 본선 HEF로 Hailo 1회(준용 `B32_hef_test`) 썼다. 개발 초기 B/16 단계 이력은 보고서 부록 E.
+> **제출 모델 = SigLIP2 B/32 P2** (D-048·D-052): 레지스터 캐시 M2 + 회전 + O-A(MatMul 출력 재반올림 생략) + O-B(SkipLayerNorm 융합) + F2(GELU → FastGelu) + 패치 임베딩 정수화(정민 E14). 패치 임베딩을 포함한 행렬곱 80개 전부 INT8. 이전 제출 파일은 O-AB(`7a01044c…`, D-049)였다. B/32의 test는 ORT 2회(O-AB 10/22 `results/siglip2/G8_candidates/b32/test`, P2 10/27 `b32/test_p2`), 본선 HEF로 Hailo 1회(준용 `B32_hef_test`) 썼다. 교체는 test 전에 dev·지연·메모리로 확정했다(`b32/p2/README.md`). 개발 초기 B/16 단계 이력은 보고서 부록 E.
 > **본선 Hailo HEF**: 같은 PyTorch 모델(같은 회전 행렬·sink 규칙·M2 상수)에서 배치 1로 export한 FP32를 Hailo DFC로 컴파일한다. 본선 HEF는 GF로 정했다(D-050). ALL8F는 절제 실험이다 (준용 G6d·G6f·B32_hef_test).
 > **채점·재현은 배포한 ONNX 파일로 한다.** 다른 PC에서 다시 만들면 파일이 달라진다 (3절, 7절).
-> **onnxruntime으로 실행한다.** 제출 모델에 `com.microsoft` 연산(SkipLayerNormalization)이 있다.
+> **onnxruntime으로 실행한다.** 제출 모델에 `com.microsoft` 연산(SkipLayerNormalization 24, FastGelu 13)이 있다.
 
 ## 0. 무엇을 재현하나
 
 | 모델 | 파일 | 크기 | sha256 |
 |---|---|---|---|
 | 베이스라인 FP32 | `siglip2_image_fp32.onnx` | 378.36 MB (360.83 MiB) | `be19a8ada01055df…` |
-| **최적화 (제출)** | `siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx` | 102.76 MB (98.00 MiB) | `7a01044c6ba32bf4f5a12aba82eb19e06753f13c8bad43b9f6fcfcd9f484dbf6` |
+| **최적화 (제출, P2)** | `e14_4_P2_patch_int8.onnx` | 95.65 MB (91.22 MiB) | `e465d10da92cf0f830b95d29d72cf3251ea34da90f54b6b5c1f3e16510efd6b2` |
+| (이전 제출 파일) O-AB | `siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx` | 102.76 MB (98.00 MiB) | `7a01044c6ba32bf4f5a12aba82eb19e06753f13c8bad43b9f6fcfcd9f484dbf6` |
 | 비상 대체: M2rot INT8, 표준 연산만 (채점 환경이 com.microsoft 연산을 못 돌릴 때) | `siglip2_image_int8_g6b_b32_m2rot_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx` | 102.85 MB | `3a46ae8af54f3119…` (제출 모델과 같은 바탕 `23236123…`, 본선 HEF와 이어짐) |
 | (비교용) M2rot INT8, 이 PC 빌드 | `siglip2_image_int8_rcmaskbcmlp15at6u5-7at10u9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx` | 102.85 MB | `9783d7defe8c0735…` (회전 행렬이 달라 본선 HEF와 이어지지 않음 — 대체 파일 아님) |
 
-- Release: 지금은 내부 확인용 pre-release `siglip2-b32-submit-20261023` (위 네 파일 + dev 6종 × 200장 묶음 + `portable_eval.py` + `SHA256SUMS*.txt` + 이 PC 결과 + 제출 파일을 만든 중간 파일 `23236123…` → `79e797c1…` → `506e9fe4…`). 최종 제출 Release는 따로 만든다.
-- 포맷: ONNX opset 17 + `com.microsoft` 1, 입력 `image` float32 N×3×256×256 (SigLIP2 전처리 후: 256×256, 평균·표준편차 0.5 정규화), 출력 `embedding` 768차원.
+- Release: 지금은 내부 확인용 pre-release 두 개다. `siglip2-b32-submit-20261023`(FP32·O-AB·M2rot 두 개 + dev 6종 × 200장 묶음 + `portable_eval.py` + `SHA256SUMS*.txt` + 이 PC 결과 + 중간 파일 `23236123…` → `79e797c1…` → `506e9fe4…`), `siglip2-p2-20261027`(P2, F2 `03f4de18…`, SHA256SUMS). 최종 제출 Release는 하나로 묶어 따로 만든다.
+- 제출 파일을 만드는 순서: O-AB `7a01044c…` → `e14/make_models_e14.py`(정민 브랜치 `jungmin/e14-graph`) → F2 `03f4de18…` → P2 `e465d10d…`. 세 PC에서 만든 파일의 sha가 같다.
+- 포맷: ONNX opset 17 + `com.microsoft` 1 (SkipLayerNormalization·FastGelu), 입력 `image` float32 N×3×256×256 (SigLIP2 전처리 후: 256×256, 평균·표준편차 0.5 정규화), 출력 `embedding` 768차원.
 - 실행: onnxruntime 1.25.0 CPU, 기본 그래프 최적화(`ORT_ENABLE_ALL`, 정수 커널).
-- 다른 CPU: 같은 묶음(1,200장)에서 x86 두 대(i7-1165G7 AVX-512 VNNI, Ultra 9 285K AVX-VNNI)는 제출 모델 사진 1장만 달랐다(정답 여부 같음). dev 전체 고화질 평균은 89.69 / 89.67%(Cars만 순 약 1장). ARM(Jetson AGX Orin)은 1,200장 중 25~26장(2.2%) 달랐지만 고화질 평균 Δ는 같았다. FP32는 세 대 모두 같았다 (`results/siglip2/G8_candidates/b32/xplat/compare_3way`).
+- 다른 CPU: 같은 묶음(1,200장)에서 x86 두 대(i7-1165G7 AVX-512 VNNI, Ultra 9 285K AVX-VNNI)는 제출 P2 사진 1장만 달랐다. dev 전체 고화질 평균은 i7 89.91%, 정민 258V·준용 285K 89.87%(CIFAR A·Food·Caltech 1~2장). ARM(Jetson AGX Orin)은 1,200장 중 4~5장(0.4%) 달랐고 고화질 평균 Δ는 285K와 같았다(이전 O-AB는 25~26장). FP32는 세 대 모두 같았다 (`results/siglip2/G8_candidates/b32/p2/xplat_i7/compare_p2_3way.json`).
+- 입력: 0~255 픽셀을 /127.5 − 1 한 값(open_clip 기본 전처리)일 때 P2의 첫 층 입력 양자화가 무손실이다.
 
 ## 1. 빠른 확인 (저장소 코드·데이터 없이, 내려받기 약 5분 + 실행 약 6분)
 
-numpy와 onnxruntime만 있으면 된다. dev 6종 × 200장 묶음으로 FP32와 제출 모델을 비교한다.
+numpy와 onnxruntime만 있으면 된다. dev 6종 × 200장 묶음으로 FP32와 제출 모델을 비교한다. (최종 제출 Release로 하나로 묶기 전까지는 두 Release에서 받는다)
 
 ```bash
 python -m pip install numpy==2.4.4 onnxruntime==1.25.0
 gh release download siglip2-b32-submit-20261023 --repo jungminmobile/oslab_mobile -D release
-cd release && sha256sum -c SHA256SUMS.txt && cd ..
+gh release download siglip2-p2-20261027 --repo jungminmobile/oslab_mobile -p e14_4_P2_patch_int8.onnx -D release
+cd release && sha256sum -c SHA256SUMS.txt && sha256sum e14_4_P2_patch_int8.onnx && cd ..   # P2: e465d10d…
 python release/portable_eval.py --data release --out out_quick --threads 4 \
   --models fp32=release/siglip2_image_fp32.onnx \
-           oab=release/siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx
+           p2=release/e14_4_P2_patch_int8.onnx
 ```
-- 기대 출력 (`out_quick/result.json`): 제출 모델 고화질 5종 cos **0.9893**, Δtop-1 **+0.4%p** (각 200장), CIFAR A 71.0 (FP32 71.5). 기준값 `release/result_i7-1165G7.json`.
-- 확인 기록: 깨끗한 폴더에서 이 순서 그대로 실행해 사진 1,200장의 예측이 비트 단위로 같음 (`results/siglip2/G8_candidates/b32/xplat/repro_check`).
+- 기대 출력 (`out_quick/result.json`): 제출 P2 고화질 5종 cos **0.9884**, Δtop-1 **+0.4%p** (각 200장, 285K·AGX는 +0.3), CIFAR A 73.0 (FP32 71.5). 이 PC 결과 `results/siglip2/G8_candidates/b32/p2/xplat_i7/result.json`.
+- 확인 기록: 깨끗한 폴더에서 이 순서 그대로 실행해 사진 1,200장의 예측이 비트 단위로 같음 (이전 제출 파일 O-AB 기준, `results/siglip2/G8_candidates/b32/xplat/repro_check`).
 - `gh`가 없으면 GitHub Release 페이지에서 파일을 받아 `release/` 폴더 하나에 둔다.
 
 ## 2. 환경 (전체 재현)
@@ -61,7 +65,8 @@ mkdir -p $SIGLIP2_ARTIFACTS/onnx && cp release/*.onnx $SIGLIP2_ARTIFACTS/onnx/  
 3. 레지스터 캐시 M2 + 회전, 통일 규칙 `15@6:5, 7@10:9` (보정 train 256장, 시드 0):
    `python s2_regcache.py cache --rot rothad --sinks 15@6:5,7@10:9` → `ucache` → `export --graph mask --mask-form bcast --mask-site mlp --rot rothad`
 4. INT8 (M2rot): `python s2_quantize.py --src <M2rot FP32> --calib-source highres --calib-n 256 --op-types MatMul --method percentile --percentile 99.999 --hist-chunk 16 --act-type u8 --reduce-range --tag all --dump-ops`
-5. O-A·O-B(제출 모델): 준용 브랜치 `siglip2/o1-ort-speed`의 O1 절차 (`results/siglip2/O1/README.md`) — O-B 그래프 융합(SkipLayerNormalization) 뒤 4와 같은 옵션 + MatMul 출력 양자화 제외(`OpTypesToExcludeOutputQuantization=["MatMul"]`)
+5. O-A·O-B(이전 제출 파일 O-AB): 준용 브랜치 `siglip2/o1-ort-speed`의 O1 절차 (`results/siglip2/O1/README.md`) — O-B 그래프 융합(SkipLayerNormalization) 뒤 4와 같은 옵션 + MatMul 출력 양자화 제외(`OpTypesToExcludeOutputQuantization=["MatMul"]`)
+6. F2·P2(제출 모델): 정민 브랜치 `jungmin/e14-graph`의 `e14/make_models_e14.py` (`E14_O_ONNX`=O-AB 경로, `E14_WORK`=출력 폴더) — O-AB에서 GELU 융합(F2) → 패치 임베딩 Conv를 자르기 + INT8 MatMul로(P2). 양자화를 다시 하지 않는 그래프 변환이라 같은 O-AB에서는 어느 PC에서나 같은 파일이 나온다(세 PC sha 일치)
 
 **같은 PC에서는 다시 만들어도 같은 파일이 나오지만, 다른 PC에서는 다른 파일이 나온다.** float64 행렬 곱 반올림이 CPU·OpenBLAS 커널에 따라 달라 회전 행렬부터 달라진다 (`results/siglip2/G8_candidates/repro_fingerprint`). 같은 레시피 B/32 M2rot이 두 PC에서 dev −0.79 / −0.87이었다. 그래서 **채점·재현은 배포 파일**로 한다.
 
@@ -70,9 +75,9 @@ mkdir -p $SIGLIP2_ARTIFACTS/onnx && cp release/*.onnx $SIGLIP2_ARTIFACTS/onnx/  
 ```bash
 cd siglip2
 python s2_build_dev.py all --threads 4        # dev 캐시·텍스트 분류기·FP32 기준 (데이터 자동 다운로드, 처음 1~2시간)
-RN50_RESULTS=../results/siglip2/repro_b32_dev python s2_paired_ci.py --models siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx
+RN50_RESULTS=../results/siglip2/repro_b32_dev python s2_paired_ci.py --models e14_4_P2_patch_int8.onnx
 ```
-- 기대값: FP32 고화질 89.96%, 제출 모델 89.69% (Δ **−0.27 [−0.62, +0.09]**), cos 0.989, CIFAR A −0.5. 출력: `paired_ci.jsonl`, 사진별 예측 `pred_<모델>.npz`.
+- 기대값: FP32 고화질 89.96%, 제출 P2 89.91% (Δ **−0.05 [−0.41, +0.33]**), cos 0.988, CIFAR A −0.2 (이 PC i7. 다른 x86에서는 89.87%). 출력: `paired_ci.jsonl`, 사진별 예측 `pred_<모델>.npz`.
 - `paired_ci.jsonl`은 이어 쓰기라 재현할 때는 새 결과 폴더를 지정한다.
 
 ## 5. 정확도 — test (최종 1회)
@@ -80,12 +85,12 @@ RN50_RESULTS=../results/siglip2/repro_b32_dev python s2_paired_ci.py --models si
 ```bash
 for s in pets caltech flowers cars food cifar_test imagenetv2; do
   RN50_RESULTS=../results/siglip2/repro_b32_test python s2_test_eval.py $s --threads 4 \
-    --models siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx
+    --models e14_4_P2_patch_int8.onnx
 done
 RN50_RESULTS=../results/siglip2/repro_b32_test python s2_test_summary.py
 ```
 - test 7종: Oxford Pets·Flowers-102·Stanford Cars·Food-101·Caltech-101 공식 test 전체, CIFAR-100 test(1만), ImageNetV2 matched-frequency(1만, `scripts/test_g6.sh`가 받음).
-- 기대값: 고화질 5종 평균 FP32 88.51% → 88.28%, Δ **−0.23 [−0.36, −0.08]%p**. CIFAR-100 +0.93, ImageNetV2 −0.20%p.
+- 기대값: [확인 필요: P2 test 결과 — 10/27 실행 중]. (이전 제출 파일 O-AB: 88.51% → 88.28%, Δ −0.23 [−0.36, −0.08]%p)
 - 시간: 4코어 노트북에서 약 3시간 15분 (FP32와 INT8을 함께 잼, ImageNetV2 불러오기 약 30분 포함). 데이터셋마다 `done_<set>.json`이 있으면 다시 돌지 않는다.
 
 ## 6. 속도·메모리·크기
@@ -93,10 +98,10 @@ RN50_RESULTS=../results/siglip2/repro_b32_test python s2_test_summary.py
 ```bash
 python scripts/cross_latency.py --out out_speed --mem \
   --models b32_fp32=$SIGLIP2_ARTIFACTS/onnx/siglip2_image_fp32.onnx \
-           b32_oab=$SIGLIP2_ARTIFACTS/onnx/siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx
+           b32_p2=$SIGLIP2_ARTIFACTS/onnx/e14_4_P2_patch_int8.onnx
 ```
 - 배치 1, 워밍업 20, 200장 × 3회 모델 번갈아, 스레드 1·2·4 × 세션 3 → 중앙값. 전원 구성표·충전 상태가 결과에 기록된다.
-- 기대값: FP32 대비 4스레드 약 −55~−57%, 1스레드 약 −60~−65% (절대 ms는 PC·실행마다 다름, 같은 PC에서도 2·4스레드 최대 약 40%), 피크 메모리 약 −57% (ORT 기본 세션), 크기 378.36 → 102.76 MB (−72.8%). 보고서 대표값은 10/23 새벽 실행(4스레드 −55.9%, 1스레드 −60.7%, 메모리 −57.4%).
+- 기대값: FP32 대비 4스레드 약 −60%, 1스레드 약 −68% (절대 ms는 PC·실행마다 다름, 같은 PC에서도 2·4스레드 최대 약 40%), 피크 메모리 약 −63% (ORT 기본 세션), 크기 378.36 → 95.65 MB (−74.7%). 보고서 대표값은 10/27 실행(4스레드 −59.8%, 1스레드 −67.6%, 메모리 −62.6%, `results/siglip2/G8_candidates/latency_this_pc/b32_p2_20261027`).
 - **지연은 같은 실행 안의 FP32 대비 비율로 본다.** 노트북은 고성능 모드·충전 상태, 다른 프로그램 없이.
 - (선택 사항) ORT 세션 설정 `enable_mem_pattern=False`(정민 E12-1, 브랜치 `exp/E12-1-jjury`)를 쓰면 제출 모델 피크 메모리가 4.0% 더 준다(같은 E12-1 스크립트로 214.5 → 206.0 MiB, 출력 비트 동일, `results/siglip2/G8_candidates/b32/submit_prep/mem_pattern`). 우리 스크립트로 실행할 때만 적용되고 채점 측이 세션을 직접 만들면 적용되지 않으므로, 보고서 메모리 수치는 기본 세션 값이다.
 

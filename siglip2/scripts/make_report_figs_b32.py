@@ -80,7 +80,7 @@ for name, (lat, p, key) in runs.items():
     f3[name] = {"크기": size, "피크 메모리": mem, "지연 1T": lat[1], "지연 2T": lat[2], "지연 4T": lat[4]}
 data["F3b"] = {"pct_vs_fp32": f3, "source": [str(p.relative_to(ROOT)) for _, p, _ in runs.values()]}
 items = list(next(iter(f3.values())))
-fig, ax = plt.subplots(figsize=(6.6, 3.0))
+fig, ax = plt.subplots(figsize=(6.6, 3.5))
 w = 0.2
 cols = ["#eb6834", "#2a78d6", "#5b8c5a", "#8e6bbf"]
 for i, (name, v) in enumerate(f3.items()):
@@ -92,7 +92,7 @@ ax.set_xticks(range(len(items)), items)
 ax.set_ylabel("FP32 대비 변화율 (%)")
 ax.set_ylim(-82, 0)
 ax.set_title("SigLIP2 B/32 제출 모델 P2의 FP32 대비 개선율 — 이 PC(i7-1165G7), 같은 실행 번갈아, 배치 1, 기본 세션", fontsize=8.5)
-ax.legend(fontsize=7, frameon=False, loc="lower right")
+ax.legend(fontsize=7, frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=2)
 fig.tight_layout()
 fig.savefig(OUT / "F3b_improvement_b32.png")
 plt.close(fig)
