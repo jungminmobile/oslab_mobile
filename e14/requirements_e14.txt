@@ -1,0 +1,7 @@
+# E14 (SigLIP2 B/32 예선 ORT 그래프 최적화) 재현용 — 정민 노트북 s2_venv와 같은 버전
+# Python 3.11.9, Windows 10/11 x64
+onnxruntime==1.25.0
+onnx==1.23.1
+numpy==2.4.4
+psutil==7.2.2
+Pillow==12.2.0

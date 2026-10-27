@@ -29,7 +29,9 @@ import rewrite_patch as RP   # noqa: E402
 import run_e14_1 as R1       # noqa: E402
 
 REPO = HERE.parent
-OUT = REPO / "results" / "E14-4_패치임베딩MatMul" / "results"
+import os  # noqa: E402
+# 다른 PC는 E14_OUT을 새 폴더로 지정해 원본(정민 노트북) 결과에 덧붙이지 않게 한다 (README_E14.md)
+OUT = Path(os.environ.get("E14_OUT", str(REPO / "results" / "E14-4_패치임베딩MatMul" / "results")))
 O, O_SHA, WORK = R1.O, R1.O_SHA, R1.WORK
 F2 = WORK / "e14_2_F2_fastgelu_bias.onnx"
 F2_SHA8 = "03f4de18"

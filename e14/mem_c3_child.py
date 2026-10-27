@@ -11,7 +11,8 @@ import onnxruntime  # noqa: F401
 model, combo, threads, n, interval, mode = (sys.argv[1], sys.argv[2], int(sys.argv[3]), int(sys.argv[4]),
                                             float(sys.argv[5]) / 1000, sys.argv[6])
 P = psutil.Process(); MiB = 2 ** 20
-pix = np.load(r"C:\s2art_b32\dev256\pets_dev_pix.npy", mmap_mode="r")
+import os
+pix = np.load(os.path.join(os.environ.get("E14_ART", r"C:\s2art_b32"), "dev256", "pets_dev_pix.npy"), mmap_mode="r")
 k = n if mode == "held50" else 1
 x = np.ascontiguousarray((np.asarray(pix[:k], np.float32) / 127.5 - 1.0).transpose(0, 3, 1, 2))
 del pix

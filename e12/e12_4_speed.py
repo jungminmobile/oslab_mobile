@@ -44,7 +44,16 @@ def main():
     import onnxruntime as ort
     import psutil
     proc = psutil.Process()
-    cache = np.load(SO.CACHE / "pets_dev_x.npy", mmap_mode="r")
+    import os
+    src = "cache224"
+    if (SO.CACHE / "pets_dev_x.npy").exists():
+        cache = np.load(SO.CACHE / "pets_dev_x.npy", mmap_mode="r")
+    else:   # 다른 PC 재현용: 224 캐시가 없으면 B/32 dev256 첫 장을 같은 범위(x/127.5-1)의 224 모양으로 만들어 같은 to256 경로를 탄다
+        from PIL import Image
+        p = np.load(os.path.join(os.environ.get("E14_ART", r"C:\s2art_b32"), "dev256", "pets_dev_pix.npy"), mmap_mode="r")
+        u8 = np.asarray(Image.fromarray(np.asarray(p[0])).resize((224, 224), Image.BILINEAR), np.float32)
+        cache = (u8 / 127.5 - 1).transpose(2, 0, 1)[None]
+        src = "dev256_fallback"
     so = SO.make_thread_options(cfg["tcombo"], cfg["threads"])
     s = ort.InferenceSession(cfg["model"], so, providers=["CPUExecutionProvider"])
     nm = s.get_inputs()[0].name
@@ -73,7 +82,7 @@ def main():
                       "p99_ms": round(float(np.percentile(t, 99)), 3), "mean_ms": round(float(t.mean()), 3),
                       "min_ms": round(float(t.min()), 3), "loop_wall_s": round(float(t.sum() / 1000), 3),
                       "cpu_ms_per_img": round(cpu(c0, c2) * 1000 / n, 3), "cpu_ms_per_img_loop": round(cpu(c0, c1) * 1000 / n, 3),
-                      "tail_cpu_ms": round(cpu(c1, c2) * 1000, 3), "keys": keys, "throttle_off": throttle_off}))
+                      "tail_cpu_ms": round(cpu(c1, c2) * 1000, 3), "keys": keys, "throttle_off": throttle_off, "input_src": src}))
 
 
 if __name__ == "__main__":

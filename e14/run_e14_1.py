@@ -30,10 +30,11 @@ import rewrite_mask as RW     # noqa: E402
 import session_opts as SO     # noqa: E402
 
 OUT = REPO / "results" / "E14-1_M2마스크정리" / "results"
-O = Path(r"C:\s2art\onnx\e12_3\siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx")
+# 다른 PC 재현용: 환경변수로 경로를 바꿀 수 있다 (기본값 = 정민 노트북). README_E14.md 참고
+O = Path(os.environ.get("E14_O_ONNX", r"C:\s2art\onnx\e12_3\siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx"))
 O_SHA = "7a01044c6ba32bf4f5a12aba82eb19e06753f13c8bad43b9f6fcfcd9f484dbf6"
-WORK = Path(r"C:\s2art_b32\e14")
-ART = Path(r"C:\s2art_b32")
+ART = Path(os.environ.get("E14_ART", r"C:\s2art_b32"))          # dev256/, clf/ 가 있는 폴더
+WORK = Path(os.environ.get("E14_WORK", str(ART / "e14")))       # 만든 ONNX 저장 폴더
 MODELS = {"O": O, "W1": WORK / "e14_1_W1_mulAdd.onnx", "W2": WORK / "e14_1_W2_where.onnx"}
 DEV = ["cifar_A", "pets_dev", "flowers_dev", "cars_dev", "food_dev", "caltech_dev"]
 HRK = DEV[1:]
@@ -64,9 +65,38 @@ def append(name, row):
         f.write(json.dumps(row, ensure_ascii=False, default=str) + "\n")
 
 
+class _EnvLite:
+    """oslab_s2 저장소가 없는 PC용 최소 환경 기록 (env_info와 같은 함수 이름)."""
+    @staticmethod
+    def collect():
+        import platform
+        import onnxruntime as ort
+        import psutil
+        b = psutil.sensors_battery() if hasattr(psutil, "sensors_battery") else None
+        return {"date": datetime.now().isoformat(timespec="seconds"), "machine": platform.machine(), "processor": platform.processor(),
+                "platform": platform.platform(), "python": platform.python_version(), "onnxruntime": ort.__version__,
+                "numpy": np.__version__, "cpu_logical": psutil.cpu_count(), "cpu_physical": psutil.cpu_count(logical=False),
+                "ram_GiB": round(psutil.virtual_memory().total / 2 ** 30, 1),
+                "power": None if b is None else ("AC" if b.power_plugged else f"battery {b.percent}%"), "env_source": "EnvLite"}
+
+    @staticmethod
+    def write_env(out, env):
+        out.mkdir(parents=True, exist_ok=True)
+        (out / "env.json").write_text(json.dumps(env, ensure_ascii=False, indent=1, default=str) + "\n", encoding="utf-8")
+        with open(out / "env_history.jsonl", "a", encoding="utf-8") as f:
+            f.write(json.dumps(env, ensure_ascii=False, default=str) + "\n")
+
+    @staticmethod
+    def flat(env):
+        return {f"env_{k}": v for k, v in env.items() if k in ("processor", "onnxruntime", "python", "env_source")}
+
+
 def env_rows():
     sys.path.insert(0, str(SO.S2_SIGLIP))
-    from scripts import env_info
+    try:
+        from scripts import env_info
+    except ImportError:          # 다른 PC: oslab_s2 저장소 없음
+        env_info = _EnvLite
     env = env_info.collect()
     env["git_oslab_mobile"] = git_state()
     return env, env_info
