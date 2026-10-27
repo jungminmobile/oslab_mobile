@@ -3,7 +3,7 @@ make_report_figs_b32.py — D-048(B/32 제출) 보고서 그림 추가분 (raw�
 ================================================================================================
 실행: D:/mokerton/venvs/figs/Scripts/python.exe siglip2/scripts/make_report_figs_b32.py   (저장소 루트에서, git 필요)
 출력: siglip2/docs/figs/F3b_improvement_b32.png, F4b_min_snr_vs_acc.png, F5_hailo_b32.png + figs_data_b32.json
-  F3b 제출 모델(B/32 O-AB) FP32 대비 개선율: 크기·피크 메모리·지연 1/2/4스레드, 이 PC 측정 3회(낮 8모델·저녁·새벽)
+  F3b 제출 모델 P2 FP32 대비 개선율(10/27) + 이전 단계 O-AB 같은 실행·이전 실행 2회: 크기·피크 메모리·지연 1/2/4스레드
   F4b 배포 눈금 층별 SNR 최솟값 vs dev 정확도 손실: 제출 모델 B/32 5구성 (B/16 6구성 값은 figs_data_b32.json에만, 그리지 않음)
   F5  Hailo-10H 실칩 B/32: 배치 1 지연 vs dev 정확도 손실 (Zoo 공개 HEF Z와 우리 구성) — 준용 브랜치 raw를 git show로 읽음
 F1(민감도)·F2(2×2)는 make_report_figs.py (10/24부터 B/32만 그림).
@@ -67,30 +67,31 @@ def ratios(rows, a, b, ref_key=None):
 
 L = G / "latency_this_pc"
 day = sessions(L / "all8_20261022/cross_latency.json") + sessions(L / "all8_20261022_rerun_t24/cross_latency_recovered.json", True)
-# 대표값 = 10/23 새벽 (10/24 준용 검토 M9 안 A: 이상치 규칙 없이 9구간 모두 정상). 나머지 두 번은 재현 범위
-runs = {"10/23 새벽 (대표, PC 쉬는 중)": (ratios(sessions(L / "b32_cool_20261023/cross_latency.json"), "b32_oab", "b32_fp32"), L / "b32_cool_20261023/cross_latency.json"),
-        "10/22 낮 (8모델 같은 실행)": (ratios(day, "b32_oab", "b32_fp32", ref_key="b16_fp32"), L / "all8_20261022/cross_latency.json"),
-        "10/22 저녁 (연속 실행 발열)": (ratios(sessions(L / "b32_submit_20261022/cross_latency.json"), "b32_oab", "b32_fp32"), L / "b32_submit_20261022/cross_latency.json")}
+# 대표값 = 10/27 실행의 제출 모델 P2 (D-052). 이전 단계 O-AB의 같은 실행·이전 실행은 비율이 안정적임을 보이는 재현 범위
+runs = {"P2 (제출), 10/27": (ratios(sessions(L / "b32_p2_20261027/cross_latency.json"), "b32_p2", "b32_fp32"), L / "b32_p2_20261027/cross_latency.json", "b32_p2"),
+        "O-AB (이전 단계), 10/27 같은 실행": (ratios(sessions(L / "b32_p2_20261027/cross_latency.json"), "b32_oab", "b32_fp32"), L / "b32_p2_20261027/cross_latency.json", "b32_oab"),
+        "O-AB, 10/23 새벽": (ratios(sessions(L / "b32_cool_20261023/cross_latency.json"), "b32_oab", "b32_fp32"), L / "b32_cool_20261023/cross_latency.json", "b32_oab"),
+        "O-AB, 10/22 낮 (8모델 실행)": (ratios(day, "b32_oab", "b32_fp32", ref_key="b16_fp32"), L / "all8_20261022/cross_latency.json", "b32_oab")}
 f3 = {}
-for name, (lat, p) in runs.items():
+for name, (lat, p, key) in runs.items():
     d = json.load(open(p, encoding="utf-8"))
-    mem = round(100 * (d["peak_mem"]["b32_oab"]["peak_wset_MiB"] / d["peak_mem"]["b32_fp32"]["peak_wset_MiB"] - 1), 1)
-    size = round(100 * (d["files"]["b32_oab"]["bytes"] / d["files"]["b32_fp32"]["bytes"] - 1), 1)
+    mem = round(100 * (d["peak_mem"][key]["peak_wset_MiB"] / d["peak_mem"]["b32_fp32"]["peak_wset_MiB"] - 1), 1)
+    size = round(100 * (d["files"][key]["bytes"] / d["files"]["b32_fp32"]["bytes"] - 1), 1)
     f3[name] = {"크기": size, "피크 메모리": mem, "지연 1T": lat[1], "지연 2T": lat[2], "지연 4T": lat[4]}
-data["F3b"] = {"pct_vs_fp32": f3, "source": [str(p.relative_to(ROOT)) for _, p in runs.values()]}
+data["F3b"] = {"pct_vs_fp32": f3, "source": [str(p.relative_to(ROOT)) for _, p, _ in runs.values()]}
 items = list(next(iter(f3.values())))
 fig, ax = plt.subplots(figsize=(6.6, 3.0))
-w = 0.26
-cols = ["#2a78d6", "#eb6834", "#5b8c5a"]
+w = 0.2
+cols = ["#eb6834", "#2a78d6", "#5b8c5a", "#8e6bbf"]
 for i, (name, v) in enumerate(f3.items()):
-    xs = [j + (i - 1) * w for j in range(len(items))]
+    xs = [j + (i - 1.5) * w for j in range(len(items))]
     bars = ax.bar(xs, [v[k] for k in items], w, label=name, color=cols[i])
     for x, y in zip(xs, [v[k] for k in items]):
         ax.text(x, y + 1.5, f"{y:.1f}", ha="center", va="bottom", fontsize=5.2, color="white", fontweight="bold", rotation=90)
 ax.set_xticks(range(len(items)), items)
 ax.set_ylabel("FP32 대비 변화율 (%)")
-ax.set_ylim(-80, 0)
-ax.set_title("제출 모델(B/32 O-AB) FP32 대비 개선율 — 이 PC(i7-1165G7) 같은 실행 번갈아, 배치 1, 3회", fontsize=9)
+ax.set_ylim(-82, 0)
+ax.set_title("SigLIP2 B/32 제출 모델 P2의 FP32 대비 개선율 — 이 PC(i7-1165G7), 같은 실행 번갈아, 배치 1, 기본 세션", fontsize=8.5)
 ax.legend(fontsize=7, frameon=False, loc="lower right")
 fig.tight_layout()
 fig.savefig(OUT / "F3b_improvement_b32.png")
