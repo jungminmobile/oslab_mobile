@@ -1,0 +1,592 @@
+<!--
+v10 (10/28) = v9를 대회 양식 안내에 맞춰 다듬은 판: 2장은 수치만, 6.4 이전 실행 기록·6.5 전체 실행 표는 부록 G로 옮김, 7.1 줄임, 그림 번호 1~5, 'i7 노트북' → 'i7 노트북'. 수치는 v9와 같다(새 측정 없음).
+초안 v9 = v8(siglip2/docs/report_prelim_v8.md)을 줄인 판. PDF로 옮길 때 이 주석은 지운다.
+자료(D:\mokerton\wt_report 기준, R/ = results/siglip2/): v8 머리 주석의 출처 목록·불확실한 점은 그대로 유효,
+siglip2/docs/contest_requirements.md, siglip2/DECISIONS.md D-048·D-049, R/G8_candidates/(b32/·b16/·latency_this_pc/),
+R/G6_pre, 준용 브랜치 R/G6b·G6d·G6f·O1. [확인 필요]는 본문 표시 그대로 둔다.
+10/24 준용 검토(origin/siglip2/report-b32-review-junyong:docs/review_v9_junyong.md) 반영: 그림 B/32만, 10장 → 부록 D, test 이력 부록 E,
+실칩 결과 부록 F(빼도 본문 성립), 대표 효율 = 10/23 새벽 실행, 컴파일 설정 출처, 세 CPU 사진별 비교(R/G8_candidates/b32/xplat/compare_3way),
+개수 출처(b32/submit_prep/model_stats/onnx_counts.json — 레지스터 캐시 상수 0.16M → 0.02M 정정), B32_hef_test(origin/siglip2/b32-hef-test).
+D-050(본선 HEF = GF)·D-051(O-A float 출력은 Hailo에서 a16으로 맞추지 않음): 10/24 쭈리 동의 → 확정형으로 씀 (DECISIONS.md 반영은 준용).
+10/27 제출 파일 교체 O-AB → P2(D-052, 정민 E14, 쭈리 승인, 교체 확인 기준 R/G8_candidates/b32/p2): 대표 효율 = 10/27 저녁 C3 두 실행 합침(latency_this_pc/b32_p2_c3_20261027 + b32_p2_c3b_20261027, 6세션 비율 중앙값·메모리 평균, 2회째 전에 정한 규칙), 같은 날 기본 세션 실행(b32_p2_20261027)은 범위로,
+dev R/G8_candidates/b32/p2/dev_full, test R/G8_candidates/b32/test_p2, 입력 변형 b32/p2/input_shift, C3 출력 동일 b32/p2/c3_equal, 개수 b32/p2/onnx_counts_p2.json, 세 CPU b32/p2/xplat_i7/compare_p2_3way.json.
+부록 F를 뺄 때 함께 고칠 곳: 3.3 "실제 컴파일"·"혼합 정밀도"·"실칩 확인" 행과 표 아래 줄, 5.3 실패 표 ALL8F 행, 6.5 끝 줄, 7.1-7, 7.2 3주차 위험 칸, 부록 B 5번.
+-->
+
+# 2026학년도 모바일공학전공 하반기 공모전 [트랙 2] 예선 결과 보고서 — 자유주제
+
+## 1. 팀 정보
+
+| 구분 | 내용 |
+|---|---|
+| 팀명 | 오스랩 |
+| 선택 주제 | 자유주제 — 자유 모델 최적화 |
+| 대상 모델명 | SigLIP2 ViT-B/32 (256×256) 이미지 인코더 (`timm/ViT-B-32-SigLIP2-256`) |
+| 팀원 (성명 / 학번 / 역할) | 신준용 (팀장) / 2021116742 / Hailo-10H 컴파일·실칩 평가, 회전·레지스터 캐시 이식, ORT 커널 최적화(O-A·O-B) |
+| | 손준혁 / 2022110583 / 원인 분석, CPU(ONNX Runtime) 양자화·평가, 측정·재현, 보고서 |
+| | 전정민 / 2022113570 / 공통 평가 코드(데이터 분할·평가·속도 측정), 그래프 최적화(GELU 융합·패치 임베딩 정수화), 다른 PC 교차 측정 |
+| 대표자 연락처 | 신준용 (팀장) — 전화번호는 PDF에만 적는다(저장소에 두지 않음) |
+| 제출일 | 2026년 10월 31일 [확인 필요: 실제 제출일] |
+
+---
+
+## 2. 결과 요약
+
+정확도 지표: **제로샷 분류 Top-1, 고화질 5종 평균**(Pets·Flowers·Cars·Food·Caltech, test). 효율은 Intel i7-1165G7 노트북(배치 1, ONNX Runtime 1.25.0, 제출 실행 스크립트와 같은 세션 설정)에서 원본(FP32)과 같은 실행 안에서 번갈아 잰 값이다(6.4).
+
+| 항목 | Baseline (FP32) | 최적화 후 (INT8, P2) | 변화율 |
+|---|---|---|---|
+| 모델 크기 (MB) | 378.36 | 95.65 | **−74.7%** |
+| 파라미터 수 (M) | 94.55 | 94.54 (행렬곱 가중치 94.37M을 INT8로 저장) | −0.02% |
+| 연산량 (GFLOPs) | 11.50 | 11.50 (INT8 정수 연산으로 실행) | 0% |
+| 추론 Latency (ms, 4스레드 / 1스레드) | 68.6 / 126.0 | 24.7 / 39.2 | **−62.9% / −68.0%**¹ |
+| Throughput (FPS, 4스레드 / 1스레드) | 14.6 / 7.9 | 40.5 / 25.5 | **+178% / +222%** (2.8배 / 3.2배) |
+| 피크 메모리 사용량 (MB) | 476.0 (454.0 MiB) | 174.4 (166.4 MiB) | **−63.4%** |
+| 정확도 — Top-1, 고화질 5종 (test) | 88.51% | 88.30% | **−0.20%p** [95% 구간 −0.33, −0.07] |
+| 정확도 — Top-1, 고화질 5종 (dev) | 89.96% | 89.91% | −0.05%p [−0.41, +0.33] (유의하지 않음) |
+
+<!-- src: 파라미터·GMACs b32/submit_prep/model_stats/model_stats.jsonl(O-AB, P2는 같은 모델이라 파라미터 수가 같음 — b32/p2/onnx_counts_p2.json 원소 수로 확인, 파일 안 키 이름 "oab"는 스크립트 기본 이름이고 내용은 P2), INT8 가중치 개수 b32/p2/onnx_counts_p2.json, 레지스터 캐시 상수 model_stats/onnx_counts.json; 크기·지연·메모리 latency_this_pc/b32_p2_c3_20261027 + b32_p2_c3b_20261027 cross_latency.json (C3 두 실행 6세션, 메모리 두 실행 평균, 이상치 규칙 없음, 합친 값 b32_p2_c3b_20261027/README.md); test b32/test_p2/test_summary.json; dev b32/p2/dev_full/paired_ci.jsonl -->
+
+¹ 지연은 두 실행 6세션의 중앙값이고, 지연 변화율은 세션마다 같은 실행 안 FP32 대비 비율의 중앙값이다(결과 전에 정한 규칙). 중앙값 ms끼리 나누면 4스레드 −64.0%, 1스레드 −68.9%다. FPS = 1000 / 중앙값 지연(배치 1)이고 FPS 변화율도 중앙값 지연에서 계산했다. 실행·세션에 따라 4스레드 −58~−65%로 흔들린다(6.4, 그림 4, 7.1-1). 주 조건은 4스레드다. 파라미터 수가 줄지 않은 것은 가중치를 지우지 않고 INT8로 바꿨기 때문이다(레지스터 캐시 상수 0.02M 추가, 회전으로 LayerNorm 계수 0.04M 흡수).
+
+**요약.**
+- 이미지-텍스트 대조 학습 모델 **SigLIP2 B/32의 이미지 인코더**를 재학습 없는 **INT8 정적 사후 양자화(PTQ)**로 최적화했다. 단순 INT8은 정확도가 무너졌다(dev −61.0%p).
+- 원인(고정 위치 토큰 2개의 거대 활성값)을 찾아 **레지스터 캐시(토큰 축) + Hadamard 회전(채널 축)**으로 고쳤다. 배포 파일 눈금으로 잰 "가장 나쁜 층"의 SNR 순서가 정확도 순서와 같아, 원인과 처방을 층 단위로 확인했다(5.3).
+- 그 위에 ONNX Runtime 정수 커널에 맞춘 그래프 최적화 4가지(행렬곱 출력 재반올림 생략·SkipLayerNorm 융합·GELU 융합·패치 임베딩 정수화)를 더했다. 패치 임베딩을 포함한 행렬곱 80개를 **예외 없이 모두 INT8**로 했다.
+- 결과: 크기 **−74.7%**, 지연 4스레드 **−62.9%**·1스레드 **−68.0%**, 피크 메모리 **−63.4%**, test 정확도 **−0.20%p**.
+- 본선 기기 Hailo-10H 실칩에서도 같은 모델로 만든 HEF가 Hailo Model Zoo 공개 HEF보다 지연 −9.5%, test 정확도 +2.73%p였다(FP32 대비 test −1.04%p, 부록 E).
+
+**이 보고서의 용어**
+
+| 용어 | 뜻 |
+|---|---|
+| P2 | 제출 최적화 모델(INT8 ONNX). 5.1의 ①~⑨를 모두 적용 |
+| M2 (레지스터 캐시) | 거대 활성값을 쓰는 고정 위치 토큰(sink)의 값을 보정 데이터 평균 상수로 바꾸는 처방(5.3 단계 4). sink 규칙 `15@6:5, 7@10:9` = 15번 토큰은 블록 6부터 K·V, 블록 5부터 MLP 입력을 바꿈 |
+| M2rot | 회전 + M2를 적용한 INT8(행렬곱 출력 재반올림 있음). 그래프 최적화 전 단계 |
+| O-A / O-B / O-AB | ONNX Runtime 커널에 맞춘 그래프 변경: 행렬곱 출력 재반올림 생략 / SkipLayerNorm 융합 / 둘 다(이전 제출 파일) |
+| C3 | 제출 실행 설정. ONNX Runtime 세션 옵션 `enable_mem_pattern=False`(6.4) |
+| dev / dev 6×200 | train에서 뗀 구성 선택용 분할(6.1) / 그중 데이터셋 6종 × 200장 소규모 묶음 |
+| CIFAR A | dev의 CIFAR-100 1,000장(보조 지표) |
+| HEF / GF / Z | Hailo 칩용 컴파일 파일 / 본선 HEF(혼합 정밀도) / Hailo Model Zoo 공개 HEF(부록 E) |
+| D-0xx, E14 등 | 팀 결정 기록 번호(`siglip2/DECISIONS.md`)·실험 번호 |
+
+---
+
+## 3. 대상 모델 및 선정 사유
+
+### 3.1 대상 모델
+
+| 구분 | 내용 |
+|---|---|
+| 모델명 / 버전 | SigLIP2 ViT-B/32, 입력 256×256 (`hf-hub:timm/ViT-B-32-SigLIP2-256`, open_clip 3.3.0 / timm 1.0.30) |
+| 모델 유형 | 멀티모달(이미지-텍스트 대조 학습). 최적화 대상은 **이미지 인코더** |
+| 저장소 URL | 우리 코드: https://github.com/jungminmobile/oslab_mobile [확인 필요: 현재 비공개 — 학술부 접근 방법] / 원 모델: https://huggingface.co/timm/ViT-B-32-SigLIP2-256 |
+| 커밋 해시 또는 릴리스 태그 | 제출 시점 main의 `prelim-submit` 태그 [확인 필요: 태그·커밋]. 모델 파일 Release `siglip2-b32-p2-submit-20261027` (지금은 내부 확인용 pre-release, 제출 때 정식 Release로 바꾼다) |
+| 사전학습 가중치 출처 | Google SigLIP2 (Tschannen et al., 2025) 공개 가중치의 timm/open_clip 변환본 (Hugging Face, 로컬 캐시 스냅샷 `cd1efb47…`) |
+| 라이선스 | [확인 필요: 모델 카드 라이선스, Apache-2.0로 알고 있음] |
+
+- 구조: 패치 32×32 → 토큰 64개(8×8), 폭 768, 블록 12개, GELU(tanh 근사). CLS 토큰 없이 attention pooling(MAP) 헤드로 768차원 임베딩을 낸다.
+- 파라미터 94,552,320개(PyTorch = ONNX), 5.75 GMACs = **11.50 GFLOPs**(fvcore), FP32 ONNX 360.83 MiB.
+- **범위**: 이미지 인코더만 양자화한다. 텍스트 쪽 클래스 임베딩은 FP32로 한 번 계산해 다시 쓴다. 기기에서 사진마다 도는 것은 이미지 인코더뿐이다.
+
+### 3.2 선정 사유
+
+1. **엣지 쓰임새가 넓다.** 임베딩 하나로 제로샷 분류·검색·필터링을 하고, 클래스가 바뀌어도 재학습 없이 텍스트만 바꾼다.
+2. **최신이고 최적화 가치가 크다.** SigLIP2(2025)는 CLIP 계열 최신판이고, FP32 이미지 인코더가 378 MB, 노트북 1스레드 한 장 약 127 ms다.
+3. **원본 대비 개선 여지가 크다.** 단순 INT8은 붕괴(dev −61.0%p)하지만 원인을 고치면 패치 임베딩을 포함한 행렬곱 80개를 모두 INT8로 해도 손실이 작다(5장). 모델 크기 −74.7%, 4스레드 지연 약 −63%.
+4. **본선 기기(Hailo-10H)에서 벤더 공개 기준과 직접 비교할 수 있다.** Hailo Model Zoo에 SigLIP2 B/32 공개 HEF가 있다. 예선·본선은 같은 모델을 쓴다(대회 원문 2·5.2절).
+
+### 3.3 Hailo-10H 호환성 사전 검토
+
+본선 HEF는 예선 제출 모델과 **같은 PyTorch 모델**(같은 회전 행렬·sink 규칙·레지스터 캐시 상수)을 배치 1로 export한 FP32(`a0eb502b…`)를 Hailo DFC로 따로 양자화·컴파일해 만든다. 이 FP32는 제출 모델의 바탕 FP32(`23236123…`, 배치 가변)와 가중치(initializer 145개)가 비트 단위로 같다. 제출 모델에만 있는 4가지 그래프 최적화(O-A·O-B·GELU 융합·패치 임베딩 정수화)는 ONNX Runtime CPU용 변환이라 HEF에는 없다(7.1-5).
+
+| 항목 | 검토 결과 |
+|---|---|
+| 지원 연산 | Conv(패치 임베딩), MatMul, Add, Mul, Softmax, GELU(tanh), LayerNorm, Reshape/Transpose. 모두 DFC 지원(LayerNorm은 DFC가 분해) |
+| 비표준 층 | 모델(FP32 그래프)에는 없다. 레지스터 캐시는 상수 Mul·Add 마스크로 토큰 수를 유지해 표준 연산으로 컴파일된다(토큰 삭제형은 LayerNorm 분해와 충돌해 안 씀). 제출 ONNX의 com.microsoft 연산(SkipLayerNorm·FastGelu)은 CPU 배포용 마지막 단계에서만 쓰고, HEF는 표준 연산 FP32에서 컴파일한다 |
+| 실제 컴파일 | Hailo DFC 5.4.0, `--hw-arch hailo10h`로 HEF 컴파일 성공(여러 구성, 부록 E.2). 입력은 UINT8 픽셀(NHWC) 그대로, **정규화도 HEF 안**, 출력 768차원(UINT16) |
+| CPU Fallback | 없음. HEF의 끝 노드가 ONNX의 마지막 노드(출력 `embedding`)라 HEF가 그래프 전체를 덮는다(`B32_hef_test` A-1). 후처리 연산이 없고, 정규화도 HEF 안이다 |
+| 혼합 정밀도 | 본선 HEF(GF): 패치 경로(`norm1`·`conv1`·`format_conversion1`)와 잔차 덧셈 26개만 16비트(a16_w16), 나머지 8비트(a8_w8). Zoo 공식 설정이 16비트로 두는 블록 0의 어텐션 출력 투영·fc1·fc2와 블록 5 fc2(`conv3·4·5·25`)도 8비트로 내렸다(회전·레지스터 캐시로 거대 활성값을 없앤 그래프에서 시험했고, 처방 없는 그래프로는 시험하지 않음). 컴파일 자원 설정은 Hailo Model Zoo v5.4.0 레시피에서 가져왔다(부록 E.1) |
+| 실칩 확인 | 부록 E (학술부 답: NPU에서 직접 실행한 결과도 보고서에 넣어도 됨) |
+| 본선 이식용 바탕 | 예선 제출물에 같은 모델의 표준 연산 FP32 `siglip2_image_fp32_g6b_b32_m2rot.onnx`(`23236123…`)를 함께 낸다. 제출 P2는 이 그래프를 CPU용으로 양자화·변환한 파일이다 |
+| INT4 | Hailo-10H는 INT4 지원. CPU에서는 4비트가 느려 넣지 않았다(5.3). Hailo INT4는 본선에서 시험한다 |
+| 버전 위험 | 팀 DFC 5.4.0, 본선 Pi의 HailoRT는 [확인 필요: 주최측]. 버전이 다르면 그 버전용 DFC로 다시 컴파일한다 |
+
+- 본선 HEF는 GF(위 혼합 정밀도 + Zoo 컴파일 설정, `0c2e04a6…`)로 정했다(D-050). 16비트 보호를 모두 걷어낸 ALL8F는 절제 실험이다(부록 E).
+
+---
+
+## 4. 실험 환경
+
+| 구분 | 사양 및 버전 |
+|---|---|
+| CPU | Intel Core i7-1165G7 (4코어 8스레드, AVX2·AVX-512F·AVX-512 VNNI). 교차 측정: Intel Core Ultra 9 285K (AVX-VNNI, 준용), NVIDIA Jetson AGX Orin(Hailo 호스트) |
+| GPU (모델 / VRAM) | 사용 안 함 (양자화·평가·속도 측정 모두 CPU) |
+| RAM | 16 GB |
+| OS | Windows 11 (빌드 26300). Hailo 작업은 Linux / WSL2 Ubuntu 22.04 |
+| Python 버전 | 3.11.9 |
+| 딥러닝 프레임워크 / 버전 | PyTorch 2.14.0 (CPU), open_clip_torch 3.3.0, timm 1.0.30, transformers 5.19.0 (토크나이저) |
+| CUDA / cuDNN 버전 | 사용 안 함 |
+| 양자화·최적화 도구 / 버전 | ONNX 1.23.1 (opset 17), **ONNX Runtime 1.25.0** (`quantize_static`, 실행 `ORT_ENABLE_ALL`), numpy 2.4.4, Hailo Dataflow Compiler 5.4.0, HailoRT 5.3.0 |
+
+<!-- src: b32/test/env.json -->
+- 결과마다 CPU 명령어 집합·ORT 버전·커밋 해시를 기록했고, 보고서 수치는 모두 커밋된 코드로, 작업 폴더가 깨끗한 상태에서 낸 값이다(예외 1건: 5.1 ⑨의 원 기록은 실험과 무관한 추적 안 된 파일 때문에 dirty로 표시됐지만 코드는 커밋 그대로였고, 같은 결과를 다른 PC가 깨끗한 커밋에서 비트 단위로 재현했다).
+- 지연은 고성능 전원 모드·충전 상태에서 다른 무거운 작업 없이 쟀다(시작 전 CPU 30초 평균 25% 미만 확인).
+
+---
+
+## 5. 적용한 최적화·양자화 기법
+
+### 5.1 기법 요약
+
+"단독 효과"는 같은 설정(MatMul 전부 INT8, 활성값 U8 + reduce_range, Percentile 99.999, 보정 256장)에서 하나만 켜고 끈 dev 전체 고화질 Top-1 손실과 짝 차이 [95% 구간]이다. 예외는 칸 안에 적었다. ⑥⑦은 팀원 PC(Core Ultra 9 285K)의 같은 바탕 비교, ⑧⑨는 팀원 PC(Core Ultra 7 258V)에서 모델·스레드마다 새 프로세스로 잰 장당 p50 지연이라 6.4의 방식(같은 프로세스에서 번갈아)과 다르다.
+
+| 적용 기법 | 적용 대상 | 주요 설정값 | 단독 적용 효과 |
+|---|---|---|---|
+| ① 정적 PTQ (INT8) | 이미지 인코더 MatMul 79개 | ORT `quantize_static`, QDQ, 가중치 채널별 S8, 보정 256장 | 이것만 하면 **붕괴**: −60.96%p (cos 0.627). MinMax·연산 전부 INT8도 붕괴(고화질 0.4~3.8%) |
+| ② Percentile 보정 | 활성값 범위 | 99.999 백분위, 비대칭, 히스토그램 16장씩 누적 | fc2를 보호한 상태 cos: MinMax 0.931, Entropy 0.937, P99.99 0.815 → **P99.999 0.963** (dev 6×200) |
+| ③ 레지스터 캐시 M2 (토큰 축) | sink 토큰 15·7의 K·V와 MLP 입력 | 규칙 `15@6:5, 7@10:9`, 보정 256장 평균 상수, 토큰 64개 유지 | **−60.96 → −1.58%p** (+59.38 [+58.14, +60.72]) |
+| ④ 오프라인 직교 회전 (채널 축) | 잔차 흐름 768채널 | 무작위 부호 Hadamard × Householder, LayerNorm γ·β 흡수 | 단독: −60.96 → −54.52 (+6.44, 여전히 붕괴). **M2 위에: −1.58 → −0.79** (+0.79 [+0.30, +1.34], 유의) |
+| ⑤ 활성값 U8 + reduce_range | x86 정수 커널 선택 | 활성값 UInt8, 가중치 7비트 범위 | S8은 QKV가 정수로 합쳐지지 않아 4스레드 속도가 FP32 수준, U8은 약 2배. 정확도는 구분 안 됨 (개발 초기 모델에서 확인, B/32는 다시 재지 않음) |
+| ⑥ O-A: MatMul 출력 재반올림 생략 | 가중치 MatMul 53 + QKᵀ 13 | ORT `OpTypesToExcludeOutputQuantization=["MatMul"]` → `MatMulIntegerToFloat`, Softmax float | 같은 바탕: +0.67 [+0.28, +1.08], 지연 −4.3 / −6.0 / −7.7% (1/2/4스레드). 단, CIFAR A −1.1로 사전 기준 미달(단독 미채택) |
+| ⑦ O-B: SkipLayerNorm 융합 | 잔차 Add + LayerNorm, bias Add, 모양 계산 | LN 26개 중 24개 → `SkipLayerNormalization`(bias 23개 흡수), Reshape 모양 상수화 28개. FP32 cos ≥ 0.99999988 | 같은 바탕: +0.20 [−0.14, +0.55], 지연 −0.7 / −1.7 / −2.7% (단독으로는 3% 기준 미달) |
+| **⑥+⑦ O-AB** (이전 단계) | 위 둘 함께 | — | 같은 바탕: **+0.57 [+0.17, +0.97]**, 지연 **−4.9 / −8.4 / −11.4%**. i7 노트북 같은 실행: M2rot 대비 −5.2 / −11.1 / −14.3% |
+| ⑧ GELU 융합 (F2) | MLP GELU 13곳 | GELU(tanh) 노드 9개 + bias Add → `FastGelu`(com.microsoft) | O-AB 위: +0.04 [−0.08, +0.14], 지연 −6.6 / −6.8 / −8.0% |
+| ⑨ 패치 임베딩 정수화 (P2) | 패치 임베딩 Conv (32×32, 3→768) | 자르기 + INT8 MatMul. 입력은 `x + 1`을 눈금 2/255로 양자화(픽셀 정수 그대로, 무손실), 가중치 채널별 INT8 | F2 위: +0.17 [−0.12, +0.47], 지연 −5.5 / −4.3 / −4.1%, 피크 메모리 −16.2% |
+| **⑥~⑨ P2 (제출)** | 위 넷 함께 | — | i7 노트북, O-AB 대비: dev **+0.23 [−0.08, +0.53]**·test +0.02 [−0.10, +0.15](동률), 지연(1/2/4스레드) 기본 세션 **−11.8 / −10.7 / −8.8%**·C3 두 실행 −14.8 / −8.1 / −14.4%, 메모리 −12.0 / −13.9%, 크기 −6.9% |
+
+<!-- src: ①③④ b32/G3RQ/dev_full/paired_ci.jsonl (b32/README.md B8), ① MinMax B3, ② B6, ⑤ v7 5.3 단계 5 (개발 초기 모델 SigLIP2 B/16, G3_cumulative), ⑥⑦ origin/siglip2/o1-ort-speed:R/O1/README.md 6-3·6-4·7 (285K, 비공식), i7 노트북 값 b16/O_AB/README.md 2절, ⑧ origin/jungmin/e14-graph:results/E14-2_GELU융합/REPORT.md 1절, ⑨ 같은 브랜치 results/E14-4_패치임베딩MatMul 11절, P2 i7 노트북 b32/p2/README.md·latency_this_pc/b32_p2_20261027(기본 세션)·b32_p2_c3_20261027(C3), test b32/test_p2/p2_vs_oab.json -->
+
+**최종 구성(P2, 제출 파일) = ①~⑨.** 본선 HEF는 ③④를 적용한 같은 모델(배치 1 export)을 Hailo DFC로 혼합 정밀도 컴파일한다(3.3).
+
+### 5.2 양자화 상세
+
+| 구분 | 내용 |
+|---|---|
+| 양자화 방식 (PTQ / QAT) | **PTQ** (정적 사후 양자화, 재학습 없음) |
+| 정밀도 (INT8 / INT4 / 혼합) | **INT8**: 행렬곱 80개(패치 임베딩 1 + 인코더 MatMul 79) 전부 입력·가중치 INT8 (가중치 채널별 INT8 7비트 범위, 활성값 UINT8). O-A로 가중치 MatMul 53개·QKᵀ 13개·패치 임베딩은 정수 행렬곱 뒤 float 출력(`MatMulIntegerToFloat`), AV 13개는 `QLinearMatMul`. Hailo HEF는 8/16비트 혼합 |
+| 캘리브레이션 데이터셋 | 고화질 5종의 **train 분할**(Flowers는 train+validation)에서 dev·test와 겹치지 않게 뽑은 보정 후보 풀 311장. 256×256 Zoo 방식 전처리 캐시(같은 사진·같은 순서) |
+| 캘리브레이션 샘플 수 | **256장** (시드 0). 실제로 보정에 들어간 장수를 코드에서 assert한다(ORT 보정기가 일부 배치를 조용히 버린 사고 재발 방지) |
+| 양자화 제외 레이어 | 행렬곱은 **제외 없음**(패치 임베딩 포함). 행렬곱 밖의 연산은 float으로 계산: LayerNorm 2개·SkipLayerNorm 24개, GELU(`FastGelu` 13개), 잔차 덧셈, 레지스터 캐시 마스크 연산, Softmax 13개(O-A 때문에 float) |
+
+<!-- src: b32/p2/onnx_counts_p2.json (P2 파일 기준, ORT 최적화 전): QuantizeLinear 106, DequantizeLinear 160, MatMul 80, FastGelu 13, SkipLayerNormalization 24, LayerNormalization 2, Softmax 13, Conv 0, INT8 가중치 54개 94,371,840. 최적화 뒤 MatMulIntegerToFloat 67개(E14-4 11절) -->
+
+### 5.3 적용 근거 및 과정
+
+판정 기준은 결과를 보기 전에 정해 기록했다(`siglip2/DECISIONS.md`, 결과 폴더 README). 개발 초기 모델(SigLIP2 B/16)에서 먼저 찾은 원인·처방을, 제출 모델 B/32에서 처음부터 같은 순서로 다시 진단했다(부록 C).
+
+**단계 1. 단순 INT8은 무너진다.** MinMax·모든 연산 INT8이면 고화질 Top-1 0.4~3.8%(cos 0.38~0.42), MatMul만·Percentile이어도 −60.96%p다.
+
+**단계 2. 민감도 지도** (블록 하나만 INT8, 나머지 FP32, dev 6×200, 고화질 cos, 그림 1)
+
+| 블록 | 0 | 1~4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 |
+|---|---|---|---|---|---|---|---|---|---|
+| cos | **0.521** | 0.986~0.997 | **0.519** | **0.475** | **0.470** | **0.495** | **0.551** | **0.620** | **0.722** |
+
+<!-- src: b32/README.md B4 -->
+- 블록 5부터 무너지고, 연산별로는 **MLP fc2만 붕괴**(0.620), QKV·attention은 둔감(≥ 0.997). **블록 0도 민감**하다(0.521, 아래 실패 표).
+- 벤더도 같은 층을 지킨다: Hailo Model Zoo의 B/32 컴파일 설정(`.alls`)이 16비트로 두는 층은 블록 0의 어텐션 출력 투영·fc1·fc2와 블록 5 fc2다. 우리 민감도 지도에서 가장 먼저 무너지는 블록(0과 5)과 겹친다(블록 6~11은 Zoo도 지키지 않는다).
+
+**단계 3. 원인: 고정 위치 토큰의 거대 활성값(attention sink).**
+- 블록 5 MLP가 사진과 상관없이 **패치 15번 토큰**(채널 67·301·145)에, 블록 9 MLP가 **패치 7번 토큰**(채널 483)에 아주 큰 값을 쓴다. 블록 5 출력 최댓값이 중앙값의 약 990배다(128장).
+- 15번은 128장 모두, 7번은 95%에서 고정 위치이고, 블록 6~11에서 attention의 26~48%가 15번에 몰린다(균등이면 1.6%). CLS 없는 ViT가 패치를 "register"처럼 쓰는 현상이다 [3][4].
+- 텐서당 눈금 하나(per-tensor) 8비트에서 이 값이 눈금을 넓혀 층 출력이 망가진다(배포 눈금 SNR **블록 9 fc2 0.8 dB**, 신호와 오차가 거의 같음). fake-quant(64장)로 거대 값 토큰만 빼고 눈금을 정하면 cos 0.997, 토큰별 눈금 0.999, 채널별 1.000 → **"8비트가 부족한 것이 아니라 눈금 단위가 맞지 않는 것"**이다.
+
+**단계 4. 원인을 직접 고친다.**
+- **토큰 축 — 레지스터 캐시(M2)** [5][6]: sink 토큰의 K·V를 보정 평균 상수로, 그 행의 MLP 입력을 평범한 값(u_c)으로 바꾼다. 규칙 `15@6:5, 7@10:9` = K·V는 블록 6·10부터, MLP 입력은 5·9부터(15번 K·V를 블록 5부터 바꾸면 FP32 cos 0.998, 한 블록 늦추면 0.9998). 양자화 없이 dev 전체 **+0.06 [−0.04, +0.19], cos 0.9999** — 근사 손실이 없다.
+- **채널 축 — 오프라인 회전** [7][8]: 잔차 흐름을 직교 행렬로 돌리고 역회전을 가중치에 흡수, LayerNorm γ·β를 접어 원래 모델과 수학적으로 같다. 몇 채널의 큰 값이 768채널로 퍼진다.
+- **2×2 결과**(그림 2): M2가 결정적(−60.96 → −1.58), 회전은 M2 위에서 유의하게 더한다(→ −0.79), 회전만은 붕괴(−54.52). 예전 방식(블록 5·9 fc2 FP32, −2.36)보다 **MatMul 79개 전부 INT8**이 더 정확하다(+1.57 [+0.98, +2.23]).
+
+**단계 5. 무엇이 정확도를 정하나 — 배포 눈금의 층별 SNR.** 배포 파일과 같은 눈금·정수 가중치(출력 재반올림 포함)로 MatMul 79개 각각의 8비트 출력 SNR을 쟀다(사진 64장, 층마다 FP32 입력에서 시작, 그림 3).
+
+| 그래프 | 최솟값 dB (가장 나쁜 층) | 평균 dB | dev 손실 %p |
+|---|---|---|---|
+| 원래 | 0.8 (블록 9 fc2) | 28.5 | −60.96 |
+| 회전만 | 1.0 (블록 9 fc2) | 30.6 | −54.52 |
+| 예전 방식(블록 5·9 fc2 FP32) | 13.1 | 29.0 | −2.36 |
+| M2만 | 14.9 | 29.5 | −1.58 |
+| **회전 + M2** | **20.5** | **31.6** | **−0.79** |
+
+<!-- src: b32/submit_prep/H5_qdq_snr/why_after_qdq_summary.json ("full") -->
+
+- **가장 나쁜 층의 SNR 순서가 정확도 순서와 5개 모두 같다.** 평균은 맞지 않는다(회전만 30.6 dB > M2만 29.5 dB인데 붕괴). 가장 나쁜 한 층이 전체 정확도를 좌우하는 것으로 보이며, 처방은 그 층의 SNR을 올린다(0.8 → 20.5 dB).
+
+**단계 6. ORT 커널에 맞추기(O-A·O-B, 팀원 신준용).** 남은 비용은 정수 행렬곱 앞뒤 Q/DQ, 정수 Softmax, 합쳐지지 않은 LayerNorm이었다.
+- O-A: 정수 행렬곱 결과를 8비트로 다시 반올림하지 않고 float으로 낸다(ORT 최적화 뒤 독립 DQ 66 → 1개). FP32 대비 cos가 0.977 → 0.989로 올랐다. 출력 재반올림과 정수 Softmax가 없어진 효과로 보이지만, 두 원인을 나누지는 않았다.
+- O-B: 소비자가 둘이라 기본 융합이 안 되던 잔차 Add + LayerNorm을 `SkipLayerNormalization`으로 합쳤다(FP32에서 수학적으로 같음).
+- 같은 바탕 비교에서 O-AB가 +0.57 [+0.17, +0.97], 4스레드 −11.4%로 사전 기준 세 개를 모두 만족했다.
+
+**단계 7. 남은 float 연산 줄이기(팀원 전정민, 실험 E14).** O-AB 프로파일에서 남은 float 비용은 GELU를 이루던 Mul·Add와 FP32 패치 임베딩 Conv였다.
+- F2: GELU(tanh) 노드 9개와 bias Add를 `FastGelu` 하나로 합쳤다.
+- P2: 패치 임베딩 Conv를 자르기 + INT8 MatMul로 바꿨다. 입력은 0~255 픽셀 정수를 /127.5 − 1 한 값이라, `x + 1`을 눈금 2/255로 양자화하면 픽셀 정수가 그대로 나온다(무손실). 오차는 가중치 INT8에서만 생긴다(패치 출력 cos 0.99993).
+- i7 노트북 기본 세션 같은 실행에서 P2는 O-AB보다 지연 −8.8~−11.8%, 메모리 −12.0%, dev +0.23 [−0.08, +0.53](동률)로, 결과 전에 정한 기준 세 개를 만족해 제출 파일로 정했다(D-052). 프로파일에서 줄어든 곳은 GELU의 Mul·Add와 FP32 Conv이고, 정수 행렬곱 시간은 같다(`latency_this_pc/b32_p2_20261027`).
+
+**시도했지만 넣지 않은 것** (결과 전에 정한 기준으로 판정)
+
+| 시도 | 결과 | 넣지 않은 이유 |
+|---|---|---|
+| 블록 0 FP32 보호 (X3) | −0.79 → −0.42, cos 0.977 → 0.991 | 짝 차이 +0.37 [−0.07, +0.80] 동률, 4스레드 지연 +5.9%, 크기 +20.6% → 사전 기준 두 개 미달 |
+| 가중치 4비트 (MatMulNBits, 블록 32) | 크기 최대 −28%(예전 방식 R0 구성 111.7 → 80.0 MiB, 제출 P2 91.22 MiB 기준이면 약 −12%), cos 유지 | 개발 초기 모델에서 x86 4스레드가 1.36~2.05배 느렸다(같은 커널). B/32 지연은 재지 않음 |
+| 원인 층만 FP32 (예전 방식 R0) | −2.36 [−3.00, −1.77] | 회전+M2(전부 INT8)가 더 정확하고 더 작다 |
+| O-A 단독 | +0.67, 지연 −4~−8% | CIFAR A −1.1%p로 사전 기준(−1.0) 미달. O-B와 함께일 때 통과 |
+| O-B 단독 | 지연 −0.7~−2.7% | 사전 기준(모든 스레드 −3% 이상) 미달 |
+| 활성값 S8 (개발 초기 모델에서 확인, B/32는 다시 재지 않음) | 정확도 동률 | x86에서 QKV가 정수로 합쳐지지 않아 속도가 FP32 수준 |
+| 토큰 삭제형 캐시 (개발 초기 모델에서 확인, B/32는 다시 재지 않음) | 크기 −13% | Hailo LayerNorm 분해와 충돌 → 마스크형(M2)으로 대체 |
+| 패치 임베딩을 FP32 MatMul로 (P1, 대조군) | 패치 출력은 Conv와 비트 동일 | 자르기 Transpose가 Conv 내부 계산보다 비싸 4스레드 +3.7% / +0.2% → 속도 관문 미달 (285K에서는 관문 통과, 종합 판정에서 기각) |
+| M2 마스크 식 정리 (E14-1) | 정확도 비트 동일 | 4스레드 −1.496 / −0.68%로 사전 기준(−1.5% 이상 감소) 미달 |
+| Hailo 잔차 덧셈까지 8비트 (ALL8F, 절제 실험) | 더 빠르지만 정확도 열위(부록 E.2) | 사전 기준 "정확도 유지" 미달 → 채택하지 않음 |
+
+<!-- src: 블록 0 b32/block0/README.md, 나머지는 5.1 src와 같음 -->
+
+---
+
+## 6. 벤치마크 설계 및 측정 결과
+
+### 6.1 선정한 벤치마크
+
+| 구분 | 내용 |
+|---|---|
+| 데이터셋 / 벤치마크명 | **제로샷 이미지 분류 7종**: Oxford-IIIT Pets, Oxford Flowers-102, Stanford Cars, Food-101, Caltech-101(고화질 5종, 주 지표) + CIFAR-100, ImageNetV2 matched-frequency(보조, 따로 표기) |
+| 공개 여부 및 출처 URL | 모두 공개. Hugging Face `timm/oxford-iiit-pet`, `dpdl-benchmark/oxford_flowers102`, `tanganke/stanford_cars`, `ethz/food101`, `dpdl-benchmark/caltech101` / CIFAR-100: torchvision / ImageNetV2: https://github.com/modestyachts/ImageNetV2 |
+| 평가셋 규모 | **test**: Pets 3,669 · Flowers 6,149 · Cars 8,041 · Food 25,250 · Caltech 6,084 · CIFAR-100 10,000 · ImageNetV2 10,000 (총 69,193장) / **dev**(구성 선택용, train에서 뗌): 고화질 5종 4,923장 + CIFAR-100 1,000장(CIFAR A) |
+| 평가 지표 | ① 제로샷 **Top-1** (고화질 5종 평균, FP32 대비 Δ와 짝 부트스트랩 95% 구간) ② FP32 대비 이미지 임베딩 cos ③ 크기·지연·FPS·피크 메모리 (FP32 대비 변화율) ④ (분석) 층별 8비트 출력 SNR |
+| 지표 선정 사유 | 실제 쓰임새(텍스트로 정한 클래스에 사진 맞추기)를 그대로 잰다. 텍스트 분류기를 FP32로 고정해 차이가 이미지 인코더 양자화에서만 나오게 했다 |
+
+### 6.2 벤치마크 선정 사유 및 타당성
+
+- **분야가 다른 세밀 분류 5종 평균**(동물·꽃·자동차·음식·일반 사물): 비슷한 클래스를 구분해야 해 작은 임베딩 오차도 정확도에 드러난다.
+- **프롬프트는 CLIP 공식 템플릿 [2]**: SigLIP 권장 템플릿보다 dev에서 1.77%p 좋았다(SigLIP 템플릿 − CLIP 템플릿 = −1.77 [−2.33, −1.22]).
+- **보조 지표는 따로 적는다**: CIFAR-100은 32×32를 키운 사진이라 앞쪽 층 변화에 지나치게 민감해 설정 선택에 쓰지 않는다. ImageNetV2는 일반성 확인용이다.
+- **고르지 않은 대안**: ImageNet-1k 검증셋(등록제라 재현이 어려움 → 공개 ImageNetV2), 이미지-텍스트 검색(텍스트 인코더 효과가 섞임), linear probe(학습 필요, 쓰임새와 다름).
+- **데이터 구간 분리**: 사진 선택은 이미지 바이트 SHA-1 해시로 정해 누가 돌려도 같다. 보정은 dev와 겹치지 않는 train 사진으로, 구성 선택은 train에서 뗀 dev로만 했고, **test는 구성 선택에 쓰지 않았다.** 제출 모델로 쓴 test는 ONNX Runtime 2회(이전 제출 파일 O-AB, 교체한 P2)와 Hailo 1회이며, 매번 제출 파일·판정 기준을 test 전에 커밋해 고정했다. P2로의 교체는 dev와 지연·메모리만 보고 정했다(부록 D).
+- **결과 전 고정과 3단계 검증**: 판정 기준·주 조건(4스레드)은 결과를 보기 전에 결과 폴더 README에 적어 커밋했다(O-A·O-B 기준표는 평가 시작 38초 뒤, 결과를 보기 전에 커밋). 결과마다 자기 검증 → 다른 경로 재계산 → 맥락을 모르는 검토자 확인을 거쳤다(`siglip2/VERIFICATION.md`).
+- **통계**: 같은 사진끼리 짝지은 부트스트랩(데이터셋별 층화, 1,000회, 시드 0)으로 95% 구간을 냈다. 구간이 0을 포함하지 않으면 "유의"로 본다.
+- **흔들림 점검**: 보정 시드 0·1·2에서 dev −0.79 / −0.80 / −0.70%p(M2rot, i7 노트북, 시드끼리 유의한 차이 없음). 입력 변형 8종(변형 없음·좌우 반전·90도 회전·흑백·어둡게·저대비·잡음·JPEG 20, 고화질 5종 × 200장, 같은 변형의 FP32 대비)에서 **제출 P2는 90도 회전만 작지만 유의한 손실(−1.5 [−2.8, −0.1])**이고 나머지 7종은 유의한 손실이 없다(−0.6 ~ +0.8%p). 비교로 그래프 최적화 전 구성(M2rot)은 흑백 −3.5·90도 회전 −2.2, 예전 방식(블록 5·9 fc2만 FP32)은 흑백 −9.0으로 유의한 손실을 보였다.
+
+### 6.3 재현 가능성 확보 방안
+
+- **공개 데이터셋만** 쓰고, 실행 때 Hugging Face Hub·torchvision에서 자동으로 받는다(`rn50/datasets.py`, 사진 선택 규칙 포함).
+- **소규모 평가 묶음**: dev 6종 × 200장(전처리 끝난 256×256 입력, 정답, FP32 텍스트 분류기, FP32 임베딩) + numpy·onnxruntime만 쓰는 `portable_eval.py` + FP32·제출 모델 + sha256 목록. 몇 분이면 돈다(9.2 (가)).
+- **모델 파일·sha256 공개**: FP32 `be19a8ad…`, 제출 P2 `e465d10d…`. 제출 파일을 만든 순서의 중간 파일(회전·레지스터 캐시를 넣은 FP32 `23236123…` → SkipLayerNorm 융합 → 양자화 O-AB → GELU 융합 → 패치 임베딩 정수화 P2)도 모두 팀 Release에 있다(8장). 마지막 그래프 변환은 세 PC에서 sha가 같은 파일을 만들었다. 실행 환경에 따라 사진 몇 장 결과가 다를 수 있어(7.1-3·4) 사진별 예측도 함께 낸다.
+- **깨끗한 폴더 재현 확인**: 빈 폴더에 제출 Release만 받아 sha256 15개를 확인하고 `portable_eval.py --no-mem-pattern`을 실행하면, FP32·P2의 사진별 예측·cos가 Release 안 기준 결과와 비트 단위로 같았다. 새 clone·새 가상환경에서 dev 캐시부터 다시 만들어도 dev 전체 사진별 예측이 같았다(이전 제출 파일 O-AB 기준, 9.1).
+- **다른 CPU 재현**: 같은 묶음(1,200장)을 x86 두 대(i7-1165G7 AVX-512 VNNI, Core Ultra 9 285K AVX-VNNI)와 ARM(Jetson AGX Orin)에서 사진별로 비교했다. FP32는 세 대 모두 같았고, 제출 P2는 x86 두 대 사이 1장, ARM과 4~5장(0.4%)이 달랐다(고화질 평균 Δ i7 +0.4, 285K·AGX +0.3%p). dev 전체는 x86 세 대(i7, 258V, 285K)에서 89.91 / 89.87 / 89.87%다.
+- **채점은 배포한 ONNX 파일로** 한다. 처음부터 다시 만들면 PC마다 float64 행렬 곱 반올림이 달라 회전 행렬부터 파일이 달라진다(같은 레시피 두 PC dev −0.79 / −0.87).
+
+### 6.4 측정 프로토콜
+
+| 측정 조건 | 설정값 |
+|---|---|
+| 입력 해상도 | 256×256 (open_clip 모델 기본 전처리, 정규화 평균·표준편차 0.5) |
+| 배치 크기 | 1 (엣지 실시간 상황). 정확도 평가만 배치 50 |
+| Warm-up 횟수 | 20회 (모델마다) |
+| 측정 반복 횟수 | 사진 200장 × 3회를 **모델끼리 번갈아**(같은 실행에서 FP32와 최적화 모델 교대) × 세션 3번 이상 × 스레드 1·2·4 |
+| 통계 방식 | 세션마다 장당 평균 → **세션 중앙값**. 변화율은 세션마다 같은 실행 안 비율의 중앙값. p50·p95도 기록. FPS = 1000 / 지연 |
+| 측정 도구 및 방법 | ONNX Runtime 1.25.0 CPU, `ORT_ENABLE_ALL`, **제출 실행 설정과 같은 세션 옵션**(C3: `enable_mem_pattern=False`, 나머지 기본값), intra-op 스레드 고정·inter-op 1 (`siglip2/scripts/cross_latency.py --no-mem-pattern`). 피크 메모리: 모델마다 새 프로세스, 4스레드, 세션 생성 + 추론 50회 중 최대 working set. 크기: ONNX 파일 바이트 |
+
+- **대표 실행**: 10/27 저녁 두 실행(각 3세션, 합쳐 6세션)에서 FP32·이전 단계 O-AB·제출 P2를 번갈아 쟀다. 첫 실행은 FP32 쪽이 일부 세션에서 느려져 비율이 부풀었을 수 있어(4스레드 −64.4%), 두 번째 실행 전에 "두 실행 6세션 비율의 중앙값, 메모리는 두 실행 평균"을 대표값으로 정해 커밋했다. 두 번째 실행 4스레드는 −59.9%였다. 이상치 규칙은 쓰지 않았다. 대표값을 이 세션 설정으로 정한 것은 학술부 답에 따른 변경이고, 그때 같은 날 기본 세션 결과(아래)는 이미 알고 있었다.
+- **세션 설정**: 학술부 답(채점은 팀이 낸 실행 스크립트로)에 따라 제출 실행 스크립트에 `enable_mem_pattern=False`(`--no-mem-pattern`)를 넣었고, FP32도 같은 설정으로 쟀다. 출력은 기본 세션과 비트 단위로 같아(사진 1,200장의 예측·cos) 기본 세션으로 잰 dev·test 정확도가 그대로 유효하다. 지연에는 영향이 거의 없다(개발 초기 모델에서 1/2/4스레드 0.0 / +0.5 / −1.6%, P2 1스레드는 두 설정에서 −67.6 / −68.3%). 같은 날 기본 세션 실행은 4스레드 −59.8%, 1스레드 −67.6%, 메모리 −62.6%였다.
+- **주 조건**은 결과를 보기 전에 정한 4스레드다. 이전 실행들의 기록과 이상치 처리, 세션 설정의 메모리 효과는 부록 F에 적었다.
+
+### 6.5 측정 결과
+
+**정확도 — test** (제출 파일 P2로 1회, `b32/test_p2`. 교체 전 O-AB test는 참고로 함께)
+
+| 데이터셋 | FP32 | 최적화 후 (P2) | Δ (%p) [95%] | cos | (참고) O-AB Δ |
+|---|---|---|---|---|---|
+| Pets (3,669) | 93.54 | 93.35 | −0.19 [−0.57, +0.22] | 0.992 | −0.33 |
+| Flowers (6,149) | 84.49 | 84.09 | −0.39 [−0.70, −0.07] | 0.991 | −0.36 |
+| Cars (8,041) | 90.80 | 90.35 | −0.45 [−0.81, −0.12] | 0.987 | −0.35 |
+| Food (25,250) | 88.90 | 88.94 | +0.04 [−0.13, +0.22] | 0.990 | −0.00 |
+| Caltech (6,084) | 84.81 | 84.78 | −0.03 [−0.28, +0.21] | 0.983 | −0.10 |
+| **고화질 5종 평균** | **88.51** | **88.30** | **−0.20 [−0.33, −0.07]** | 0.988 | −0.23 [−0.36, −0.08] |
+| (보조) CIFAR-100 (10,000) | 76.05 | 76.62 | +0.57 [−0.01, +1.07] | 0.958 | +0.93 |
+| (보조) ImageNetV2 (10,000) | 65.85 | 65.42 | −0.43 [−0.88, −0.05] | 0.989 | −0.20 |
+
+<!-- src: b32/test_p2/test_summary.json (스크립트 커밋 627138c, dirty false), O-AB b32/test/test_summary.json (72784d1), P2 − O-AB b32/test_p2/p2_vs_oab.json -->
+- P2 − O-AB 짝 차이(같은 사진): 고화질 +0.02 [−0.10, +0.15], CIFAR-100 −0.36 [−0.75, +0.01], ImageNetV2 −0.23 [−0.55, +0.07] — 모두 유의한 차이 없음.
+
+**정확도 — dev 전체** (FP32 89.96%): 제출 P2 89.91%, −0.05 [−0.41, +0.33](유의하지 않음), cos 0.988, CIFAR A −0.2. 데이터셋별 Pets −0.61, Flowers −0.32, Cars +0.52, Food −0.51, Caltech +0.68. 이전 단계 O-AB는 −0.27 [−0.62, +0.09](cos 0.989), M2rot(회전+M2, 출력 재반올림 있음)은 −0.79 [−1.26, −0.34](cos 0.977).
+
+**효율** (i7 노트북, 10/27 저녁 두 실행 합침, FP32와 같은 실행·같은 세션 설정에서 번갈아, 비공식, 그림 4)
+
+| 항목 | Baseline | 최적화 후 | 변화율 (%) |
+|---|---|---|---|
+| 정확도 지표 1 (Top-1, 고화질 5종, test) | 88.51% | 88.30% | −0.20%p |
+| 정확도 지표 2 (임베딩 cos, 고화질 5종, test) | 1 | 0.988 | — |
+| 추론 Latency (ms, 6세션 중앙값) 1 / 2 / 4스레드 | 126.0 / 96.7 / 68.6 | 39.2 / 35.2 / 24.7 | **−68.0 / −62.9 / −62.9** |
+| Latency p50 / p95 (4스레드, ms, 6세션) | 57.4~74.3 / 73.1~79.3 | 22.4~29.7 / 30.0~32.2 | 약 −55~−68 / −59~−61 |
+| Throughput (FPS, 배치 1) 1 / 2 / 4스레드 | 7.9 / 10.3 / 14.6 | 25.5 / 28.4 / 40.5 | **+222 / +175 / +178** |
+| 모델 크기 (MB) | 378.36 | 95.65 | **−74.7** |
+| 피크 메모리 (MB, 두 실행 평균) | 476.0 | 174.4 | **−63.4** |
+
+<!-- src: 2장 src와 같음. p50/p95 = b32_p2_c3_20261027·b32_p2_c3b_20261027 cross_latency.json sessions(4T 6세션, lat_p50·lat_p95) -->
+
+**다른 조건의 개선율** (각 조건에서 FP32와 같은 실행으로 번갈아, 실행별 전체 표는 부록 F)
+
+| 기기 / 실행 | 모델 | 4스레드 FP32 → 최적화 | 4스레드 | 1스레드 | 메모리 |
+|---|---|---|---|---|---|
+| **i7-1165G7, 10/27 저녁 두 실행 합침 (대표)** | **P2** | 68.6 → 24.7 ms | **−62.9%** | **−68.0%** | **−63.4%** |
+| i7-1165G7, 10/27 저녁 1회째 / 2회째 | P2 | 68.9 → 24.3 / 68.3 → 27.4 ms | −64.4 / −59.9% | −68.3 / −67.7% | −63.4 / −63.3% |
+| i7-1165G7, 10/27 오후 기본 세션 | P2 | 60.0 → 24.1 ms | −59.8% | −67.6% | −62.6% |
+| i7-1165G7, 10/22~27 다섯 조건 (10/27 저녁은 두 실행 합침) | O-AB (이전 단계) | — | −55.9 ~ −57.0% | −60.2 ~ −63.8% | −57.4 ~ −57.5% |
+| Core Ultra 9 285K (팀원 PC, WSL2) | O-AB | 27.01 → 12.26 ms | −54.6% | −64.6% | (측정 정의 다름) |
+
+- 절대 지연은 기기와 PC 상태에 따라 크게 다르지만(7.1-1), **원본 대비 개선율은 실행·기기가 달라도 비슷했다**: 이전 단계 O-AB는 여섯 조건·기기 두 대에서 4스레드 −55~−57%, 1스레드 −60~−65%, 제출 P2는 같은 날 세 실행에서 4스레드 −59.8~−64.4%, 1스레드 −67.6~−68.3%다. 채점이 원본 대비 개선율이므로 이 값을 주 결과로 둔다.
+- P2의 O-AB 대비 이득은 x86 세 대에서 같은 방향이다: 4스레드 i7 −8.8%(기본 세션)·−14.4%(제출 설정 두 실행), 258V −10.3%, 285K −11.8%, 피크 메모리 i7 −12.0 / −13.9%, 258V −16.6%, 285K −17.3%. 다만 i7 4스레드는 세션마다 흔들림이 커서, 2회째 실행 세션 1에서는 P2가 O-AB보다 3.8% 느렸다.
+- Hailo-10H 실칩 결과(본선 준비)는 부록 E에 모았다.
+
+### 6.6 결과 해석
+
+- **손실은 어디서 생기나**: "거대 값이 눈금을 넓혀 그 층 출력이 무너지는" 손실은 M2·회전으로 해소됐다(M2만으로 −61.0 → −1.6%p, 가장 나쁜 층 SNR 0.8 → 20.5 dB). 남은 손실은 행렬곱을 모두 8비트로 한 데서 오는 작은 임베딩 오차(dev cos 0.988)이고, O-A·O-B로 더 줄었다(같은 바탕 비교, 준용 PC: −0.87 → −0.29, 짝 차이 +0.57 [+0.17, +0.97]. 재반올림 제거와 float Softmax의 효과는 나누지 않았다). 패치 임베딩까지 8비트로 한 P2도 dev 손실을 늘리지 않았다(O-AB 대비 +0.23 [−0.08, +0.53]).
+- **취약 입력 ① 비슷한 클래스 경계**: 새 오답은 클래스마다 대부분 1~2장(최대 3장)씩 흩어지고, staffordshire bull terrier ↔ american pit bull terrier, ragdoll ↔ birman처럼 원래 헷갈리는 쌍에서 뒤집힌다. 특정 클래스가 망가진 것이 아니다(이전 주 후보 M2rot 기준 분석, `b32/G3_error_classes`).
+- **취약 입력 ② 데이터셋·변형·해상도**: test에서 세밀 구분이 필요한 Cars(−0.45)·Flowers(−0.39)가 구간이 0을 포함하지 않는 작은 손실이고, Pets(−0.19)·Food(+0.04)·Caltech(−0.03)는 거의 그대로다. 입력 변형은 90도 회전에서 P2가 −1.5%p로 유일하게 유의한 손실이다(FP32 자체도 71.9%로 크게 떨어지는 학습 분포 밖 입력, 200장 × 5라 구간이 넓음). 흑백(−0.6)·좌우 반전(−0.6)·어둡게(−0.5)는 유의하지 않다(처방 전 모델은 흑백에서 크게 무너짐, 6.2). 저해상도 CIFAR-100은 오히려 +0.57%p(구간 하한 −0.01로 경계, 이전 O-AB +0.93 유의, 원인 미확인 7.1), ImageNetV2는 −0.43%p로 작지만 유의한 손실이다.
+- **dev와 test가 일치한다**: dev −0.05 [−0.41, +0.33], test −0.20 [−0.33, −0.07]. dev에서 구성을 고르며 생길 수 있는 과적합이 test에서 드러나지 않았다(이전 O-AB도 dev −0.27 / test −0.23). test는 표본이 커서 구간이 좁아져 "작지만 유의한 손실"로 나왔다.
+- **CPU 속도가 줄어든 곳**: 프로파일(i7, 4스레드, 200장)에서 P2는 O-AB보다 커널 시간 −15%(34.9 → 29.5 ms)다. GELU를 이루던 Mul·Add(→ FastGelu 1.46 ms)와 FP32 패치 Conv가 없어졌고 정수 행렬곱은 같다(16.1 / 15.7 ms). 그 전 단계 O-AB도 회전+M2 그래프보다 −15%였고, 줄어든 곳은 Q/DQ(6.8 → 3.9 ms)·정수 Softmax 제거·잔차 Add(6.1 → 4.1 ms)다. 지금은 커널 시간의 절반 이상이 정수 행렬곱이다(P2 i7 53% = 15.7 / 29.5 ms, 이전 O-AB 285K 약 54%).
+- **스레드 배속**: 1스레드보다 4스레드에서 배속이 작다(1스레드 3.2배 → 4스레드 2.5~2.8배, 두 실행). 토큰이 64개뿐이라 float으로 남는 연산의 비중이 커서로 보인다(확인 안 함).
+
+<!-- src: i7 노트북 프로파일 latency_this_pc/b32_p2_20261027/README.md(b32/p2/profile), b32_cool_20261023/README.md (10/22 저녁 프로파일은 게임 실행 중이라 무효), 285K O1 6-6 -->
+
+---
+
+## 7. 한계점 및 엣지 디바이스 이식 계획
+
+### 7.1 현재 한계점
+
+1. **속도는 노트북 한 대의 비공식 값이다.** 같은 PC에서도 실행에 따라 4스레드 FP32 절대값이 60.0~88.6 ms로 최대 약 48% 달랐다(CPU 클럭 상태 차이로 추정). 그래서 같은 실행 안 비율로만 비교했는데, 비율도 세션마다 흔들려(10/27 6세션 −58.1 ~ −64.8%) 4스레드 개선율은 −58~−65% 범위로 읽어야 한다. 노트북 전원 모드도 크게 영향을 주어, 측정 전에 사람이 확인했다.
+2. **제출 모델은 onnxruntime 전용이다.** com.microsoft 연산(`SkipLayerNormalization` 24개·`FastGelu` 13개)이 있어 다른 ONNX 실행기에서는 돌지 않는다. 채점은 팀이 낸 실행 스크립트(onnxruntime)로 하므로(학술부 답) 문제는 없고, 보험으로 표준 연산만 쓰는 INT8(`3a46ae8a…`, dev −0.87, 본선 HEF와 같은 바탕)을 Release에 함께 둔다.
+3. **CPU 명령어 집합에 따라 사진 몇 장의 결과가 다를 수 있다.** x86 두 대는 1,200장 중 1장, dev 전체에서는 데이터셋별 1~2장이 달랐다. 정수 곱 뒤 float으로 내는 커널의 반올림 차이로 보인다(확인 안 함).
+4. **ARM에서는 사진 약 0.4%의 예측이 다르다**(Jetson AGX Orin, 1,200장 중 4~5장, 고화질 평균 Δ는 x86과 같음). VNNI가 없는 x86은 확인하지 않았다.
+5. **Hailo HEF는 CPU 전용 변환을 쓰지 않아 수치가 다르다.** HEF는 같은 FP32 그래프를 Hailo 방식(8/16비트)으로 따로 양자화한다. 행렬곱 float 출력(O-A)을 Hailo 16비트로 맞추려면 HEF를 다시 빌드·검증해야 해 기록만 한다. Hailo 손실은 CPU보다 크다(test −1.04 vs −0.20%p, 부록 E.4).
+6. **CIFAR-100이 FP32보다 높게 나온 원인을 모른다**(+0.57 [−0.01, +1.07]). 보조 지표라 선택에 쓰지 않았다.
+7. **레지스터 캐시는 보정 데이터로 정한 근사다.** dev·test 7종과 입력 변형 8종에서는 근사 손실이 없었지만(FP32 근사 cos 0.9998 이상), 분포가 아주 다른 입력에서는 맞지 않을 수 있다.
+8. **원인 분석 일부는 fake-quant다.** 토큰별 눈금 실험은 메커니즘 확인용이라 지금 정수 커널에서 그대로 쓸 수 없다.
+9. **90도 회전 입력에서 작지만 유의한 손실을 보였다**(−1.5 [−2.8, −0.1], 6.2). 8종 중 1종이라 다중 비교의 우연일 수 있지만, 회전된 사진이 많은 쓰임새에서는 따로 확인이 필요하다.
+
+### 7.2 본선 이식 계획 (11/6 ~ 12/4)
+
+본선은 예선 모델(같은 회전 행렬·sink 규칙·레지스터 캐시 상수의 SigLIP2 B/32)을 그대로 쓰고, 예선과 같은 벤치마크·측정 방법(배치 1 지연 주 지표)으로 서버(ORT INT8)와 엣지(Hailo)를 비교한다. 컴파일 과정의 조정은 "예선 대비 변경 사항"으로 기록한다.
+
+| 시기 | 수행 내용 | 예상 리스크 |
+|---|---|---|
+| 1주차 (11/6~11/12) | Pi 5 + AI HAT+ 2 구성, HailoRT 버전 확인 → 본선 HEF GF를 Pi의 HailoRT 버전용 DFC로 다시 컴파일, 출력이 GF와 같은지 확인, 실칩 dev 전체 1회 | HailoRT·DFC 버전 불일치 → 버전별 DFC 환경 미리 준비 |
+| 2주차 (11/13~11/19) | Pi에서 dev·test 정확도, 배치 1 지연(워밍업 20, 200장 × 3회 × 3세션), 메모리·전력, 호스트 전처리(크기 맞춤) 시간 포함 | Pi CPU 전처리 병목 → 크기 맞춤 최적화(정규화는 이미 HEF 안) |
+| 3주차 (11/20~11/26) | 예선 대비 변경 사항으로 기록하는 추가 실험: Hailo INT4 가중치(MLP부터), 잔차 8비트화 재시도(ALL8 계열). 결과 전 고정한 같은 판정 규칙으로 평가 | INT4·8비트 정확도 손실, 컴파일 결과물 이상(개발 초기 모델에서 에뮬레이터는 정상인데 실칩만 무너진 사례, 부록 E) → 에뮬레이터·실칩 모두 확인 |
+| 4주차 (11/27~12/4) | 데모(카메라 → 제로샷 분류), 최종 보고서(11/30)·발표, 재현 코드 정리 | 발열에 따른 지연 변동 → 시작 온도 기록, 같은 조건 반복 |
+
+---
+
+## 8. 제출물 체크리스트
+
+| No | 제출 항목 | 파일명 또는 링크 | 확인 |
+|---|---|---|---|
+| 1 | 결과 보고서 (PDF) | `[트랙2-예선]_자유_오스랩_보고서.pdf` | □ |
+| 2 | 베이스라인 모델 파일 | `siglip2_image_fp32.onnx` (B/32, 378.36 MB, sha256 `be19a8ada01055df…`) | □ |
+| 3 | 최적화 모델 파일 | `e14_4_P2_patch_int8.onnx` (95.65 MB, sha256 `e465d10da92cf0f8…`) | □ |
+| 4 | 모델 포맷 및 버전 정보 명시 | ONNX opset 17 + `com.microsoft` 1(SkipLayerNormalization 24, FastGelu 13) → **onnxruntime 1.25.0에서만 실행 가능**. 입력 `image` float32 N×3×256×256(전처리 후), 출력 `embedding` 768차원. CPU, `ORT_ENABLE_ALL`, 세션 옵션 `enable_mem_pattern=False`(C3, 제출 실행 스크립트에 들어 있음) | □ |
+| 5 | 벤치마크 실행 스크립트 | `siglip2/scripts/portable_eval.py --no-mem-pattern`(소규모 묶음, 제출 실행 설정), `siglip2/s2_paired_ci.py`(dev), `siglip2/s2_test_eval.py`·`s2_test_summary.py`(test), `siglip2/scripts/cross_latency.py --no-mem-pattern`(지연·메모리), `siglip2/s2_model_stats.py`(크기·파라미터·GFLOPs) | □ |
+| 6 | 의존성 목록 | `siglip2/requirements.txt` (+ `rn50/requirements.txt` 공통 평가 코드) | □ |
+| 7 | 실행 방법 README | `siglip2/README.md` (v5, P2 기준) | □ |
+| 8 | 데이터셋 경로 또는 다운로드 방법 | 실행 때 자동 다운로드(`rn50/datasets.py`, 출처 6.1). 소규모 묶음 dev 6종 × 200장 | □ |
+
+- 모델 파일·묶음은 GitHub Release `siglip2-b32-p2-submit-20261027`로 낸다(제출 때 정식 Release로 바꾼다). FP32·제출 P2·소규모 묶음·`portable_eval.py`·기준 결과와 사진별 예측·`SHA256SUMS.txt`와 함께 다음이 있다.
+  - **본선 이식용 바탕** `siglip2_image_fp32_g6b_b32_m2rot.onnx`(`23236123…`): 제출 P2와 같은 모델의 표준 연산 FP32, 본선 HEF 바탕과 가중치가 비트 단위로 같음(3.3)
+  - 비상 대체 INT8 `3a46ae8a…`: 표준 연산만 씀(7.1-2)
+  - 제출 파일을 만든 중간 파일은 이전 Release `siglip2-b32-submit-20261023`(SkipLayerNorm 융합 `79e797c1…`, `506e9fe4…`, O-AB `7a01044c…`)와 `siglip2-p2-20261027`(GELU 융합 `03f4de18…`)에 있다(6.3)
+- 저장소가 비공개라 학술부 접근(초대 또는 공개 링크)을 준비하고 심사 종료(11/5)까지 유지한다.
+
+---
+
+## 9. 재현 실행 절차
+
+### 9.1 환경 구성
+
+```bash
+git clone https://github.com/jungminmobile/oslab_mobile.git
+cd oslab_mobile
+python -m venv .venv
+# Windows: .venv\Scripts\activate    Linux/macOS: source .venv/bin/activate
+python -m pip install -r siglip2/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+gh release download siglip2-b32-p2-submit-20261027 --repo jungminmobile/oslab_mobile -D release
+cd release && sha256sum -c SHA256SUMS.txt && cd ..
+export S2_MODEL_ID=hf-hub:timm/ViT-B-32-SigLIP2-256
+export SIGLIP2_DATA=$HOME/siglip2_data SIGLIP2_ARTIFACTS=$HOME/siglip2_b32_art HF_HOME=$HOME/hf_cache OPENBLAS_NUM_THREADS=1
+mkdir -p $SIGLIP2_ARTIFACTS/onnx && cp release/*.onnx $SIGLIP2_ARTIFACTS/onnx/
+```
+- Windows(PowerShell)는 `export` 대신 `$env:S2_MODEL_ID="..."` 형식이다.
+- **`S2_MODEL_ID`를 꼭 지정한다.** 지정하지 않으면 코드가 B/16(224)으로 동작한다.
+- 확인 기록: 새 clone·새 가상환경(Python 3.11.9 + requirements)에서 이 절과 9.2 (가)·(나)를 그대로 실행해 사진별 예측이 기존 결과와 비트 단위로 같았다(이전 제출 파일 기준). 제출 P2는 9.2 (가)를 빈 폴더에서 실행해 같은 확인을 했다(6.3).
+
+### 9.2 벤치마크 실행 명령
+
+**(가) 빠른 확인: 소규모 묶음** (저장소 코드·데이터 다운로드 없이, `pip install numpy onnxruntime==1.25.0`만 필요, 실행 약 5~6분. `release/` = Release `siglip2-b32-p2-submit-20261027`를 받은 폴더, 9.1)
+```bash
+python release/portable_eval.py --data release --out out_quick --threads 4 --no-mem-pattern \
+  --models fp32=release/siglip2_image_fp32.onnx \
+           p2=release/e14_4_P2_patch_int8.onnx
+```
+
+**(나) 전체 정확도: dev** (Baseline·최적화 함께, 짝 비교. FP32는 스크립트가 항상 함께 돌린다)
+```bash
+cd siglip2
+python s2_build_dev.py all --threads 4     # dev 캐시·텍스트 분류기·FP32 기준 (데이터 자동 다운로드, 처음 1~2시간)
+RN50_RESULTS=../results/siglip2/repro_b32_dev python s2_paired_ci.py --models \
+  e14_4_P2_patch_int8.onnx
+```
+
+**(다) 전체 정확도: test 7종** (Baseline·최적화를 같은 실행에서. FP32는 항상 함께)
+```bash
+for s in pets caltech flowers cars food cifar_test imagenetv2; do
+  RN50_RESULTS=../results/siglip2/repro_b32_test python s2_test_eval.py $s --threads 4 \
+    --models e14_4_P2_patch_int8.onnx
+done
+RN50_RESULTS=../results/siglip2/repro_b32_test python s2_test_summary.py
+```
+
+**(라) 속도·메모리·크기** (Baseline·최적화를 같은 실행에서 번갈아)
+```bash
+python scripts/cross_latency.py --no-mem-pattern --out out_speed --mem \
+  --models b32_fp32=$SIGLIP2_ARTIFACTS/onnx/siglip2_image_fp32.onnx \
+           b32_p2=$SIGLIP2_ARTIFACTS/onnx/e14_4_P2_patch_int8.onnx
+```
+
+### 9.3 기대 출력
+
+| 명령 | 출력 파일 | 기대값 | 보고서 위치 |
+|---|---|---|---|
+| (가) | `out_quick/result.json` | FP32 고화질(200장 × 5) 88.9%, P2 Δ **+0.4%p**, cos **0.9884**, CIFAR A 73.0 (FP32 71.5). i7 노트북(AVX-512 VNNI) 값이다. 285K·AGX에서는 고화질 Δ +0.3(사진 1장 차이) | 6.3 |
+| (나) | `paired_ci.jsonl` | FP32 89.96%, P2 89.91% (Δ −0.05 [−0.41, +0.33]), cos 0.988, CIFAR A −0.2. 다른 x86에서는 89.87% | 6.5 dev |
+| (다) | `test.jsonl`, `test_summary.json` | 고화질 88.51 → 88.30 (Δ −0.20 [−0.33, −0.07]), CIFAR-100 +0.57, ImageNetV2 −0.43 | 2, 6.5 |
+| (라) | `out_speed/cross_latency.json` | FP32 대비 4스레드 약 −63%(실행·세션에 따라 −58~−65%), 1스레드 약 −68%(절대 ms는 PC·실행마다 다름), 피크 메모리 약 −63%(C3), 크기 378.36 → 95.65 MB | 2, 6.5 |
+
+<!-- src: (가) b32/p2/xplat_i7/result.json, 다른 CPU b32/p2/xplat_i7/compare_p2_3way.json·origin/exp/E14-arm-junyong:R/G8_candidates/b32/xplat/E14/README.md 2절, (나) b32/p2/dev_full -->
+
+### 9.4 재현 시 유의사항
+
+1. **채점은 배포한 ONNX 파일로 해 주십시오.** 처음부터 다시 만들면 PC마다 float64 행렬 곱의 반올림이 달라 회전 행렬부터 파일이 달라지고, dev 정확도가 0.1%p 안팎 달라질 수 있습니다(B/32 같은 레시피 두 PC −0.79 / −0.87).
+2. **onnxruntime으로 실행해 주십시오.** 제출 모델에 `com.microsoft` 연산(SkipLayerNormalization·FastGelu)이 있습니다.
+3. **정수 커널 결과는 CPU 명령어 집합에 따라 사진 몇 장 다를 수 있습니다.** x86(VNNI) 두 대는 1,200장 중 1장만 달랐고(dev 평균 89.91 / 89.87%), ARM(Jetson AGX Orin)은 4~5장(0.4%)이 달랐지만 고화질 평균은 285K와 같았습니다(7.1-3·4). 비교용으로 i7 노트북의 사진별 예측 파일을 함께 냅니다. VNNI가 없는 x86은 확인하지 않았습니다.
+4. **입력은 0~255 픽셀을 /127.5 − 1 한 값(open_clip 기본 전처리)이어야 첫 층 양자화가 무손실입니다.** 다른 보간으로 정수가 아닌 픽셀 값이 들어오면 입력이 8비트 눈금으로 반올림됩니다(오차는 픽셀 반 칸 이내).
+5. **지연은 FP32와 같은 실행에서 비율로 비교해 주십시오.** 절대값은 PC·전원 설정·발열에 따라 크게 다릅니다(7.1-1). 노트북은 고성능 모드·충전 상태에서, 다른 프로그램 없이 재 주십시오. 메모리 수치는 제출 실행 설정(C3: `--no-mem-pattern`) 값입니다(6.4).
+6. **처음 실행 시간**: dev 캐시 생성 1~2시간, test 7종(FP32·INT8 함께) i7 노트북에서 약 3시간 15분(대기 제외). 빠른 확인은 9.2 (가)를 써 주십시오.
+7. **별도 다운로드·디스크**: 텍스트 분류기를 만들 때 Hugging Face `timm/ViT-B-32-SigLIP2-256` 가중치를 처음 한 번 받습니다. ImageNetV2는 `siglip2/scripts/test_g6.sh`가 받습니다. 디스크는 약 20 GB가 필요합니다(원본 데이터 7.0 GB, B/32 전처리 캐시 5.4 GB, Hugging Face 가중치 1.5~2.9 GB, 가상환경 1.1 GB, ONNX·재현 묶음 약 2 GB). GPU는 필요 없습니다.
+
+---
+
+## 부록 A. 참고 문헌
+
+**모델·기법**
+1. M. Tschannen et al., "SigLIP 2: Multilingual Vision-Language Encoders with Improved Semantic Understanding, Localization, and Dense Features," arXiv:2502.14786, 2025. — 대상 모델
+2. A. Radford et al., "Learning Transferable Visual Models From Natural Language Supervision," ICML 2021 (arXiv:2103.00020). — CLIP, 제로샷 프롬프트 템플릿
+3. T. Darcet, M. Oquab, J. Mairal, P. Bojanowski, "Vision Transformers Need Registers," ICLR 2024 (arXiv:2309.16588). — 고정 위치 high-norm 토큰
+4. M. Sun, X. Chen, J. Z. Kolter, Z. Liu, "Massive Activations in Large Language Models," COLM 2024 (arXiv:2402.17762). — 거대 활성값
+5. S. Kim et al., "Activation Quantization of Vision Encoders Needs Prefixing Registers," arXiv:2510.04547, 2025. — RegCache, 레지스터 캐시(M2)의 바탕
+6. N. Jiang, A. Dravid, A. Efros, Y. Gandelsman, "Vision Transformers Don't Need Trained Registers," NeurIPS 2025 (arXiv:2506.08010). — 학습 없이 register 역할 옮기기
+7. S. Ashkboos et al., "QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs," NeurIPS 2024 (arXiv:2404.00456). — 무작위 Hadamard 회전
+8. Z. Liu et al., "SpinQuant: LLM Quantization with Learned Rotations," ICLR 2025 (arXiv:2405.16406). — 회전으로 이상치 퍼뜨리기
+9. H. Wu, P. Judd, X. Zhang, M. Isaev, P. Micikevicius, "Integer Quantization for Deep Learning Inference: Principles and Empirical Evaluation," arXiv:2004.09602, 2020. — Percentile 보정, 정적 PTQ
+10. M. Nagel, M. van Baalen, T. Blankevoort, M. Welling, "Data-Free Quantization Through Weight Equalization and Bias Correction," ICCV 2019 (arXiv:1906.04721). — 바이어스 보정(Hailo optimization_level 1)
+
+**데이터셋**
+11. O. M. Parkhi et al., "Cats and Dogs," CVPR 2012. — Pets
+12. M.-E. Nilsback, A. Zisserman, "Automated Flower Classification over a Large Number of Classes," ICVGIP 2008. — Flowers-102
+13. J. Krause et al., "3D Object Representations for Fine-Grained Categorization," ICCV Workshops 2013. — Stanford Cars
+14. L. Bossard, M. Guillaumin, L. Van Gool, "Food-101 – Mining Discriminative Components with Random Forests," ECCV 2014. — Food-101
+15. L. Fei-Fei, R. Fergus, P. Perona, "Learning Generative Visual Models from Few Training Examples," CVPR Workshops 2004. — Caltech-101
+16. A. Krizhevsky, "Learning Multiple Layers of Features from Tiny Images," Tech. Report, 2009. — CIFAR-100
+17. B. Recht et al., "Do ImageNet Classifiers Generalize to ImageNet?," ICML 2019 (arXiv:1902.10811). — ImageNetV2
+
+**도구**
+18. ONNX Runtime 1.25.0 (Microsoft), https://onnxruntime.ai — 정적 양자화, CPU 정수 커널, `SkipLayerNormalization` 융합
+19. Hailo Dataflow Compiler 5.4.0 · HailoRT 5.3.0 · Hailo Model Zoo, https://hailo.ai
+20. OpenCLIP 3.3.0 / timm 1.0.30 — 모델 불러오기·export
+
+[확인 필요: 5번 학회 채택 여부, 9~17번 서지 정보를 PDF 전에 한 번씩 확인]
+
+## 부록 B. 결정·실험 기록 위치
+
+| 내용 | 위치 |
+|---|---|
+| 제출 모델·파일 결정 | `siglip2/DECISIONS.md` D-048, D-049, 본선 HEF D-050·O-A Hailo 대응 D-051 (문안: 준용 `siglip2/b32-hef-test` `results/siglip2/B32_hef_test/README.md` B-1), 제출 파일 P2로 교체 D-052 (교체 확인 `results/siglip2/G8_candidates/b32/p2/README.md`) |
+| E14 (F2·P2) | 정민 `jungmin/e14-graph` `results/E14-2_GELU융합`, `results/E14-4_패치임베딩MatMul`, `e14/README_E14.md` / 준용 재현 `exp/E14-junyong`, ARM `exp/E14-arm-junyong` |
+| B/32 CPU 실험 전체 | `results/siglip2/G8_candidates/b32/` (README, G3RQ, block0, O_AB, submit_prep, test, xplat) |
+| 지연·메모리 원자료·이상치 규칙 | `results/siglip2/G8_candidates/latency_this_pc/` (대표 `b32_p2_c3_20261027`, 같은 날 기본 세션 `b32_p2_20261027`, 이전 단계 `b32_cool_20261023`), `b16/O_AB/README.md` 2·3절, 메모리 설정 `b32/submit_prep/mem_pattern` |
+| 다른 CPU 재현 | `results/siglip2/G8_candidates/b32/xplat/` (`compare_3way`, `fresh_env`, `repro_check`), 준용 `siglip2/b32-portable-junyong` `README_junyong.md` |
+| 본선 HEF 바탕 동일성·Hailo test | 준용 `siglip2/b32-hef-test` `results/siglip2/B32_hef_test/README.md` A·B절 |
+| 기전(sink 위치·거대 활성값) | `results/siglip2/G6_pre/README.md` |
+| O-A·O-B / Hailo 실칩 | 준용 브랜치 `siglip2/o1-ort-speed`(`results/siglip2/O1/README.md`) / `siglip2/g6e-b16-g`(G6b), `siglip2/g6d-speed2`(G6d), `siglip2/g6f-ceiling`(G6f) |
+
+## 부록 C. 개발 과정 메모
+
+원인(고정 위치 sink 토큰의 거대 활성값)과 처방(레지스터 캐시 + 회전)은 개발 초기 모델(SigLIP2 B/16, 제출 모델 아님)에서 먼저 찾았다. 제출 모델 B/32에서는 같은 진단을 처음부터 다시 했다(5.3). 두 경우 모두 "가장 나쁜 층의 SNR 순서 = 정확도 순서"가 성립했다(`results/siglip2/G8_candidates/b16/generalization/H5_qdq_snr`). 이 모델로 쓴 test 이력은 부록 D에 적는다.
+
+## 부록 D. test 사용 이력
+
+- 제출 모델 B/32: ORT 2회 — 당시 제출 파일 O-AB 1회(10/22, `results/siglip2/G8_candidates/b32/test`), 교체한 P2 1회(10/27, `b32/test_p2`). Hailo 본선 HEF GF와 비교용 Zoo HEF 1회(10/24, 준용 `B32_hef_test` B절). ORT는 제출 파일(D-049, D-052)을, Hailo는 판정 기준·HEF 선택을 test 전에 커밋해 고정했고, 결과로 구성을 바꾸지 않았다. O-AB → P2 교체는 dev 정확도와 지연·메모리만으로 test 전에 확정했고, P2 test 결과와 상관없이 되돌리지 않기로 미리 정했다.
+- 개발 초기 B/16 단계 이력: 그 당시 후보 2개(fc2 보호 구성 `5eee7839…`, 10/16~17 `results/siglip2/G6_test`; 회전+M2 `e84c3727…`, 10/19 `results/siglip2/G6_m2rot_ort`)로 각 1회. 제출 모델을 B/32로 정한 결정(D-048)은 이 두 test 뒤에 했지만 근거는 dev와 실칩 dev 결과뿐이다.
+
+## 부록 E. Hailo-10H 실칩 확인 (본선 준비)
+
+본선 이식을 미리 확인한 자료다(학술부 답: NPU 직접 실행 결과도 보고서에 넣어도 됨). 측정은 준용(NVIDIA Jetson AGX Orin + Hailo-10H, HailoRT 5.3.0, DFC 5.4.0)이 했다. **정확도는 모두 실칩 값이다.** 개발 초기 모델에서 같은 HAR의 에뮬레이터는 정상인데 컴파일한 HEF만 실칩에서 무너진 사례(top-1 50.68%, cos 0.31~0.44, `G6c`)와, 저해상도 입력에서 에뮬레이터가 실칩과 맞지 않은 사례(`G5b`)가 있었기 때문이다.
+
+### E.1 컴파일 설정 출처
+
+컴파일 자원 설정은 Hailo Model Zoo v5.4.0 레시피에서 가져왔다. `resources_param`은 SigLIP2 B/32 레시피에서, `allocator_param`·`context_switch_param`은 CLIP ViT-B/16 레시피에서 가져왔다. 이 설정은 양자화 결과를 바꾸지 않았다: 뒤의 두 줄은 G와 GF 출력이 1,200장 비트 동일했고(`G6f`), `resources_param`은 넣기 전후(M과 M_rb) 실칩 출력이 dev 6×200장에서 비트 동일했다(`G6b`). 우리 기여는 16비트 보호층을 줄인 것이다. 회전·레지스터 캐시로 거대 활성값을 없앤 그래프에서는 Zoo가 16비트로 두는 블록 0의 어텐션 출력 투영·fc1·fc2와 블록 5 fc2(`conv3·4·5·25`)도 8비트로 내릴 수 있었다(G, E.3-2). 처방 없는 그래프로 같은 층을 8비트로 내리는 대조 실험은 하지 않았다.
+
+### E.2 dev 전체 실칩 결과 (5,923장, FP32 89.96% 대비, 그림 5)
+
+| HEF | 고화질 Δ [95%] | Zoo 공개 HEF 대비 정확도 | 배치 1 지연 (Zoo 대비) | 크기 |
+|---|---|---|---|---|
+| Z: Hailo Model Zoo 공개 HEF | −4.22 [−4.95, −3.45] | — | 16.49 ms | 102.6 MB |
+| M: 우리 방식, 16비트 보호 넓게 (다른 세션) | −0.84 [−1.31, −0.37] | +3.38 [+2.62, +4.17] | 21.16 ms (+28.2%) | 113.0 MB |
+| G: 16비트를 패치 경로·잔차만 | −1.55 [−2.09, −1.03] | +2.67 [+1.92, +3.46] | 15.63 ms (−5.2%) | 104.7 MB |
+| **GF: G + Zoo 컴파일 설정 2줄 (본선 HEF, D-050)** | = G (출력 1,200장 비트 동일) | +2.67 (= G) | **14.93 ms (−9.5%)** | 99.9 MB |
+| ALL8F: 잔차 덧셈까지 8비트 + Zoo 컴파일 설정 (절제 실험) | −2.42 [−3.04, −1.77] | +1.80 [+1.05, +2.63] | 13.38 ms (−18.9%) | 91.8 MB |
+
+<!-- src: origin/siglip2/g6e-b16-g:R/G6b/README.md 6-2·6-3 (Z·M, M은 G6b 세션 Z 대비), origin/siglip2/g6d-speed2:R/G6d/README.md 5-2·5-3 (G 정확도), origin/siglip2/g6f-ceiling:R/G6f/README.md 5-2·9-3 (Z·G·GF·ALL8F 지연 같은 세션, Z 16.494·G 15.630) -->
+
+- 지연은 Z·G·GF·ALL8F가 같은 세션(G6f) 값이고, M만 다른 세션(G6b)의 Z 대비 비율이다.
+- 원본(FP32) 대비: GF HEF 크기는 FP32 ONNX(`a0eb502b…`, 378,243,038 B) 대비 −73.6%, 정확도 dev −1.55%p·test −1.04%p(E.4). Hailo에는 FP32 HEF가 없어 지연은 FP32 대비로 낼 수 없다.
+- 절제: ALL8F는 GF보다 −0.87 [−1.46, −0.28]%p 열위다. 남은 16비트(패치 경로·잔차 26개)는 필요하다 → 채택하지 않음.
+
+### E.3 정확도 이득은 어디서 오나
+
+1. Zoo 레시피 그대로 회전만 넣은 S1은 Zoo와 동률이다(+0.65 [−0.19, +1.46]). 같은 레시피에 sink 처방을 더한 S2는 Zoo보다 +2.12 [+1.37, +2.89] 우위다(S2 − S1 +1.48 [+0.77, +2.19]). 그 위에 optimization level 1·보정 256장이 +1.05 [+0.50, +1.63]를 더 보탰다(M_both − S2). → 이득의 가장 큰 몫은 sink 처방이고, 레시피 조정도 보탰다. 그래프 출처(open_clip vs Zoo ONNX)는 Zoo 레시피(level 0, 64장)에서 차이를 만들지 않았다(+0.13 [−0.51, +0.72] 동률, `G6d`).
+2. 우리 넓은 16비트 보호(M)를 Zoo 집합으로 줄여도 동률이다(−0.21 [−0.70, +0.30], `G6b`). Zoo가 지키는 층까지 8비트로 내린 G는 Zoo보다 +2.67%p 정확하면서 빠르다(E.2).
+3. Zoo 컴파일 설정 두 줄(E.1)은 출력을 바꾸지 않고 지연만 줄였다(G → GF −0.70 ms). 컨텍스트 수가 줄어서는 아니며(`G6f`), 어디서 오는지는 확인하지 않았다.
+
+### E.4 test 1회 (본선 HEF GF와 Zoo HEF, 실칩)
+
+HEF 선택(GF)은 test 전에 커밋해 고정했고 결과로 바꾸지 않았다. FP32 기준은 HF FP32(Zoo 전처리)로, ORT 쪽 FP32와 정의가 다르다(고화질 평균은 88.51로 같음).
+
+| | FP32 (HF) | GF | Z | GF − Z [95%] | GF − FP32 [95%] |
+|---|---|---|---|---|---|
+| 고화질 5종 평균 (주 지표) | 88.51 | 87.47 | 84.75 | **+2.73 [+2.46, +3.02] 우위** | −1.04 [−1.24, −0.85] |
+| CIFAR-100 (별도) | 76.05 | 72.18 | 70.98 | +1.20 [+0.48, +1.95] | −3.87 [−4.50, −3.18] |
+| ImageNetV2 (별도) | 65.85 | 63.84 | 60.76 | +3.08 [+2.39, +3.77] | −2.01 [−2.57, −1.50] |
+
+<!-- src: origin/siglip2/b32-hef-test:R/B32_hef_test/README.md B절 (B_test/test_summary.json, 커밋 a235e40) -->
+
+- dev와 같은 크기의 우위다(dev G − Z +2.67). Hailo 손실(−1.04)은 ORT 제출 모델 P2(−0.20, 6.5)보다 크다(FP32 정의는 다르지만 고화질 평균은 88.51로 같음).
+- 원인 분석은 하지 않았지만, Caltech만 GF ≈ Z이고 둘 다 FP32보다 약간 높다(+0.38·+0.39). CIFAR-100 손실이 가장 크다.
+
+## 부록 F. 지연·메모리 측정 전체 기록
+
+- **재현 범위로 적은 이전 실행**(아래 표, 이전 단계 O-AB): 10/23 새벽 실행은 9구간 모두 정상이었다. 10/22 낮 실행은 같은 실행에 함께 넣은 기준 모델(개발 초기 모델 FP32)이 같은 스레드 모든 세션 중앙값보다 10% 넘게 느린 세션을 뺐다(측정 중 정한 규칙). 그 재측정 때 같은 스크립트가 두 번 실행된 사고가 있어 첫 실행 값을 로그에서 복원했다(요약과 일치, 반복별 값은 잃음). 10/22 저녁 실행은 연속 실행 발열로 2·4스레드 절대값이 느리다.
+- **세션 설정 C3**: 학술부 답(채점은 팀이 낸 실행 스크립트로)에 따라 제출 실행 스크립트(`portable_eval.py`·`cross_latency.py`의 `--no-mem-pattern`)에 `enable_mem_pattern=False`를 넣었다. 출력은 기본 세션과 비트 동일하다(P2 고화질 5종 × 200장 `b32/p2/c3_equal`, dev 묶음 1,200장의 사진별 예측·cos `b32/p2/xplat_i7_c3`, 이전 O-AB 1,000장). 그래서 기본 세션으로 잰 dev·test 정확도는 C3에서도 같다. 메모리 효과는 측정 정의에 따라 다르고 이 보고서 정의(세션 생성 + 추론 50회 최대 working set)에서는 작다: P2 169.8 → 166.1 MiB(−2.2%, 서로 다른 실행에서 1회씩), 같은 두 실행의 O-AB·FP32는 변화 없음(193.0 / 193.3, 453.9 / 454.1 MiB). 정민 E12-1 정의에서는 O-AB −4.0%(`b32/submit_prep/mem_pattern`).
+
+**실행별 개선율 전체** (각 조건에서 FP32와 같은 실행으로 번갈아)
+
+| 기기 / 실행 | 모델 | 4스레드 FP32 → 최적화 | 4스레드 | 1스레드 | 메모리 |
+|---|---|---|---|---|---|
+| **i7-1165G7, 10/27 저녁 C3 두 실행 합침 (6.5 효율 표, 대표)** | **P2** | 68.6 → 24.7 ms | **−62.9%** | **−68.0%** | **−63.4%** |
+| i7-1165G7, 10/27 저녁 C3 1회째 | P2 | 68.9 → 24.3 ms | −64.4% | −68.3% | −63.4% |
+| i7-1165G7, 10/27 저녁 C3 2회째 | P2 | 68.3 → 27.4 ms | −59.9% | −67.7% | −63.3% |
+| i7-1165G7, 10/27 저녁 C3 두 실행 합침 | O-AB (이전 단계) | 68.6 → 28.7 ms | −57.0% | −62.8% | −57.4% |
+| i7-1165G7, 10/27 오후 기본 세션 | P2 | 60.0 → 24.1 ms | −59.8% | −67.6% | −62.6% |
+| i7-1165G7, 10/27 오후 기본 세션 같은 실행 | O-AB | 60.0 → 26.0 ms | −55.9% | −63.2% | −57.5% |
+| i7-1165G7, 10/23 새벽 | O-AB | 83.2 → 36.6 ms | −55.9% | −60.7% | −57.4% |
+| i7-1165G7, 10/22 낮 (8모델 같은 실행, 이상치 규칙 적용) | O-AB | 61.5 → 27.0 ms | −56.9% | −63.8% | −57.5% |
+| i7-1165G7, 10/22 저녁 (연속 실행으로 발열) | O-AB | 88.6 → 37.3 ms | −56.9% | −60.2% | −57.5% |
+| Core Ultra 9 285K (준용, WSL2) | O-AB | 27.01 → 12.26 ms | −54.6% | −64.6% | (측정 정의 다름) |
+
+<!-- src: latency_this_pc/b32_p2_c3_20261027·b32_p2_c3b_20261027·b32_p2_20261027·b32_cool_20261023·all8_20261022(+rerun_t24 복원)·b32_submit_20261022 cross_latency.json; O1 6-4 (285K, 비율은 지연 중앙값에서 계산). 메모리는 실행마다 1회 -->
