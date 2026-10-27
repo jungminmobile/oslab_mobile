@@ -377,3 +377,30 @@
 - 근거 (이 PC, dev 전체·정수 커널): O-AB −0.27 [−0.62, +0.09] vs M2rot −0.79 [−1.26, −0.34]; 같은 바탕 짝 비교 +0.57 [+0.17, +0.97] (준용 O1). 4T 지연 FP32 대비 −56.9% vs −49.4% (8모델 같은 실행). 메모리 192.8 MiB(−57.5%). 입력 변형 8종에서 유의한 손실 없음(M2rot INT8은 흑백·90도 회전에서 유의한 손실) — `results/siglip2/G8_candidates/b32/submit_prep/`
 - 알려진 위험: ① SkipLayerNormalization(com.microsoft)이라 onnxruntime 전용 — 학술부 6번 답이 "ORT 아님"이면 M2rot INT8로 바꾼다 — **준용 바탕 `3a46ae8a…`** (본선 HEF와 같은 회전 행렬 `3a6391a2`; 이 PC 빌드 `9783d7de…`는 회전 행렬이 달라 본선 연속성이 깨짐, 10/23 보고서 독립 검토로 정정) ② 실행 환경마다 사진별 결과가 조금 다를 수 있음(i7·Windows vs 285K·WSL에서 dev Cars 순 약 1장, 나머지 데이터셋 같음 — 10/23 정정, 원인은 CPU·OS·평가 경로 중 미확정) — 재현 문서에 범위와 사진별 예측을 함께 낸다 ③ O-A의 float 출력을 Hailo에서 어떻게 대응할지 미결(본선 HEF 결정과 함께)
 - 본선 HEF(GF·ALL8F 등)는 준용과 따로 확정
+
+## D-050 본선 Hailo HEF(B/32) = GF (`0c2e04a6…`) — D-047(B16_rb_bk)을 B/32로 바꿈
+- 상태: **확정** / 2026-10-24 / 쭈리 동의 (준용 제안, 원문 `origin/siglip2/b32-hef-test:results/siglip2/B32_hef_test/README.md`)
+- **결정: 본선 HEF는 G6f GF** `g6_b32_G.hef` (GF 빌드, sha256 `0c2e04a6ef9bfb6055c249ad969f07546711d6130ce401800fcc7fdc61c8b29a`, 99,876,864 B, 컨텍스트 13). G optimized HAR(`409b0344…`) + G `.alls` + Zoo 레시피의 compile 두 줄(`allocator_param`·`context_switch_param`), compile만. 바탕 ONNX `g6_b32_m2rot_b1.onnx`(`a0eb502b…`) = 예선 제출 ONNX 바탕 `23236123…`과 같은 모델 (initializer 145/145 비트 동일, 회전 `3a6391a2…`, sink `15@6:5, 7@10:9`)
+- 근거: GF는 G와 출력 비트 동일(G6f, 1,200장) → 정확도는 G(dev 전체 G − Z +2.67 [+1.92, +3.46]%p, G6d)와 같고, 배치 1 14.93 ms로 Zoo 공개 HEF(Z) 16.49 ms 대비 −9.5% (G6f 같은 세션). 더 빠른 ALL8F(13.38 ms, −18.9%)는 GF 대비 −0.87 [−1.46, −0.28]%p 열위, CIFAR A 손실도 더 큼(FP32 대비 −5.3) → 채택하지 않음(절제 실험으로 보고)
+- test 1회 (10/24, `B32_hef_test` B절, HEF 선택에 쓰지 않음): 고화질 GF − Z **+2.73 [+2.46, +3.02]%p**, GF − FP32 −1.04 [−1.24, −0.85]%p
+- 컴파일 자원 설정(`resources_param`·`allocator_param`·`context_switch_param`)은 Hailo Model Zoo v5.4.0 레시피에서 가져온 벤더 설정이다. 출력은 바꾸지 않고 지연만 줄였으므로 우리 기법으로 쓰지 않는다(보고서 부록 F.1)
+- 본선 재검토 메모 (결정 아님): ALL8F는 Zoo 대비 지연이 GF의 약 2배로 줄고 정확도도 Zoo보다 +1.80%p다. 본선 배점(실측 30·정확도 20)과 발표 효과를 고려해, 본선 1주차 Pi 5 실측(GF·ALL8F 같은 세션)을 보고 다시 정할 수 있다. 바꾸면 test 전에 정하고 새 결정 번호로 기록한다
+
+## D-051 예선 ONNX의 ORT 전용 출력 정밀도(O-A의 float QKᵀ·Softmax)는 Hailo에서 a16으로 맞추지 않는다 — 기록만
+- 상태: **확정** / 2026-10-24 / 쭈리 동의 (준용 제안). D-049 위험 ③을 닫는다
+- **결정:** O-A(`--no-matmul-out-q`)로 ORT에서 float이 된 QKᵀ 출력·Softmax를 본선 HEF에서 `a16_w16`으로 맞추지 않는다. 차이는 보고서에 기록만 한다
+- 근거: Hailo는 float ONNX(`a0eb502b`)에서 DFC로 따로 양자화하므로 ORT 양자화 그래프의 정밀도 배치를 따를 필요가 없다. 맞추려면 HEF를 다시 빌드(optimize·compile 약 1시간 + 실칩 재측정)하고 D-050의 근거를 다시 확인해야 한다
+- 팀 규칙("ORT에서 FP32로 남긴 층은 Hailo에서 a16_w16", CLAUDE.md)의 예외로 보고서에 적는다. D-052의 F2(FastGelu)·P2(패치 임베딩 정수화)도 같은 이유로 HEF에 넣지 않는다
+
+## D-052 예선 제출 ONNX = B/32 P2 (`e465d10d…`) — D-049(O-AB) 교체, P2 test 1회, 제출 실행 설정 C3
+- 상태: **확정** / 2026-10-27 / 쭈리 승인 (정민 E14 제안, 준용 재현·제안). 교체 기준 3개를 결과 전(17:18)에 고정하고(`results/siglip2/G8_candidates/b32/p2/criteria_prereg.md`) 모두 충족한 뒤 test를 썼다
+- **결정: 예선 제출 ONNX는 P2** `e14_4_P2_patch_int8.onnx` (sha256 `e465d10da92cf0f830b95d29d72cf3251ea34da90f54b6b5c1f3e16510efd6b2`, 95,650,206 B). 최종 제출 후보 Release `siglip2-b32-p2-submit-20261027` (P2 단독 Release `siglip2-p2-20261027`과 같은 파일)
+  - 만든 방법: O-AB(`7a01044c…`)에서 정민 `jungmin/e14-graph`(`e1f8428`)의 `e14/make_models_e14.py`. F2 = GELU(tanh 근사 9노드 + bias Add) 13곳 → `com.microsoft.FastGelu`(같은 식, E14-2), P2 = F2 + 패치 임베딩 Conv(k32 s32) → 자르기 + INT8 MatMul(입력 `Add(+1) → Q(2/255, 0)` 무손실, 가중치 채널별 INT8 ±64, E14-4). 기존 MatMul의 양자화 값은 그대로다
+  - 두 변환은 겹치는 노드가 없어 순서를 바꿔(P → FastGelu) 만들어도 같은 파일(sha 동일)이다 (준용 10/27)
+- **제출 실행 설정 = C3** (`enable_mem_pattern=False`, 정민 E12-1): 학술부 답(10/27, 준용 전달) "채점은 팀이 낸 실행 스크립트로" → `cross_latency.py`·`portable_eval.py`에 `--no-mem-pattern` 추가. 출력 비트 동일(1,000 + 1,200장)
+- 교체 기준 (쭈리 PC i7-1165G7, 기본 세션, 같은 실행): ① 지연 P2/O-AB 1·2·4T −11.8 / −10.7 / −8.8% ② 메모리 −12.0% ③ dev 전체 P2 − O-AB +0.23 [−0.08, +0.53] (하한 > −0.3) → **세 개 모두 충족**
+- 재현 (dev만): 정민 258V·준용 285K(Windows)에서 정확도 비트 동일(O 89.67 → P2 89.88), P2 vs O-AB 4T −10.3 / −11.8%, 1T −11.6 / −11.9%, 메모리 −16.6 / −17.3% (`jungmin/e14-graph`, `exp/E14-junyong`). ARM(AGX)↔285K dev200: 고화질 Δ 둘 다 +0.3, 사진별 top-1 차이 O-AB 26장 → P2 5장 (`exp/E14-arm-junyong`)
+- **test 1회 (10/27 17:48~20:03, `results/siglip2/G8_candidates/b32/test_p2`): 고화질 −0.20 [−0.33, −0.07]%p**, O-AB 대비 +0.02 [−0.10, +0.15] 동률, CIFAR-100 +0.57, ImageNetV2 −0.43. 결과로 O-AB로 되돌리지 않음(사전 약속). B/32 test 두 번째 사용 — 교체를 test 전에 확정했고 결과는 그대로 보고한다(D-044와 같은 방식, 부록 E)
+- 효율 (쭈리 PC, FP32 대비, 같은 실행): **보고서 대표값 = C3 두 실행(20:24, 21:24) 6세션 비율 중앙값 4T −62.9% / 1T −68.0% / 메모리 −63.4%**(합치는 규칙은 2회째 전에 커밋 `39a6710`, 4T 세션별 −58.1~−64.8%, `latency_this_pc/b32_p2_c3_20261027`·`b32_p2_c3b_20261027`), 크기 −74.7%. 참고: C3 1회째만 4T −64.4%(세션 2·3에서 FP32 2·4T가 18~44% 느려짐), 2회째 −59.9%, 기본 세션 −59.8% / 1T −67.6% / 메모리 −62.6%
+- 알려진 위험: ① `com.microsoft` 연산 37개(SkipLayerNormalization 24, FastGelu 13)라 onnxruntime 전용 — 채점이 팀 스크립트(ORT)라 위험은 낮다. 비상 대체 M2rot INT8 `3a46ae8a…`(표준 연산만) 유지 ② HEF에는 F2·P2를 넣지 않는다(D-051과 같은 이유, FastGelu는 DFC 비표준 연산). 본선 이식용 바탕은 같은 모델의 표준 연산 FP32 `23236123…`(HEF 바탕 `a0eb502b`와 initializer 비트 동일)으로 제출물에 포함 ③ 입력 변형 8종 중 90도 회전에서 P2 −1.5 [−2.8, −0.1] 유의(O-AB −0.9 유의 아님, 둘의 짝 차이는 검정 안 함), 나머지 7종은 유의한 손실 없음 → 보고서 한계에 적음
+- D-049(O-AB 제출)는 이 결정으로 대체. 기록은 그대로 둔다
