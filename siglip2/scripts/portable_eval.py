@@ -31,8 +31,12 @@ def l2n(x):
     return x / np.linalg.norm(x, axis=-1, keepdims=True)
 
 
+MEM_PATTERN = True   # --no-mem-pattern이면 False (제출 실행 설정, 출력 비트 동일)
+
+
 def session(path, threads):
     so = ort.SessionOptions()
+    so.enable_mem_pattern = MEM_PATTERN
     so.intra_op_num_threads = threads
     so.inter_op_num_threads = 1
     so.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
@@ -61,12 +65,17 @@ def main():
     ap.add_argument("--models", nargs="+", required=True, help="이름=경로")
     ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--bs", type=int, default=50)
+    ap.add_argument("--no-mem-pattern", action="store_true", help="ORT enable_mem_pattern=False (제출 실행 설정, 메모리만 줄고 출력은 같다)")
     a = ap.parse_args()
+    global MEM_PATTERN
+    MEM_PATTERN = not a.no_mem_pattern
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     res = {"date": datetime.now().isoformat(timespec="seconds"), "machine": platform.machine(), "processor": platform.processor(),
            "platform": platform.platform(), "python": platform.python_version(), "onnxruntime": ort.__version__,
            "numpy": np.__version__, "threads": a.threads, "bs": a.bs, "models": {}}
+    if a.no_mem_pattern:
+        res["mem_pattern"] = False
     data = {d: np.load(Path(a.data) / f"{d}.npz") for d in SETS if (Path(a.data) / f"{d}.npz").exists()}
     assert data, "데이터 npz가 없음"
     for spec in a.models:
