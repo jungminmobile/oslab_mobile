@@ -72,7 +72,7 @@ C3 = L / "b32_p2_c3_20261027/cross_latency.json"; DF = L / "b32_p2_20261027/cros
 runs = {"P2 (제출), 10/27 저녁 C3": (ratios(sessions(C3), "b32_p2", "b32_fp32"), C3, "b32_p2"),
         "P2, 10/27 오후 기본 세션": (ratios(sessions(DF), "b32_p2", "b32_fp32"), DF, "b32_p2"),
         "O-AB (이전 단계), 10/27 저녁 C3 같은 실행": (ratios(sessions(C3), "b32_oab", "b32_fp32"), C3, "b32_oab"),
-        "O-AB, 10/23 새벽": (ratios(sessions(L / "b32_cool_20261023/cross_latency.json"), "b32_oab", "b32_fp32"), L / "b32_cool_20261023/cross_latency.json", "b32_oab")}
+        "O-AB, 10/23 새벽 기본 세션": (ratios(sessions(L / "b32_cool_20261023/cross_latency.json"), "b32_oab", "b32_fp32"), L / "b32_cool_20261023/cross_latency.json", "b32_oab")}
 f3 = {}
 for name, (lat, p, key) in runs.items():
     d = json.load(open(p, encoding="utf-8"))

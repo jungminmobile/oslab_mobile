@@ -7,8 +7,8 @@
 > **본선 Hailo HEF**: 같은 PyTorch 모델(같은 회전 행렬·sink 규칙·M2 상수)에서 배치 1로 export한 FP32를 Hailo DFC로 컴파일한다. 본선 HEF는 GF로 정했다(D-050). ALL8F는 절제 실험이다 (준용 G6d·G6f·B32_hef_test).
 > **채점·재현은 배포한 ONNX 파일로 한다.** 다른 PC에서 다시 만들면 파일이 달라진다 (3절, 7절).
 > **onnxruntime으로 실행한다.** 제출 모델에 `com.microsoft` 연산(SkipLayerNormalization 24, FastGelu 13)이 있다. 학술부 답(10/27): 채점은 팀이 낸 실행 스크립트로 한다.
-> **제출 실행 설정 = `--no-mem-pattern`**(ORT `enable_mem_pattern=False`, E12-1 C3). 메모리만 줄고 출력은 기본 세션과 비트 동일하다(`results/siglip2/G8_candidates/b32/p2/c3_equal`, `xplat_i7_c3`).
-> **본선 이식용 바탕**: 같은 모델의 표준 연산 FP32 `siglip2_image_fp32_g6b_b32_m2rot.onnx`(`23236123…`, Release에 있음). 제출 P2는 이 그래프를 CPU용으로 양자화·변환한 파일이고, 본선 HEF 바탕(`a0eb502b…`)과 initializer가 비트 단위로 같다.
+> **제출 실행 설정 = `--no-mem-pattern`**(ORT `enable_mem_pattern=False`, E12-1 C3). 출력은 기본 세션과 비트 동일하다(메모리 효과는 작다: 이 측정 정의에서 P2 −2.2%, O-AB 변화 없음)(`results/siglip2/G8_candidates/b32/p2/c3_equal`, `xplat_i7_c3`).
+> **본선 이식용 바탕**: 같은 모델의 표준 연산 FP32 `siglip2_image_fp32_g6b_b32_m2rot.onnx`(`23236123…`, Release에 있음). 제출 P2는 이 그래프를 CPU용으로 양자화·변환한 파일이다. 이 FP32 바탕과 본선 HEF 바탕(`a0eb502b…`)은 initializer가 비트 단위로 같다.
 
 ## 0. 무엇을 재현하나
 
@@ -29,7 +29,7 @@
 
 ## 1. 빠른 확인 (저장소 코드·데이터 없이, 내려받기 약 5분 + 실행 약 6분)
 
-numpy와 onnxruntime만 있으면 된다. dev 6종 × 200장 묶음으로 FP32와 제출 모델을 비교한다. (최종 제출 Release로 하나로 묶기 전까지는 두 Release에서 받는다)
+numpy와 onnxruntime만 있으면 된다. dev 6종 × 200장 묶음으로 FP32와 제출 모델을 비교한다. (주의: 지금 내부 Release의 `portable_eval.py`에는 `--no-mem-pattern`이 없다. 최종 제출 Release에서 새 스크립트·P2·묶음을 하나로 묶기 전까지는 `release/portable_eval.py` 대신 저장소의 `siglip2/scripts/portable_eval.py`를 쓴다)
 
 ```bash
 python -m pip install numpy==2.4.4 onnxruntime==1.25.0
@@ -103,9 +103,9 @@ python scripts/cross_latency.py --no-mem-pattern --out out_speed --mem \
            b32_p2=$SIGLIP2_ARTIFACTS/onnx/e14_4_P2_patch_int8.onnx
 ```
 - 배치 1, 워밍업 20, 200장 × 3회 모델 번갈아, 스레드 1·2·4 × 세션 3 → 중앙값. 전원 구성표·충전 상태가 결과에 기록된다.
-- 기대값: FP32 대비 4스레드 약 −60~−64%, 1스레드 약 −68% (절대 ms는 PC·실행마다 다름, 같은 PC에서도 2·4스레드 최대 약 40%), 피크 메모리 약 −63%, 크기 378.36 → 95.65 MB (−74.7%). 보고서 대표값은 10/27 저녁 C3 실행(4스레드 −64.4%, 1스레드 −68.3%, 메모리 −63.4%, `results/siglip2/G8_candidates/latency_this_pc/b32_p2_c3_20261027`), 같은 날 기본 세션 실행은 −59.8% / −67.6% / −62.6%(`b32_p2_20261027`).
+- 기대값: FP32 대비 4스레드 약 −60~−64%, 1스레드 약 −68% (절대 ms는 PC·실행마다 다름, 같은 PC에서도 2·4스레드 최대 약 48%), 피크 메모리 약 −63%, 크기 378.36 → 95.65 MB (−74.7%). 보고서 대표값은 10/27 저녁 C3 실행(4스레드 −64.4%, 1스레드 −68.3%, 메모리 −63.4%, `results/siglip2/G8_candidates/latency_this_pc/b32_p2_c3_20261027`), 같은 날 기본 세션 실행은 −59.8% / −67.6% / −62.6%(`b32_p2_20261027`).
 - **지연은 같은 실행 안의 FP32 대비 비율로 본다.** 노트북은 고성능 모드·충전 상태, 다른 프로그램 없이.
-- `--no-mem-pattern`(C3)의 메모리 효과는 측정 정의에 따라 다르다: 이 스크립트에서 P2 169.8 → 166.1 MiB(−2.2%), 정민 E12-1 스크립트에서 O-AB −4.0%(`results/siglip2/G8_candidates/b32/submit_prep/mem_pattern`). 지연은 바꾸지 않는다(E12-1).
+- `--no-mem-pattern`(C3)의 메모리 효과는 측정 정의에 따라 다르다: 이 스크립트에서 P2 169.8 → 166.1 MiB(−2.2%), 정민 E12-1 스크립트에서 O-AB −4.0%(`results/siglip2/G8_candidates/b32/submit_prep/mem_pattern`). 지연은 바꾸지 않는다(개발 초기 모델에서 잰 E12-1. P2 1스레드는 기본 세션·C3 실행에서 −67.6 / −68.3%로 거의 같음).
 
 ## 7. 실행 환경 기록
 
