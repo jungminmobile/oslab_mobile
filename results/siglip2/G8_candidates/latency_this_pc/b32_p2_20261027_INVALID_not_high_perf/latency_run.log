@@ -1,0 +1,4 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'SigLIP2 B32 P2 latency (needs idle PC)', 'since': '2026-10-27T17:17:41', 'host': '쭌놋북', 'pid': 25492}
+17:18:20 gate cpu30s=18% (B16 FP32 probe) probe t=4 median=137.8 ms  p10=126.0  freq=2803MHz
+{"date": "2026-10-27T17:18:20", "platform": "Windows-10-10.0.26300-SP0", "python": "3.11.9", "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel", "ort": "1.25.0", "numpy": "2.4.4", "logical_cores": 8, "cpu_name": "11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz", "power_scheme": "전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)", "battery": "plugged=True batt=100%"}
+session 1 t=1 load=11.7% b32_fp32=122.39  b32_oab=49.19  b32_p2=46.11

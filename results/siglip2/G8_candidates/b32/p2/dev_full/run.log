@@ -1,0 +1,23 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'SigLIP2 B32 P2 dev full', 'since': '2026-10-27T17:40:25', 'host': '쭌놋북', 'pid': 13480}
+  fp32 cifar_A top1=75.20
+  fp32 pets_dev top1=92.02
+  fp32 flowers_dev top1=86.42
+  fp32 cars_dev top1=91.62
+  fp32 food_dev top1=85.99
+  fp32 caltech_dev top1=93.75
+  siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres cifar_A top1=74.70
+  siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres pets_dev top1=91.31
+  siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres flowers_dev top1=85.79
+  siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres cars_dev top1=91.93
+  siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres food_dev top1=85.08
+  siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres caltech_dev top1=94.34
+  siglip2_image_int8_g6b_b32_m2rot_o1b_e14P2_fastgelu_patchint cifar_A top1=75.00
+  siglip2_image_int8_g6b_b32_m2rot_o1b_e14P2_fastgelu_patchint pets_dev top1=91.41
+  siglip2_image_int8_g6b_b32_m2rot_o1b_e14P2_fastgelu_patchint flowers_dev top1=86.10
+  siglip2_image_int8_g6b_b32_m2rot_o1b_e14P2_fastgelu_patchint cars_dev top1=92.14
+  siglip2_image_int8_g6b_b32_m2rot_o1b_e14P2_fastgelu_patchint food_dev top1=85.48
+  siglip2_image_int8_g6b_b32_m2rot_o1b_e14P2_fastgelu_patchint caltech_dev top1=94.43
+{"model": "siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx", "hr_dtop1": -0.27, "hr_dtop1_ci95": [-0.62, 0.09], "hr_cos": 0.9893, "baseline_class": "≤0.5%p"}
+{"model": "siglip2_image_int8_g6b_b32_m2rot_o1b_e14P2_fastgelu_patchint8.onnx", "hr_dtop1": -0.05, "hr_dtop1_ci95": [-0.41, 0.33], "hr_cos": 0.9884, "baseline_class": "≤0.5%p"}
+pair Mul_hc16_rr_moq0_all 2_fastgelu_patchint8 0.23 [-0.08, 0.53]
+RELEASED
