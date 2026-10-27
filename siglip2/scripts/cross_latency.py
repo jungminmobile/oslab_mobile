@@ -32,8 +32,12 @@ import numpy as np
 import onnxruntime as ort
 
 
+MEM_PATTERN = True   # --no-mem-pattern이면 False (E12-1 C3, 출력 비트 동일, 메모리만 줄어듦)
+
+
 def session(path, threads):
     so = ort.SessionOptions()
+    so.enable_mem_pattern = MEM_PATTERN
     so.intra_op_num_threads = threads
     so.inter_op_num_threads = 1
     so.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
@@ -124,8 +128,11 @@ def main():
     ap.add_argument("--repeats", type=int, default=3)
     ap.add_argument("--warmup", type=int, default=20)
     ap.add_argument("--mem", action="store_true", help="모델마다 새 프로세스로 peak 메모리 (4스레드, 추론 50회)")
+    ap.add_argument("--no-mem-pattern", action="store_true", help="ORT enable_mem_pattern=False (E12-1 C3, 제출 실행 설정)")
     ap.add_argument("--_probe", default="", help=argparse.SUPPRESS)
     a = ap.parse_args()
+    global MEM_PATTERN
+    MEM_PATTERN = not a.no_mem_pattern
     if a._probe:                                   # 메모리 측정용 자식 프로세스
         print(json.dumps(mem_probe(a._probe, 4, 50)))
         return
@@ -162,7 +169,8 @@ def main():
     if a.mem:
         res["peak_mem"] = {}
         for k, p in models.items():
-            o = subprocess.run([sys.executable, __file__, "--models", "x=y", "--out", str(out), "--_probe", str(p)], capture_output=True, text=True)
+            o = subprocess.run([sys.executable, __file__, "--models", "x=y", "--out", str(out), "--_probe", str(p)]
+                               + (["--no-mem-pattern"] if a.no_mem_pattern else []), capture_output=True, text=True)
             res["peak_mem"][k] = json.loads(o.stdout.strip().splitlines()[-1]) if o.returncode == 0 else {"error": o.stderr[-300:]}
     json.dump(res, open(out / "cross_latency.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(json.dumps({"summary": summ, "peak_mem": res.get("peak_mem")}, ensure_ascii=False, indent=1))
