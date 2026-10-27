@@ -1,0 +1,132 @@
+{
+ "oab": {
+  "file": "siglip2_image_int8_g6b_b32_m2rot_o1b_e14P2_fastgelu_patchint8.onnx",
+  "sha256": "e465d10da92cf0f830b95d29d72cf3251ea34da90f54b6b5c1f3e16510efd6b2",
+  "op_counts": {
+   "Add": 47,
+   "Concat": 1,
+   "DequantizeLinear": 160,
+   "Equal": 1,
+   "Expand": 1,
+   "FastGelu": 13,
+   "Gather": 2,
+   "LayerNormalization": 2,
+   "MatMul": 80,
+   "Mul": 40,
+   "QuantizeLinear": 106,
+   "Reshape": 30,
+   "Shape": 1,
+   "SkipLayerNormalization": 24,
+   "Softmax": 13,
+   "Split": 13,
+   "Squeeze": 38,
+   "Sub": 27,
+   "Transpose": 53,
+   "Unsqueeze": 1,
+   "Where": 1
+  },
+  "n_initializer": 495,
+  "initializer_elems_total": 94717326,
+  "initializer_elems_by_dtype": {
+   "FLOAT": 254700,
+   "INT64": 56,
+   "UINT8": 106,
+   "INT8": 94462464
+  },
+  "int8_weight_tensors": 54,
+  "int8_weight_elems": 94371840,
+  "register_cache_tensors": 31,
+  "register_cache_elems": 20992,
+  "register_cache_names_sample": [
+   "trunk.kc_b10_0",
+   "trunk.kc_b10_1",
+   "trunk.kc_b11_0",
+   "trunk.kc_b11_1",
+   "trunk.kc_b6_0",
+   "trunk.kc_b7_0",
+   "trunk.kc_b8_0",
+   "trunk.kc_b9_0"
+  ]
+ },
+ "fp32": {
+  "file": "siglip2_image_fp32.onnx",
+  "sha256": "be19a8ada01055df00bbb4a59c4d4f14675180dc3ae10a54d69d290707e822ec",
+  "op_counts": {
+   "Add": 105,
+   "Concat": 29,
+   "Constant": 261,
+   "ConstantOfShape": 1,
+   "Conv": 1,
+   "Equal": 1,
+   "Expand": 1,
+   "Gather": 28,
+   "LayerNormalization": 26,
+   "MatMul": 79,
+   "Mul": 92,
+   "Reshape": 29,
+   "Shape": 29,
+   "Slice": 1,
+   "Softmax": 13,
+   "Split": 13,
+   "Squeeze": 38,
+   "Tanh": 13,
+   "Transpose": 41,
+   "Unsqueeze": 54,
+   "Where": 1
+  },
+  "n_initializer": 162,
+  "initializer_elems_total": 94552320,
+  "initializer_elems_by_dtype": {
+   "FLOAT": 94552320
+  },
+  "register_cache_tensors": 0,
+  "register_cache_elems": 0,
+  "register_cache_names_sample": []
+ },
+ "m2rot_fp32": {
+  "file": "siglip2_image_fp32_g6b_b32_m2rot.onnx",
+  "sha256": "2323612341a79717eba5a72eb5c6492557391176a422e6381afdc9c66fde21c2",
+  "op_counts": {
+   "Add": 132,
+   "Concat": 29,
+   "Constant": 261,
+   "ConstantOfShape": 1,
+   "Conv": 1,
+   "Equal": 1,
+   "Expand": 1,
+   "Gather": 28,
+   "Identity": 61,
+   "LayerNormalization": 26,
+   "MatMul": 79,
+   "Mul": 119,
+   "Reshape": 29,
+   "Shape": 29,
+   "Slice": 1,
+   "Softmax": 13,
+   "Split": 13,
+   "Squeeze": 38,
+   "Sub": 27,
+   "Tanh": 13,
+   "Transpose": 41,
+   "Unsqueeze": 54,
+   "Where": 1
+  },
+  "n_initializer": 145,
+  "initializer_elems_total": 94536448,
+  "initializer_elems_by_dtype": {
+   "FLOAT": 94536448
+  },
+  "register_cache_tensors": 31,
+  "register_cache_elems": 20992,
+  "register_cache_names_sample": [
+   "trunk.kc_b10_0",
+   "trunk.kc_b10_1",
+   "trunk.kc_b11_0",
+   "trunk.kc_b11_1",
+   "trunk.kc_b6_0",
+   "trunk.kc_b7_0",
+   "trunk.kc_b8_0",
+   "trunk.kc_b9_0"
+  ]
+ }
+}

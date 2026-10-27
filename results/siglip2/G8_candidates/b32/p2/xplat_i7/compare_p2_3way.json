@@ -1,0 +1,90 @@
+{
+ "branch": "6793f21",
+ "agx_dir": [
+  "out_junyong_agx_e14"
+ ],
+ "models": {
+  "oab": {
+   "i7_vs_285k": {
+    "pred_diff": 1,
+    "correct_flip": 0,
+    "max_abs_cos_diff": 0.004802405834197998,
+    "per_set": {
+     "caltech_dev": 0,
+     "cars_dev": 0,
+     "cifar_A": 0,
+     "flowers_dev": 0,
+     "food_dev": 0,
+     "pets_dev": 1
+    }
+   },
+   "i7_vs_agx": {
+    "pred_diff": 25,
+    "correct_flip": 17,
+    "max_abs_cos_diff": 0.026083827018737793,
+    "per_set": {
+     "caltech_dev": 2,
+     "cars_dev": 6,
+     "cifar_A": 12,
+     "flowers_dev": 1,
+     "food_dev": 3,
+     "pets_dev": 1
+    }
+   },
+   "285k_vs_agx": {
+    "pred_diff": 26,
+    "correct_flip": 17,
+    "max_abs_cos_diff": 0.0256921648979187,
+    "per_set": {
+     "caltech_dev": 2,
+     "cars_dev": 6,
+     "cifar_A": 12,
+     "flowers_dev": 1,
+     "food_dev": 3,
+     "pets_dev": 2
+    }
+   }
+  },
+  "p2": {
+   "i7_vs_285k": {
+    "pred_diff": 1,
+    "correct_flip": 1,
+    "max_abs_cos_diff": 0.0031554102897644043,
+    "per_set": {
+     "caltech_dev": 1,
+     "cars_dev": 0,
+     "cifar_A": 0,
+     "flowers_dev": 0,
+     "food_dev": 0,
+     "pets_dev": 0
+    }
+   },
+   "i7_vs_agx": {
+    "pred_diff": 4,
+    "correct_flip": 3,
+    "max_abs_cos_diff": 0.015157938003540039,
+    "per_set": {
+     "caltech_dev": 0,
+     "cars_dev": 2,
+     "cifar_A": 0,
+     "flowers_dev": 1,
+     "food_dev": 1,
+     "pets_dev": 0
+    }
+   },
+   "285k_vs_agx": {
+    "pred_diff": 5,
+    "correct_flip": 4,
+    "max_abs_cos_diff": 0.015157938003540039,
+    "per_set": {
+     "caltech_dev": 1,
+     "cars_dev": 2,
+     "cifar_A": 0,
+     "flowers_dev": 1,
+     "food_dev": 1,
+     "pets_dev": 0
+    }
+   }
+  }
+ }
+}
