@@ -1,0 +1,162 @@
+{
+ "date": "2026-10-27T15:43:10",
+ "git": {
+  "commit": "e1f8428",
+  "branch": "exp/E14-junyong",
+  "dirty": false
+ },
+ "dropped": [],
+ "a": {
+  "P1": {
+   "rel_maxabs": 0.0,
+   "cos_min": 0.9999999999999998,
+   "cos_mean": 1.0,
+   "pos_add_rel_maxabs": 7.580679274347057e-08,
+   "pos_add_cos_min": 0.9999999999999987,
+   "first_q_diff_frac": 1.0172526041666666e-05,
+   "diag_same": true,
+   "pass": true
+  },
+  "P2": {
+   "rel_maxabs": 0.008605785039879793,
+   "cos_min": 0.9999263275972626,
+   "cos_mean": 0.99997848541976,
+   "pos_add_rel_maxabs": 0.007078686692799795,
+   "pos_add_cos_min": 0.9999543347194016,
+   "first_q_diff_frac": 0.122161865234375,
+   "diag_same": true,
+   "pass": true
+  },
+  "P2b": {
+   "rel_maxabs": 0.008605785039879793,
+   "cos_min": 0.9999263275972626,
+   "cos_mean": 0.99997848541976,
+   "pos_add_rel_maxabs": 0.007078686692799795,
+   "pos_add_cos_min": 0.9999543347194016,
+   "first_q_diff_frac": 0.122161865234375,
+   "diag_same": true,
+   "pass": true
+  }
+ },
+ "F2_diag_same": true,
+ "b": {
+  "bit_equal": true,
+  "max_abs": 0.0
+ },
+ "c": {
+  "P1": {
+   "per_set": {
+    "cifar_A": {
+     "cos_min": 0.9851916432380676,
+     "agree": 94.0,
+     "n_diff": 12
+    },
+    "pets_dev": {
+     "cos_min": 0.9938945770263672,
+     "agree": 99.0,
+     "n_diff": 2
+    },
+    "flowers_dev": {
+     "cos_min": 0.9921835660934448,
+     "agree": 99.5,
+     "n_diff": 1
+    },
+    "cars_dev": {
+     "cos_min": 0.9879924654960632,
+     "agree": 98.5,
+     "n_diff": 3
+    },
+    "food_dev": {
+     "cos_min": 0.9912868142127991,
+     "agree": 98.0,
+     "n_diff": 4
+    },
+    "caltech_dev": {
+     "cos_min": 0.9882044792175293,
+     "agree": 99.0,
+     "n_diff": 2
+    }
+   },
+   "cos_min": 0.9851916432380676,
+   "n_diff": 24,
+   "agree": 98.0
+  },
+  "P2": {
+   "per_set": {
+    "cifar_A": {
+     "cos_min": 0.9590209722518921,
+     "agree": 96.5,
+     "n_diff": 7
+    },
+    "pets_dev": {
+     "cos_min": 0.9840302467346191,
+     "agree": 99.0,
+     "n_diff": 2
+    },
+    "flowers_dev": {
+     "cos_min": 0.9793384671211243,
+     "agree": 99.0,
+     "n_diff": 2
+    },
+    "cars_dev": {
+     "cos_min": 0.9746284484863281,
+     "agree": 97.0,
+     "n_diff": 6
+    },
+    "food_dev": {
+     "cos_min": 0.9760925769805908,
+     "agree": 96.0,
+     "n_diff": 8
+    },
+    "caltech_dev": {
+     "cos_min": 0.9778585433959961,
+     "agree": 98.0,
+     "n_diff": 4
+    }
+   },
+   "cos_min": 0.9590209722518921,
+   "n_diff": 29,
+   "agree": 97.58333333333333
+  },
+  "P2b": {
+   "per_set": {
+    "cifar_A": {
+     "cos_min": 0.9590209722518921,
+     "agree": 96.5,
+     "n_diff": 7
+    },
+    "pets_dev": {
+     "cos_min": 0.9840302467346191,
+     "agree": 99.0,
+     "n_diff": 2
+    },
+    "flowers_dev": {
+     "cos_min": 0.9793384671211243,
+     "agree": 99.0,
+     "n_diff": 2
+    },
+    "cars_dev": {
+     "cos_min": 0.9746284484863281,
+     "agree": 97.0,
+     "n_diff": 6
+    },
+    "food_dev": {
+     "cos_min": 0.9760925769805908,
+     "agree": 96.0,
+     "n_diff": 8
+    },
+    "caltech_dev": {
+     "cos_min": 0.9778585433959961,
+     "agree": 98.0,
+     "n_diff": 4
+    }
+   },
+   "cos_min": 0.9590209722518921,
+   "n_diff": 29,
+   "agree": 97.58333333333333
+  }
+ },
+ "pass_P1": true,
+ "pass_P2": true,
+ "pass": true
+}

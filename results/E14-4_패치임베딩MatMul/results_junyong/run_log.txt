@@ -1,0 +1,22 @@
+[2026-10-27T15:42:45] START e14\run_e14_4.py --step 0 git={'commit': 'e1f8428', 'branch': 'exp/E14-junyong', 'dirty': False}
+[2026-10-27T15:42:51] END --step 0 6s
+[2026-10-27T15:42:57] START e14\run_e14_4.py --step rewrite git={'commit': 'e1f8428', 'branch': 'exp/E14-junyong', 'dirty': False}
+[2026-10-27T15:43:03] END --step rewrite 6s
+[2026-10-27T15:43:10] START e14\run_e14_4.py --step g2 git={'commit': 'e1f8428', 'branch': 'exp/E14-junyong', 'dirty': False}
+[2026-10-27T15:44:13] END --step g2 64s
+[2026-10-27T15:44:20] START e14\run_e14_4.py --step g3 --session 1 git={'commit': 'e1f8428', 'branch': 'exp/E14-junyong', 'dirty': False}
+[2026-10-27T15:44:37] END --step g3 18s
+[2026-10-27T15:46:44] START e14\run_e14_4.py --step g3 --session 2 git={'commit': 'e1f8428', 'branch': 'exp/E14-junyong', 'dirty': False}
+[2026-10-27T15:47:01] END --step g3 18s
+[2026-10-27T15:47:08] START e14\run_e14_4.py --step acc git={'commit': 'e1f8428', 'branch': 'exp/E14-junyong', 'dirty': False}
+[2026-10-27T15:50:45] END --step acc 218s
+[2026-10-27T15:50:52] START e14\run_e14_4.py --step mem git={'commit': 'e1f8428', 'branch': 'exp/E14-junyong', 'dirty': False}
+[2026-10-27T15:51:08] END --step mem 16s
+[2026-10-27T15:51:14] START e14\run_e14_4.py --step speed --session 1 git={'commit': 'e1f8428', 'branch': 'exp/E14-junyong', 'dirty': False}
+[2026-10-27T15:52:35] END --step speed 81s
+[2026-10-27T15:54:42] START e14\run_e14_4.py --step speed --session 2 git={'commit': 'e1f8428', 'branch': 'exp/E14-junyong', 'dirty': False}
+[2026-10-27T15:56:03] END --step speed 82s
+[2026-10-27T15:58:10] START e14\run_e14_4.py --step speed --session 3 git={'commit': 'e1f8428', 'branch': 'exp/E14-junyong', 'dirty': False}
+[2026-10-27T15:59:31] END --step speed 82s
+[2026-10-27T15:59:38] START e14\run_e14_4.py --step summary git={'commit': 'e1f8428', 'branch': 'exp/E14-junyong', 'dirty': False}
+[2026-10-27T15:59:38] END --step summary 0s

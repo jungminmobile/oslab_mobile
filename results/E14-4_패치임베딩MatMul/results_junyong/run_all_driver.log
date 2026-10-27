@@ -1,0 +1,241 @@
+﻿[2026-10-27T15:42:39] power: 전원 구성표 GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (균형 조정)
+[2026-10-27T15:42:45] idle check ok: wsl load1=0.00 win cpu=4%
+[2026-10-27T15:42:45] START [1/11] -u e14\run_e14_4.py --step 0
+다른 python (MCP 제외): 없음
+F2 sha 03f4de18 OK | O sha 7a01044c OK
+G0 ② F2: {'n_conv': 1, 'attrs': {'auto_pad': 'NOTSET', 'dilations': [1, 1], 'group': 1, 'strides': [32, 32], 'kernel_shape': [32, 32], 'pads': [0, 0, 0, 0]}, 'W_shape': [768, 3, 32, 32], 'chain': ['Reshape', 'Transpose', 'Add'], 'transpose_perm': [0, 2, 1], 'ok': True}
+G0 ② O 같음: True
+G0 ③ 위치 임베딩: trunk.t.pos_embed 상수 [1, 64, 768] 소비 노드 1
+G0 ④ 가중치 DQ 형식: {'n_weight_dq': 53, 'kinds': {"('int8', True, 1, ('int8', True))": 53}, 'int_min': -64, 'int_max': 64}
+G0 ⑥ frac_nonint (가) dev 캐시 최대 0.0 (나) portable_eval 전처리 0.0 → 그대로
+G0 통과
+[0] 6s
+[2026-10-27T15:42:51] END [1/11] step=0 rc=0
+[2026-10-27T15:42:57] idle check ok: wsl load1=0.00 win cpu=3%
+[2026-10-27T15:42:57] START [2/11] -u e14\run_e14_4.py --step rewrite
+P1 노드 649 → 650 Conv 0 크기 97.965 MiB shape [1, 64, 768] [2, 64, 768] {'1_conv0': True, '2_qdq_counts_same': True, '2_qdq_scale_zp_same': True, '2_qdq_weight_same': True, '3_shape_same': True}
+P2 노드 649 → 654 Conv 0 크기 91.219 MiB shape [1, 64, 768] [2, 64, 768] {'1_conv0': True, '2_qdq_counts_same': True, '2_qdq_scale_zp_same': True, '2_qdq_weight_same': True, '3_shape_same': True}
+P2b 노드 649 → 654 Conv 0 크기 91.219 MiB shape [1, 64, 768] [2, 64, 768] {'1_conv0': True, '2_qdq_counts_same': True, '2_qdq_scale_zp_same': True, '2_qdq_weight_same': True, '3_shape_same': True}
+O ORT 최적화 후 노드 597 MatMulIntegerToFloat 66 {'ai.onnx::DequantizeLinear': 1, 'ai.onnx::QLinearMatMul': 13, 'ai.onnx::QuantizeLinear': 92, 'com.microsoft::MatMulIntegerToFloat': 66} 
+F2 ORT 최적화 후 노드 480 MatMulIntegerToFloat 66 {'ai.onnx::DequantizeLinear': 1, 'ai.onnx::QLinearMatMul': 13, 'ai.onnx::QuantizeLinear': 92, 'com.microsoft::MatMulIntegerToFloat': 66} 
+P1 ORT 최적화 후 노드 480 MatMulIntegerToFloat 66 {'ai.onnx::DequantizeLinear': 1, 'ai.onnx::QLinearMatMul': 13, 'ai.onnx::QuantizeLinear': 92, 'com.microsoft::MatMulIntegerToFloat': 66} [{'name': '/e14_4/Transpose', 'src': 'INPUT', 'path': ['Reshape'], 'uint8': False}]
+P2 ORT 최적화 후 노드 482 MatMulIntegerToFloat 67 {'ai.onnx::DequantizeLinear': 1, 'ai.onnx::QLinearMatMul': 13, 'ai.onnx::QuantizeLinear': 93, 'com.microsoft::MatMulIntegerToFloat': 67} [{'name': '/e14_4/Transpose', 'src': 'QuantizeLinear', 'path': ['Reshape'], 'uint8': True}]
+P2b ORT 최적화 후 노드 482 MatMulIntegerToFloat 67 {'ai.onnx::DequantizeLinear': 1, 'ai.onnx::QLinearMatMul': 13, 'ai.onnx::QuantizeLinear': 93, 'com.microsoft::MatMulIntegerToFloat': 67} [{'name': '/e14_4/Transpose', 'src': 'QuantizeLinear', 'path': ['Reshape'], 'uint8': True}]
+G1 통과 {'P1': {'1_conv0': True, '2_qdq_counts_same': True, '2_qdq_scale_zp_same': True, '2_qdq_weight_same': True, '3_shape_same': True, '4_session_ok': True, '5_mmitf': True}, 'P2': {'1_conv0': True, '2_qdq_counts_same': True, '2_qdq_scale_zp_same': True, '2_qdq_weight_same': True, '3_shape_same': True, '4_session_ok': True, '5_mmitf': True}, 'P2b': {'1_conv0': True, '2_qdq_counts_same': True, '2_qdq_scale_zp_same': True, '2_qdq_weight_same': True, '3_shape_same': True, '4_session_ok': True, '5_mmitf': True, '5_transpose_uint8': True}} 버림 없음
+[rewrite] 6s
+[2026-10-27T15:43:03] END [2/11] step=rewrite rc=0
+[2026-10-27T15:43:09] idle check ok: wsl load1=0.00 win cpu=3%
+[2026-10-27T15:43:09] START [3/11] -u e14\run_e14_4.py --step g2
+G2(a) P1: 패치 출력 max|Δ|/max|y| 0.000e+00 cos 최소 1.000000 | 위치 Add 뒤(참고) 7.581e-08 cos 1.000000 | (d) 첫 Q 다른 비율 0.00001 | 사본 같음 True
+G2(a) P2: 패치 출력 max|Δ|/max|y| 8.606e-03 cos 최소 0.999926 | 위치 Add 뒤(참고) 7.079e-03 cos 0.999954 | (d) 첫 Q 다른 비율 0.12216 | 사본 같음 True
+G2(a) P2b: 패치 출력 max|Δ|/max|y| 8.606e-03 cos 최소 0.999926 | 위치 Add 뒤(참고) 7.079e-03 cos 0.999954 | (d) 첫 Q 다른 비율 0.12216 | 사본 같음 True
+G2(b) P2 vs P2b 비트 일치 {'bit_equal': True, 'max_abs': 0.0}
+G2(c) F2 임베딩 15s
+G2(c) P1 임베딩 15s
+G2(c) P2 임베딩 14s
+G2(c) P2b 임베딩 15s
+G2(c) P1: 최종 cos 최소 0.985192, top-1 일치 98.00% (다른 장 24/1200)
+G2(c) P2: 최종 cos 최소 0.959021, top-1 일치 97.58% (다른 장 29/1200)
+G2(c) P2b: 최종 cos 최소 0.959021, top-1 일치 97.58% (다른 장 29/1200)
+G2 통과 버림 없음
+[g2] 64s
+[2026-10-27T15:44:13] END [3/11] step=g2 rc=0
+[2026-10-27T15:44:20] idle check ok: wsl load1=0.00 win cpu=4%
+[2026-10-27T15:44:20] START [4/11] -u e14\run_e14_4.py --step g3 --session 1
+G3 S1 예열(버림) F2 4T p50 12.252
+G3 S1 #0 F2 4T p50 11.963 p90 12.273 throttle_off True (3.5s)
+G3 S1 #1 P1 4T p50 11.983 p90 12.276 throttle_off True (3.5s)
+G3 S1 #2 P2 4T p50 11.515 p90 11.938 throttle_off True (3.4s)
+G3 S1 #3 P2b 4T p50 11.512 p90 11.847 throttle_off True (3.4s)
+G3 SESSION 1 DONE 15:44:37
+[g3] 18s
+[2026-10-27T15:44:37] END [4/11] step=g3 1 rc=0
+[2026-10-27T15:44:37] rest 120s
+[2026-10-27T15:46:43] idle check ok: wsl load1=0.00 win cpu=3%
+[2026-10-27T15:46:43] START [5/11] -u e14\run_e14_4.py --step g3 --session 2
+G3 S2 예열(버림) F2 4T p50 12.002
+G3 S2 #0 P2b 4T p50 11.679 p90 12.079 throttle_off True (3.4s)
+G3 S2 #1 P2 4T p50 11.536 p90 11.822 throttle_off True (3.4s)
+G3 S2 #2 P1 4T p50 11.939 p90 12.265 throttle_off True (3.5s)
+G3 S2 #3 F2 4T p50 12.277 p90 12.792 throttle_off True (3.6s)
+G3 SESSION 2 DONE 15:47:01
+G3 P1: 4T Δ vs F2 +0.17% / -2.75% → 계속
+G3 P2: 4T Δ vs F2 -3.74% / -6.04% → 계속
+G3 P2b: 4T Δ vs F2 -3.77% / -4.87% → 계속
+[g3] 18s
+[2026-10-27T15:47:01] END [5/11] step=g3 2 rc=0
+[2026-10-27T15:47:08] idle check ok: wsl load1=0.00 win cpu=2%
+[2026-10-27T15:47:08] START [6/11] -u e14\run_e14_4.py --step acc
+acc F2 {'cifar_A': 74.5, 'pets_dev': 91.41, 'flowers_dev': 85.68, 'cars_dev': 92.04, 'food_dev': 85.08, 'caltech_dev': 94.34}
+acc P1 {'cifar_A': 74.8, 'pets_dev': 91.31, 'flowers_dev': 85.68, 'cars_dev': 91.83, 'food_dev': 84.67, 'caltech_dev': 94.53}
+acc P2 {'cifar_A': 74.9, 'pets_dev': 91.41, 'flowers_dev': 86.1, 'cars_dev': 92.14, 'food_dev': 85.38, 'caltech_dev': 94.34}
+{"P1": {"hr_delta": -0.104, "ci": [-0.39, 0.2], "cifar": 0.3, "changed": {"cifar_A": 23, "pets_dev": 15, "flowers_dev": 10, "cars_dev": 8, "food_dev": 16, "caltech_dev": 4}}, "P2": {"hr_delta": 0.165, "ci": [-0.12, 0.47], "cifar": 0.4, "changed": {"cifar_A": 30, "pets_dev": 10, "flowers_dev": 8, "cars_dev": 13, "food_dev": 21, "caltech_dev": 8}}, "P2b": {"hr_delta": 0.165, "ci": [-0.12, 0.47], "cifar": 0.4, "changed": {"cifar_A": 30, "pets_dev": 10, "flowers_dev": 8, "cars_dev": 13, "food_dev": 21, "caltech_dev": 8}}}
+[acc] 218s
+[2026-10-27T15:50:45] END [6/11] step=acc rc=0
+[2026-10-27T15:50:52] idle check ok: wsl load1=0.00 win cpu=4%
+[2026-10-27T15:50:52] START [7/11] -u e14\run_e14_4.py --step mem
+mem rep0 O peak 192.4 create 192.4 infer 167.3 priv 181.0
+mem rep0 F2 peak 191.8 create 191.8 infer 165.8 priv 180.0
+mem rep0 P1 peak 169.0 create 165.0 infer 169.0 priv 182.9
+mem rep0 P2 peak 161.5 create 156.8 infer 161.5 priv 175.4
+mem rep0 P2b peak 162.2 create 157.3 infer 162.2 priv 176.0
+mem rep1 P2b peak 159.3 create 154.6 infer 159.3 priv 173.2
+mem rep1 P2 peak 158.4 create 154.1 infer 158.4 priv 172.3
+mem rep1 P1 peak 167.6 create 165.3 infer 167.6 priv 181.7
+mem rep1 F2 peak 191.6 create 191.6 infer 167.8 priv 181.6
+mem rep1 O peak 192.4 create 192.4 infer 169.7 priv 183.1
+mem rep2 O peak 192.2 create 192.2 infer 168.8 priv 182.5
+mem rep2 F2 peak 191.6 create 191.6 infer 166.1 priv 180.2
+mem rep2 P1 peak 167.2 create 165.3 infer 167.2 priv 181.2
+mem rep2 P2 peak 159.2 create 154.4 infer 159.2 priv 173.1
+mem rep2 P2b peak 159.9 create 155.4 infer 159.9 priv 173.8
+[mem] 16s
+[2026-10-27T15:51:08] END [7/11] step=mem rc=0
+[2026-10-27T15:51:14] idle check ok: wsl load1=0.00 win cpu=5%
+[2026-10-27T15:51:14] START [8/11] -u e14\run_e14_4.py --step speed --session 1
+speed S1 예열(버림) F2 4T p50 12.085
+speed S1 #0 O 1T p50 30.703 p90 31.611 throttle_off True (7.7s)
+speed S1 #1 O 2T p50 19.143 p90 19.892 throttle_off True (5.1s)
+speed S1 #2 O 4T p50 13.06 p90 13.494 throttle_off True (3.8s)
+speed S1 #3 F2 1T p50 29.011 p90 30.149 throttle_off True (7.3s)
+speed S1 #4 F2 2T p50 17.788 p90 18.401 throttle_off True (4.8s)
+speed S1 #5 F2 4T p50 12.022 p90 12.311 throttle_off True (3.5s)
+speed S1 #6 P1 1T p50 29.006 p90 29.874 throttle_off True (7.3s)
+speed S1 #7 P1 2T p50 17.915 p90 18.572 throttle_off True (4.8s)
+speed S1 #8 P1 4T p50 11.902 p90 12.33 throttle_off True (3.5s)
+speed S1 #9 P2 1T p50 27.434 p90 28.449 throttle_off True (6.9s)
+speed S1 #10 P2 2T p50 17.137 p90 17.723 throttle_off True (4.6s)
+speed S1 #11 P2 4T p50 11.561 p90 11.872 throttle_off True (3.4s)
+speed S1 #12 P2b 1T p50 27.258 p90 28.138 throttle_off True (6.9s)
+speed S1 #13 P2b 2T p50 17.044 p90 17.71 throttle_off True (4.6s)
+speed S1 #14 P2b 4T p50 11.551 p90 11.911 throttle_off True (3.4s)
+speed SESSION 1 DONE 15:52:35
+[speed] 81s
+[2026-10-27T15:52:35] END [8/11] step=speed 1 rc=0
+[2026-10-27T15:52:35] rest 120s
+[2026-10-27T15:54:42] idle check ok: wsl load1=0.00 win cpu=4%
+[2026-10-27T15:54:42] START [9/11] -u e14\run_e14_4.py --step speed --session 2
+speed S2 예열(버림) F2 4T p50 12.0
+speed S2 #0 P2b 4T p50 11.515 p90 11.885 throttle_off True (3.4s)
+speed S2 #1 P2b 2T p50 17.096 p90 17.668 throttle_off True (4.6s)
+speed S2 #2 P2b 1T p50 27.293 p90 28.403 throttle_off True (6.9s)
+speed S2 #3 O 4T p50 13.043 p90 13.406 throttle_off True (3.8s)
+speed S2 #4 O 2T p50 19.401 p90 20.205 throttle_off True (5.2s)
+speed S2 #5 O 1T p50 31.446 p90 32.511 throttle_off True (7.8s)
+speed S2 #6 F2 4T p50 12.019 p90 12.351 throttle_off True (3.5s)
+speed S2 #7 F2 2T p50 17.798 p90 18.471 throttle_off True (4.8s)
+speed S2 #8 F2 1T p50 29.175 p90 30.263 throttle_off True (7.3s)
+speed S2 #9 P1 4T p50 11.98 p90 12.321 throttle_off True (3.5s)
+speed S2 #10 P1 2T p50 17.933 p90 18.609 throttle_off True (4.8s)
+speed S2 #11 P1 1T p50 28.841 p90 29.993 throttle_off True (7.2s)
+speed S2 #12 P2 4T p50 11.508 p90 11.882 throttle_off True (3.4s)
+speed S2 #13 P2 2T p50 17.07 p90 17.703 throttle_off True (4.6s)
+speed S2 #14 P2 1T p50 27.547 p90 28.561 throttle_off True (6.9s)
+speed SESSION 2 DONE 15:56:03
+[speed] 82s
+[2026-10-27T15:56:03] END [9/11] step=speed 2 rc=0
+[2026-10-27T15:56:03] rest 120s
+[2026-10-27T15:58:10] idle check ok: wsl load1=0.00 win cpu=1%
+[2026-10-27T15:58:10] START [10/11] -u e14\run_e14_4.py --step speed --session 3
+speed S3 예열(버림) F2 4T p50 11.95
+speed S3 #0 P2 2T p50 17.473 p90 18.106 throttle_off True (4.7s)
+speed S3 #1 P2 4T p50 11.495 p90 11.861 throttle_off True (3.4s)
+speed S3 #2 P2 1T p50 27.515 p90 28.503 throttle_off True (6.9s)
+speed S3 #3 P2b 2T p50 17.097 p90 17.602 throttle_off True (4.6s)
+speed S3 #4 P2b 4T p50 11.524 p90 11.811 throttle_off True (3.4s)
+speed S3 #5 P2b 1T p50 27.56 p90 28.59 throttle_off True (7.0s)
+speed S3 #6 O 2T p50 18.996 p90 19.729 throttle_off True (5.1s)
+speed S3 #7 O 4T p50 13.214 p90 13.652 throttle_off True (3.8s)
+speed S3 #8 O 1T p50 31.215 p90 32.14 throttle_off True (7.8s)
+speed S3 #9 F2 2T p50 17.881 p90 18.547 throttle_off True (4.8s)
+speed S3 #10 F2 4T p50 12.029 p90 12.366 throttle_off True (3.5s)
+speed S3 #11 F2 1T p50 28.885 p90 29.754 throttle_off True (7.3s)
+speed S3 #12 P1 2T p50 17.916 p90 18.646 throttle_off True (4.8s)
+speed S3 #13 P1 4T p50 11.947 p90 12.329 throttle_off True (3.5s)
+speed S3 #14 P1 1T p50 28.927 p90 29.94 throttle_off True (7.3s)
+speed SESSION 3 DONE 15:59:31
+[speed] 82s
+[2026-10-27T15:59:31] END [10/11] step=speed 3 rc=0
+[2026-10-27T15:59:37] idle check ok: wsl load1=0.00 win cpu=5%
+[2026-10-27T15:59:37] START [11/11] -u e14\run_e14_4.py --step summary
+{
+ "verdict": {
+  "P1": {
+   "verdict": "기각",
+   "conds": {
+    "1_gates": true,
+    "2_4T": false,
+    "3_1T2T": true,
+    "4_acc": false,
+    "5_mem": true
+   },
+   "d4T": -0.006816859256796093,
+   "d2T": 0.007139644704295067,
+   "d1T": -0.0001723484195649272,
+   "dpeak": -0.12526096033402923,
+   "g3_delta": [
+    0.0016718214494693129,
+    -0.02753115581982568
+   ]
+  },
+  "P2": {
+   "verdict": "채택 후보",
+   "conds": {
+    "1_gates": true,
+    "2_4T": true,
+    "3_1T2T": true,
+    "4_acc": true,
+    "5_mem": true
+   },
+   "d4T": -0.04251601630751323,
+   "d2T": -0.03659770631886661,
+   "d1T": -0.05435869153079864,
+   "dpeak": -0.16910229645093944,
+   "g3_delta": [
+    -0.037448800468109944,
+    -0.06035676468192552
+   ]
+  },
+  "P2b": {
+   "verdict": "채택 후보",
+   "conds": {
+    "1_gates": true,
+    "2_4T": true,
+    "3_1T2T": true,
+    "4_acc": true,
+    "5_mem": true
+   },
+   "d4T": -0.041933605125218376,
+   "d2T": -0.04182595007870471,
+   "d1T": -0.06042535589948639,
+   "dpeak": -0.16544885177453017,
+   "g3_delta": [
+    -0.03769957368553023,
+    -0.048708967988922325
+   ]
+  }
+ },
+ "pick": "P2",
+ "peak": {
+  "O": 192.4,
+  "F2": 191.6,
+  "P1": 167.6,
+  "P2": 159.2,
+  "P2b": 159.9
+ },
+ "create_peak": {
+  "O": 192.4,
+  "F2": 191.6,
+  "P1": 165.3,
+  "P2": 154.4,
+  "P2b": 155.4
+ }
+}
+O 31.21 / 19.14 / 13.06 1T +7.78% 2T +7.62% 4T +8.63%
+F2 29.01 / 17.80 / 12.02 
+P1 28.93 / 17.92 / 11.95 1T -0.02% 2T +0.71% 4T -0.68%
+P2 27.52 / 17.14 / 11.51 1T -5.44% 2T -3.66% 4T -4.25%
+P2b 27.29 / 17.10 / 11.52 1T -6.04% 2T -4.18% 4T -4.19%
+[summary] 0s
+[2026-10-27T15:59:38] END [11/11] step=summary rc=0
+[2026-10-27T15:59:38] ALL DONE

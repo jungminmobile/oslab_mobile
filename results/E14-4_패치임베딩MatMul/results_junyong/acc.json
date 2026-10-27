@@ -1,0 +1,87 @@
+{
+ "date": "2026-10-27T15:50:45",
+ "git": {
+  "commit": "e1f8428",
+  "branch": "exp/E14-junyong",
+  "dirty": false
+ },
+ "P2b_reused_P2": true,
+ "F2": {
+  "cifar_A": 74.5,
+  "pets_dev": 91.41414141414141,
+  "flowers_dev": 85.68443051201672,
+  "cars_dev": 92.03722854188211,
+  "food_dev": 85.0761421319797,
+  "caltech_dev": 94.3359375,
+  "hr": 89.70957602000398
+ },
+ "P1": {
+  "cifar_A": 74.8,
+  "pets_dev": 91.31313131313131,
+  "flowers_dev": 85.68443051201672,
+  "cars_dev": 91.83040330920372,
+  "food_dev": 84.67005076142132,
+  "caltech_dev": 94.53125,
+  "hr": 89.60585317915461,
+  "hr_delta": -0.10372284084937178,
+  "hr_delta_ci95": [
+   -0.39,
+   0.2
+  ],
+  "cifar_delta": 0.29999999999999716,
+  "n_changed": {
+   "cifar_A": 23,
+   "pets_dev": 15,
+   "flowers_dev": 10,
+   "cars_dev": 8,
+   "food_dev": 16,
+   "caltech_dev": 4
+  }
+ },
+ "P2": {
+  "cifar_A": 74.9,
+  "pets_dev": 91.41414141414141,
+  "flowers_dev": 86.10240334378265,
+  "cars_dev": 92.1406411582213,
+  "food_dev": 85.38071065989847,
+  "caltech_dev": 94.3359375,
+  "hr": 89.87476681520876,
+  "hr_delta": 0.1651907952047793,
+  "hr_delta_ci95": [
+   -0.12,
+   0.47
+  ],
+  "cifar_delta": 0.4000000000000057,
+  "n_changed": {
+   "cifar_A": 30,
+   "pets_dev": 10,
+   "flowers_dev": 8,
+   "cars_dev": 13,
+   "food_dev": 21,
+   "caltech_dev": 8
+  }
+ },
+ "P2b": {
+  "cifar_A": 74.9,
+  "pets_dev": 91.41414141414141,
+  "flowers_dev": 86.10240334378265,
+  "cars_dev": 92.1406411582213,
+  "food_dev": 85.38071065989847,
+  "caltech_dev": 94.3359375,
+  "hr": 89.87476681520876,
+  "hr_delta": 0.1651907952047793,
+  "hr_delta_ci95": [
+   -0.12,
+   0.47
+  ],
+  "cifar_delta": 0.4000000000000057,
+  "n_changed": {
+   "cifar_A": 30,
+   "pets_dev": 10,
+   "flowers_dev": 8,
+   "cars_dev": 13,
+   "food_dev": 21,
+   "caltech_dev": 8
+  }
+ }
+}

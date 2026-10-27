@@ -1,0 +1,17 @@
+{
+ "date": "2026-10-27T16:00:25",
+ "git": {
+  "commit": "e1f8428",
+  "branch": "exp/E14-junyong",
+  "dirty": false
+ },
+ "model": "O",
+ "via": "scratch acc_O.py (run_e14_4.step_acc와 같은 함수)",
+ "cifar_A": 74.7,
+ "pets_dev": 91.31313131313131,
+ "flowers_dev": 85.7889237199582,
+ "cars_dev": 91.83040330920372,
+ "food_dev": 85.0761421319797,
+ "caltech_dev": 94.3359375,
+ "hr": 89.66890759485457
+}
