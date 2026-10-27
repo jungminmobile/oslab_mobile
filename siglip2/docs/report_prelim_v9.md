@@ -65,7 +65,7 @@ dev R/G8_candidates/b32/p2/dev_full, test R/G8_candidates/b32/test_p2, 입력 �
 | 모델명 / 버전 | SigLIP2 ViT-B/32, 입력 256×256 (`hf-hub:timm/ViT-B-32-SigLIP2-256`, open_clip 3.3.0 / timm 1.0.30) |
 | 모델 유형 | 멀티모달(이미지-텍스트 대조 학습). 최적화 대상은 **이미지 인코더** |
 | 저장소 URL | 우리 코드: https://github.com/jungminmobile/oslab_mobile [확인 필요: 현재 비공개 — 학술부 접근 방법] / 원 모델: https://huggingface.co/timm/ViT-B-32-SigLIP2-256 |
-| 커밋 해시 또는 릴리스 태그 | 제출 시점 main의 `prelim-submit` 태그 [확인 필요: 태그·커밋]. 모델 파일 Release [확인 필요: 최종 제출 Release 태그] (지금은 내부용 pre-release 두 개 `siglip2-b32-submit-20261023`·`siglip2-p2-20261027`, 제출 전 하나로 묶는다) |
+| 커밋 해시 또는 릴리스 태그 | 제출 시점 main의 `prelim-submit` 태그 [확인 필요: 태그·커밋]. 모델 파일 Release `siglip2-b32-p2-submit-20261027` (지금은 내부 확인용 pre-release, 제출 때 정식 Release로 바꾼다) |
 | 사전학습 가중치 출처 | Google SigLIP2 (Tschannen et al., 2025) 공개 가중치의 timm/open_clip 변환본 (Hugging Face, 로컬 캐시 스냅샷 `cd1efb47…`) |
 | 라이선스 | [확인 필요: 모델 카드 라이선스, Apache-2.0로 알고 있음] |
 
@@ -251,7 +251,7 @@ dev R/G8_candidates/b32/p2/dev_full, test R/G8_candidates/b32/test_p2, 입력 �
 - **공개 데이터셋만** 쓰고, 실행 때 Hugging Face Hub·torchvision에서 자동으로 받는다(`rn50/datasets.py`, 사진 선택 규칙 포함).
 - **소규모 평가 묶음**: dev 6종 × 200장(전처리 끝난 256×256 입력, 정답, FP32 텍스트 분류기, FP32 임베딩) + numpy·onnxruntime만 쓰는 `portable_eval.py` + FP32·제출 모델 + sha256 목록. 몇 분이면 돈다(9.2 (가)).
 - **모델 파일·sha256 공개**: FP32 `be19a8ad…`, 제출 P2 `e465d10d…`. 제출 파일을 만든 순서의 중간 파일도 모두 Release에 있다: M2rot FP32 `23236123…`(회전 행렬 `3a6391a2…`) → O-B 융합 `79e797c1…` → `quant_pre_process` `506e9fe4…` → 양자화 O-AB `7a01044c…` → GELU 융합 F2 `03f4de18…` → 패치 임베딩 정수화 P2 `e465d10d…`(`e14/make_models_e14.py`, 세 PC에서 만든 파일 sha가 같음). 실행 환경에 따라 사진 몇 장 결과가 다를 수 있어(7.1-3·4) 사진별 예측도 함께 낸다.
-- **깨끗한 폴더 재현 확인** (이전 제출 파일 O-AB 기준, 10/23. P2는 최종 Release로 다시 확인할 예정 [확인 필요]): 새 폴더에 Release 파일만 받아 sha256 13개 확인 → `portable_eval.py` 실행. FP32·O-AB·비교용 M2rot(`9783d7de…`) 모두 기준 결과와 사진 1,200장 예측이 비트 단위로 같고 cos 차이 0이었다(`b32/xplat/repro_check`). 같은 PC에서는 Release와 절차만으로 완전히 재현된다. 새 clone·새 가상환경에서 dev 캐시부터 다시 만들어도 dev 전체 사진별 예측이 같았다(9.1).
+- **깨끗한 폴더 재현 확인** (제출 P2, 10/27): 빈 새 폴더에 제출 Release `siglip2-b32-p2-submit-20261027`만 받아 sha256 15개 확인 → `portable_eval.py --no-mem-pattern` 실행. FP32·P2 사진별 예측·cos가 Release 안 기준 결과와 비트 단위로 같았다(`b32/p2/release_check`). 이전 제출 파일 O-AB도 10/23에 같은 방식으로 FP32·O-AB·비교용 M2rot(`9783d7de…`) 모두 기준 결과와 사진 1,200장 예측이 비트 단위로 같고 cos 차이 0이었다(`b32/xplat/repro_check`). 같은 PC에서는 Release와 절차만으로 완전히 재현된다. 새 clone·새 가상환경에서 dev 캐시부터 다시 만들어도 dev 전체 사진별 예측이 같았다(9.1).
 - **다른 CPU 재현**: 같은 묶음(1,200장)을 x86 두 대(i7-1165G7 AVX-512 VNNI·Windows, Core Ultra 9 285K AVX-VNNI·WSL2)와 ARM(Jetson AGX Orin)에서 돌려 사진별로 비교했다. FP32는 세 대 모두 같았다. 제출 P2는 x86 두 대 사이에 1장(맞음/틀림 1장)만 달랐고, ARM과는 4~5장(0.4%)이 달랐다. 고화질 평균 Δ는 i7 +0.4, 285K·AGX +0.3%p(사진 1장 차이)다. 이전 단계 O-AB는 ARM과 25~26장(2.2%)이 달랐다(`b32/p2/xplat_i7/compare_p2_3way.json`, `b32/xplat/compare_3way`).
 - **dev 전체 다른 PC 재현**: P2 dev 전체는 x86 세 대(i7, 정민 258V, 준용 285K)에서 89.91 / 89.87 / 89.87%다. 258V와 285K는 데이터셋별·구간까지 같고, i7은 CIFAR A·Food·Caltech에서 1~2장 다르다.
 - **채점은 배포한 ONNX 파일로** 한다. 처음부터 다시 만들면 PC마다 float64 행렬 곱 반올림이 달라 회전 행렬부터 파일이 달라진다(B/32 같은 레시피 두 PC dev −0.79 / −0.87).
@@ -379,11 +379,10 @@ dev R/G8_candidates/b32/p2/dev_full, test R/G8_candidates/b32/test_p2, 입력 �
 | 7 | 실행 방법 README | `siglip2/README.md` (v5, P2 기준) | □ |
 | 8 | 데이터셋 경로 또는 다운로드 방법 | 실행 때 자동 다운로드(`rn50/datasets.py`, 출처 6.1). 소규모 묶음 dev 6종 × 200장 | □ |
 
-- 모델 파일·묶음은 GitHub Release로 낸다: [확인 필요: 최종 제출 Release 태그]. 지금 내부 확인용 pre-release `siglip2-b32-submit-20261023`에 FP32·제출 모델·dev200 묶음·`portable_eval.py`·`SHA256SUMS*.txt`와 함께 다음이 있다.
+- 모델 파일·묶음은 GitHub Release `siglip2-b32-p2-submit-20261027`로 낸다(지금 pre-release, 제출 때 정식으로 바꾼다). FP32·제출 P2·dev200 묶음·`portable_eval.py`(`--no-mem-pattern` 포함)·이 PC 기준 결과와 사진별 예측·`SHA256SUMS.txt`와 함께 다음이 있다.
   - **본선 이식용 바탕** `siglip2_image_fp32_g6b_b32_m2rot.onnx`(`23236123…`): 제출 P2와 같은 모델의 표준 연산 FP32(회전·레지스터 캐시 포함), 본선 HEF 바탕과 initializer 비트 동일(3.3)
   - 비상 대체 M2rot INT8 `3a46ae8a…`: 표준 연산만 씀, 제출 모델과 같은 바탕, 본선 HEF와 이어짐(7.1-2)
-  - 비교용 M2rot INT8 `9783d7de…`: 이 PC 빌드, 회전 행렬이 달라 본선 HEF와 이어지지 않음
-  - 제출 파일을 만든 중간 파일: `23236123…`, `79e797c1…`, `506e9fe4…`, 이전 제출 파일 O-AB `7a01044c…`, F2 `03f4de18…`(6.3). P2·F2는 지금 후보 Release `siglip2-p2-20261027`에 있다
+  - 제출 파일을 만든 중간 파일(`79e797c1…`, `506e9fe4…`, 이전 제출 파일 O-AB `7a01044c…`, 비교용 M2rot `9783d7de…`)은 이전 Release `siglip2-b32-submit-20261023`, F2 `03f4de18…`는 `siglip2-p2-20261027`에 있다(6.3)
 - 저장소가 비공개라 학술부 접근(초대 또는 공개 링크)을 준비하고 심사 종료(11/5)까지 유지한다.
 
 ---
@@ -398,19 +397,19 @@ cd oslab_mobile
 python -m venv .venv
 # Windows: .venv\Scripts\activate    Linux/macOS: source .venv/bin/activate
 python -m pip install -r siglip2/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
-gh release download <제출 Release 태그> --repo jungminmobile/oslab_mobile -D release
+gh release download siglip2-b32-p2-submit-20261027 --repo jungminmobile/oslab_mobile -D release
 cd release && sha256sum -c SHA256SUMS.txt && cd ..
 export S2_MODEL_ID=hf-hub:timm/ViT-B-32-SigLIP2-256
 export SIGLIP2_DATA=$HOME/siglip2_data SIGLIP2_ARTIFACTS=$HOME/siglip2_b32_art HF_HOME=$HOME/hf_cache OPENBLAS_NUM_THREADS=1
 mkdir -p $SIGLIP2_ARTIFACTS/onnx && cp release/*.onnx $SIGLIP2_ARTIFACTS/onnx/
 ```
-- `<제출 Release 태그>` = [확인 필요: 최종 제출 Release 태그]. Windows(PowerShell)는 `export` 대신 `$env:S2_MODEL_ID="..."` 형식이다.
+- Windows(PowerShell)는 `export` 대신 `$env:S2_MODEL_ID="..."` 형식이다.
 - **`S2_MODEL_ID`를 꼭 지정한다.** 지정하지 않으면 코드가 B/16(224)으로 동작한다.
 - 확인 기록: 새 clone·새 가상환경(시스템 Python 3.11.9 + requirements)에서 이 절과 9.2 (가)·(나)를 그대로 실행해, 빠른 확인과 dev 전체(학습 데이터를 Hugging Face에서 새로 받아 캐시부터 생성) 모두 사진별 예측이 기존 결과와 비트 단위로 같았다(`b32/xplat/fresh_env`, 이전 제출 파일 O-AB 기준. P2는 같은 그래프 변환을 세 PC에서 같은 sha로 재현했다).
 
 ### 9.2 벤치마크 실행 명령
 
-**(가) 빠른 확인: 소규모 묶음** (저장소 코드·데이터 다운로드 없이, `pip install numpy onnxruntime==1.25.0`만 필요, 실행 약 5~6분. `release/`는 최종 제출 Release 파일 [확인 필요: 최종 Release에 `--no-mem-pattern`이 있는 새 `portable_eval.py`와 P2를 함께 넣기])
+**(가) 빠른 확인: 소규모 묶음** (저장소 코드·데이터 다운로드 없이, `pip install numpy onnxruntime==1.25.0`만 필요, 실행 약 5~6분. `release/` = Release `siglip2-b32-p2-submit-20261027`를 받은 폴더, 9.1)
 ```bash
 python release/portable_eval.py --data release --out out_quick --threads 4 --no-mem-pattern \
   --models fp32=release/siglip2_image_fp32.onnx \

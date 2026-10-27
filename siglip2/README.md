@@ -20,7 +20,7 @@
 | 비상 대체: M2rot INT8, 표준 연산만 (채점 환경이 com.microsoft 연산을 못 돌릴 때) | `siglip2_image_int8_g6b_b32_m2rot_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx` | 102.85 MB | `3a46ae8af54f3119…` (제출 모델과 같은 바탕 `23236123…`, 본선 HEF와 이어짐) |
 | (비교용) M2rot INT8, 이 PC 빌드 | `siglip2_image_int8_rcmaskbcmlp15at6u5-7at10u9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx` | 102.85 MB | `9783d7defe8c0735…` (회전 행렬이 달라 본선 HEF와 이어지지 않음 — 대체 파일 아님) |
 
-- Release: 지금은 내부 확인용 pre-release 두 개다. `siglip2-b32-submit-20261023`(FP32·O-AB·M2rot 두 개 + dev 6종 × 200장 묶음 + `portable_eval.py` + `SHA256SUMS*.txt` + 이 PC 결과 + 중간 파일 `23236123…` → `79e797c1…` → `506e9fe4…`), `siglip2-p2-20261027`(P2, F2 `03f4de18…`, SHA256SUMS). 최종 제출 Release는 하나로 묶어 따로 만든다.
+- Release: **`siglip2-b32-p2-submit-20261027`** (지금 내부 확인용 pre-release, 제출 때 정식으로 바꾼다) — P2, FP32, 본선 이식용 FP32 바탕 `23236123…`, 비상 대체 `3a46ae8a…`, `portable_eval.py`(`--no-mem-pattern`), dev 6종 × 200장 묶음, 이 PC 기준 결과·사진별 예측, `SHA256SUMS.txt`. 중간 파일은 이전 Release `siglip2-b32-submit-20261023`(O-AB·`79e797c1…`·`506e9fe4…`·비교용 M2rot `9783d7de…`)와 `siglip2-p2-20261027`(F2 `03f4de18…`).
 - 제출 파일을 만드는 순서: O-AB `7a01044c…` → `e14/make_models_e14.py`(정민 브랜치 `jungmin/e14-graph`) → F2 `03f4de18…` → P2 `e465d10d…`. 세 PC에서 만든 파일의 sha가 같다.
 - 포맷: ONNX opset 17 + `com.microsoft` 1 (SkipLayerNormalization·FastGelu), 입력 `image` float32 N×3×256×256 (SigLIP2 전처리 후: 256×256, 평균·표준편차 0.5 정규화), 출력 `embedding` 768차원.
 - 실행: onnxruntime 1.25.0 CPU, 기본 그래프 최적화(`ORT_ENABLE_ALL`, 정수 커널).
@@ -29,19 +29,18 @@
 
 ## 1. 빠른 확인 (저장소 코드·데이터 없이, 내려받기 약 5분 + 실행 약 6분)
 
-numpy와 onnxruntime만 있으면 된다. dev 6종 × 200장 묶음으로 FP32와 제출 모델을 비교한다. (주의: 지금 내부 Release의 `portable_eval.py`에는 `--no-mem-pattern`이 없다. 최종 제출 Release에서 새 스크립트·P2·묶음을 하나로 묶기 전까지는 `release/portable_eval.py` 대신 저장소의 `siglip2/scripts/portable_eval.py`를 쓴다)
+numpy와 onnxruntime만 있으면 된다. dev 6종 × 200장 묶음으로 FP32와 제출 모델을 비교한다.
 
 ```bash
 python -m pip install numpy==2.4.4 onnxruntime==1.25.0
-gh release download siglip2-b32-submit-20261023 --repo jungminmobile/oslab_mobile -D release
-gh release download siglip2-p2-20261027 --repo jungminmobile/oslab_mobile -p e14_4_P2_patch_int8.onnx -D release
-cd release && sha256sum -c SHA256SUMS.txt && sha256sum e14_4_P2_patch_int8.onnx && cd ..   # P2: e465d10d…
+gh release download siglip2-b32-p2-submit-20261027 --repo jungminmobile/oslab_mobile -D release
+cd release && sha256sum -c SHA256SUMS.txt && cd ..
 python release/portable_eval.py --data release --out out_quick --threads 4 --no-mem-pattern \
   --models fp32=release/siglip2_image_fp32.onnx \
            p2=release/e14_4_P2_patch_int8.onnx
 ```
-- 기대 출력 (`out_quick/result.json`): 제출 P2 고화질 5종 cos **0.9884**, Δtop-1 **+0.4%p** (각 200장, 285K·AGX는 +0.3), CIFAR A 73.0 (FP32 71.5). 이 PC 결과 `results/siglip2/G8_candidates/b32/p2/xplat_i7/result.json`.
-- 확인 기록: 깨끗한 폴더에서 이 순서 그대로 실행해 사진 1,200장의 예측이 비트 단위로 같음 (이전 제출 파일 O-AB 기준, `results/siglip2/G8_candidates/b32/xplat/repro_check`).
+- 기대 출력 (`out_quick/result.json`): 제출 P2 고화질 5종 cos **0.9884**, Δtop-1 **+0.4%p** (각 200장, 285K·AGX는 +0.3), CIFAR A 73.0 (FP32 71.5). 기준값 `release/result_i7-1165G7_p2.json`, 사진별 예측 `release/pred_i7-1165G7_{fp32,p2}.npz`.
+- 확인 기록: 빈 새 폴더에서 이 순서 그대로 실행해 sha256 15개 OK, FP32·P2 사진별 예측·cos가 Release 안 기준과 비트 단위로 같음 (`results/siglip2/G8_candidates/b32/p2/release_check`). 이전 제출 파일 O-AB는 같은 방식으로 사진 1,200장 예측이 비트 단위로 같았다(`results/siglip2/G8_candidates/b32/xplat/repro_check`).
 - `gh`가 없으면 GitHub Release 페이지에서 파일을 받아 `release/` 폴더 하나에 둔다.
 
 ## 2. 환경 (전체 재현)
