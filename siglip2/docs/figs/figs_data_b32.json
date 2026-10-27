@@ -1,12 +1,12 @@
 {
  "F3b": {
   "pct_vs_fp32": {
-   "P2 (제출), 10/27 저녁 C3": {
+   "P2 (제출), 10/27 저녁 C3 두 실행 합침": {
     "크기": -74.7,
     "피크 메모리": -63.4,
-    "지연 1T": -68.3,
-    "지연 2T": -61.5,
-    "지연 4T": -64.4
+    "지연 1T": -68.0,
+    "지연 2T": -62.9,
+    "지연 4T": -62.9
    },
    "P2, 10/27 오후 기본 세션": {
     "크기": -74.7,
@@ -15,12 +15,12 @@
     "지연 2T": -61.9,
     "지연 4T": -59.8
    },
-   "O-AB (이전 단계), 10/27 저녁 C3 같은 실행": {
+   "O-AB (이전 단계), 10/27 저녁 C3 두 실행 합침": {
     "크기": -72.8,
     "피크 메모리": -57.4,
-    "지연 1T": -64.1,
-    "지연 2T": -60.2,
-    "지연 4T": -55.7
+    "지연 1T": -62.8,
+    "지연 2T": -59.4,
+    "지연 4T": -57.0
    },
    "O-AB, 10/23 새벽 기본 세션": {
     "크기": -72.8,
@@ -32,8 +32,10 @@
   },
   "source": [
    "results\\siglip2\\G8_candidates\\latency_this_pc\\b32_p2_c3_20261027\\cross_latency.json",
+   "results\\siglip2\\G8_candidates\\latency_this_pc\\b32_p2_c3b_20261027\\cross_latency.json",
    "results\\siglip2\\G8_candidates\\latency_this_pc\\b32_p2_20261027\\cross_latency.json",
    "results\\siglip2\\G8_candidates\\latency_this_pc\\b32_p2_c3_20261027\\cross_latency.json",
+   "results\\siglip2\\G8_candidates\\latency_this_pc\\b32_p2_c3b_20261027\\cross_latency.json",
    "results\\siglip2\\G8_candidates\\latency_this_pc\\b32_cool_20261023\\cross_latency.json"
   ]
  },

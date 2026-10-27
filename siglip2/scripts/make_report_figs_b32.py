@@ -67,19 +67,21 @@ def ratios(rows, a, b, ref_key=None):
 
 L = G / "latency_this_pc"
 day = sessions(L / "all8_20261022/cross_latency.json") + sessions(L / "all8_20261022_rerun_t24/cross_latency_recovered.json", True)
-# 대표값 = 10/27 저녁 C3 실행의 제출 모델 P2 (학술부 답: 채점은 우리 스크립트 → 제출 실행 설정 C3). 같은 날 기본 세션 실행, 이전 단계 O-AB는 비율 안정성(재현 범위)
-C3 = L / "b32_p2_c3_20261027/cross_latency.json"; DF = L / "b32_p2_20261027/cross_latency.json"
-runs = {"P2 (제출), 10/27 저녁 C3": (ratios(sessions(C3), "b32_p2", "b32_fp32"), C3, "b32_p2"),
+# 대표값 = 10/27 저녁 C3 두 실행 합침(6세션 비율 중앙값, 메모리 두 실행 평균 — 2회째 전에 정한 규칙, 39a6710). 기본 세션 P2, 이전 단계 O-AB는 재현 범위
+C3a, C3b = L / "b32_p2_c3_20261027/cross_latency.json", L / "b32_p2_c3b_20261027/cross_latency.json"; DF = L / "b32_p2_20261027/cross_latency.json"
+C3 = (C3a, C3b)
+runs = {"P2 (제출), 10/27 저녁 C3 두 실행 합침": (ratios(sessions(C3a) + sessions(C3b), "b32_p2", "b32_fp32"), C3, "b32_p2"),
         "P2, 10/27 오후 기본 세션": (ratios(sessions(DF), "b32_p2", "b32_fp32"), DF, "b32_p2"),
-        "O-AB (이전 단계), 10/27 저녁 C3 같은 실행": (ratios(sessions(C3), "b32_oab", "b32_fp32"), C3, "b32_oab"),
+        "O-AB (이전 단계), 10/27 저녁 C3 두 실행 합침": (ratios(sessions(C3a) + sessions(C3b), "b32_oab", "b32_fp32"), C3, "b32_oab"),
         "O-AB, 10/23 새벽 기본 세션": (ratios(sessions(L / "b32_cool_20261023/cross_latency.json"), "b32_oab", "b32_fp32"), L / "b32_cool_20261023/cross_latency.json", "b32_oab")}
 f3 = {}
 for name, (lat, p, key) in runs.items():
-    d = json.load(open(p, encoding="utf-8"))
-    mem = round(100 * (d["peak_mem"][key]["peak_wset_MiB"] / d["peak_mem"]["b32_fp32"]["peak_wset_MiB"] - 1), 1)
+    ds = [json.load(open(q, encoding="utf-8")) for q in (p if isinstance(p, tuple) else (p,))]
+    mem = round(100 * (sum(d["peak_mem"][key]["peak_wset_MiB"] for d in ds) / sum(d["peak_mem"]["b32_fp32"]["peak_wset_MiB"] for d in ds) - 1), 1)
+    d = ds[0]
     size = round(100 * (d["files"][key]["bytes"] / d["files"]["b32_fp32"]["bytes"] - 1), 1)
     f3[name] = {"크기": size, "피크 메모리": mem, "지연 1T": lat[1], "지연 2T": lat[2], "지연 4T": lat[4]}
-data["F3b"] = {"pct_vs_fp32": f3, "source": [str(p.relative_to(ROOT)) for _, p, _ in runs.values()]}
+data["F3b"] = {"pct_vs_fp32": f3, "source": [str(q.relative_to(ROOT)) for _, p, _ in runs.values() for q in (p if isinstance(p, tuple) else (p,))]}
 items = list(next(iter(f3.values())))
 fig, ax = plt.subplots(figsize=(6.6, 3.5))
 w = 0.2
