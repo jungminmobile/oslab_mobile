@@ -26,7 +26,7 @@ dev R/G8_candidates/b32/p2/dev_full, test R/G8_candidates/b32/test_p2, 입력 �
 | | 손준혁 / 2022110583 / 원인 분석, CPU(ONNX Runtime) 양자화·평가, 측정·재현, 보고서 |
 | | 전정민 / 2022113570 / 공통 평가 코드(데이터 분할·평가·속도 측정), 그래프 최적화(GELU 융합·패치 임베딩 정수화), 다른 PC 교차 측정 |
 | 대표자 연락처 | 신준용 (팀장) — 전화번호는 PDF에만 적는다(저장소에 두지 않음) |
-| 제출일 | 2026년 10월 31일 [확인 필요: 실제 제출일] |
+| 제출일 | 2026년 10월 31일 |
 
 ---
 
@@ -63,7 +63,7 @@ dev R/G8_candidates/b32/p2/dev_full, test R/G8_candidates/b32/test_p2, 입력 �
 | P2 | 제출 최적화 모델(INT8 ONNX). 5.1의 ①~⑨를 모두 적용 |
 | M2 (레지스터 캐시) | 거대 활성값을 쓰는 고정 위치 토큰(sink)의 값을 보정 데이터 평균 상수로 바꾸는 처방(5.3 단계 4). sink 규칙 `15@6:5, 7@10:9` = 15번 토큰은 블록 6부터 K·V, 블록 5부터 MLP 입력을 바꿈 |
 | M2rot | 회전 + M2를 적용한 INT8(행렬곱 출력 재반올림 있음). 그래프 최적화 전 단계 |
-| O-A / O-B / O-AB | ONNX Runtime 커널에 맞춘 그래프 변경: 행렬곱 출력 재반올림 생략 / SkipLayerNorm 융합 / 둘 다(이전 제출 파일) |
+| O-A / O-B / O-AB | ONNX Runtime 커널에 맞춘 그래프 변경: 행렬곱 출력 재반올림 생략 / SkipLayerNorm 융합 / 둘 다(P2 바로 전 단계 모델) |
 | C3 | 제출 실행 설정. ONNX Runtime 세션 옵션 `enable_mem_pattern=False`(6.4) |
 | dev / dev 6×200 | train에서 뗀 구성 선택용 분할(6.1) / 그중 데이터셋 6종 × 200장 소규모 묶음 |
 | CIFAR A | dev의 CIFAR-100 1,000장(보조 지표) |
@@ -80,10 +80,10 @@ dev R/G8_candidates/b32/p2/dev_full, test R/G8_candidates/b32/test_p2, 입력 �
 |---|---|
 | 모델명 / 버전 | SigLIP2 ViT-B/32, 입력 256×256 (`hf-hub:timm/ViT-B-32-SigLIP2-256`, open_clip 3.3.0 / timm 1.0.30) |
 | 모델 유형 | 멀티모달(이미지-텍스트 대조 학습). 최적화 대상은 **이미지 인코더** |
-| 저장소 URL | 우리 코드: https://github.com/jungminmobile/oslab_mobile [확인 필요: 현재 비공개 — 학술부 접근 방법] / 원 모델: https://huggingface.co/timm/ViT-B-32-SigLIP2-256 |
-| 커밋 해시 또는 릴리스 태그 | 제출 시점 main의 `prelim-submit` 태그 [확인 필요: 태그·커밋]. 모델 파일 Release `siglip2-b32-p2-submit-20261027` (지금은 내부 확인용 pre-release, 제출 때 정식 Release로 바꾼다) |
+| 저장소 URL | 우리 코드: https://github.com/jungminmobile/oslab_mobile (비공개 저장소, 심사 종료까지 학술부에 접근 권한 제공) / 원 모델: https://huggingface.co/timm/ViT-B-32-SigLIP2-256 |
+| 커밋 해시 또는 릴리스 태그 | 코드: 제출 시점 main 커밋의 태그 `prelim-submit` / 모델 파일: Release `siglip2-b32-p2-submit-20261027` |
 | 사전학습 가중치 출처 | Google SigLIP2 (Tschannen et al., 2025) 공개 가중치의 timm/open_clip 변환본 (Hugging Face, 로컬 캐시 스냅샷 `cd1efb47…`) |
-| 라이선스 | [확인 필요: 모델 카드 라이선스, Apache-2.0로 알고 있음] |
+| 라이선스 | Apache-2.0 (Hugging Face 모델 카드 `timm/ViT-B-32-SigLIP2-256`) |
 
 - 구조: 패치 32×32 → 토큰 64개(8×8), 폭 768, 블록 12개, GELU(tanh 근사). CLS 토큰 없이 attention pooling(MAP) 헤드로 768차원 임베딩을 낸다.
 - 파라미터 94,552,320개(PyTorch = ONNX), 5.75 GMACs = **11.50 GFLOPs**(fvcore), FP32 ONNX 360.83 MiB.
@@ -110,7 +110,7 @@ dev R/G8_candidates/b32/p2/dev_full, test R/G8_candidates/b32/test_p2, 입력 �
 | 실칩 확인 | 부록 E (학술부 답: NPU에서 직접 실행한 결과도 보고서에 넣어도 됨) |
 | 본선 이식용 바탕 | 예선 제출물에 같은 모델의 표준 연산 FP32 `siglip2_image_fp32_g6b_b32_m2rot.onnx`(`23236123…`)를 함께 낸다. 제출 P2는 이 그래프를 CPU용으로 양자화·변환한 파일이다 |
 | INT4 | Hailo-10H는 INT4 지원. CPU에서는 4비트가 느려 넣지 않았다(5.3). Hailo INT4는 본선에서 시험한다 |
-| 버전 위험 | 팀 DFC 5.4.0, 본선 Pi의 HailoRT는 [확인 필요: 주최측]. 버전이 다르면 그 버전용 DFC로 다시 컴파일한다 |
+| 버전 위험 | 팀 DFC 5.4.0(HailoRT 5.3.0에서 실행 확인). 본선 Pi의 HailoRT 버전은 하드웨어 지급(11/6) 뒤 확인하고, 다르면 그 버전용 DFC로 다시 컴파일한다(7.2 1주차) |
 
 - 본선 HEF는 GF(위 혼합 정밀도 + Zoo 컴파일 설정, `0c2e04a6…`)로 정했다(D-050). 16비트 보호를 모두 걷어낸 ALL8F는 절제 실험이다(부록 E).
 
@@ -258,7 +258,7 @@ dev R/G8_candidates/b32/p2/dev_full, test R/G8_candidates/b32/test_p2, 입력 �
 - **프롬프트는 CLIP 공식 템플릿 [2]**: SigLIP 권장 템플릿보다 dev에서 1.77%p 좋았다(SigLIP 템플릿 − CLIP 템플릿 = −1.77 [−2.33, −1.22]).
 - **보조 지표는 따로 적는다**: CIFAR-100은 32×32를 키운 사진이라 앞쪽 층 변화에 지나치게 민감해 설정 선택에 쓰지 않는다. ImageNetV2는 일반성 확인용이다.
 - **고르지 않은 대안**: ImageNet-1k 검증셋(등록제라 재현이 어려움 → 공개 ImageNetV2), 이미지-텍스트 검색(텍스트 인코더 효과가 섞임), linear probe(학습 필요, 쓰임새와 다름).
-- **데이터 구간 분리**: 사진 선택은 이미지 바이트 SHA-1 해시로 정해 누가 돌려도 같다. 보정은 dev와 겹치지 않는 train 사진으로, 구성 선택은 train에서 뗀 dev로만 했고, **test는 구성 선택에 쓰지 않았다.** 제출 모델로 쓴 test는 ONNX Runtime 2회(이전 제출 파일 O-AB, 교체한 P2)와 Hailo 1회이며, 매번 제출 파일·판정 기준을 test 전에 커밋해 고정했다. P2로의 교체는 dev와 지연·메모리만 보고 정했다(부록 D).
+- **데이터 구간 분리**: 사진 선택은 이미지 바이트 SHA-1 해시로 정해 누가 돌려도 같다. 보정은 dev와 겹치지 않는 train 사진으로, 구성 선택은 train에서 뗀 dev로만 했고, **test는 구성 선택에 쓰지 않았다.** B/32 모델로 쓴 test는 ONNX Runtime 2회(그때의 최종 후보 O-AB, 그 뒤 최종 모델 P2)와 Hailo 1회이며, 매번 평가할 파일·판정 기준을 test 전에 커밋해 고정했다. O-AB 대신 P2를 쓰기로 한 결정은 dev와 지연·메모리만 보고 했다(부록 D).
 - **결과 전 고정과 3단계 검증**: 판정 기준·주 조건(4스레드)은 결과를 보기 전에 결과 폴더 README에 적어 커밋했다(O-A·O-B 기준표는 평가 시작 38초 뒤, 결과를 보기 전에 커밋). 결과마다 자기 검증 → 다른 경로 재계산 → 맥락을 모르는 검토자 확인을 거쳤다(`siglip2/VERIFICATION.md`).
 - **통계**: 같은 사진끼리 짝지은 부트스트랩(데이터셋별 층화, 1,000회, 시드 0)으로 95% 구간을 냈다. 구간이 0을 포함하지 않으면 "유의"로 본다.
 - **흔들림 점검**: 보정 시드 0·1·2에서 dev −0.79 / −0.80 / −0.70%p(M2rot, i7 노트북, 시드끼리 유의한 차이 없음). 입력 변형 8종(변형 없음·좌우 반전·90도 회전·흑백·어둡게·저대비·잡음·JPEG 20, 고화질 5종 × 200장, 같은 변형의 FP32 대비)에서 **제출 P2는 90도 회전만 작지만 유의한 손실(−1.5 [−2.8, −0.1])**이고 나머지 7종은 유의한 손실이 없다(−0.6 ~ +0.8%p). 비교로 그래프 최적화 전 구성(M2rot)은 흑백 −3.5·90도 회전 −2.2, 예전 방식(블록 5·9 fc2만 FP32)은 흑백 −9.0으로 유의한 손실을 보였다.
@@ -268,7 +268,7 @@ dev R/G8_candidates/b32/p2/dev_full, test R/G8_candidates/b32/test_p2, 입력 �
 - **공개 데이터셋만** 쓰고, 실행 때 Hugging Face Hub·torchvision에서 자동으로 받는다(`rn50/datasets.py`, 사진 선택 규칙 포함).
 - **소규모 평가 묶음**: dev 6종 × 200장(전처리 끝난 256×256 입력, 정답, FP32 텍스트 분류기, FP32 임베딩) + numpy·onnxruntime만 쓰는 `portable_eval.py` + FP32·제출 모델 + sha256 목록. 몇 분이면 돈다(9.2 (가)).
 - **모델 파일·sha256 공개**: FP32 `be19a8ad…`, 제출 P2 `e465d10d…`. 제출 파일을 만든 순서의 중간 파일(회전·레지스터 캐시를 넣은 FP32 `23236123…` → SkipLayerNorm 융합 → 양자화 O-AB → GELU 융합 → 패치 임베딩 정수화 P2)도 모두 팀 Release에 있다(8장). 마지막 그래프 변환은 세 PC에서 sha가 같은 파일을 만들었다. 실행 환경에 따라 사진 몇 장 결과가 다를 수 있어(7.1-3·4) 사진별 예측도 함께 낸다.
-- **깨끗한 폴더 재현 확인**: 빈 폴더에 제출 Release만 받아 sha256 15개를 확인하고 `portable_eval.py --no-mem-pattern`을 실행하면, FP32·P2의 사진별 예측·cos가 Release 안 기준 결과와 비트 단위로 같았다. 새 clone·새 가상환경에서 dev 캐시부터 다시 만들어도 dev 전체 사진별 예측이 같았다(이전 제출 파일 O-AB 기준, 9.1).
+- **깨끗한 폴더 재현 확인**: 빈 폴더에 제출 Release만 받아 sha256 15개를 확인하고 `portable_eval.py --no-mem-pattern`을 실행하면, FP32·P2의 사진별 예측·cos가 Release 안 기준 결과와 비트 단위로 같았다. 새 clone·새 가상환경에서 dev 캐시부터 다시 만들어도 dev 전체 사진별 예측이 같았다(전 단계 모델 O-AB 기준, 9.1).
 - **다른 CPU 재현**: 같은 묶음(1,200장)을 x86 두 대(i7-1165G7 AVX-512 VNNI, Core Ultra 9 285K AVX-VNNI)와 ARM(Jetson AGX Orin)에서 사진별로 비교했다. FP32는 세 대 모두 같았고, 제출 P2는 x86 두 대 사이 1장, ARM과 4~5장(0.4%)이 달랐다(고화질 평균 Δ i7 +0.4, 285K·AGX +0.3%p). dev 전체는 x86 세 대(i7, 258V, 285K)에서 89.91 / 89.87 / 89.87%다.
 - **채점은 배포한 ONNX 파일로** 한다. 처음부터 다시 만들면 PC마다 float64 행렬 곱 반올림이 달라 회전 행렬부터 파일이 달라진다(같은 레시피 두 PC dev −0.79 / −0.87).
 
@@ -289,7 +289,7 @@ dev R/G8_candidates/b32/p2/dev_full, test R/G8_candidates/b32/test_p2, 입력 �
 
 ### 6.5 측정 결과
 
-**정확도 — test** (제출 파일 P2로 1회, `b32/test_p2`. 교체 전 O-AB test는 참고로 함께)
+**정확도 — test** (제출 모델 P2로 1회, `b32/test_p2`. 전 단계 후보 O-AB의 test 1회 결과를 참고로 함께)
 
 | 데이터셋 | FP32 | 최적화 후 (P2) | Δ (%p) [95%] | cos | (참고) O-AB Δ |
 |---|---|---|---|---|---|
@@ -388,10 +388,10 @@ dev R/G8_candidates/b32/p2/dev_full, test R/G8_candidates/b32/test_p2, 입력 �
 | 7 | 실행 방법 README | `siglip2/README.md` (v5, P2 기준) | □ |
 | 8 | 데이터셋 경로 또는 다운로드 방법 | 실행 때 자동 다운로드(`rn50/datasets.py`, 출처 6.1). 소규모 묶음 dev 6종 × 200장 | □ |
 
-- 모델 파일·묶음은 GitHub Release `siglip2-b32-p2-submit-20261027`로 낸다(제출 때 정식 Release로 바꾼다). FP32·제출 P2·소규모 묶음·`portable_eval.py`·기준 결과와 사진별 예측·`SHA256SUMS.txt`와 함께 다음이 있다.
+- 모델 파일·묶음은 GitHub Release `siglip2-b32-p2-submit-20261027`로 낸다. FP32·제출 P2·소규모 묶음·`portable_eval.py`·기준 결과와 사진별 예측·`SHA256SUMS.txt`와 함께 다음이 있다.
   - **본선 이식용 바탕** `siglip2_image_fp32_g6b_b32_m2rot.onnx`(`23236123…`): 제출 P2와 같은 모델의 표준 연산 FP32, 본선 HEF 바탕과 가중치가 비트 단위로 같음(3.3)
   - 비상 대체 INT8 `3a46ae8a…`: 표준 연산만 씀(7.1-2)
-  - 제출 파일을 만든 중간 파일은 이전 Release `siglip2-b32-submit-20261023`(SkipLayerNorm 융합 `79e797c1…`, `506e9fe4…`, O-AB `7a01044c…`)와 `siglip2-p2-20261027`(GELU 융합 `03f4de18…`)에 있다(6.3)
+  - 제출 파일을 만든 중간 파일(SkipLayerNorm 융합 `79e797c1…`, `506e9fe4…`, O-AB `7a01044c…`, GELU 융합 `03f4de18…`)은 같은 저장소의 개발용 Release에 sha256과 함께 보관한다(6.3)
 - 저장소가 비공개라 학술부 접근(초대 또는 공개 링크)을 준비하고 심사 종료(11/5)까지 유지한다.
 
 ---
@@ -414,7 +414,7 @@ mkdir -p $SIGLIP2_ARTIFACTS/onnx && cp release/*.onnx $SIGLIP2_ARTIFACTS/onnx/
 ```
 - Windows(PowerShell)는 `export` 대신 `$env:S2_MODEL_ID="..."` 형식이다.
 - **`S2_MODEL_ID`를 꼭 지정한다.** 지정하지 않으면 코드가 B/16(224)으로 동작한다.
-- 확인 기록: 새 clone·새 가상환경(Python 3.11.9 + requirements)에서 이 절과 9.2 (가)·(나)를 그대로 실행해 사진별 예측이 기존 결과와 비트 단위로 같았다(이전 제출 파일 기준). 제출 P2는 9.2 (가)를 빈 폴더에서 실행해 같은 확인을 했다(6.3).
+- 확인 기록: 새 clone·새 가상환경(Python 3.11.9 + requirements)에서 이 절과 9.2 (가)·(나)를 그대로 실행해 사진별 예측이 기존 결과와 비트 단위로 같았다(전 단계 모델 O-AB 기준). 제출 P2는 9.2 (가)를 빈 폴더에서 실행해 같은 확인을 했다(6.3).
 
 ### 9.2 벤치마크 실행 명령
 
@@ -479,7 +479,7 @@ python scripts/cross_latency.py --no-mem-pattern --out out_speed --mem \
 2. A. Radford et al., "Learning Transferable Visual Models From Natural Language Supervision," ICML 2021 (arXiv:2103.00020). — CLIP, 제로샷 프롬프트 템플릿
 3. T. Darcet, M. Oquab, J. Mairal, P. Bojanowski, "Vision Transformers Need Registers," ICLR 2024 (arXiv:2309.16588). — 고정 위치 high-norm 토큰
 4. M. Sun, X. Chen, J. Z. Kolter, Z. Liu, "Massive Activations in Large Language Models," COLM 2024 (arXiv:2402.17762). — 거대 활성값
-5. S. Kim et al., "Activation Quantization of Vision Encoders Needs Prefixing Registers," arXiv:2510.04547, 2025. — RegCache, 레지스터 캐시(M2)의 바탕
+5. S. Kim, T. Yeom, J. Kim, W. Park, K. Kim, J. Lee, "Activation Quantization of Vision Encoders Needs Prefixing Registers," ECCV 2026 (arXiv:2510.04547). — RegCache, 레지스터 캐시(M2)의 바탕
 6. N. Jiang, A. Dravid, A. Efros, Y. Gandelsman, "Vision Transformers Don't Need Trained Registers," NeurIPS 2025 (arXiv:2506.08010). — 학습 없이 register 역할 옮기기
 7. S. Ashkboos et al., "QuaRot: Outlier-Free 4-Bit Inference in Rotated LLMs," NeurIPS 2024 (arXiv:2404.00456). — 무작위 Hadamard 회전
 8. Z. Liu et al., "SpinQuant: LLM Quantization with Learned Rotations," ICLR 2025 (arXiv:2405.16406). — 회전으로 이상치 퍼뜨리기
@@ -493,20 +493,19 @@ python scripts/cross_latency.py --no-mem-pattern --out out_speed --mem \
 14. L. Bossard, M. Guillaumin, L. Van Gool, "Food-101 – Mining Discriminative Components with Random Forests," ECCV 2014. — Food-101
 15. L. Fei-Fei, R. Fergus, P. Perona, "Learning Generative Visual Models from Few Training Examples," CVPR Workshops 2004. — Caltech-101
 16. A. Krizhevsky, "Learning Multiple Layers of Features from Tiny Images," Tech. Report, 2009. — CIFAR-100
-17. B. Recht et al., "Do ImageNet Classifiers Generalize to ImageNet?," ICML 2019 (arXiv:1902.10811). — ImageNetV2
+17. B. Recht, R. Roelofs, L. Schmidt, V. Shankar, "Do ImageNet Classifiers Generalize to ImageNet?," ICML 2019 (arXiv:1902.10811). — ImageNetV2
 
 **도구**
 18. ONNX Runtime 1.25.0 (Microsoft), https://onnxruntime.ai — 정적 양자화, CPU 정수 커널, `SkipLayerNormalization` 융합
 19. Hailo Dataflow Compiler 5.4.0 · HailoRT 5.3.0 · Hailo Model Zoo, https://hailo.ai
 20. OpenCLIP 3.3.0 / timm 1.0.30 — 모델 불러오기·export
 
-[확인 필요: 5번 학회 채택 여부, 9~17번 서지 정보를 PDF 전에 한 번씩 확인]
 
 ## 부록 B. 결정·실험 기록 위치
 
 | 내용 | 위치 |
 |---|---|
-| 제출 모델·파일 결정 | `siglip2/DECISIONS.md` D-048, D-049, 본선 HEF D-050·O-A Hailo 대응 D-051 (문안: 준용 `siglip2/b32-hef-test` `results/siglip2/B32_hef_test/README.md` B-1), 제출 파일 P2로 교체 D-052 (교체 확인 `results/siglip2/G8_candidates/b32/p2/README.md`) |
+| 제출 모델·파일 결정 | `siglip2/DECISIONS.md` D-048, D-049, 본선 HEF D-050·O-A Hailo 대응 D-051 (문안: 준용 `siglip2/b32-hef-test` `results/siglip2/B32_hef_test/README.md` B-1), 최종 모델 P2 결정 D-052 (판정 기록 `results/siglip2/G8_candidates/b32/p2/README.md`) |
 | E14 (F2·P2) | 정민 `jungmin/e14-graph` `results/E14-2_GELU융합`, `results/E14-4_패치임베딩MatMul`, `e14/README_E14.md` / 준용 재현 `exp/E14-junyong`, ARM `exp/E14-arm-junyong` |
 | B/32 CPU 실험 전체 | `results/siglip2/G8_candidates/b32/` (README, G3RQ, block0, O_AB, submit_prep, test, xplat) |
 | 지연·메모리 원자료·이상치 규칙 | `results/siglip2/G8_candidates/latency_this_pc/` (대표 `b32_p2_c3_20261027`, 같은 날 기본 세션 `b32_p2_20261027`, 이전 단계 `b32_cool_20261023`), `b16/O_AB/README.md` 2·3절, 메모리 설정 `b32/submit_prep/mem_pattern` |
@@ -521,7 +520,7 @@ python scripts/cross_latency.py --no-mem-pattern --out out_speed --mem \
 
 ## 부록 D. test 사용 이력
 
-- 제출 모델 B/32: ORT 2회 — 당시 제출 파일 O-AB 1회(10/22, `results/siglip2/G8_candidates/b32/test`), 교체한 P2 1회(10/27, `b32/test_p2`). Hailo 본선 HEF GF와 비교용 Zoo HEF 1회(10/24, 준용 `B32_hef_test` B절). ORT는 제출 파일(D-049, D-052)을, Hailo는 판정 기준·HEF 선택을 test 전에 커밋해 고정했고, 결과로 구성을 바꾸지 않았다. O-AB → P2 교체는 dev 정확도와 지연·메모리만으로 test 전에 확정했고, P2 test 결과와 상관없이 되돌리지 않기로 미리 정했다.
+- B/32: ORT 2회 — 그때의 최종 후보 O-AB 1회(10/22, `results/siglip2/G8_candidates/b32/test`), 최종 모델 P2 1회(10/27, `b32/test_p2`). Hailo 본선 HEF GF와 비교용 Zoo HEF 1회(10/24, 팀원 신준용 `B32_hef_test` B절). ORT는 평가할 파일(D-049, D-052)을, Hailo는 판정 기준·HEF 선택을 test 전에 커밋해 고정했고, 결과로 구성을 바꾸지 않았다. O-AB 대신 P2를 쓰기로 한 결정은 dev 정확도와 지연·메모리만으로 test 전에 했고, P2 test 결과와 상관없이 되돌리지 않기로 미리 정했다.
 - 개발 초기 B/16 단계 이력: 그 당시 후보 2개(fc2 보호 구성 `5eee7839…`, 10/16~17 `results/siglip2/G6_test`; 회전+M2 `e84c3727…`, 10/19 `results/siglip2/G6_m2rot_ort`)로 각 1회. 제출 모델을 B/32로 정한 결정(D-048)은 이 두 test 뒤에 했지만 근거는 dev와 실칩 dev 결과뿐이다.
 
 ## 부록 E. Hailo-10H 실칩 확인 (본선 준비)
