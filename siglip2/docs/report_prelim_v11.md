@@ -34,14 +34,14 @@ docx 변환: siglip2/scripts/report_md2docx.py (그림은 ![캡션](파일) 줄�
 | 정확도 — Top-1, 고화질 5종 (test) | 88.51% | 88.30% | **−0.20%p** [95% 구간 −0.33, −0.07] |
 | 정확도 — Top-1, 고화질 5종 (dev) | 89.96% | 89.91% | −0.05%p [−0.41, +0.33] |
 
-¹ 세션 6번 각각에서 구한 FP32 대비 비율의 중앙값이다. 지연 중앙값끼리 나누면 4스레드 −64.0%로 조금 다르다. 같은 노트북에서도 측정할 때마다 4스레드 비율이 −58~−65% 사이에서 흔들려서 범위를 함께 적었다(7.1). 파라미터 수가 거의 그대로인 것은 가중치를 지우지 않고 INT8로 바꿨기 때문이다.
+¹ 세션 6번 각각에서 구한 FP32 대비 비율의 중앙값이다. 지연 중앙값끼리 나누면 4스레드 −64.0%로 조금 다르다. 같은 노트북에서도 측정할 때마다 4스레드 비율이 −58~−65% 사이에서 흔들려서 범위를 함께 적었다(7.1). 파라미터 수는 ONNX 파일의 가중치(initializer) 원소 수로 셌다. P2는 행렬곱 가중치 94.37M을 INT8로, 편향·LayerNorm 등 나머지는 float으로 저장한다. 가중치를 지우지 않고 INT8로 바꿨기 때문에 개수는 거의 그대로이고, 레지스터 캐시 상수 0.02M이 더해지고 회전으로 LayerNorm 계수 0.04M이 가중치에 흡수돼 조금 줄었다.
 
 **요약.**
 - SigLIP2 B/32의 이미지 인코더를 재학습 없이 INT8 정적 사후 양자화(PTQ)로 최적화했다.
 - 처음에 단순하게 INT8로 바꿨을 때는 정확도가 61%p나 떨어졌다. 원인을 추적해 보니 특정 위치의 토큰 두 개가 아주 큰 활성값을 만들고 있었고, 이를 레지스터 캐시와 Hadamard 회전으로 해결했다.
 - 그 뒤 ONNX Runtime의 정수 커널에 맞게 그래프를 네 군데 고쳐서 속도를 더 끌어올렸다. 패치 임베딩을 포함한 행렬곱 80개를 모두 INT8로 바꿨다.
 - 결과적으로 크기 −74.7%, 지연 4스레드 −62.9%·1스레드 −68.0%, 메모리 −63.4%를 얻었고, test 정확도 손실은 0.20%p였다.
-- 본선 기기인 Hailo-10H에서도 같은 모델을 미리 돌려 보았다. Hailo가 공개한 같은 모델의 HEF보다 지연은 9.5% 짧고 test 정확도는 2.73%p 높았다(부록 B).
+- 본선 기기인 Hailo-10H에서도 같은 모델을 미리 돌려 보았다(호스트 Jetson AGX Orin). Hailo가 공개한 같은 모델의 HEF보다 지연은 9.5% 짧고 test 정확도는 2.73%p 높았다(부록 B).
 
 ## 3. 대상 모델 및 선정 사유
 
@@ -53,7 +53,7 @@ docx 변환: siglip2/scripts/report_md2docx.py (그림은 ![캡션](파일) 줄�
 | 모델 유형 | 멀티모달(이미지-텍스트 대조 학습). 이 중 이미지 인코더를 최적화 |
 | 저장소 URL | 코드: https://github.com/jungminmobile/oslab_mobile (비공개 저장소, 심사 기간 동안 학술부에 접근 권한 제공) / 원 모델: https://huggingface.co/timm/ViT-B-32-SigLIP2-256 |
 | 커밋 해시 또는 릴리스 태그 | 코드: 제출 시점 main 커밋의 태그 `prelim-submit` / 모델 파일: Release `siglip2-b32-p2-submit-20261027` |
-| 사전학습 가중치 출처 | Google SigLIP2 [1] 공개 가중치의 timm/open_clip 변환본 (Hugging Face) |
+| 사전학습 가중치 출처 | Google SigLIP2 [1] 공개 가중치의 timm/open_clip 변환본 (Hugging Face `timm/ViT-B-32-SigLIP2-256`, revision `cd1efb47643f2794413dd79ef24397c175032780`) |
 | 라이선스 | Apache-2.0 (Hugging Face 모델 카드) |
 
 모델은 32×32 패치로 사진을 잘라 토큰 64개를 만들고, 폭 768의 Transformer 블록 12개를 거쳐 768차원 임베딩을 낸다. 파라미터는 94,552,320개, 연산량은 11.50 GFLOPs다. 텍스트 쪽은 클래스 이름 임베딩을 FP32로 한 번만 계산해 두면 되므로, 기기에서 사진마다 실행되는 이미지 인코더만 양자화했다.
@@ -194,7 +194,7 @@ docx 변환: siglip2/scripts/report_md2docx.py (그림은 ![캡션](파일) 줄�
 
 ### 6.3 재현 가능성 확보 방안
 
-- 데이터셋은 모두 공개 데이터다. 대부분은 실행하면 Hugging Face와 torchvision에서 자동으로 받고, ImageNetV2만 스크립트(`siglip2/scripts/test_g6.sh`)로 따로 받는다. 어떤 사진을 dev로 쓸지는 이미지 해시로 정해서 누가 돌려도 같다.
+- 데이터셋은 모두 공개 데이터다. 대부분은 실행하면 Hugging Face와 torchvision에서 자동으로 받고, ImageNetV2만 9.2 (다)의 curl 명령으로 따로 받는다. 어떤 사진을 dev로 쓸지는 이미지 해시로 정해서 누가 돌려도 같다.
 - 전체 데이터를 받지 않아도 되도록 **소규모 평가 묶음**을 만들었다. dev 6종 × 200장(전처리 끝난 입력과 정답, FP32 텍스트 분류기)과 numpy·onnxruntime만 쓰는 스크립트 `portable_eval.py`를 Release에 함께 넣어서, 몇 분 안에 FP32와 P2를 비교할 수 있다(9.2 (가)).
 - 모델 파일은 sha256과 함께 공개했다(FP32 `be19a8ad…`, P2 `e465d10d…`). 빈 폴더에 Release만 받아서 실행해 보니 사진별 예측까지 기준 결과와 비트 단위로 같았다.
 - 다른 CPU에서도 돌려 보았다. i7 노트북에서 이 묶음의 결과는 FP32 고화질 88.9%, P2 차이 +0.4%p, 코사인 유사도 0.9884였다. 같은 1,200장에서 FP32는 x86 두 대와 ARM 한 대에서 모두 같았고, P2는 x86 두 대 사이에서 1장, ARM과는 4~5장(0.4%)이 달랐다. 정수 커널의 반올림 차이로 보인다. 그래서 i7 노트북의 사진별 예측 파일도 함께 냈다.
@@ -301,6 +301,7 @@ dev 전체에서는 FP32 89.96%, P2 89.91%로 차이가 −0.05%p [−0.41, +0.3
 ```bash
 git clone https://github.com/jungminmobile/oslab_mobile.git
 cd oslab_mobile
+git checkout prelim-submit
 python -m venv .venv
 # Windows: .venv\Scripts\activate    Linux/macOS: source .venv/bin/activate
 python -m pip install -r siglip2/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
@@ -330,8 +331,10 @@ RN50_RESULTS=../results/siglip2/repro_b32_dev python s2_paired_ci.py --models \
   e14_4_P2_patch_int8.onnx
 ```
 
-**(다) 전체 정확도: test 7종** (FP32는 항상 함께 실행)
+**(다) 전체 정확도: test 7종** (FP32는 항상 함께 실행. 첫 두 줄은 ImageNetV2 다운로드, 약 1.3 GB)
 ```bash
+mkdir -p $SIGLIP2_DATA/extra
+curl -L -o $SIGLIP2_DATA/extra/imagenetv2-mf.tar https://huggingface.co/datasets/vaishaal/ImageNetV2/resolve/main/imagenetv2-matched-frequency.tar.gz
 for s in pets caltech flowers cars food cifar_test imagenetv2; do
   RN50_RESULTS=../results/siglip2/repro_b32_test python s2_test_eval.py $s --threads 4 \
     --models e14_4_P2_patch_int8.onnx
@@ -353,7 +356,7 @@ python scripts/cross_latency.py --no-mem-pattern --out out_speed --mem \
 | (가) | `out_quick/result.json` | 고화질 5종 × 200장에서 FP32 88.9%, P2 차이 +0.4%p, 코사인 유사도 0.9884 (다른 x86에서는 사진 1장, ARM에서는 4~5장 다를 수 있음) | 6.3 |
 | (나) | `paired_ci.jsonl` | FP32 89.96%, P2 89.91% (−0.05%p) | 2, 6.5 |
 | (다) | `test_summary.json` | 고화질 평균 88.51 → 88.30% (−0.20%p), CIFAR-100 +0.57, ImageNetV2 −0.43 | 2, 6.5 |
-| (라) | `out_speed/cross_latency.json` | FP32 대비 4스레드 약 −63%(−58~−65%), 1스레드 약 −68%, 메모리 약 −63%, 크기 −74.7% | 2, 6.5 |
+| (라) | `out_speed/cross_latency.json` | i7 노트북 기준 FP32 대비 4스레드 약 −63%(−58~−65%), 1스레드 약 −68%, 메모리 약 −63%, 크기 −74.7%. 개선율은 CPU 종류·코어 수에 따라 이 범위를 벗어날 수 있다 | 2, 6.5 |
 
 ### 9.4 재현 시 유의사항
 
@@ -361,7 +364,7 @@ python scripts/cross_latency.py --no-mem-pattern --out out_speed --mem \
 2. 제출 모델에 onnxruntime 전용 연산이 있으므로 onnxruntime 1.25.0으로 실행해 주십시오.
 3. 입력은 0~255 픽셀을 /127.5 − 1 한 값(open_clip 기본 전처리)이어야 패치 임베딩의 입력 양자화에 오차가 생기지 않습니다. CPU 종류에 따라 사진 몇 장의 결과가 다를 수 있습니다(7.1). 비교용으로 i7 노트북의 사진별 예측 파일을 Release에 넣었습니다.
 4. 지연은 절대값보다 FP32와 같은 실행에서 잰 비율로 봐 주십시오. 노트북은 충전기를 연결하고 고성능 모드에서 다른 프로그램 없이 재는 것이 좋습니다.
-5. 처음 실행할 때 Hugging Face 모델 가중치를 한 번 받고, ImageNetV2는 `siglip2/scripts/test_g6.sh`로 받습니다. dev 캐시 생성에 1~2시간, test 7종에 약 3시간이 걸리고, 디스크는 약 20 GB가 필요합니다. 빠르게 확인하려면 9.2 (가)를 써 주십시오. GPU는 필요 없습니다.
+5. 처음 실행할 때 Hugging Face 모델 가중치를 한 번 받고, ImageNetV2는 9.2 (다)의 curl 명령으로 받습니다. dev 캐시 생성에 1~2시간, test 7종에 약 3시간이 걸리고, 디스크는 약 20 GB가 필요합니다. 빠르게 확인하려면 9.2 (가)를 써 주십시오. GPU는 필요 없습니다.
 
 ## 부록 A. 참고 문헌
 

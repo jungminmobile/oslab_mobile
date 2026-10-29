@@ -1,9 +1,9 @@
 # SigLIP2 ViT-B/32 이미지 인코더 양자화 — 재현 방법
 
-대회 안내 4.2절 "재현용 코드 및 실행 환경"과 예선 결과보고서 9장에 해당하는 문서다 (v5, 2026-10-27 — 제출 모델 B/32 P2, D-048·D-052).
+대회 안내 4.2절 "재현용 코드 및 실행 환경"과 예선 결과보고서 9장에 해당하는 문서다 (v6, 2026-10-29 — 제출 모델 B/32 P2, D-048·D-052, 보고서 `siglip2/docs/report_prelim_v11.md`).
 실험 기록·결정은 `ROADMAP.md`, `DECISIONS.md`, `PROGRESS.md`, 결과는 루트 `results/siglip2/`에 있다.
 
-> **제출 모델 = SigLIP2 B/32 P2** (D-048·D-052): 레지스터 캐시 M2 + 회전 + O-A(MatMul 출력 재반올림 생략) + O-B(SkipLayerNorm 융합) + F2(GELU → FastGelu) + 패치 임베딩 정수화(정민 E14). 패치 임베딩을 포함한 행렬곱 80개 전부 INT8. 바로 전 단계 모델은 O-AB(`7a01044c…`, D-049)다. B/32의 test는 ORT 2회(그때의 최종 후보 O-AB 10/22 `results/siglip2/G8_candidates/b32/test`, 최종 모델 P2 10/27 `b32/test_p2`), 본선 HEF로 Hailo 1회(준용 `B32_hef_test`) 썼다. O-AB 대신 P2를 쓰기로 한 결정은 test 전에 dev·지연·메모리로 했다(`b32/p2/README.md`). 개발 초기 B/16 단계 이력은 보고서 부록 E.
+> **제출 모델 = SigLIP2 B/32 P2** (D-048·D-052): 레지스터 캐시 M2 + 회전 + O-A(MatMul 출력 재반올림 생략) + O-B(SkipLayerNorm 융합) + F2(GELU → FastGelu) + 패치 임베딩 정수화(정민 E14). 패치 임베딩을 포함한 행렬곱 80개 전부 INT8. 바로 전 단계 모델은 O-AB(`7a01044c…`, D-049)다. B/32의 test는 ORT 2회(그때의 최종 후보 O-AB 10/22 `results/siglip2/G8_candidates/b32/test`, 최종 모델 P2 10/27 `b32/test_p2`), 본선 HEF로 Hailo 1회(준용 `B32_hef_test`) 썼다. O-AB 대신 P2를 쓰기로 한 결정은 test 전에 dev·지연·메모리로 했다(`b32/p2/README.md`). 개발 초기 B/16 단계의 test 이력은 보고서 6.2.
 > **본선 Hailo HEF**: 같은 PyTorch 모델(같은 회전 행렬·sink 규칙·M2 상수)에서 배치 1로 export한 FP32를 Hailo DFC로 컴파일한다. 본선 HEF는 GF로 정했다(D-050). ALL8F는 절제 실험이다 (준용 G6d·G6f·B32_hef_test).
 > **채점·재현은 배포한 ONNX 파일로 한다.** 다른 PC에서 다시 만들면 파일이 달라진다 (3절, 7절).
 > **onnxruntime으로 실행한다.** 제출 모델에 `com.microsoft` 연산(SkipLayerNormalization 24, FastGelu 13)이 있다. 학술부 답(10/27): 채점은 팀이 낸 실행 스크립트로 한다.
@@ -49,6 +49,7 @@ python release/portable_eval.py --data release --out out_quick --threads 4 --no-
 
 ```bash
 git clone https://github.com/jungminmobile/oslab_mobile.git && cd oslab_mobile
+git checkout prelim-submit                                  # 제출 시점 코드
 python -m venv .venv && source .venv/bin/activate          # Windows: .venv\Scripts\activate
 python -m pip install -r siglip2/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
 export S2_MODEL_ID=hf-hub:timm/ViT-B-32-SigLIP2-256        # 꼭 지정 (없으면 B/16 224로 동작)
@@ -84,13 +85,15 @@ RN50_RESULTS=../results/siglip2/repro_b32_dev python s2_paired_ci.py --models e1
 ## 5. 정확도 — test (최종 1회)
 
 ```bash
+mkdir -p $SIGLIP2_DATA/extra                                # ImageNetV2 matched-frequency (약 1.3 GB)
+curl -L -o $SIGLIP2_DATA/extra/imagenetv2-mf.tar https://huggingface.co/datasets/vaishaal/ImageNetV2/resolve/main/imagenetv2-matched-frequency.tar.gz
 for s in pets caltech flowers cars food cifar_test imagenetv2; do
   RN50_RESULTS=../results/siglip2/repro_b32_test python s2_test_eval.py $s --threads 4 \
     --models e14_4_P2_patch_int8.onnx
 done
 RN50_RESULTS=../results/siglip2/repro_b32_test python s2_test_summary.py
 ```
-- test 7종: Oxford Pets·Flowers-102·Stanford Cars·Food-101·Caltech-101 공식 test 전체, CIFAR-100 test(1만), ImageNetV2 matched-frequency(1만, `scripts/test_g6.sh`가 받음).
+- test 7종: Oxford Pets·Flowers-102·Stanford Cars·Food-101·Caltech-101 공식 test 전체, CIFAR-100 test(1만), ImageNetV2 matched-frequency(1만, 위 curl 명령으로 받음).
 - 기대값: 고화질 5종 평균 FP32 88.51% → 88.30%, Δ **−0.20 [−0.33, −0.07]%p**. CIFAR-100 +0.57, ImageNetV2 −0.43%p (`results/siglip2/G8_candidates/b32/test_p2`). (전 단계 모델 O-AB: 88.28%, Δ −0.23 [−0.36, −0.08]%p, P2 − O-AB +0.02 [−0.10, +0.15])
 - 시간: 4코어 노트북에서 약 3시간 15분 (FP32와 INT8을 함께 잼, ImageNetV2 불러오기 약 30분 포함). 데이터셋마다 `done_<set>.json`이 있으면 다시 돌지 않는다.
 
