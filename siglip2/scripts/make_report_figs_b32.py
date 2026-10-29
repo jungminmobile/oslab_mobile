@@ -70,9 +70,9 @@ day = sessions(L / "all8_20261022/cross_latency.json") + sessions(L / "all8_2026
 # 대표값 = 10/27 저녁 C3 두 실행 합침(6세션 비율 중앙값, 메모리 두 실행 평균 — 2회째 전에 정한 규칙, 39a6710). 기본 세션 P2, 이전 단계 O-AB는 재현 범위
 C3a, C3b = L / "b32_p2_c3_20261027/cross_latency.json", L / "b32_p2_c3b_20261027/cross_latency.json"; DF = L / "b32_p2_20261027/cross_latency.json"
 C3 = (C3a, C3b)
-runs = {"P2 (제출), 10/27 저녁 C3 두 실행 합침": (ratios(sessions(C3a) + sessions(C3b), "b32_p2", "b32_fp32"), C3, "b32_p2"),
+runs = {"P2 (제출 모델), 10/27 저녁 두 실행 합침": (ratios(sessions(C3a) + sessions(C3b), "b32_p2", "b32_fp32"), C3, "b32_p2"),
         "P2, 10/27 오후 기본 세션": (ratios(sessions(DF), "b32_p2", "b32_fp32"), DF, "b32_p2"),
-        "O-AB (이전 단계), 10/27 저녁 C3 두 실행 합침": (ratios(sessions(C3a) + sessions(C3b), "b32_oab", "b32_fp32"), C3, "b32_oab"),
+        "O-AB (전 단계 모델), 10/27 저녁 두 실행 합침": (ratios(sessions(C3a) + sessions(C3b), "b32_oab", "b32_fp32"), C3, "b32_oab"),
         "O-AB, 10/23 새벽 기본 세션": (ratios(sessions(L / "b32_cool_20261023/cross_latency.json"), "b32_oab", "b32_fp32"), L / "b32_cool_20261023/cross_latency.json", "b32_oab")}
 f3 = {}
 for name, (lat, p, key) in runs.items():
@@ -94,7 +94,7 @@ for i, (name, v) in enumerate(f3.items()):
 ax.set_xticks(range(len(items)), items)
 ax.set_ylabel("FP32 대비 변화율 (%)")
 ax.set_ylim(-82, 0)
-ax.set_title("SigLIP2 B/32 제출 모델 P2의 FP32 대비 개선율 — 이 PC(i7-1165G7), 같은 실행 번갈아, 배치 1", fontsize=8.5)
+ax.set_title("SigLIP2 B/32 제출 모델 P2의 FP32 대비 개선율 — i7-1165G7 노트북, 같은 실행 번갈아, 배치 1", fontsize=8.5)
 ax.legend(fontsize=7, frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.12), ncol=2)
 fig.tight_layout()
 fig.savefig(OUT / "F3b_improvement_b32.png")

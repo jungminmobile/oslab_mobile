@@ -1,6 +1,6 @@
 """report_prelim_v9.md -> 대회 양식 docx (양식의 서식·표 모양을 그대로 따라 본문을 새로 만든다).
 사용: python md2docx.py <md> <template.docx> <figs_dir> <out.docx> <teaminfo.json>
-팀 정보(teaminfo.json: name, members[], contact, date)는 전화번호가 들어가므로 저장소 밖에 둔다. PDF 변환은 Word(COM)로 한다.
+팀 정보(teaminfo.json: name, members[], contact, date)는 전화번호가 들어가므로 저장소 밖에 둔다. PDF 변환은 Word(COM)로 한다. 그림은 md의 ![캡션](파일) 줄로 넣는다.
 """
 import json, re, shutil, struct, sys, zipfile
 from xml.sax.saxutils import escape
@@ -32,6 +32,7 @@ FIG_AFTER = {  # 이 문자열로 시작하는 블록 뒤에 그림
     "| 모델 크기 (MB) | 378.36 | 95.65 | **−74.7** |": ("F3b_improvement_b32.png", "그림 4. 제출 모델 P2의 FP32 대비 개선율 (i7 노트북, FP32와 같은 실행에서 번갈아 측정)"),
     "- 지연은 Z·G·GF·ALL8F가": ("F5_hailo_b32.png", "그림 5. Hailo-10H 실칩 배치 1 지연과 dev 정확도 (같은 세션)"),
 }
+FIG_AFTER = {}  # v11부터는 md의 ![캡션](파일) 줄로 그림을 넣는다 (위 목록은 v9·v10용)
 BOX = {"3.2", "3.3", "5.3", "6.2", "6.3", "6.6", "7.1", "9.1", "9.2", "9.3", "9.4"}
 
 # ---------- 블록 파싱 ----------
@@ -46,6 +47,9 @@ def parse(lines):
             while not lines[j].startswith("```"):
                 buf.append(lines[j]); j += 1
             out.append(("code", buf)); i = j + 1; continue
+        m = re.match(r"^!\[(.*)\]\((.*)\)\s*$", ln)
+        if m:  # ![캡션](그림 파일)
+            out.append(("fig", (m.group(2), m.group(1)))); i += 1; continue
         if ln.startswith("|"):
             rows = []
             while i < len(lines) and lines[i].startswith("|"):
@@ -68,7 +72,7 @@ def parse(lines):
                 i += 1
             out.append(("list", items)); continue
         buf = [ln.strip()]; i += 1
-        while i < len(lines) and lines[i].strip() and not re.match(r"^(\s*)([-*]|\d+\.)\s|^\||^```|^#", lines[i]):
+        while i < len(lines) and lines[i].strip() and not re.match(r"^(\s*)([-*]|\d+\.)\s|^\||^```|^#|^!\[", lines[i]):
             buf.append(lines[i].strip()); i += 1
         out.append(("para", " ".join(buf)))
     return out
