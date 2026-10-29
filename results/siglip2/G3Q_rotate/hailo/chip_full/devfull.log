@@ -1,0 +1,29 @@
+start 15:28:02 load=0.81 0.34 0.13
+D_D256L1 cifar_A (1000, 768) 51s
+D_D256L1 pets_dev (990, 768) 107s
+D_D256L1 flowers_dev (957, 768) 160s
+D_D256L1 cars_dev (967, 768) 215s
+D_D256L1 food_dev (985, 768) 270s
+D_D256L1 caltech_dev (1024, 768) 327s
+rothad_D256L1 cifar_A (1000, 768) 58s
+rothad_D256L1 pets_dev (990, 768) 114s
+rothad_D256L1 flowers_dev (957, 768) 169s
+rothad_D256L1 cars_dev (967, 768) 224s
+rothad_D256L1 food_dev (985, 768) 280s
+rothad_D256L1 caltech_dev (1024, 768) 338s
+{"round": 1, "model": "D_D256L1", "hef_sha256": "2413dd5b123d3f53", "mean_ms": 51.393, "median_ms": 51.381, "p90_ms": 51.544, "min_ms": 51.255, "max_ms": 51.931, "fps_from_mean": 19.46}
+{"round": 1, "model": "rothad_D256L1", "hef_sha256": "7243b76cb3b1f83b", "mean_ms": 52.356, "median_ms": 52.35, "p90_ms": 52.473, "min_ms": 52.201, "max_ms": 52.73, "fps_from_mean": 19.1}
+{"round": 1, "model": "D_D256L1", "hef_sha256": "2413dd5b123d3f53", "mean_ms": 51.385, "median_ms": 51.368, "p90_ms": 51.597, "min_ms": 51.238, "max_ms": 51.879, "fps_from_mean": 19.46}
+{"round": 1, "model": "rothad_D256L1", "hef_sha256": "7243b76cb3b1f83b", "mean_ms": 52.349, "median_ms": 52.34, "p90_ms": 52.476, "min_ms": 52.222, "max_ms": 52.725, "fps_from_mean": 19.1}
+{"round": 1, "model": "D_D256L1", "hef_sha256": "2413dd5b123d3f53", "mean_ms": 51.405, "median_ms": 51.383, "p90_ms": 51.586, "min_ms": 51.216, "max_ms": 52.433, "fps_from_mean": 19.45}
+{"round": 1, "model": "rothad_D256L1", "hef_sha256": "7243b76cb3b1f83b", "mean_ms": 52.345, "median_ms": 52.323, "p90_ms": 52.47, "min_ms": 52.18, "max_ms": 52.719, "fps_from_mean": 19.1}
+{"time": "15:28:02", "label": "before_eval", "ts0_c": 60.43, "ts1_c": 59.88}
+{"time": "15:33:31", "label": "after_eval_D_D256L1", "ts0_c": 92.3, "ts1_c": 91.6}
+{"time": "15:39:11", "label": "after_eval_rothad_D256L1", "ts0_c": 95.89, "ts1_c": 95.34}
+{"time": "15:39:16", "label": "before_bench_r1", "ts0_c": 92.0, "ts1_c": 91.19}
+{"time": "15:39:46", "label": "after_bench_r1", "ts0_c": 91.95, "ts1_c": 91.19}
+{"time": "15:39:46", "label": "before_bench_r2", "ts0_c": 91.85, "ts1_c": 90.99}
+{"time": "15:40:16", "label": "after_bench_r2", "ts0_c": 91.24, "ts1_c": 90.74}
+{"time": "15:40:16", "label": "before_bench_r3", "ts0_c": 91.09, "ts1_c": 90.63}
+{"time": "15:40:45", "label": "after_bench_r3", "ts0_c": 90.74, "ts1_c": 90.38}
+done 15:40:46 load=0.00 0.02 0.04

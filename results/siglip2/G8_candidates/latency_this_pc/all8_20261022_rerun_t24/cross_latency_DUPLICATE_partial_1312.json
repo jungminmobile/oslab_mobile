@@ -1,0 +1,167 @@
+{
+ "device": {
+  "date": "2026-10-22T13:12:00",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "python": "3.11.9",
+  "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+  "ort": "1.25.0",
+  "numpy": "2.4.4",
+  "logical_cores": 8,
+  "cpu_name": "11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz",
+  "power_scheme": "전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)",
+  "battery": "plugged=True batt=100%"
+ },
+ "cond": {
+  "models": [
+   "rn50_fp32=D:/mokerton/artifacts/rn50_g8/dl/onnx/rn50_image_fp32_q1.onnx",
+   "rn50_b2=D:/mokerton/artifacts/rn50_g8/dl/onnx/rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx",
+   "b16_fp32=D:/mokerton/artifacts/siglip2/onnx/siglip2_image_fp32.onnx",
+   "b16_m2rot=D:/mokerton/artifacts/siglip2/onnx/siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+   "b16_oab=D:/mokerton/artifacts/siglip2/onnx/siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx",
+   "b32_fp32=D:/mokerton/artifacts/siglip2_b32/onnx/siglip2_image_fp32.onnx",
+   "b32_m2rot=D:/mokerton/artifacts/siglip2_b32/onnx/siglip2_image_int8_rcmaskbcmlp15at6u5-7at10u9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+   "b32_oab=D:/mokerton/artifacts/siglip2_b32/onnx/siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx"
+  ],
+  "out": "D:/mokerton/wt_g8/results/siglip2/G8_candidates/latency_this_pc/all8_20261022_rerun_t24",
+  "threads": [
+   2,
+   4
+  ],
+  "sessions": 3,
+  "n": 200,
+  "repeats": 3,
+  "warmup": 20,
+  "mem": false
+ },
+ "files": {
+  "rn50_fp32": {
+   "path": "D:\\mokerton\\artifacts\\rn50_g8\\dl\\onnx\\rn50_image_fp32_q1.onnx",
+   "bytes": 153204287,
+   "MiB": 146.11
+  },
+  "rn50_b2": {
+   "path": "D:\\mokerton\\artifacts\\rn50_g8\\dl\\onnx\\rn50_image_int8_q1_percentile99999_highres256_s0_B2.onnx",
+   "bytes": 39515613,
+   "MiB": 37.69
+  },
+  "b16_fp32": {
+   "path": "D:\\mokerton\\artifacts\\siglip2\\onnx\\siglip2_image_fp32.onnx",
+   "bytes": 371672881,
+   "MiB": 354.45
+  },
+  "b16_m2rot": {
+   "path": "D:\\mokerton\\artifacts\\siglip2\\onnx\\siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+   "bytes": 96180230,
+   "MiB": 91.72
+  },
+  "b16_oab": {
+   "path": "D:\\mokerton\\artifacts\\siglip2\\onnx\\siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx",
+   "bytes": 96097711,
+   "MiB": 91.65
+  },
+  "b32_fp32": {
+   "path": "D:\\mokerton\\artifacts\\siglip2_b32\\onnx\\siglip2_image_fp32.onnx",
+   "bytes": 378356721,
+   "MiB": 360.83
+  },
+  "b32_m2rot": {
+   "path": "D:\\mokerton\\artifacts\\siglip2_b32\\onnx\\siglip2_image_int8_rcmaskbcmlp15at6u5-7at10u9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx",
+   "bytes": 102847637,
+   "MiB": 98.08
+  },
+  "b32_oab": {
+   "path": "D:\\mokerton\\artifacts\\siglip2_b32\\onnx\\siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx",
+   "bytes": 102763369,
+   "MiB": 98.0
+  }
+ },
+ "sessions": [
+  {
+   "session": 1,
+   "threads": 2,
+   "cpu_load_before_pct": 6.0,
+   "results": {
+    "rn50_fp32": {
+     "ms_per_img_mean": 65.739,
+     "repeats_ms": [
+      66.839,
+      66.273,
+      64.104
+     ],
+     "lat_p50": 67.946,
+     "lat_p95": 90.659
+    },
+    "rn50_b2": {
+     "ms_per_img_mean": 28.318,
+     "repeats_ms": [
+      27.777,
+      27.472,
+      29.705
+     ],
+     "lat_p50": 29.727,
+     "lat_p95": 38.57
+    },
+    "b16_fp32": {
+     "ms_per_img_mean": 218.796,
+     "repeats_ms": [
+      224.105,
+      217.246,
+      215.038
+     ],
+     "lat_p50": 207.427,
+     "lat_p95": 270.697
+    },
+    "b16_m2rot": {
+     "ms_per_img_mean": 107.964,
+     "repeats_ms": [
+      110.068,
+      109.229,
+      104.595
+     ],
+     "lat_p50": 109.326,
+     "lat_p95": 144.371
+    },
+    "b16_oab": {
+     "ms_per_img_mean": 88.394,
+     "repeats_ms": [
+      88.41,
+      88.453,
+      88.318
+     ],
+     "lat_p50": 90.762,
+     "lat_p95": 117.867
+    },
+    "b32_fp32": {
+     "ms_per_img_mean": 79.811,
+     "repeats_ms": [
+      74.873,
+      76.947,
+      87.612
+     ],
+     "lat_p50": 79.899,
+     "lat_p95": 111.814
+    },
+    "b32_m2rot": {
+     "ms_per_img_mean": 35.897,
+     "repeats_ms": [
+      35.37,
+      36.917,
+      35.404
+     ],
+     "lat_p50": 33.989,
+     "lat_p95": 48.444
+    },
+    "b32_oab": {
+     "ms_per_img_mean": 33.146,
+     "repeats_ms": [
+      34.016,
+      32.011,
+      33.413
+     ],
+     "lat_p50": 33.548,
+     "lat_p95": 47.419
+    }
+   }
+  }
+ ]
+}

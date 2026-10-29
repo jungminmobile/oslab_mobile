@@ -1,0 +1,16 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'SigLIP2 B32 P2 portable C3', 'since': '2026-10-27T20:41:52', 'host': '쭌놋북', 'pid': 22376}
+fp32 cifar_A {"n": 200, "top1": 71.5, "fp32_top1": 71.5, "cos_mean": 1.0}
+fp32 pets_dev {"n": 200, "top1": 91.5, "fp32_top1": 91.5, "cos_mean": 1.0}
+fp32 flowers_dev {"n": 200, "top1": 84.0, "fp32_top1": 84.0, "cos_mean": 1.0}
+fp32 cars_dev {"n": 200, "top1": 91.0, "fp32_top1": 91.0, "cos_mean": 1.0}
+fp32 food_dev {"n": 200, "top1": 84.5, "fp32_top1": 84.5, "cos_mean": 1.0}
+fp32 caltech_dev {"n": 200, "top1": 93.5, "fp32_top1": 93.5, "cos_mean": 1.0}
+fp32 hr_dtop1 0.0 hr_cos 1.0
+p2 cifar_A {"n": 200, "top1": 73.0, "fp32_top1": 71.5, "cos_mean": 0.9553}
+p2 pets_dev {"n": 200, "top1": 90.5, "fp32_top1": 91.5, "cos_mean": 0.9918}
+p2 flowers_dev {"n": 200, "top1": 84.0, "fp32_top1": 84.0, "cos_mean": 0.9914}
+p2 cars_dev {"n": 200, "top1": 92.5, "fp32_top1": 91.0, "cos_mean": 0.9864}
+p2 food_dev {"n": 200, "top1": 85.0, "fp32_top1": 84.5, "cos_mean": 0.9893}
+p2 caltech_dev {"n": 200, "top1": 94.5, "fp32_top1": 93.5, "cos_mean": 0.9832}
+p2 hr_dtop1 0.4 hr_cos 0.9884
+RELEASED

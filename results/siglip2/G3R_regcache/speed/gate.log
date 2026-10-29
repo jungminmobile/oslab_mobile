@@ -1,0 +1,29 @@
+06:28:41 start commit=56097dd dirty=0 thresh=25
+06:28:58 s=1 t=1 pre win_cpu10s=15% wsl_load=0.83 1.58 1.68 running=[Ubuntu-22.04] top=[claude=0 claude=0 system=0 vmmemwsl=0 msmpeng=0]
+06:33:36 s=1 t=1 done busy=0 post win_cpu10s=10%
+06:34:07 s=1 t=2 pre win_cpu10s=13% wsl_load=0.61 1.10 1.44 running=[Ubuntu-22.04] top=[claude=1 claude=0 system=0 logioptionsplus_agent=0 bingwallpaper=0]
+06:36:39 s=1 t=2 done busy=0 post win_cpu10s=9%
+06:37:10 s=1 t=4 pre win_cpu10s=9% wsl_load=1.15 1.31 1.48 running=[Ubuntu-22.04] top=[claude=1 system=0 claude=0 logioptionsplus_agent=0 vmmemwsl=0]
+06:38:41 s=1 t=4 done busy=0 post win_cpu10s=12%
+06:39:13 s=2 t=1 pre win_cpu10s=13% wsl_load=1.97 1.76 1.63 running=[Ubuntu-22.04] top=[claude=1 system=0 claude=0 bingwallpaper=0 dwm=0]
+06:43:53 s=2 t=1 done busy=0 post win_cpu10s=25%
+06:44:24 s=2 t=2 pre win_cpu10s=30% wsl_load=0.67 1.28 1.46 running=[Ubuntu-22.04] top=[remoting_host=3 remoting_desktop=1 claude=0 dwm=0 vmmemwsl=0]
+06:46:46 s=2 t=2 pre win_cpu10s=24% wsl_load=0.07 0.81 1.26 running=[Ubuntu-22.04] top=[remoting_host=3 remoting_desktop=1 claude=0 dwm=0 system=0]
+06:49:30 s=2 t=2 done busy=0 post win_cpu10s=26%
+06:50:01 s=2 t=4 pre win_cpu10s=33% wsl_load=1.13 1.17 1.33 running=[Ubuntu-22.04] top=[remoting_host=3 remoting_desktop=2 claude=0 logioptionsplus_agent=0 dwm=0]
+06:52:24 s=2 t=4 pre win_cpu10s=28% wsl_load=0.13 0.74 1.14 running=[Ubuntu-22.04] top=[remoting_host=2 remoting_desktop=2 system=0 claude=0 bingwallpaper=0]
+06:54:47 s=2 t=4 pre win_cpu10s=28% wsl_load=0.01 0.46 0.98 running=[Ubuntu-22.04] top=[remoting_host=3 remoting_desktop=1 vmmemwsl=0 claude=0 dwm=0]
+06:57:11 s=2 t=4 pre win_cpu10s=36% wsl_load=0.05 0.30 0.85 running=[Ubuntu-22.04] top=[remoting_host=4 remoting_desktop=2 claude=0 dwm=0 claude=0]
+06:59:34 s=2 t=4 pre win_cpu10s=34% wsl_load=0.00 0.19 0.72 running=[Ubuntu-22.04] top=[remoting_host=2 remoting_desktop=2 dwm=0 claude=0 vmmemwsl=0]
+07:01:00 게이트 변경을 위해 중단 (s=2 t=4 대기 중, 측정 없음)
+07:01:32 start commit=be28bd8 dirty=0 proc_thresh=10 start=s2/t4
+07:01:58 s=2 t=4 pre proc_sum10s=3% win_cpu10s=24% wsl_load=0.10 0.14 0.63 running=[Ubuntu-22.04] top=[remoting_host=3 remoting_desktop=2 claude=1 dwm=0 claude=0]
+07:03:35 s=2 t=4 done busy=0 post proc_sum10s=3% win_cpu10s=17%
+07:04:27 s=3 t=1 pre proc_sum10s=3% win_cpu10s=36% wsl_load=1.44 0.94 0.87 running=[Ubuntu-22.04] top=[remoting_host=3 remoting_desktop=2 wmiprvse=0 svchost=0 system=0]
+07:09:26 s=3 t=1 done busy=0 post proc_sum10s=3% win_cpu10s=20%
+07:10:18 s=3 t=2 pre proc_sum10s=3% win_cpu10s=34% wsl_load=0.43 0.82 0.87 running=[Ubuntu-22.04] top=[remoting_host=2 remoting_desktop=1 dwm=0 claude=0 system=0]
+07:13:04 s=3 t=2 done busy=0 post proc_sum10s=3% win_cpu10s=15%
+07:13:55 s=3 t=4 pre proc_sum10s=4% win_cpu10s=12% wsl_load=0.83 1.11 0.99 running=[Ubuntu-22.04] top=[remoting_host=4 remoting_desktop=1 dwm=0 claude=0 claude=0]
+07:15:30 s=3 t=4 done busy=0 post proc_sum10s=4% win_cpu10s=20%
+07:15:57 peak memory
+G3R_SPEED_DONE 07:16:15

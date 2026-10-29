@@ -1,0 +1,1020 @@
+{
+ "date": "2026-10-20T20:02:06",
+ "commit": "6ca78e4",
+ "dirty": false,
+ "preds": {
+  "main": "../results/siglip2/G8_candidates/b32/G3RQ/dev_full/pred_siglip2_image_int8_rcmaskbcmlp15at6u5-7at10u9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.npz",
+  "r0": "../results/siglip2/G8_candidates/b32/G3RQ/dev_full/pred_siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.npz"
+ },
+ "sets": {
+  "cifar_A": {
+   "n": 1000,
+   "fp32_correct": 752,
+   "main": {
+    "lost": 51,
+    "gained": 49,
+    "net_pp": -0.2,
+    "top_net_loss_classes": [
+     [
+      "10",
+      3
+     ],
+     [
+      "24",
+      2
+     ],
+     [
+      "39",
+      2
+     ],
+     [
+      "29",
+      2
+     ],
+     [
+      "86",
+      2
+     ],
+     [
+      "54",
+      2
+     ],
+     [
+      "55",
+      2
+     ],
+     [
+      "93",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "75",
+      "19",
+      1
+     ],
+     [
+      "24",
+      "98",
+      1
+     ],
+     [
+      "37",
+      "17",
+      1
+     ],
+     [
+      "39",
+      "2",
+      1
+     ],
+     [
+      "93",
+      "26",
+      1
+     ],
+     [
+      "83",
+      "29",
+      1
+     ],
+     [
+      "57",
+      "53",
+      1
+     ],
+     [
+      "29",
+      "33",
+      1
+     ]
+    ],
+    "classes_with_loss": 28
+   },
+   "r0": {
+    "lost": 98,
+    "gained": 46,
+    "net_pp": -5.2,
+    "top_net_loss_classes": [
+     [
+      "64",
+      5
+     ],
+     [
+      "44",
+      4
+     ],
+     [
+      "39",
+      3
+     ],
+     [
+      "75",
+      2
+     ],
+     [
+      "52",
+      2
+     ],
+     [
+      "56",
+      2
+     ],
+     [
+      "15",
+      2
+     ],
+     [
+      "46",
+      2
+     ]
+    ],
+    "top_confusions": [
+     [
+      "10",
+      "28",
+      2
+     ],
+     [
+      "15",
+      "29",
+      2
+     ],
+     [
+      "46",
+      "11",
+      2
+     ],
+     [
+      "7",
+      "44",
+      2
+     ],
+     [
+      "65",
+      "80",
+      2
+     ],
+     [
+      "30",
+      "73",
+      2
+     ],
+     [
+      "64",
+      "97",
+      2
+     ],
+     [
+      "75",
+      "64",
+      1
+     ]
+    ],
+    "classes_with_loss": 52
+   },
+   "lost_overlap": {
+    "pair": [
+     "main",
+     "r0"
+    ],
+    "both": 35,
+    "only_first": 16,
+    "only_second": 63
+   }
+  },
+  "pets_dev": {
+   "n": 990,
+   "fp32_correct": 911,
+   "main": {
+    "lost": 12,
+    "gained": 8,
+    "net_pp": -0.4,
+    "top_net_loss_classes": [
+     [
+      "staffordshire bull terrier",
+      2
+     ],
+     [
+      "british shorthair",
+      1
+     ],
+     [
+      "ragdoll",
+      1
+     ],
+     [
+      "saint bernard",
+      1
+     ],
+     [
+      "samoyed",
+      1
+     ],
+     [
+      "english cocker spaniel",
+      1
+     ],
+     [
+      "chihuahua",
+      1
+     ],
+     [
+      "boxer",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "staffordshire bull terrier",
+      "american pit bull terrier",
+      2
+     ],
+     [
+      "british shorthair",
+      "russian blue",
+      1
+     ],
+     [
+      "ragdoll",
+      "birman",
+      1
+     ],
+     [
+      "saint bernard",
+      "leonberger",
+      1
+     ],
+     [
+      "samoyed",
+      "great pyrenees",
+      1
+     ],
+     [
+      "english cocker spaniel",
+      "english setter",
+      1
+     ],
+     [
+      "chihuahua",
+      "miniature pinscher",
+      1
+     ],
+     [
+      "boxer",
+      "pug",
+      1
+     ]
+    ],
+    "classes_with_loss": 9
+   },
+   "r0": {
+    "lost": 28,
+    "gained": 14,
+    "net_pp": -1.41,
+    "top_net_loss_classes": [
+     [
+      "saint bernard",
+      3
+     ],
+     [
+      "leonberger",
+      2
+     ],
+     [
+      "german shorthaired",
+      2
+     ],
+     [
+      "english cocker spaniel",
+      2
+     ],
+     [
+      "russian blue",
+      2
+     ],
+     [
+      "birman",
+      2
+     ],
+     [
+      "newfoundland",
+      1
+     ],
+     [
+      "british shorthair",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "birman",
+      "siamese",
+      3
+     ],
+     [
+      "saint bernard",
+      "boxer",
+      2
+     ],
+     [
+      "english cocker spaniel",
+      "english setter",
+      2
+     ],
+     [
+      "russian blue",
+      "british shorthair",
+      2
+     ],
+     [
+      "leonberger",
+      "japanese chin",
+      1
+     ],
+     [
+      "american pit bull terrier",
+      "american bulldog",
+      1
+     ],
+     [
+      "staffordshire bull terrier",
+      "american pit bull terrier",
+      1
+     ],
+     [
+      "beagle",
+      "miniature pinscher",
+      1
+     ]
+    ],
+    "classes_with_loss": 13
+   },
+   "lost_overlap": {
+    "pair": [
+     "main",
+     "r0"
+    ],
+    "both": 2,
+    "only_first": 10,
+    "only_second": 26
+   }
+  },
+  "flowers_dev": {
+   "n": 957,
+   "fp32_correct": 827,
+   "main": {
+    "lost": 13,
+    "gained": 8,
+    "net_pp": -0.52,
+    "top_net_loss_classes": [
+     [
+      "californian poppy",
+      2
+     ],
+     [
+      "petunia",
+      1
+     ],
+     [
+      "wallflower",
+      1
+     ],
+     [
+      "canterbury bells",
+      1
+     ],
+     [
+      "pink primrose",
+      1
+     ],
+     [
+      "hard-leaved pocket orchid",
+      1
+     ],
+     [
+      "cyclamen",
+      1
+     ],
+     [
+      "sweet william",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "californian poppy",
+      "tree poppy",
+      2
+     ],
+     [
+      "petunia",
+      "bolero deep blue",
+      1
+     ],
+     [
+      "wallflower",
+      "fire lily",
+      1
+     ],
+     [
+      "canterbury bells",
+      "balloon flower",
+      1
+     ],
+     [
+      "pink primrose",
+      "tree mallow",
+      1
+     ],
+     [
+      "hard-leaved pocket orchid",
+      "moon orchid",
+      1
+     ],
+     [
+      "cyclamen",
+      "prince of wales feathers",
+      1
+     ],
+     [
+      "sweet william",
+      "geranium",
+      1
+     ]
+    ],
+    "classes_with_loss": 12
+   },
+   "r0": {
+    "lost": 32,
+    "gained": 14,
+    "net_pp": -1.88,
+    "top_net_loss_classes": [
+     [
+      "fire lily",
+      1
+     ],
+     [
+      "japanese anemone",
+      1
+     ],
+     [
+      "sweet pea",
+      1
+     ],
+     [
+      "petunia",
+      1
+     ],
+     [
+      "barbeton daisy",
+      1
+     ],
+     [
+      "bee balm",
+      1
+     ],
+     [
+      "blanket flower",
+      1
+     ],
+     [
+      "mallow",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "mallow",
+      "tree mallow",
+      2
+     ],
+     [
+      "fire lily",
+      "trumpet creeper",
+      1
+     ],
+     [
+      "japanese anemone",
+      "pink primrose",
+      1
+     ],
+     [
+      "sweet pea",
+      "snapdragon",
+      1
+     ],
+     [
+      "petunia",
+      "bolero deep blue",
+      1
+     ],
+     [
+      "barbeton daisy",
+      "osteospermum",
+      1
+     ],
+     [
+      "bee balm",
+      "prince of wales feathers",
+      1
+     ],
+     [
+      "colt's foot",
+      "cape flower",
+      1
+     ]
+    ],
+    "classes_with_loss": 27
+   },
+   "lost_overlap": {
+    "pair": [
+     "main",
+     "r0"
+    ],
+    "both": 8,
+    "only_first": 5,
+    "only_second": 24
+   }
+  },
+  "cars_dev": {
+   "n": 967,
+   "fp32_correct": 886,
+   "main": {
+    "lost": 28,
+    "gained": 9,
+    "net_pp": -1.96,
+    "top_net_loss_classes": [
+     [
+      "Honda Accord Sedan 2012",
+      2
+     ],
+     [
+      "Bentley Continental GT Coupe 2012",
+      2
+     ],
+     [
+      "Chevrolet Corvette ZR1 2012",
+      2
+     ],
+     [
+      "Chevrolet Corvette Ron Fellows Edition Z06 2007",
+      2
+     ],
+     [
+      "Chevrolet Silverado 1500 Extended Cab 2012",
+      2
+     ],
+     [
+      "Ferrari 458 Italia Coupe 2012",
+      1
+     ],
+     [
+      "Ford F-450 Super Duty Crew Cab 2012",
+      1
+     ],
+     [
+      "Audi RS 4 Convertible 2008",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "Chevrolet Corvette ZR1 2012",
+      "Chevrolet Corvette Ron Fellows Edition Z06 2007",
+      2
+     ],
+     [
+      "Chevrolet Corvette Ron Fellows Edition Z06 2007",
+      "Chevrolet Corvette Convertible 2012",
+      2
+     ],
+     [
+      "Ferrari 458 Italia Coupe 2012",
+      "Ferrari 458 Italia Convertible 2012",
+      1
+     ],
+     [
+      "Ford F-450 Super Duty Crew Cab 2012",
+      "Ford Ranger SuperCab 2011",
+      1
+     ],
+     [
+      "Audi RS 4 Convertible 2008",
+      "Audi S5 Convertible 2012",
+      1
+     ],
+     [
+      "Ford GT Coupe 2006",
+      "Chevrolet Corvette Ron Fellows Edition Z06 2007",
+      1
+     ],
+     [
+      "Honda Accord Sedan 2012",
+      "Acura TL Type-S 2008",
+      1
+     ],
+     [
+      "Honda Accord Sedan 2012",
+      "Acura RL Sedan 2012",
+      1
+     ]
+    ],
+    "classes_with_loss": 23
+   },
+   "r0": {
+    "lost": 53,
+    "gained": 17,
+    "net_pp": -3.72,
+    "top_net_loss_classes": [
+     [
+      "Chevrolet Corvette ZR1 2012",
+      7
+     ],
+     [
+      "Suzuki SX4 Hatchback 2012",
+      3
+     ],
+     [
+      "Ferrari 458 Italia Coupe 2012",
+      2
+     ],
+     [
+      "Honda Accord Sedan 2012",
+      2
+     ],
+     [
+      "Bentley Continental GT Coupe 2012",
+      2
+     ],
+     [
+      "Chevrolet Corvette Ron Fellows Edition Z06 2007",
+      2
+     ],
+     [
+      "Chevrolet Silverado 1500 Extended Cab 2012",
+      2
+     ],
+     [
+      "Fisker Karma Sedan 2012",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "Chevrolet Corvette ZR1 2012",
+      "Chevrolet Corvette Ron Fellows Edition Z06 2007",
+      7
+     ],
+     [
+      "Ferrari 458 Italia Coupe 2012",
+      "Ferrari 458 Italia Convertible 2012",
+      2
+     ],
+     [
+      "Bentley Continental GT Coupe 2012",
+      "Bentley Continental GT Coupe 2007",
+      2
+     ],
+     [
+      "Fisker Karma Sedan 2012",
+      "Spyker C8 Coupe 2009",
+      1
+     ],
+     [
+      "Ford F-450 Super Duty Crew Cab 2012",
+      "Cadillac Escalade EXT Crew Cab 2007",
+      1
+     ],
+     [
+      "Ford Expedition EL SUV 2009",
+      "Chrysler Aspen SUV 2009",
+      1
+     ],
+     [
+      "Audi RS 4 Convertible 2008",
+      "Audi S5 Convertible 2012",
+      1
+     ],
+     [
+      "Ford GT Coupe 2006",
+      "Lamborghini Diablo Coupe 2001",
+      1
+     ]
+    ],
+    "classes_with_loss": 39
+   },
+   "lost_overlap": {
+    "pair": [
+     "main",
+     "r0"
+    ],
+    "both": 17,
+    "only_first": 11,
+    "only_second": 36
+   }
+  },
+  "food_dev": {
+   "n": 985,
+   "fp32_correct": 847,
+   "main": {
+    "lost": 32,
+    "gained": 11,
+    "net_pp": -2.13,
+    "top_net_loss_classes": [
+     [
+      "ice cream",
+      3
+     ],
+     [
+      "falafel",
+      2
+     ],
+     [
+      "nachos",
+      2
+     ],
+     [
+      "prime rib",
+      1
+     ],
+     [
+      "apple pie",
+      1
+     ],
+     [
+      "tuna tartare",
+      1
+     ],
+     [
+      "cheesecake",
+      1
+     ],
+     [
+      "red velvet cake",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "ice cream",
+      "frozen yogurt",
+      2
+     ],
+     [
+      "prime rib",
+      "filet mignon",
+      1
+     ],
+     [
+      "apple pie",
+      "waffles",
+      1
+     ],
+     [
+      "tuna tartare",
+      "nachos",
+      1
+     ],
+     [
+      "cheesecake",
+      "tiramisu",
+      1
+     ],
+     [
+      "ice cream",
+      "cannoli",
+      1
+     ],
+     [
+      "red velvet cake",
+      "cheesecake",
+      1
+     ],
+     [
+      "grilled cheese sandwich",
+      "club sandwich",
+      1
+     ]
+    ],
+    "classes_with_loss": 26
+   },
+   "r0": {
+    "lost": 59,
+    "gained": 10,
+    "net_pp": -4.97,
+    "top_net_loss_classes": [
+     [
+      "prime rib",
+      3
+     ],
+     [
+      "falafel",
+      3
+     ],
+     [
+      "chicken wings",
+      2
+     ],
+     [
+      "risotto",
+      2
+     ],
+     [
+      "garlic bread",
+      2
+     ],
+     [
+      "steak",
+      2
+     ],
+     [
+      "ice cream",
+      2
+     ],
+     [
+      "crab cakes",
+      2
+     ]
+    ],
+    "top_confusions": [
+     [
+      "prime rib",
+      "filet mignon",
+      2
+     ],
+     [
+      "huevos rancheros",
+      "croque madame",
+      2
+     ],
+     [
+      "prime rib",
+      "pork chop",
+      1
+     ],
+     [
+      "chicken wings",
+      "cannoli",
+      1
+     ],
+     [
+      "chicken wings",
+      "chicken curry",
+      1
+     ],
+     [
+      "risotto",
+      "tuna tartare",
+      1
+     ],
+     [
+      "risotto",
+      "croque madame",
+      1
+     ],
+     [
+      "pizza",
+      "oysters",
+      1
+     ]
+    ],
+    "classes_with_loss": 38
+   },
+   "lost_overlap": {
+    "pair": [
+     "main",
+     "r0"
+    ],
+    "both": 21,
+    "only_first": 11,
+    "only_second": 38
+   }
+  },
+  "caltech_dev": {
+   "n": 1024,
+   "fp32_correct": 960,
+   "main": {
+    "lost": 4,
+    "gained": 15,
+    "net_pp": 1.07,
+    "top_net_loss_classes": [
+     [
+      "schooner",
+      2
+     ],
+     [
+      "background google",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "schooner",
+      "ketch",
+      2
+     ],
+     [
+      "crayfish",
+      "lobster",
+      1
+     ],
+     [
+      "background google",
+      "umbrella",
+      1
+     ]
+    ],
+    "classes_with_loss": 2
+   },
+   "r0": {
+    "lost": 8,
+    "gained": 10,
+    "net_pp": 0.2,
+    "top_net_loss_classes": [
+     [
+      "anchor",
+      2
+     ],
+     [
+      "crab",
+      1
+     ],
+     [
+      "euphonium",
+      1
+     ],
+     [
+      "cannon",
+      1
+     ],
+     [
+      "schooner",
+      1
+     ],
+     [
+      "minaret",
+      1
+     ],
+     [
+      "lobster",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "crab",
+      "scorpion",
+      1
+     ],
+     [
+      "euphonium",
+      "saxophone",
+      1
+     ],
+     [
+      "cannon",
+      "revolver",
+      1
+     ],
+     [
+      "schooner",
+      "ketch",
+      1
+     ],
+     [
+      "anchor",
+      "wrench",
+      1
+     ],
+     [
+      "minaret",
+      "cannon",
+      1
+     ],
+     [
+      "anchor",
+      "scissors",
+      1
+     ],
+     [
+      "lobster",
+      "scorpion",
+      1
+     ]
+    ],
+    "classes_with_loss": 7
+   },
+   "lost_overlap": {
+    "pair": [
+     "main",
+     "r0"
+    ],
+    "both": 1,
+    "only_first": 3,
+    "only_second": 7
+   }
+  }
+ }
+}

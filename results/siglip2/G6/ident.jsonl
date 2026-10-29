@@ -1,0 +1,2 @@
+{"date": "2026-10-20T02:56:28", "commit": "eb78616", "dirty": false, "model_id": "hf-hub:timm/ViT-B-32-SigLIP2-256", "what": "ident", "model": "b32", "n": 32, "cos_mean": 0.9999934261017351, "cos_min": 0.9999356363386379}
+{"date": "2026-10-20T02:56:55", "commit": "eb78616", "dirty": false, "model_id": "hf-hub:timm/ViT-B-16-SigLIP", "what": "ident", "model": "s1b16", "n": 32, "cos_mean": 0.9999999999969179, "cos_min": 0.9999999999894936}

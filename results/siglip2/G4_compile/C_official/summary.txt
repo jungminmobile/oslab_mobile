@@ -1,0 +1,40 @@
+compile.log:[info] Iteration #82 - 5 contexts,
+compile.log:[info] Found valid partition to 5 contexts, Performance improved by 2.1%
+compile.log:[info] Iteration #84 - 5 contexts,
+compile.log:[info] Partition to contexts finished successfully
+compile.log:Top common errors:
+compile.log:[info] Applying selected partition to 5 contexts...
+compile.log:[info] siglip2_b16_224 Successful Multi Context Partition (duration: 17m 13s)
+compile.log:[info] siglip2_b16_224 Successful Allocation (duration: 1m 48s)
+compile.log:	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[F	[info] Successfully built optimization options - 1m 10s 261ms
+compile.log:[info] siglip2_b16_224 Successful Pre Partition (duration: 1m 10s)
+compile.log:[info] Single context flow failed: Recoverable single context error - Resources presolve failed: lcus=(150/80)
+compile.log:[info] Finding the best partition to contexts...
+compile.log:[info] Found valid partition to 4 contexts
+compile.log:[info] Iteration #28 - 4 contexts,
+compile.log:[info] Found valid partition to 5 contexts, Performance improved by 1.1%
+compile.log:[info] Iteration #54 - 5 contexts,
+compile.log:[info] Found valid partition to 5 contexts, Performance improved by 4.4%
+compile.log:[info] Iteration #60 - 5 contexts,
+compile.log:[info] Found valid partition to 5 contexts, Performance improved by 0.2%
+compile.log:[info] Iteration #63 - 5 contexts,
+compile.log:[info] Found valid partition to 5 contexts, Performance improved by 1.7%
+compile.log:[info] Iteration #64 - 5 contexts,
+compile.log:[info] Found valid partition to 5 contexts, Performance improved by 7.0%
+compile.log:[info] Iteration #80 - 5 contexts,
+compile.log:[info] Found valid partition to 5 contexts, Performance improved by 0.3%
+compile.log:[info] Iteration #82 - 5 contexts,
+compile.log:[info] Found valid partition to 5 contexts, Performance improved by 3.5%
+compile.log:[info] Iteration #105 - 5 contexts,
+compile.log:[info] Found valid partition to 5 contexts, Performance improved by 2.1%
+compile.log:[info] Iteration #106 - 5 contexts,
+compile.log:[info] Partition to contexts finished successfully
+compile.log:Top common errors:
+compile.log:[info] Applying selected partition to 5 contexts...
+compile.log:[info] siglip2_b16_224 Successful Multi Context Partition (duration: 23m 15s)
+compile.log:[info] siglip2_b16_224 Successful Allocation (duration: 7m 25s)
+compile.log:[info] siglip2_b16_224 Successful Partition and Allocation (duration: 1h 45m 57s)
+compile.log:[info] siglip2_b16_224 Successful Kernel Compilation (duration: 7m 44s)
+compile.log:[info] siglip2_b16_224 Successful Compilation (duration: 1h 58m 36s)
+prof.log:Optimization Goal  Reach Highest FPS
+prof.log:Number of Contexts      16

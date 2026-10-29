@@ -1,0 +1,101 @@
+{
+ "date": "2026-10-27T21:18:40",
+ "machine": "AMD64",
+ "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+ "platform": "Windows-10-10.0.26300-SP0",
+ "python": "3.11.9",
+ "onnxruntime": "1.25.0",
+ "numpy": "2.4.4",
+ "threads": 4,
+ "bs": 50,
+ "models": {
+  "fp32": {
+   "cifar_A": {
+    "n": 200,
+    "top1": 71.5,
+    "fp32_top1": 71.5,
+    "cos_mean": 1.0
+   },
+   "pets_dev": {
+    "n": 200,
+    "top1": 91.5,
+    "fp32_top1": 91.5,
+    "cos_mean": 1.0
+   },
+   "flowers_dev": {
+    "n": 200,
+    "top1": 84.0,
+    "fp32_top1": 84.0,
+    "cos_mean": 1.0
+   },
+   "cars_dev": {
+    "n": 200,
+    "top1": 91.0,
+    "fp32_top1": 91.0,
+    "cos_mean": 1.0
+   },
+   "food_dev": {
+    "n": 200,
+    "top1": 84.5,
+    "fp32_top1": 84.5,
+    "cos_mean": 1.0
+   },
+   "caltech_dev": {
+    "n": 200,
+    "top1": 93.5,
+    "fp32_top1": 93.5,
+    "cos_mean": 1.0
+   },
+   "hr_cos": 1.0,
+   "hr_dtop1": 0.0,
+   "file": "siglip2_image_fp32.onnx",
+   "MiB": 360.83,
+   "sec": 71
+  },
+  "p2": {
+   "cifar_A": {
+    "n": 200,
+    "top1": 73.0,
+    "fp32_top1": 71.5,
+    "cos_mean": 0.9553
+   },
+   "pets_dev": {
+    "n": 200,
+    "top1": 90.5,
+    "fp32_top1": 91.5,
+    "cos_mean": 0.9918
+   },
+   "flowers_dev": {
+    "n": 200,
+    "top1": 84.0,
+    "fp32_top1": 84.0,
+    "cos_mean": 0.9914
+   },
+   "cars_dev": {
+    "n": 200,
+    "top1": 92.5,
+    "fp32_top1": 91.0,
+    "cos_mean": 0.9864
+   },
+   "food_dev": {
+    "n": 200,
+    "top1": 85.0,
+    "fp32_top1": 84.5,
+    "cos_mean": 0.9893
+   },
+   "caltech_dev": {
+    "n": 200,
+    "top1": 94.5,
+    "fp32_top1": 93.5,
+    "cos_mean": 0.9832
+   },
+   "hr_cos": 0.9884,
+   "hr_dtop1": 0.4,
+   "file": "e14_4_P2_patch_int8.onnx",
+   "MiB": 91.22,
+   "sec": 27
+  }
+ },
+ "mem_pattern": false,
+ "peak_rss_mib_process": 929.4
+}

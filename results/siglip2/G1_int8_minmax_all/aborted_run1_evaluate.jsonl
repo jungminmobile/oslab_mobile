@@ -1,0 +1,1 @@
+{"date": "2026-10-13T03:50:18", "data": "pets_dev", "n": 990, "model": "fp32", "MiB": null, "exec": "int", "top1": 93.33, "top5": 99.6, "cos_mean": 1.0, "cos_p1": 1.0, "eval_sec": 0}

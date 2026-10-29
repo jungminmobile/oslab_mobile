@@ -1,0 +1,79 @@
+{
+ "date": "2026-10-18T11:50:47",
+ "machine": "aarch64",
+ "platform": "Linux-5.15.148-tegra-aarch64-with-glibc2.35",
+ "python": "3.10.12",
+ "hailortcli": "HailoRT-CLI version 5.3.0",
+ "cmd": "bench",
+ "warmup": 20,
+ "n": 200,
+ "rounds": 3,
+ "runs": [
+  {
+   "round": 1,
+   "model": "D_D256L1",
+   "hef_sha256": "2413dd5b123d3f53",
+   "mean_ms": 45.364,
+   "median_ms": 45.317,
+   "p90_ms": 45.521,
+   "min_ms": 45.234,
+   "max_ms": 45.7,
+   "fps_from_mean": 22.04
+  },
+  {
+   "round": 1,
+   "model": "rothad_D256L1",
+   "hef_sha256": "7243b76cb3b1f83b",
+   "mean_ms": 46.209,
+   "median_ms": 46.177,
+   "p90_ms": 46.366,
+   "min_ms": 46.082,
+   "max_ms": 46.676,
+   "fps_from_mean": 21.64
+  },
+  {
+   "round": 2,
+   "model": "D_D256L1",
+   "hef_sha256": "2413dd5b123d3f53",
+   "mean_ms": 45.369,
+   "median_ms": 45.349,
+   "p90_ms": 45.548,
+   "min_ms": 45.227,
+   "max_ms": 45.831,
+   "fps_from_mean": 22.04
+  },
+  {
+   "round": 2,
+   "model": "rothad_D256L1",
+   "hef_sha256": "7243b76cb3b1f83b",
+   "mean_ms": 46.222,
+   "median_ms": 46.181,
+   "p90_ms": 46.374,
+   "min_ms": 46.11,
+   "max_ms": 46.465,
+   "fps_from_mean": 21.63
+  },
+  {
+   "round": 3,
+   "model": "D_D256L1",
+   "hef_sha256": "2413dd5b123d3f53",
+   "mean_ms": 47.418,
+   "median_ms": 45.451,
+   "p90_ms": 51.412,
+   "min_ms": 45.252,
+   "max_ms": 51.818,
+   "fps_from_mean": 21.09
+  },
+  {
+   "round": 3,
+   "model": "rothad_D256L1",
+   "hef_sha256": "7243b76cb3b1f83b",
+   "mean_ms": 52.343,
+   "median_ms": 52.348,
+   "p90_ms": 52.464,
+   "min_ms": 52.217,
+   "max_ms": 52.732,
+   "fps_from_mean": 19.1
+  }
+ ]
+}

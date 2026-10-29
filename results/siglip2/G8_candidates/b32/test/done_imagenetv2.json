@@ -1,0 +1,1 @@
+{"date": "2026-10-22T23:40:02", "commit": "72784d1", "models": ["fp32", "siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx"], "n": 10000}

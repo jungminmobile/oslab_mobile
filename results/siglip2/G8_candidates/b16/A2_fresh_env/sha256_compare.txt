@@ -1,0 +1,7 @@
+siglip2_image_fp32.onnx  new=333cad08e68dc85a  A1(같은 PC 기존 venv)=333cad08e68dc85a SAME  준용·배포=333cad08e68dc85a SAME
+rotq_rothad.npy  new=8200db496cd3ebd4  A1(같은 PC 기존 venv)=8200db496cd3ebd4 SAME  준용·배포=3a6391a2091db60d DIFF
+regcache_55at5-13at9_rothad_highres256_s0.npz  new=894725007f44869e  A1(같은 PC 기존 venv)=4168c6ccebfc3f63 DIFF  준용·배포=c205e3a0e6670837 DIFF
+regcache_uc_55at5-13at9_rothad_highres256_s0.npz  new=df76a660c0127aaf  A1(같은 PC 기존 venv)=212ae99f0723baca DIFF  준용·배포=00d8ee3d18e81c22 DIFF
+siglip2_image_fp32_rcmaskbcmlp55at5-13at9_rothad.onnx  new=015dd9b3fc2363c6  A1(같은 PC 기존 venv)=015dd9b3fc2363c6 SAME  준용·배포=16ef696e8016f4d1 DIFF
+siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx  new=009ea9d5403e8cba  A1(같은 PC 기존 venv)=009ea9d5403e8cba SAME  준용·배포=e84c3727f51e3b97 DIFF
+siglip2_image_int8_release_m2rot_ort.onnx  new=e84c3727f51e3b97  A1(같은 PC 기존 venv)=none DIFF  준용·배포=e84c3727f51e3b97 SAME

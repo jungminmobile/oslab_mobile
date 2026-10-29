@@ -1,0 +1,148 @@
+{
+ "latency": {
+  "fp32": {
+   "1": {
+    "sessions_ms": [
+     380.39,
+     379.65,
+     380.61
+    ],
+    "median_ms": 380.39,
+    "fps_b1": 2.63,
+    "p50_ms": 378.19,
+    "p95_ms": 423.42,
+    "file": "siglip2_image_fp32.onnx"
+   },
+   "2": {
+    "sessions_ms": [
+     334.28,
+     330.7,
+     326.15
+    ],
+    "median_ms": 330.7,
+    "fps_b1": 3.02,
+    "p50_ms": 338.43,
+    "p95_ms": 396.5,
+    "file": "siglip2_image_fp32.onnx"
+   },
+   "4": {
+    "sessions_ms": [
+     251.65,
+     253.2,
+     249.63
+    ],
+    "median_ms": 251.65,
+    "fps_b1": 3.97,
+    "p50_ms": 253.76,
+    "p95_ms": 274.66,
+    "file": "siglip2_image_fp32.onnx"
+   }
+  },
+  "r0": {
+   "1": {
+    "sessions_ms": [
+     184.62,
+     185.48,
+     183.99
+    ],
+    "median_ms": 184.62,
+    "fps_b1": 5.42,
+    "p50_ms": 181.81,
+    "p95_ms": 205.12,
+    "file": "siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx"
+   },
+   "2": {
+    "sessions_ms": [
+     174.43,
+     160.87,
+     160.41
+    ],
+    "median_ms": 160.87,
+    "fps_b1": 6.22,
+    "p50_ms": 167.57,
+    "p95_ms": 201.87,
+    "file": "siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx"
+   },
+   "4": {
+    "sessions_ms": [
+     126.58,
+     126.59,
+     126.8
+    ],
+    "median_ms": 126.59,
+    "fps_b1": 7.9,
+    "p50_ms": 125.65,
+    "p95_ms": 138.17,
+    "file": "siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.onnx"
+   }
+  },
+  "m2rot": {
+   "1": {
+    "sessions_ms": [
+     180.24,
+     183.07,
+     179.75
+    ],
+    "median_ms": 180.24,
+    "fps_b1": 5.55,
+    "p50_ms": 176.53,
+    "p95_ms": 203.18,
+    "file": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx"
+   },
+   "2": {
+    "sessions_ms": [
+     173.43,
+     161.39,
+     165.24
+    ],
+    "median_ms": 165.24,
+    "fps_b1": 6.05,
+    "p50_ms": 172.98,
+    "p95_ms": 196.31,
+    "file": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx"
+   },
+   "4": {
+    "sessions_ms": [
+     126.16,
+     125.59,
+     126.2
+    ],
+    "median_ms": 126.16,
+    "fps_b1": 7.93,
+    "p50_ms": 125.9,
+    "p95_ms": 136.99,
+    "file": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx"
+   }
+  }
+ },
+ "stats": {
+  "fp32": {
+   "bytes": 371672881,
+   "MB": 371.67,
+   "MiB": 354.45
+  },
+  "r0": {
+   "bytes": 110420528,
+   "MB": 110.42,
+   "MiB": 105.31
+  },
+  "m2rot": {
+   "bytes": 96180230,
+   "MB": 96.18,
+   "MiB": 91.72
+  }
+ },
+ "params_M": 92.88,
+ "GMACs_fvcore": 17.727,
+ "GFLOPs": 35.45,
+ "peak_mem_MiB": {
+  "fp32": 435.7,
+  "r0": 209.1,
+  "m2rot": 210.5
+ },
+ "peak_mem_MB": {
+  "fp32": 456.9,
+  "r0": 219.3,
+  "m2rot": 220.7
+ }
+}

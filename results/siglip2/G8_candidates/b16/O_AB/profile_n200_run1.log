@@ -1,0 +1,8 @@
+waiting for lock held by None (queue position 3)
+ACQUIRED {'owner': 'siglip2', 'job': 'O-AB profile n200 #1', 'since': '2026-10-22T13:20:13', 'host': '쭌놋북', 'pid': 23156}
+13:20:53 gate cpu30s=17% probe t=4 median=177.5 ms  p10=141.8  freq=2803MHz
+t=1 M2rot      wall   173.0 ms  kernel   170.5 ms  int_matmul=100.18  QLinearSoftmax=17.98  qdq=11.31  BiasGelu=11.21  Add=7.94  LayerNormalization=7.57
+t=1 OAB        wall   167.5 ms  kernel   165.3 ms  int_matmul=110.7  BiasGelu=13.34  SkipLayerNormalization=9.28  qdq=7.08  Add=5.32  Softmax=3.8
+t=4 M2rot      wall    97.4 ms  kernel    94.4 ms  int_matmul=47.67  qdq=12.53  QLinearSoftmax=6.7  BiasGelu=5.38  Add=5.37  Transpose=3.75
+t=4 OAB        wall    86.6 ms  kernel    84.2 ms  int_matmul=51.1  BiasGelu=6.64  qdq=4.78  SkipLayerNormalization=4.22  Transpose=4.0  Add=3.2
+RELEASED

@@ -1,0 +1,2 @@
+E2 quantize: this PC INT8 from jy FP32 = f99b652bd1aa70d0  release e84c3727f51e3b97  DIFF
+E2 export: this PC FP32 from jy rotq+caches = f72cc6bcc231aa3a  jy 16ef696e8016f4d1  DIFF

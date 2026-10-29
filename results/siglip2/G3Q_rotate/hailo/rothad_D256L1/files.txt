@@ -1,0 +1,2 @@
+7243b76cb3b1f83ba38addbb0035905cb6db1abfb1cd8fbe4d23342f3310b38c  siglip2_rothad_b16_224.hef
+-rw-r--r-- 1 junyong junyong 107540480 Oct 18 10:45 siglip2_rothad_b16_224.hef

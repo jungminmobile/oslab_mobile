@@ -1,0 +1,181 @@
+{
+ "date": "2026-10-18T08:51:23",
+ "commit": "7017853",
+ "dirty": false,
+ "runs": {
+  "x86_285K": "../results/siglip2/G3Q_rotate/xplat/out_labpc_ort1250_rot",
+  "orin": "../results/siglip2/G3Q_rotate/xplat/out_orin_a78ae_rot"
+ },
+ "per_run": {
+  "x86_285K": {
+   "r0_410d": {
+    "hr_dtop1": -0.1,
+    "hr_dtop1_ci95": [
+     -1.1,
+     0.9
+    ],
+    "hr_cos": 0.9547
+   },
+   "r0_5eee": {
+    "hr_dtop1": 0.1,
+    "hr_dtop1_ci95": [
+     -0.9,
+     1.0
+    ],
+    "hr_cos": 0.9545
+   },
+   "rothad": {
+    "hr_dtop1": 0.3,
+    "hr_dtop1_ci95": [
+     -0.5,
+     1.2
+    ],
+    "hr_cos": 0.9684
+   },
+   "rotrand0": {
+    "hr_dtop1": 0.3,
+    "hr_dtop1_ci95": [
+     -0.5,
+     1.1
+    ],
+    "hr_cos": 0.9633
+   }
+  },
+  "orin": {
+   "r0_410d": {
+    "hr_dtop1": 0.1,
+    "hr_dtop1_ci95": [
+     -1.0,
+     1.1
+    ],
+    "hr_cos": 0.9547
+   },
+   "r0_5eee": {
+    "hr_dtop1": 0.1,
+    "hr_dtop1_ci95": [
+     -0.9,
+     1.1
+    ],
+    "hr_cos": 0.9548
+   },
+   "rothad": {
+    "hr_dtop1": 0.5,
+    "hr_dtop1_ci95": [
+     -0.4,
+     1.4
+    ],
+    "hr_cos": 0.9681
+   },
+   "rotrand0": {
+    "hr_dtop1": 0.2,
+    "hr_dtop1_ci95": [
+     -0.8,
+     1.2
+    ],
+    "hr_cos": 0.9635
+   }
+  }
+ },
+ "pairs": {
+  "x86_285K->orin:fp32": {
+   "pred_agree": 1.0,
+   "cos_absdiff_mean": 4.7981739470515095e-08,
+   "cos_absdiff_max": 3.5762786865234375e-07,
+   "top1_diff": 0.0,
+   "top1_diff_ci95": [
+    0.0,
+    0.0
+   ]
+  },
+  "x86_285K->orin:r0_410d": {
+   "pred_agree": 0.974,
+   "cos_absdiff_mean": 0.004059259779751301,
+   "cos_absdiff_max": 0.04141503572463989,
+   "top1_diff": 0.2,
+   "top1_diff_ci95": [
+    -0.5,
+    0.9
+   ]
+  },
+  "x86_285K->orin:r0_5eee": {
+   "pred_agree": 0.981,
+   "cos_absdiff_mean": 0.0040050228126347065,
+   "cos_absdiff_max": 0.02179574966430664,
+   "top1_diff": 0.0,
+   "top1_diff_ci95": [
+    -0.6,
+    0.5
+   ]
+  },
+  "x86_285K->orin:rothad": {
+   "pred_agree": 0.984,
+   "cos_absdiff_mean": 0.0029026102274656296,
+   "cos_absdiff_max": 0.020509541034698486,
+   "top1_diff": 0.2,
+   "top1_diff_ci95": [
+    -0.4,
+    0.8
+   ]
+  },
+  "x86_285K->orin:rotrand0": {
+   "pred_agree": 0.983,
+   "cos_absdiff_mean": 0.003277294570580125,
+   "cos_absdiff_max": 0.019548356533050537,
+   "top1_diff": -0.1,
+   "top1_diff_ci95": [
+    -0.9,
+    0.7
+   ]
+  }
+ },
+ "vs": {
+  "x86_285K:r0_5eee-r0_410d": {
+   "hr_cos_diff": -0.0002,
+   "top1_diff": 0.2,
+   "top1_diff_ci95": [
+    -0.5,
+    1.0
+   ]
+  },
+  "x86_285K:rothad-r0_410d": {
+   "hr_cos_diff": 0.0136,
+   "top1_diff": 0.4,
+   "top1_diff_ci95": [
+    -0.4,
+    1.3
+   ]
+  },
+  "x86_285K:rotrand0-r0_410d": {
+   "hr_cos_diff": 0.0086,
+   "top1_diff": 0.4,
+   "top1_diff_ci95": [
+    -0.5,
+    1.4
+   ]
+  },
+  "orin:r0_5eee-r0_410d": {
+   "hr_cos_diff": 0.0001,
+   "top1_diff": 0.0,
+   "top1_diff_ci95": [
+    -0.6,
+    0.6
+   ]
+  },
+  "orin:rothad-r0_410d": {
+   "hr_cos_diff": 0.0134,
+   "top1_diff": 0.4,
+   "top1_diff_ci95": [
+    -0.3,
+    1.2
+   ]
+  },
+  "orin:rotrand0-r0_410d": {
+   "hr_cos_diff": 0.0088,
+   "top1_diff": 0.1,
+   "top1_diff_ci95": [
+    -0.7,
+    1.0
+   ]
+  }
+ }
+}

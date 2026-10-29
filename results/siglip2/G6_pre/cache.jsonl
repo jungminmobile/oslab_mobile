@@ -1,0 +1,1 @@
+{"date": "2026-10-19T22:57:33", "commit": "ca4a8e7", "branch": "siglip2/g6-zoo-transfer-pre", "dirty": false, "what": "cache", "sizes": [224, 256], "calib_n": 256, "seed": 0, "dev_k": 200, "calib_match_max_diff": 0.0, "work": "/home/junyong/siglip2_work/g6pre"}

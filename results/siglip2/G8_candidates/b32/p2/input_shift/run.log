@@ -1,0 +1,10 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'SigLIP2 B32 P2 input shift', 'since': '2026-10-27T20:43:47', 'host': '쭌놋북', 'pid': 23304}
+none {"fp32": {"hr_top1": 88.9}, "oab": {"hr_top1": 89.3, "hr_dtop1_vs_ref": 0.4, "hr_dtop1_ci95": [-0.3, 1.2], "hr_cos_vs_ref": 0.98931}, "p2": {"hr_top1": 89.3, "hr_dtop1_vs_ref": 0.4, "hr_dtop1_ci95": [-0.4, 1.3], "hr_cos_vs_ref": 0.98841}}
+hflip {"fp32": {"hr_top1": 89.3}, "oab": {"hr_top1": 88.7, "hr_dtop1_vs_ref": -0.6, "hr_dtop1_ci95": [-1.5, 0.2], "hr_cos_vs_ref": 0.98958}, "p2": {"hr_top1": 88.7, "hr_dtop1_vs_ref": -0.6, "hr_dtop1_ci95": [-1.4, 0.2], "hr_cos_vs_ref": 0.98874}}
+rot90 {"fp32": {"hr_top1": 71.9}, "oab": {"hr_top1": 71.0, "hr_dtop1_vs_ref": -0.9, "hr_dtop1_ci95": [-2.3, 0.5], "hr_cos_vs_ref": 0.98564}, "p2": {"hr_top1": 70.4, "hr_dtop1_vs_ref": -1.5, "hr_dtop1_ci95": [-2.8, -0.1], "hr_cos_vs_ref": 0.98435}}
+gray {"fp32": {"hr_top1": 78.9}, "oab": {"hr_top1": 78.1, "hr_dtop1_vs_ref": -0.8, "hr_dtop1_ci95": [-2.3, 0.6], "hr_cos_vs_ref": 0.97766}, "p2": {"hr_top1": 78.3, "hr_dtop1_vs_ref": -0.6, "hr_dtop1_ci95": [-2.0, 0.6], "hr_cos_vs_ref": 0.97416}}
+dark {"fp32": {"hr_top1": 88.4}, "oab": {"hr_top1": 87.9, "hr_dtop1_vs_ref": -0.5, "hr_dtop1_ci95": [-1.4, 0.4], "hr_cos_vs_ref": 0.9849}, "p2": {"hr_top1": 87.9, "hr_dtop1_vs_ref": -0.5, "hr_dtop1_ci95": [-1.5, 0.5], "hr_cos_vs_ref": 0.98205}}
+lowcon {"fp32": {"hr_top1": 87.9}, "oab": {"hr_top1": 87.0, "hr_dtop1_vs_ref": -0.9, "hr_dtop1_ci95": [-2.1, 0.2], "hr_cos_vs_ref": 0.98466}, "p2": {"hr_top1": 88.0, "hr_dtop1_vs_ref": 0.1, "hr_dtop1_ci95": [-1.1, 1.2], "hr_cos_vs_ref": 0.98289}}
+noise {"fp32": {"hr_top1": 86.9}, "oab": {"hr_top1": 87.5, "hr_dtop1_vs_ref": 0.6, "hr_dtop1_ci95": [-0.4, 1.6], "hr_cos_vs_ref": 0.99427}, "p2": {"hr_top1": 87.7, "hr_dtop1_vs_ref": 0.8, "hr_dtop1_ci95": [-0.1, 1.8], "hr_cos_vs_ref": 0.99421}}
+jpeg20 {"fp32": {"hr_top1": 87.4}, "oab": {"hr_top1": 87.4, "hr_dtop1_vs_ref": 0.0, "hr_dtop1_ci95": [-1.0, 1.0], "hr_cos_vs_ref": 0.98825}, "p2": {"hr_top1": 87.1, "hr_dtop1_vs_ref": -0.3, "hr_dtop1_ci95": [-1.4, 0.7], "hr_cos_vs_ref": 0.98691}}
+RELEASED

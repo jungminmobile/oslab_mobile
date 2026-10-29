@@ -1,0 +1,6 @@
+cifar_A: n=1000 pred_same=1.0000 max|dcos|=0.00e+00
+pets_dev: n=990 pred_same=1.0000 max|dcos|=0.00e+00
+flowers_dev: n=957 pred_same=1.0000 max|dcos|=0.00e+00
+cars_dev: n=967 pred_same=1.0000 max|dcos|=0.00e+00
+food_dev: n=985 pred_same=1.0000 max|dcos|=0.00e+00
+caltech_dev: n=1024 pred_same=1.0000 max|dcos|=0.00e+00

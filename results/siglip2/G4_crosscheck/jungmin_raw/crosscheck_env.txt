@@ -1,0 +1,6 @@
+Hailo Dataflow Compiler v5.4.0
+Python 3.10.12
+5.15.167.4-microsoft-standard-WSL2
+8
+               total        used        free      shared  buff/cache   available
+Mem:              23           0          21           0           1          22

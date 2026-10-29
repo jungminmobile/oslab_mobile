@@ -1,0 +1,11 @@
+siglip2_image_fp32.onnx: OK
+siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx: OK
+siglip2_image_int8_rcmaskbcmlp15at6u5-7at10u9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx: OK
+caltech_dev.npz: OK
+cars_dev.npz: OK
+cifar_A.npz: OK
+flowers_dev.npz: OK
+food_dev.npz: OK
+pets_dev.npz: OK
+portable_eval.py: OK
+result_i7-1165G7.json: OK

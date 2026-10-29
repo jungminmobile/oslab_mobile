@@ -1,0 +1,49 @@
+{
+ "name": "D256L1_official_b9fc2",
+ "har_sha256": "84e981f75fff02da12a4ea5e8aaa1d026003a4d0c82d05b45bb090337975e6a7",
+ "parts": [
+  {
+   "tag": "D256L1_official_b9fc2",
+   "start": 0,
+   "commit": "29ccfb6",
+   "dirty": false
+  },
+  {
+   "tag": "D256L1_official_b9fc2_s200",
+   "start": 200,
+   "commit": "5e3a287",
+   "dirty": false
+  },
+  {
+   "tag": "D256L1_official_b9fc2_s400",
+   "start": 400,
+   "commit": "ff07336",
+   "dirty": false
+  },
+  {
+   "tag": "D256L1_official_b9fc2_s600",
+   "start": 600,
+   "commit": "ff07336",
+   "dirty": false
+  },
+  {
+   "tag": "D256L1_official_b9fc2_s800a",
+   "start": 800,
+   "commit": "41071d7",
+   "dirty": false
+  },
+  {
+   "tag": "D256L1_official_b9fc2_s800b",
+   "start": 800,
+   "commit": "41071d7",
+   "dirty": false
+  },
+  {
+   "tag": "D256L1_official_b9fc2_s1000",
+   "start": 1000,
+   "commit": "ff07336",
+   "dirty": false
+  }
+ ],
+ "out": "pred_D256L1_official_b9fc2_full.npz"
+}

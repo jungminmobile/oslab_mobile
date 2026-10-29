@@ -1,0 +1,73 @@
+{
+ "pets": {
+  "n": 3669,
+  "oab": 93.21,
+  "p2": 93.35,
+  "p2_minus_oab": 0.14,
+  "pred_diff": 66,
+  "fp32_same": true
+ },
+ "flowers": {
+  "n": 6149,
+  "oab": 84.13,
+  "p2": 84.09,
+  "p2_minus_oab": -0.03,
+  "pred_diff": 153,
+  "fp32_same": true
+ },
+ "cars": {
+  "n": 8041,
+  "oab": 90.45,
+  "p2": 90.35,
+  "p2_minus_oab": -0.1,
+  "pred_diff": 160,
+  "fp32_same": true
+ },
+ "food": {
+  "n": 25250,
+  "oab": 88.9,
+  "p2": 88.94,
+  "p2_minus_oab": 0.04,
+  "pred_diff": 579,
+  "fp32_same": true
+ },
+ "caltech": {
+  "n": 6084,
+  "oab": 84.71,
+  "p2": 84.78,
+  "p2_minus_oab": 0.07,
+  "pred_diff": 106,
+  "fp32_same": true
+ },
+ "cifar_test": {
+  "n": 10000,
+  "oab": 76.98,
+  "p2": 76.62,
+  "p2_minus_oab": -0.36,
+  "pred_diff": 667,
+  "fp32_same": true,
+  "ci95": [
+   -0.75,
+   0.01
+  ]
+ },
+ "imagenetv2": {
+  "n": 10000,
+  "oab": 65.65,
+  "p2": 65.42,
+  "p2_minus_oab": -0.23,
+  "pred_diff": 581,
+  "fp32_same": true,
+  "ci95": [
+   -0.55,
+   0.07
+  ]
+ },
+ "hr": {
+  "p2_minus_oab": 0.02,
+  "ci95": [
+   -0.1,
+   0.15
+  ]
+ }
+}

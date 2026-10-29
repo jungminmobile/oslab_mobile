@@ -1,0 +1,24 @@
+2026-10-19 18:43:37.57 start 
+PY=C:\study\3\2\2026 모바일 학술대회\oslab_mobile\rn50\.venv\Scripts\python.exe 
+fp32 cifar_A {"n": 200, "top1": 74.5, "fp32_top1": 74.5, "cos_mean": 1.0}
+fp32 pets_dev {"n": 200, "top1": 93.5, "fp32_top1": 93.5, "cos_mean": 1.0}
+fp32 flowers_dev {"n": 200, "top1": 85.0, "fp32_top1": 85.0, "cos_mean": 1.0}
+fp32 cars_dev {"n": 200, "top1": 93.5, "fp32_top1": 93.5, "cos_mean": 1.0}
+fp32 food_dev {"n": 200, "top1": 87.5, "fp32_top1": 87.5, "cos_mean": 1.0}
+fp32 caltech_dev {"n": 200, "top1": 95.0, "fp32_top1": 95.0, "cos_mean": 1.0}
+fp32 hr_dtop1 0.0 hr_cos 1.0
+R0 cifar_A {"n": 200, "top1": 69.0, "fp32_top1": 74.5, "cos_mean": 0.8785}
+R0 pets_dev {"n": 200, "top1": 92.5, "fp32_top1": 93.5, "cos_mean": 0.966}
+R0 flowers_dev {"n": 200, "top1": 85.5, "fp32_top1": 85.0, "cos_mean": 0.9608}
+R0 cars_dev {"n": 200, "top1": 94.0, "fp32_top1": 93.5, "cos_mean": 0.9474}
+R0 food_dev {"n": 200, "top1": 86.0, "fp32_top1": 87.5, "cos_mean": 0.9591}
+R0 caltech_dev {"n": 200, "top1": 97.0, "fp32_top1": 95.0, "cos_mean": 0.9393}
+R0 hr_dtop1 0.1 hr_cos 0.9545
+M2rot_ort cifar_A {"n": 200, "top1": 72.0, "fp32_top1": 74.5, "cos_mean": 0.9121}
+M2rot_ort pets_dev {"n": 200, "top1": 93.0, "fp32_top1": 93.5, "cos_mean": 0.9831}
+M2rot_ort flowers_dev {"n": 200, "top1": 86.5, "fp32_top1": 85.0, "cos_mean": 0.9797}
+M2rot_ort cars_dev {"n": 200, "top1": 94.5, "fp32_top1": 93.5, "cos_mean": 0.9711}
+M2rot_ort food_dev {"n": 200, "top1": 86.0, "fp32_top1": 87.5, "cos_mean": 0.9757}
+M2rot_ort caltech_dev {"n": 200, "top1": 96.0, "fp32_top1": 95.0, "cos_mean": 0.9683}
+M2rot_ort hr_dtop1 0.3 hr_cos 0.9756
+2026-10-19 18:49:28.50 DONE rc=0 

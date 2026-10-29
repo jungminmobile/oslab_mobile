@@ -1,0 +1,11 @@
+{
+ "top1_diff": 0.9,
+ "top1_diff_ci95": [
+  -0.2,
+  2.1
+ ],
+ "cos_diff": 0.0109,
+ "cos_better_frac": 0.893,
+ "pred_agree": 0.945,
+ "cifar_A_top1_diff": 6.0
+}

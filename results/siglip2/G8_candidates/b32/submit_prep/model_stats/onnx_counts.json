@@ -1,0 +1,133 @@
+{
+ "oab": {
+  "file": "siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx",
+  "sha256": "7a01044c6ba32bf4f5a12aba82eb19e06753f13c8bad43b9f6fcfcd9f484dbf6",
+  "op_counts": {
+   "Add": 85,
+   "Concat": 1,
+   "Conv": 1,
+   "DequantizeLinear": 158,
+   "Equal": 1,
+   "Expand": 1,
+   "Gather": 2,
+   "LayerNormalization": 2,
+   "MatMul": 79,
+   "Mul": 118,
+   "QuantizeLinear": 105,
+   "Reshape": 29,
+   "Shape": 1,
+   "SkipLayerNormalization": 24,
+   "Softmax": 13,
+   "Split": 13,
+   "Squeeze": 38,
+   "Sub": 27,
+   "Tanh": 13,
+   "Transpose": 53,
+   "Unsqueeze": 1,
+   "Where": 1
+  },
+  "n_initializer": 494,
+  "initializer_elems_total": 94716553,
+  "initializer_elems_by_dtype": {
+   "FLOAT": 2613998,
+   "INT64": 50,
+   "UINT8": 105,
+   "INT8": 92102400
+  },
+  "int8_weight_tensors": 53,
+  "int8_weight_elems": 92012544,
+  "register_cache_tensors": 31,
+  "register_cache_elems": 20992,
+  "register_cache_names_sample": [
+   "trunk.kc_b10_0",
+   "trunk.kc_b10_1",
+   "trunk.kc_b11_0",
+   "trunk.kc_b11_1",
+   "trunk.kc_b6_0",
+   "trunk.kc_b7_0",
+   "trunk.kc_b8_0",
+   "trunk.kc_b9_0"
+  ]
+ },
+ "fp32": {
+  "file": "siglip2_image_fp32.onnx",
+  "sha256": "be19a8ada01055df00bbb4a59c4d4f14675180dc3ae10a54d69d290707e822ec",
+  "op_counts": {
+   "Add": 105,
+   "Concat": 29,
+   "Constant": 261,
+   "ConstantOfShape": 1,
+   "Conv": 1,
+   "Equal": 1,
+   "Expand": 1,
+   "Gather": 28,
+   "LayerNormalization": 26,
+   "MatMul": 79,
+   "Mul": 92,
+   "Reshape": 29,
+   "Shape": 29,
+   "Slice": 1,
+   "Softmax": 13,
+   "Split": 13,
+   "Squeeze": 38,
+   "Tanh": 13,
+   "Transpose": 41,
+   "Unsqueeze": 54,
+   "Where": 1
+  },
+  "n_initializer": 162,
+  "initializer_elems_total": 94552320,
+  "initializer_elems_by_dtype": {
+   "FLOAT": 94552320
+  },
+  "register_cache_tensors": 0,
+  "register_cache_elems": 0,
+  "register_cache_names_sample": []
+ },
+ "m2rot_fp32": {
+  "file": "siglip2_image_fp32_g6b_b32_m2rot.onnx",
+  "sha256": "2323612341a79717eba5a72eb5c6492557391176a422e6381afdc9c66fde21c2",
+  "op_counts": {
+   "Add": 132,
+   "Concat": 29,
+   "Constant": 261,
+   "ConstantOfShape": 1,
+   "Conv": 1,
+   "Equal": 1,
+   "Expand": 1,
+   "Gather": 28,
+   "Identity": 61,
+   "LayerNormalization": 26,
+   "MatMul": 79,
+   "Mul": 119,
+   "Reshape": 29,
+   "Shape": 29,
+   "Slice": 1,
+   "Softmax": 13,
+   "Split": 13,
+   "Squeeze": 38,
+   "Sub": 27,
+   "Tanh": 13,
+   "Transpose": 41,
+   "Unsqueeze": 54,
+   "Where": 1
+  },
+  "n_initializer": 145,
+  "initializer_elems_total": 94536448,
+  "initializer_elems_by_dtype": {
+   "FLOAT": 94536448
+  },
+  "register_cache_tensors": 31,
+  "register_cache_elems": 20992,
+  "register_cache_names_sample": [
+   "trunk.kc_b10_0",
+   "trunk.kc_b10_1",
+   "trunk.kc_b11_0",
+   "trunk.kc_b11_1",
+   "trunk.kc_b6_0",
+   "trunk.kc_b7_0",
+   "trunk.kc_b8_0",
+   "trunk.kc_b9_0"
+  ]
+ }
+}

@@ -1,0 +1,45 @@
+{
+ "python": "3.11.9",
+ "platform": "Windows-10-10.0.26300-SP0",
+ "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+ "numpy": "2.4.4",
+ "torch": "2.14.0+cpu",
+ "onnx": "1.23.1",
+ "onnxruntime": "1.25.0",
+ "open_clip": "3.3.0",
+ "timm": "1.0.30",
+ "PIL": "12.2.0",
+ "cpu": "11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz",
+ "cpu_flags": {
+  "avx2": true,
+  "avx512f": true,
+  "avx512_vnni": true,
+  "avx_vnni": false,
+  "fma": true
+ },
+ "numpy_blas": [
+  "include directory: C:/Users/runneradmin/AppData/Local/Temp/cibw-run-b3ecbnku/cp311-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/include",
+  "lib directory: C:/Users/runneradmin/AppData/Local/Temp/cibw-run-b3ecbnku/cp311-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/lib",
+  "name: scipy-openblas",
+  "openblas configuration: OpenBLAS 0.3.31.188.0  USE64BITINT DYNAMIC_ARCH NO_AFFINITY",
+  "pc file directory: D:/a/numpy-release/numpy-release/.openblas",
+  "version: 0.3.31.188.0",
+  "include directory: C:/Users/runneradmin/AppData/Local/Temp/cibw-run-b3ecbnku/cp311-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/include",
+  "lib directory: C:/Users/runneradmin/AppData/Local/Temp/cibw-run-b3ecbnku/cp311-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/lib",
+  "name: scipy-openblas",
+  "openblas configuration: OpenBLAS 0.3.31.188.0  USE64BITINT DYNAMIC_ARCH NO_AFFINITY",
+  "pc file directory: D:/a/numpy-release/numpy-release/.openblas",
+  "version: 0.3.31.188.0"
+ ],
+ "rothad_recomputed_sha": "8707e7923e5cc7904bed17d4c87eb3e9e44f77ed1aeee30e0e3f0c56958a4c58",
+ "matmul_f64_768_sha": "72bd0c3a9ed46e6ee290c3e7bd764553cf072dcd00d906acf762f69e73397f1e",
+ "files": {
+  "cache/calib_caltech_f32.npy": "4741e5b3e10ffdc1281b8b0f2156d829f42ac792d51e029fff91cac918c3bb78",
+  "cache/calib_cars_f32.npy": "f71ee73e07c641864d95b75272e1ab693e207e624271b777b24bffedb0b4f624",
+  "cache/calib_flowers_f32.npy": "656cbf28b81d0cc382221ed12e7bef0d387059c3973fdb2ed068f63054aee17f",
+  "cache/calib_food_f32.npy": "93463403d2ee8cc7ffbd4af821178affd5a8eea872074391f285851e3d17cdc7",
+  "cache/calib_pets_f32.npy": "cda58a2008d0b3f66329b979d0c5a5a5cb5fbd1fa9832e3f73f141fce22bca7b",
+  "onnx/siglip2_image_fp32.onnx": "333cad08e68dc85a5036f8f7396bc61d5548eb69ea365a0c5d83ff15c48840e0",
+  "onnx/siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx": "e84c3727f51e3b97cd59d9ab9604e01acc78f81493926a0696fbf96dc9c60f9e"
+ }
+}

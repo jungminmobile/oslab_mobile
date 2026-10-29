@@ -1,0 +1,6 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'SigLIP2 B32 P2 C3 equal', 'since': '2026-10-27T20:40:53', 'host': '쭌놋북', 'pid': 20340}
+C0 done 28.3s
+C3 done 27.2s
+C3 identical {"pets_dev": 0.0, "flowers_dev": 0.0, "cars_dev": 0.0, "food_dev": 0.0, "caltech_dev": 0.0}
+G1_pass: True
+RELEASED

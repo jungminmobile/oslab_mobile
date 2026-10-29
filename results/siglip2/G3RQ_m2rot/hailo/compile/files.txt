@@ -1,0 +1,2 @@
+94fff0976ac4348033df93867208f6d3c4de0766a38948c3453095b551f07690  siglip2_m2rot.hef
+-rw-r--r-- 1 junyong junyong 110436352 Oct 18 23:02 siglip2_m2rot.hef

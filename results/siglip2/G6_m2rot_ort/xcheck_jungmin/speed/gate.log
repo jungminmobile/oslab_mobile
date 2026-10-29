@@ -1,0 +1,20 @@
+18:52:21 start commit=43cc1b8 power_scheme=전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)
+18:52:29 s=1 t=1 pre cpu=11.7% plugged=True batt=97%
+19:03:10 s=1 t=1 done rc=0 post cpu=11.3% plugged=True batt=97%
+19:03:17 s=1 t=2 pre cpu=8.9% plugged=True batt=97%
+19:08:43 s=1 t=2 done rc=0 post cpu=8.3% plugged=True batt=97%
+19:08:50 s=1 t=4 pre cpu=8.8% plugged=True batt=97%
+19:12:21 s=1 t=4 done rc=0 post cpu=18.0% plugged=True batt=97%
+19:12:28 s=2 t=1 pre cpu=9.7% plugged=True batt=97%
+19:22:59 s=2 t=1 done rc=0 post cpu=19.1% plugged=True batt=97%
+19:23:06 s=2 t=2 pre cpu=18.5% plugged=True batt=97%
+19:28:37 s=2 t=2 done rc=0 post cpu=11.2% plugged=True batt=97%
+19:28:44 s=2 t=4 pre cpu=11.9% plugged=True batt=97%
+19:32:17 s=2 t=4 done rc=0 post cpu=7.2% plugged=True batt=97%
+19:32:24 s=3 t=1 pre cpu=8.9% plugged=True batt=97%
+19:42:43 s=3 t=1 done rc=0 post cpu=11.9% plugged=True batt=97%
+19:42:50 s=3 t=2 pre cpu=12.0% plugged=True batt=97%
+19:48:38 s=3 t=2 done rc=0 post cpu=13.5% plugged=True batt=97%
+19:48:45 s=3 t=4 pre cpu=10.7% plugged=True batt=97%
+19:52:45 s=3 t=4 done rc=0 post cpu=16.6% plugged=True batt=97%
+19:52:45 SPEED_DONE

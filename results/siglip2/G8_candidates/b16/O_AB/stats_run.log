@@ -1,0 +1,9 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'O-AB model stats', 'since': '2026-10-22T12:14:46', 'host': '쭌놋북', 'pid': 9356}
+D:\mokerton\venvs\siglip2\Lib\site-packages\torch\jit\_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+fp32 {"file": "siglip2_image_fp32.onnx", "MiB": 354.45, "initializer_elements": 92884224, "initializer_elements_gt16": 92884224, "n_initializers": 162, "memory": {"rss_before_MiB": 37.0, "rss_after_load_MiB": 417.5, "peak_during_load_MiB": 417.5, "peak_during_infer_MiB": 433.3}}
+m2rot {"file": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx", "MiB": 91.72, "memory": {"rss_before_MiB": 36.9, "rss_after_load_MiB": 164.0, "peak_during_load_MiB": 163.9, "peak_during_infer_MiB": 207.9}}
+oab {"file": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx", "MiB": 91.65, "memory": {"rss_before_MiB": 37.0, "rss_after_load_MiB": 159.3, "peak_during_load_MiB": 159.3, "peak_during_infer_MiB": 204.8}}
+{"params": {"pytorch_visual": 92884224, "onnx_initializers": 92884224}, "gmacs_rel_diff": 0.00106}
+GMACs fvcore 17.727 analytic 17.708
+RELEASED

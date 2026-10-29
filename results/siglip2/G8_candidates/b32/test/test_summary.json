@@ -1,0 +1,100 @@
+{
+ "date": "2026-10-22T23:40:12",
+ "commit": "72784d1",
+ "dirty": false,
+ "n_boot": 1000,
+ "seed": 0,
+ "sets": {
+  "pets": 3669,
+  "flowers": 6149,
+  "cars": 8041,
+  "food": 25250,
+  "caltech": 6084,
+  "cifar_test": 10000,
+  "imagenetv2": 10000
+ },
+ "models": {
+  "siglip2_image_int8_g6b_b32_m2rot_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all": {
+   "pets": {
+    "fp32_top1": 93.54,
+    "top1": 93.21,
+    "dtop1": -0.33,
+    "cos": 0.9922,
+    "dtop1_ci95": [
+     -0.76,
+     0.14
+    ]
+   },
+   "flowers": {
+    "fp32_top1": 84.49,
+    "top1": 84.13,
+    "dtop1": -0.36,
+    "cos": 0.9911,
+    "dtop1_ci95": [
+     -0.68,
+     -0.02
+    ]
+   },
+   "cars": {
+    "fp32_top1": 90.8,
+    "top1": 90.45,
+    "dtop1": -0.35,
+    "cos": 0.9883,
+    "dtop1_ci95": [
+     -0.72,
+     0.0
+    ]
+   },
+   "food": {
+    "fp32_top1": 88.9,
+    "top1": 88.9,
+    "dtop1": -0.0,
+    "cos": 0.9901,
+    "dtop1_ci95": [
+     -0.17,
+     0.18
+    ]
+   },
+   "caltech": {
+    "fp32_top1": 84.81,
+    "top1": 84.71,
+    "dtop1": -0.1,
+    "cos": 0.985,
+    "dtop1_ci95": [
+     -0.35,
+     0.13
+    ]
+   },
+   "cifar_test": {
+    "fp32_top1": 76.05,
+    "top1": 76.98,
+    "dtop1": 0.93,
+    "cos": 0.9637,
+    "dtop1_ci95": [
+     0.38,
+     1.44
+    ]
+   },
+   "imagenetv2": {
+    "fp32_top1": 65.85,
+    "top1": 65.65,
+    "dtop1": -0.2,
+    "cos": 0.9895,
+    "dtop1_ci95": [
+     -0.61,
+     0.17
+    ]
+   },
+   "hr": {
+    "fp32_top1": 88.51,
+    "top1": 88.28,
+    "dtop1": -0.23,
+    "dtop1_ci95": [
+     -0.36,
+     -0.08
+    ],
+    "cos": 0.9893
+   }
+  }
+ }
+}

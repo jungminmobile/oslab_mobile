@@ -1,0 +1,840 @@
+{
+ "date": "2026-10-15T22:56:54",
+ "commit": "061b001",
+ "dirty": false,
+ "preds": {
+  "ort_u8rr": "../results/siglip2/G3_cumulative/qkv_precision/full/pred_siglip2_image_int8_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_fc2L2.npz",
+  "dfc_d256l1": "../results/siglip2/G4_dfc_full/pred_D256L1_official_b9fc2_full.npz"
+ },
+ "sets": {
+  "cifar_A": {
+   "n": 1000,
+   "fp32_correct": 769,
+   "ort_u8rr": {
+    "lost": 90,
+    "gained": 48,
+    "net_pp": -4.2,
+    "top_net_loss_classes": [
+     [
+      "75",
+      3
+     ],
+     [
+      "74",
+      3
+     ],
+     [
+      "52",
+      3
+     ],
+     [
+      "38",
+      3
+     ],
+     [
+      "96",
+      3
+     ],
+     [
+      "25",
+      3
+     ]
+    ],
+    "top_confusions": [
+     [
+      "59",
+      "52",
+      3
+     ],
+     [
+      "52",
+      "47",
+      2
+     ],
+     [
+      "0",
+      "53",
+      2
+     ],
+     [
+      "38",
+      "97",
+      2
+     ],
+     [
+      "25",
+      "5",
+      2
+     ],
+     [
+      "27",
+      "44",
+      2
+     ]
+    ],
+    "classes_with_loss": 45
+   },
+   "dfc_d256l1": {
+    "lost": 102,
+    "gained": 41,
+    "net_pp": -6.1,
+    "top_net_loss_classes": [
+     [
+      "52",
+      5
+     ],
+     [
+      "74",
+      4
+     ],
+     [
+      "83",
+      4
+     ],
+     [
+      "64",
+      4
+     ],
+     [
+      "90",
+      4
+     ],
+     [
+      "68",
+      4
+     ]
+    ],
+    "top_confusions": [
+     [
+      "77",
+      "36",
+      3
+     ],
+     [
+      "83",
+      "0",
+      3
+     ],
+     [
+      "64",
+      "65",
+      3
+     ],
+     [
+      "74",
+      "50",
+      2
+     ],
+     [
+      "50",
+      "36",
+      2
+     ],
+     [
+      "52",
+      "33",
+      2
+     ]
+    ],
+    "classes_with_loss": 48
+   },
+   "lost_overlap": {
+    "pair": [
+     "ort_u8rr",
+     "dfc_d256l1"
+    ],
+    "both": 44,
+    "only_first": 46,
+    "only_second": 58
+   }
+  },
+  "pets_dev": {
+   "n": 990,
+   "fp32_correct": 924,
+   "ort_u8rr": {
+    "lost": 16,
+    "gained": 10,
+    "net_pp": -0.61,
+    "top_net_loss_classes": [
+     [
+      "birman",
+      4
+     ],
+     [
+      "staffordshire bull terrier",
+      2
+     ],
+     [
+      "american bulldog",
+      2
+     ],
+     [
+      "bengal",
+      2
+     ],
+     [
+      "leonberger",
+      1
+     ],
+     [
+      "saint bernard",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "birman",
+      "ragdoll",
+      4
+     ],
+     [
+      "staffordshire bull terrier",
+      "american pit bull terrier",
+      2
+     ],
+     [
+      "american bulldog",
+      "staffordshire bull terrier",
+      2
+     ],
+     [
+      "bengal",
+      "abyssinian",
+      2
+     ],
+     [
+      "leonberger",
+      "newfoundland",
+      1
+     ],
+     [
+      "english cocker spaniel",
+      "newfoundland",
+      1
+     ]
+    ],
+    "classes_with_loss": 7
+   },
+   "dfc_d256l1": {
+    "lost": 21,
+    "gained": 17,
+    "net_pp": -0.4,
+    "top_net_loss_classes": [
+     [
+      "russian blue",
+      3
+     ],
+     [
+      "ragdoll",
+      2
+     ],
+     [
+      "bengal",
+      2
+     ],
+     [
+      "boxer",
+      1
+     ],
+     [
+      "miniature pinscher",
+      1
+     ],
+     [
+      "siamese",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "ragdoll",
+      "birman",
+      3
+     ],
+     [
+      "russian blue",
+      "british shorthair",
+      3
+     ],
+     [
+      "boxer",
+      "american bulldog",
+      2
+     ],
+     [
+      "american pit bull terrier",
+      "shiba inu",
+      1
+     ],
+     [
+      "miniature pinscher",
+      "american pit bull terrier",
+      1
+     ],
+     [
+      "siamese",
+      "birman",
+      1
+     ]
+    ],
+    "classes_with_loss": 10
+   },
+   "lost_overlap": {
+    "pair": [
+     "ort_u8rr",
+     "dfc_d256l1"
+    ],
+    "both": 4,
+    "only_first": 12,
+    "only_second": 17
+   }
+  },
+  "flowers_dev": {
+   "n": 957,
+   "fp32_correct": 830,
+   "ort_u8rr": {
+    "lost": 28,
+    "gained": 13,
+    "net_pp": -1.57,
+    "top_net_loss_classes": [
+     [
+      "canna lily",
+      4
+     ],
+     [
+      "geranium",
+      3
+     ],
+     [
+      "english marigold",
+      3
+     ],
+     [
+      "marigold",
+      2
+     ],
+     [
+      "bolero deep blue",
+      2
+     ],
+     [
+      "colt's foot",
+      2
+     ]
+    ],
+    "top_confusions": [
+     [
+      "marigold",
+      "english marigold",
+      3
+     ],
+     [
+      "geranium",
+      "pelargonium",
+      3
+     ],
+     [
+      "english marigold",
+      "barbeton daisy",
+      3
+     ],
+     [
+      "canna lily",
+      "sword lily",
+      2
+     ],
+     [
+      "colt's foot",
+      "silverbush",
+      2
+     ],
+     [
+      "petunia",
+      "mexican petunia",
+      2
+     ]
+    ],
+    "classes_with_loss": 16
+   },
+   "dfc_d256l1": {
+    "lost": 23,
+    "gained": 9,
+    "net_pp": -1.46,
+    "top_net_loss_classes": [
+     [
+      "marigold",
+      3
+     ],
+     [
+      "colt's foot",
+      2
+     ],
+     [
+      "english marigold",
+      2
+     ],
+     [
+      "columbine",
+      1
+     ],
+     [
+      "daffodil",
+      1
+     ],
+     [
+      "siam tulip",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "marigold",
+      "english marigold",
+      3
+     ],
+     [
+      "pink primrose",
+      "tree mallow",
+      2
+     ],
+     [
+      "english marigold",
+      "barbeton daisy",
+      2
+     ],
+     [
+      "columbine",
+      "lenten rose",
+      1
+     ],
+     [
+      "daffodil",
+      "sword lily",
+      1
+     ],
+     [
+      "siam tulip",
+      "cyclamen",
+      1
+     ]
+    ],
+    "classes_with_loss": 17
+   },
+   "lost_overlap": {
+    "pair": [
+     "ort_u8rr",
+     "dfc_d256l1"
+    ],
+    "both": 8,
+    "only_first": 20,
+    "only_second": 15
+   }
+  },
+  "cars_dev": {
+   "n": 967,
+   "fp32_correct": 907,
+   "ort_u8rr": {
+    "lost": 17,
+    "gained": 13,
+    "net_pp": -0.41,
+    "top_net_loss_classes": [
+     [
+      "AM General Hummer SUV 2000",
+      1
+     ],
+     [
+      "Hyundai Genesis Sedan 2012",
+      1
+     ],
+     [
+      "Mercedes-Benz C-Class Sedan 2012",
+      1
+     ],
+     [
+      "Spyker C8 Convertible 2009",
+      1
+     ],
+     [
+      "Suzuki Aerio Sedan 2007",
+      1
+     ],
+     [
+      "Acura TL Sedan 2012",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "Chevrolet Corvette ZR1 2012",
+      "Chevrolet Corvette Ron Fellows Edition Z06 2007",
+      2
+     ],
+     [
+      "AM General Hummer SUV 2000",
+      "HUMMER H3T Crew Cab 2010",
+      1
+     ],
+     [
+      "Hyundai Genesis Sedan 2012",
+      "Mercedes-Benz E-Class Sedan 2012",
+      1
+     ],
+     [
+      "Mercedes-Benz C-Class Sedan 2012",
+      "Mercedes-Benz E-Class Sedan 2012",
+      1
+     ],
+     [
+      "Spyker C8 Convertible 2009",
+      "Spyker C8 Coupe 2009",
+      1
+     ],
+     [
+      "Suzuki Aerio Sedan 2007",
+      "Chevrolet Malibu Sedan 2007",
+      1
+     ]
+    ],
+    "classes_with_loss": 16
+   },
+   "dfc_d256l1": {
+    "lost": 27,
+    "gained": 16,
+    "net_pp": -1.14,
+    "top_net_loss_classes": [
+     [
+      "Suzuki Kizashi Sedan 2012",
+      2
+     ],
+     [
+      "Acura TL Sedan 2012",
+      2
+     ],
+     [
+      "Audi S5 Convertible 2012",
+      2
+     ],
+     [
+      "Dodge Caliber Wagon 2012",
+      2
+     ],
+     [
+      "Dodge Dakota Club Cab 2007",
+      2
+     ],
+     [
+      "Acura RL Sedan 2012",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "Acura TL Sedan 2012",
+      "Acura TL Type-S 2008",
+      2
+     ],
+     [
+      "Dodge Caliber Wagon 2012",
+      "Dodge Caliber Wagon 2007",
+      2
+     ],
+     [
+      "Acura RL Sedan 2012",
+      "Acura ZDX Hatchback 2012",
+      1
+     ],
+     [
+      "Ford GT Coupe 2006",
+      "McLaren MP4-12C Coupe 2012",
+      1
+     ],
+     [
+      "Hyundai Genesis Sedan 2012",
+      "Acura RL Sedan 2012",
+      1
+     ],
+     [
+      "Audi V8 Sedan 1994",
+      "Audi 100 Sedan 1994",
+      1
+     ]
+    ],
+    "classes_with_loss": 19
+   },
+   "lost_overlap": {
+    "pair": [
+     "ort_u8rr",
+     "dfc_d256l1"
+    ],
+    "both": 4,
+    "only_first": 13,
+    "only_second": 23
+   }
+  },
+  "food_dev": {
+   "n": 985,
+   "fp32_correct": 881,
+   "ort_u8rr": {
+    "lost": 27,
+    "gained": 10,
+    "net_pp": -1.73,
+    "top_net_loss_classes": [
+     [
+      "hummus",
+      2
+     ],
+     [
+      "grilled cheese sandwich",
+      2
+     ],
+     [
+      "guacamole",
+      1
+     ],
+     [
+      "apple pie",
+      1
+     ],
+     [
+      "fried rice",
+      1
+     ],
+     [
+      "steak",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "guacamole",
+      "nachos",
+      1
+     ],
+     [
+      "apple pie",
+      "bread pudding",
+      1
+     ],
+     [
+      "fried rice",
+      "carrot cake",
+      1
+     ],
+     [
+      "hummus",
+      "omelette",
+      1
+     ],
+     [
+      "hummus",
+      "lobster bisque",
+      1
+     ],
+     [
+      "steak",
+      "pork chop",
+      1
+     ]
+    ],
+    "classes_with_loss": 23
+   },
+   "dfc_d256l1": {
+    "lost": 39,
+    "gained": 13,
+    "net_pp": -2.64,
+    "top_net_loss_classes": [
+     [
+      "chicken wings",
+      2
+     ],
+     [
+      "hummus",
+      2
+     ],
+     [
+      "tacos",
+      2
+     ],
+     [
+      "beef tartare",
+      2
+     ],
+     [
+      "chicken quesadilla",
+      2
+     ],
+     [
+      "sushi",
+      2
+     ]
+    ],
+    "top_confusions": [
+     [
+      "chicken wings",
+      "pork chop",
+      2
+     ],
+     [
+      "tacos",
+      "chicken quesadilla",
+      2
+     ],
+     [
+      "beef tartare",
+      "tuna tartare",
+      2
+     ],
+     [
+      "prime rib",
+      "pork chop",
+      1
+     ],
+     [
+      "chocolate cake",
+      "bread pudding",
+      1
+     ],
+     [
+      "apple pie",
+      "bread pudding",
+      1
+     ]
+    ],
+    "classes_with_loss": 30
+   },
+   "lost_overlap": {
+    "pair": [
+     "ort_u8rr",
+     "dfc_d256l1"
+    ],
+    "both": 11,
+    "only_first": 16,
+    "only_second": 28
+   }
+  },
+  "caltech_dev": {
+   "n": 1024,
+   "fp32_correct": 973,
+   "ort_u8rr": {
+    "lost": 6,
+    "gained": 10,
+    "net_pp": 0.39,
+    "top_net_loss_classes": [
+     [
+      "wild cat",
+      2
+     ],
+     [
+      "cougar body",
+      1
+     ],
+     [
+      "crayfish",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "wild cat",
+      "leopards",
+      2
+     ],
+     [
+      "electric guitar",
+      "mandolin",
+      1
+     ],
+     [
+      "cougar body",
+      "wild cat",
+      1
+     ],
+     [
+      "crayfish",
+      "mayfly",
+      1
+     ],
+     [
+      "leopards",
+      "wild cat",
+      1
+     ]
+    ],
+    "classes_with_loss": 3
+   },
+   "dfc_d256l1": {
+    "lost": 15,
+    "gained": 12,
+    "net_pp": -0.29,
+    "top_net_loss_classes": [
+     [
+      "lotus",
+      2
+     ],
+     [
+      "ibis",
+      1
+     ],
+     [
+      "wild cat",
+      1
+     ],
+     [
+      "ant",
+      1
+     ],
+     [
+      "scorpion",
+      1
+     ],
+     [
+      "flamingo head",
+      1
+     ]
+    ],
+    "top_confusions": [
+     [
+      "lotus",
+      "water lilly",
+      2
+     ],
+     [
+      "ibis",
+      "platypus",
+      1
+     ],
+     [
+      "wild cat",
+      "leopards",
+      1
+     ],
+     [
+      "ant",
+      "elephant",
+      1
+     ],
+     [
+      "electric guitar",
+      "mandolin",
+      1
+     ],
+     [
+      "scorpion",
+      "ant",
+      1
+     ]
+    ],
+    "classes_with_loss": 12
+   },
+   "lost_overlap": {
+    "pair": [
+     "ort_u8rr",
+     "dfc_d256l1"
+    ],
+    "both": 2,
+    "only_first": 4,
+    "only_second": 13
+   }
+  }
+ }
+}

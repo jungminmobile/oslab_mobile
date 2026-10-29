@@ -1,0 +1,12 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'G4 full-dev C256L1 start=400 b', 'since': '2026-10-15T21:29:40', 'host': 'localhost', 'pid': 526}
+[info] No GPU chosen and no suitable GPU found, falling back to CPU.
+[info] Hailo HW architecture: hailo10h
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1792067579.237635     527 service.cc:152] XLA service 0x6167399c6180 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+I0000 00:00:1792067579.239275     527 service.cc:160]   StreamExecutor device (0): Host, Default Version
+I0000 00:00:1792067708.828602     527 device_compiler.h:188] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+cars_dev {"n": 200, "top1": 91.0, "fp32_top1": 94.0, "cos_mean": 0.9603, "cos_p1": 0.9108} 766s
+food_dev {"n": 200, "top1": 90.0, "fp32_top1": 93.5, "cos_mean": 0.9605, "cos_p1": 0.9237} 1298s
+caltech_dev {"n": 200, "top1": 94.5, "fp32_top1": 94.0, "cos_mean": 0.9613, "cos_p1": 0.902} 1858s
+{"tag": "C256L1_official_s400b", "hr_cos": 0.9607, "hr_dtop1": -2.0, "sec": 1858}
+RELEASED

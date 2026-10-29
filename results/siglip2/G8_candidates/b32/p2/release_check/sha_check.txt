@@ -1,0 +1,15 @@
+e14_4_P2_patch_int8.onnx: OK
+siglip2_image_fp32.onnx: OK
+siglip2_image_fp32_g6b_b32_m2rot.onnx: OK
+siglip2_image_int8_g6b_b32_m2rot_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx: OK
+caltech_dev.npz: OK
+cars_dev.npz: OK
+cifar_A.npz: OK
+flowers_dev.npz: OK
+food_dev.npz: OK
+pets_dev.npz: OK
+pred_i7-1165G7_fp32.npz: OK
+pred_i7-1165G7_p2.npz: OK
+portable_eval.py: OK
+result_i7-1165G7_p2.json: OK
+README.md: OK

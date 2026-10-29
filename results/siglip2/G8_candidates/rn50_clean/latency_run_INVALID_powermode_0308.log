@@ -1,0 +1,6 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'Candidates 3 latency+mem (needs idle PC)', 'since': '2026-10-22T03:07:59', 'host': '쭌놋북', 'pid': 8348}
+in-lock cpu30s=14%
+{"date": "2026-10-22T03:08:30", "platform": "Windows-10-10.0.26300-SP0", "python": "3.11.9", "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel", "ort": "1.25.0", "numpy": "2.4.4", "logical_cores": 8, "cpu_name": "11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz", "power_scheme": "전원 구성표 GUID: ab6534a3-bc02-4c44-94d1-a8535b2eb070  (SAMSUNG MODE)", "battery": "plugged=True batt=100%"}
+session 1 t=1 load=12.4% rn50_fp32=115.96  rn50_b2=50.23  b16_fp32=415.78  b16_m2rot=198.54  b32_fp32=148.01  b32_m2rot=71.72
+session 1 t=2 load=24.5% rn50_fp32=84.49  rn50_b2=38.77  b16_fp32=277.62  b16_m2rot=149.55  b32_fp32=104.98  b32_m2rot=56.54
+session 1 t=4 load=30.5% rn50_fp32=77.36  rn50_b2=31.33  b16_fp32=274.46  b16_m2rot=134.58  b32_fp32=107.36  b32_m2rot=55.81

@@ -1,0 +1,33 @@
+== D256L1_orig: 잔차 경로 위 층 124개 중 입력 8비트(a8_*) 0개
+== B2_zero: 잔차 경로 위 층 167개 중 입력 8비트(a8_*) 22개
+   ew_add11  -> ew_mult1     ew_mult   a8_w8_a8     /trunk/Mul
+   ew_add11  -> precision_change2 activation a8_w8_a16    
+   ew_add15  -> ew_mult4     ew_mult   a8_w8_a8     /trunk/Mul_4
+   ew_add15  -> ew_mult5     ew_mult   a8_w8_a8     /trunk/Mul_5
+   ew_add15  -> precision_change4 activation a8_w8_a16    
+   ew_add19  -> ew_mult8     ew_mult   a8_w8_a8     /trunk/Mul_9
+   ew_add19  -> ew_mult9     ew_mult   a8_w8_a8     /trunk/Mul_10
+   ew_add19  -> precision_change6 activation a8_w8_a16    
+   ew_add23  -> ew_mult12    ew_mult   a8_w8_a8     /trunk/Mul_14
+   ew_add23  -> ew_mult13    ew_mult   a8_w8_a8     /trunk/Mul_15
+   ew_add23  -> precision_change8 activation a8_w8_a16    
+   ew_add27  -> ew_mult16    ew_mult   a8_w8_a8     /trunk/Mul_19
+   ew_add27  -> ew_mult17    ew_mult   a8_w8_a8     /trunk/Mul_20
+   ew_add27  -> precision_change10 activation a8_w8_a16    
+   ew_add33  -> ew_mult22    ew_mult   a8_w8_a8     /trunk/Mul_26
+   ew_add33  -> ew_mult23    ew_mult   a8_w8_a8     /trunk/Mul_27
+   ew_add33  -> precision_change12 activation a8_w8_a16    
+   ew_add39  -> ew_mult28    ew_mult   a8_w8_a8     /trunk/Mul_33
+   ew_add39  -> ew_mult29    ew_mult   a8_w8_a8     /trunk/Mul_34
+   ew_add39  -> precision_change14 activation a8_w8_a16    
+   ew_add45  -> ew_mult34    ew_mult   a8_w8_a8     /trunk/Mul_40
+   ew_add45  -> precision_change16 activation a8_w8_a16    
+== B2_hcv: 잔차 경로 위 층 153개 중 입력 8비트(a8_*) 8개
+   ew_add11  -> ew_add12     ew_add    a8_w8_a16    /trunk/Add_1
+   ew_add16  -> ew_add17     ew_add    a8_w8_a16    /trunk/Add_6
+   ew_add21  -> ew_add22     ew_add    a8_w8_a16    /trunk/Add_11
+   ew_add26  -> ew_add27     ew_add    a8_w8_a16    /trunk/Add_16
+   ew_add31  -> ew_add32     ew_add    a8_w8_a16    /trunk/Add_21
+   ew_add38  -> ew_add39     ew_add    a8_w8_a16    /trunk/Add_28
+   ew_add45  -> ew_add46     ew_add    a8_w8_a16    /trunk/Add_35
+   ew_add52  -> ew_add53     ew_add    a8_w8_a16    /trunk/Add_42

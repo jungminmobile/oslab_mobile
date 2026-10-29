@@ -1,0 +1,4 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'DFC optimize D256 level1', 'since': '2026-10-15T05:43:05', 'host': 'localhost', 'pid': 103}
+[info] No GPU chosen and no suitable GPU found, falling back to CPU.
+[info] Notice: For optimal performance, if your model has more than 10M parameters, it is recommended to set the compression level to 4. (Current model has 92.31M parameters.)
+[info] Notice: For optimal accuracy with compressed models, it is recommended to set the optimization level to 4.

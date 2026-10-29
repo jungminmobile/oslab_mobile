@@ -1,0 +1,10 @@
+total 2476384
+drwxr-xr-x 2 jjury jjury       4096 Oct 14 14:31 .
+drwxr-xr-x 8 jjury jjury       4096 Oct 14 14:13 ..
+-rw-r--r-- 1 jjury jjury        112 Oct 14 14:16 acceleras.log
+-rwxr-xr-x 1 jjury jjury  154140800 Oct 14 14:13 calib_highres256_s0_nhwc.npy
+-rw-r--r-- 1 jjury jjury        437 Oct 14 14:13 g4_D256_official_b9fc2.alls
+-rw-r--r-- 1 jjury jjury       5162 Oct 14 14:31 hailo_sdk.client.log
+-rw-r--r-- 1 jjury jjury 2011514880 Oct 14 14:31 opt_D256_official_b9fc2.har
+-rw-r--r-- 1 jjury jjury      78572 Oct 14 14:31 optimize_D256.log
+-rw-r--r-- 1 jjury jjury  370032640 Oct 14 14:13 siglip2_b16_224.har

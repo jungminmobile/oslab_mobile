@@ -1,0 +1,14 @@
+03:38:45 commit=8342996 dirty=0 siglip2_rothad_b16_224.har=303a88281fdc4c36 siglip2_m2rot.har=ab7b324a16585071 g4_D256L1_official_b9fc2.alls=96696f76f9a172e4 g3r_M2rot_D256L1equiv.alls=485adb368c9f02a9 /home/junyong/siglip2_work/artifacts/dfc/calib_highres256_s0_nhwc.npy=91f551e312271d1a 
+03:38:45 optimize rothad 잠금·메모리 OK free=29G
+03:59:37 rothad optimize rc=0 sec=1248 har2=7c68d00967ce5a4a [info] siglip2_rothad_b16_224/output_layer1 SNR: 16.63 dB
+03:59:37 compile rothad 잠금·메모리 OK free=29G
+04:24:37 rothad compile rc=0 sec=1500
+04:24:57 rothad hef=siglip2_rothad_b16_224.hef bytes=107540480 sha256=705c3a81417cae2c4cf0d9b5b359846f95626b1d296bdd0166de0d43480df218 Number of Contexts 17
+04:24:57 optimize M2rot 잠금·메모리 OK free=29G
+04:52:40 M2rot optimize rc=0 sec=1659 har2=ca1d0dbcd2c5d898 [info] siglip2_m2rot/output_layer1 SNR: 18.03 dB
+04:52:40 compile M2rot 잠금·메모리 OK free=29G
+05:21:34 M2rot compile rc=0 sec=1734
+05:22:03 M2rot hef=siglip2_m2rot.hef bytes=110436352 sha256=040a3ae1ebd81d9979ec893b5a65cf1265370196e8cfd516350e016191752c6f Number of Contexts 21
+05:22:03 native rothad 잠금·메모리 OK free=29G
+05:22:18 native rothad rc=0 {"date": "2026-10-19T05:22:17", "har": "siglip2_rothad_b16_224.har", "har_sha256": "303a88281fdc4c367a39856493382108e6173ddb23369ede3ca7227043b741c0", "exec": "dfc_sdk_native", "n": 64, "cos_min": 0.9
+05:22:18 REPRO BUILD DONE

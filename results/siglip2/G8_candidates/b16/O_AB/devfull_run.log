@@ -1,0 +1,23 @@
+ACQUIRED {'owner': 'siglip2', 'job': 'B16 O-AB dev full (~50 min)', 'since': '2026-10-22T11:55:29', 'host': '쭌놋북', 'pid': 8240}
+  fp32 cifar_A top1=76.90
+  fp32 pets_dev top1=93.33
+  fp32 flowers_dev top1=86.73
+  fp32 cars_dev top1=93.80
+  fp32 food_dev top1=89.44
+  fp32 caltech_dev top1=95.02
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_o1b_percent cifar_A top1=74.60
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_o1b_percent pets_dev top1=93.33
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_o1b_percent flowers_dev top1=86.52
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_o1b_percent cars_dev top1=94.00
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_o1b_percent food_dev top1=88.63
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_o1b_percent caltech_dev top1=94.92
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 cifar_A top1=72.60
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 pets_dev top1=92.93
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 flowers_dev top1=86.31
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 cars_dev top1=93.80
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 food_dev top1=89.04
+  siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile9 caltech_dev top1=95.12
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_o1b_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_moq0_all.onnx", "hr_dtop1": -0.18, "hr_dtop1_ci95": [-0.55, 0.18], "hr_cos": 0.9869, "baseline_class": "≤0.5%p"}
+{"model": "siglip2_image_int8_rcmaskbcmlp55at5-13at9_rothad_percentile99999_highres256_s0_u8_ops-MatMul_hc16_rr_all.onnx", "hr_dtop1": -0.23, "hr_dtop1_ci95": [-0.64, 0.18], "hr_cos": 0.9757, "baseline_class": "≤0.5%p"}
+pair Mul_hc16_rr_moq0_all s-MatMul_hc16_rr_all -0.04 [-0.35, 0.26]
+RELEASED
