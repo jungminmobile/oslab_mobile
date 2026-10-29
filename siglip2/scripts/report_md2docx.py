@@ -2,7 +2,7 @@
 사용: python md2docx.py <md> <template.docx> <figs_dir> <out.docx> <teaminfo.json>
 팀 정보(teaminfo.json: name, members[], contact, date)는 전화번호가 들어가므로 저장소 밖에 둔다. PDF 변환은 Word(COM)로 한다. 그림은 md의 ![캡션](파일) 줄로 넣는다.
 """
-import json, re, shutil, struct, sys, zipfile
+import json, os, re, shutil, struct, sys, zipfile
 from xml.sax.saxutils import escape
 
 MD, TPL, FIGS, OUT, TEAM = sys.argv[1:6]
@@ -48,8 +48,12 @@ def parse(lines):
                 buf.append(lines[j]); j += 1
             out.append(("code", buf)); i = j + 1; continue
         m = re.match(r"^!\[(.*)\]\((.*)\)\s*$", ln)
-        if m:  # ![캡션](그림 파일)
-            out.append(("fig", (m.group(2), m.group(1)))); i += 1; continue
+        if m:  # ![캡션](그림 파일), 캡션 끝에 "|70" 처럼 쓰면 본문 폭의 70%로 넣는다 (v13, 없으면 92%)
+            cap, pct = m.group(1), None
+            mm = re.match(r"^(.*)\|(\d{2})$", cap)
+            if mm:
+                cap, pct = mm.group(1), int(mm.group(2))
+            out.append(("fig", (m.group(2), cap, pct))); i += 1; continue
         if ln.startswith("|"):
             rows = []
             while i < len(lines) and lines[i].startswith("|"):
@@ -171,7 +175,8 @@ def col_widths(rows, total):
 def table(rows, total=9000, vmerge_first=False):
     n = max(len(r) for r in rows)
     rows = [r + [""] * (n - len(r)) for r in rows]
-    w = col_widths(rows, total)
+    is_group = lambda r: n > 2 and r[0].startswith("**") and not any(r[1:])
+    w = col_widths([r for r in rows if not is_group(r)], total)
     small = n >= 6
     sz = 16 if small else 18
     x = [f'<w:tbl><w:tblPr><w:tblW w:w="{total}" w:type="dxa"/><w:tblBorders>{BORDER("BBBBBB")}</w:tblBorders>'
@@ -181,6 +186,10 @@ def table(rows, total=9000, vmerge_first=False):
     for ri, r in enumerate(rows):
         hdr = ri == 0
         x.append("<w:tr><w:trPr>" + ("<w:tblHeader/>" if hdr else "<w:cantSplit/>") + "</w:trPr>")
+        if not hdr and n > 2 and r[0].startswith("**") and not any(r[1:]):  # 묶음 제목 행 (v13): 한 칸으로 합침
+            tc = f'<w:tcW w:w="{total}" w:type="dxa"/><w:gridSpan w:val="{n}"/><w:shd w:val="clear" w:color="auto" w:fill="F7F7F7"/>'
+            x.append(f"<w:tc><w:tcPr>{tc}{CELLMAR}</w:tcPr>" + para(r[0], sz=sz, jc="left", after=0, line=264) + "</w:tc></w:tr>")
+            continue
         for ci, c in enumerate(r):
             tc = f'<w:tcW w:w="{w[ci]}" w:type="dxa"/>'
             if vmerge_first and ci == 0 and not hdr:
@@ -230,10 +239,10 @@ def code(buf):
     return "".join(xs)
 
 IMAGES = []  # (rId, filename)
-def image(fn, caption, width_dxa):
+def image(fn, caption, width_dxa, pct=None):
     data = open(f"{FIGS}/{fn}", "rb").read()
     wpx, hpx = struct.unpack(">II", data[16:24])
-    cx = int(width_dxa * 0.92 * 635)
+    cx = int(width_dxa * (pct / 100 if pct else 0.92) * 635)
     cy = int(cx * hpx / wpx)
     rid = f"rIdImg{len(IMAGES) + 1}"
     IMAGES.append((rid, fn))
@@ -261,7 +270,7 @@ def render(blocks, width, sz=None):
         elif kind == "code":
             xs.append(code(val))
         elif kind == "fig":
-            xs.append(image(val[0], val[1], width))
+            xs.append(image(val[0], val[1], width, val[2] if len(val) > 2 else None))
     return "".join(xs)
 
 def box(inner):
@@ -315,7 +324,7 @@ for lvl, title, sl in secs:
     sid = re.match(r"([\d.]+)", title)
     sid = sid.group(1).rstrip(".") if sid else ""
     is_app = title.startswith("부록")
-    body.append(heading(title, 1 if lvl == 2 else 2, pagebreak=title.startswith("부록 A")))
+    body.append(heading(title, 1 if lvl == 2 else 2, pagebreak=title.startswith("부록 A") and not os.environ.get("REPORT_NO_APPENDIX_BREAK")))
     blocks = add_figs(parse(sl))
     if sid == "2":
         k = next(i for i, b in enumerate(blocks) if b[0] == "para" and b[1].startswith("**요약.**"))
