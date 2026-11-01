@@ -1,0 +1,102 @@
+{
+  "env": {
+    "label": "labpc_ort1232_jh_siglip2",
+    "date": "2026-10-15 22:37:37",
+    "machine": "x86_64",
+    "os": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+    "cpu_model": "Intel(R) Core(TM) Ultra 9 285K",
+    "cpu_count": 24,
+    "isa_flags": [
+      "avx_vnni",
+      "avx2"
+    ],
+    "cpu0_cur_freq_khz": "",
+    "nvpmodel": "",
+    "onnxruntime": "1.23.2",
+    "python": "3.10.20"
+  },
+  "protocol": {
+    "threads": [
+      1,
+      2,
+      4
+    ],
+    "warmup": 20,
+    "n": 200,
+    "reps": 3
+  },
+  "models": {
+    "siglip2_fp32.onnx": {
+      "MiB": 354.45,
+      "lat": {
+        "1": {
+          "mean": 240.63,
+          "std": 0.18,
+          "p50": 240.29,
+          "p99": 248.36
+        },
+        "2": {
+          "mean": 124.87,
+          "std": 0.13,
+          "p50": 124.32,
+          "p99": 130.37
+        },
+        "4": {
+          "mean": 68.29,
+          "std": 0.26,
+          "p50": 67.94,
+          "p99": 72.7
+        }
+      },
+      "cos_vs_fp32_random": 1.0
+    },
+    "siglip2_int8_s8.onnx": {
+      "MiB": 105.31,
+      "lat": {
+        "1": {
+          "mean": 157.3,
+          "std": 0.24,
+          "p50": 156.65,
+          "p99": 164.73
+        },
+        "2": {
+          "mean": 93.09,
+          "std": 0.18,
+          "p50": 92.62,
+          "p99": 98.34
+        },
+        "4": {
+          "mean": 61.18,
+          "std": 0.06,
+          "p50": 60.83,
+          "p99": 65.07
+        }
+      },
+      "cos_vs_fp32_random": 0.981
+    },
+    "siglip2_int8_u8rr.onnx": {
+      "MiB": 105.31,
+      "lat": {
+        "1": {
+          "mean": 96.07,
+          "std": 0.07,
+          "p50": 95.55,
+          "p99": 101.47
+        },
+        "2": {
+          "mean": 52.87,
+          "std": 0.12,
+          "p50": 52.56,
+          "p99": 56.64
+        },
+        "4": {
+          "mean": 30.86,
+          "std": 0.02,
+          "p50": 30.61,
+          "p99": 33.92
+        }
+      },
+      "cos_vs_fp32_random": 0.9805
+    }
+  }
+}
