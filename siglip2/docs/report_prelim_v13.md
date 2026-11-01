@@ -330,8 +330,9 @@ git clone https://github.com/jungminmobile/oslab_mobile.git
 cd oslab_mobile
 git checkout prelim-submit
 python -m venv .venv
-# Windows: .venv\Scripts\activate
-# Linux/macOS: source .venv/bin/activate
+source .venv/bin/activate          # Windows(Git Bash): source .venv/Scripts/activate
+python -m pip install --upgrade pip  # Python 3.11 기본 pip 24.0은 한국어 Windows에서 한글 주석을 못 읽음
+export PYTHONUTF8=1
 python -m pip install -r siglip2/requirements.txt \
   --extra-index-url https://download.pytorch.org/whl/cpu
 gh release download siglip2-b32-p2-submit-20261027 \
@@ -346,7 +347,7 @@ mkdir -p $SIGLIP2_ARTIFACTS/onnx
 cp release/*.onnx $SIGLIP2_ARTIFACTS/onnx/
 ```
 - `gh`가 없으면 브라우저로 Release 페이지(https://github.com/jungminmobile/oslab_mobile/releases/tag/siglip2-b32-p2-submit-20261027)에서 받아 `release/` 폴더 하나에 둬도 된다. 빠른 확인(9.2 (가))만 할 때는 저장소를 받지 않아도 된다.
-- Windows PowerShell에서는 `export` 대신 `$env:S2_MODEL_ID="..."`처럼 쓴다.
+- Windows PowerShell에서는 `export` 대신 `$env:S2_MODEL_ID="..."`처럼 쓴다(`$env:PYTHONUTF8="1"` 포함). 가상환경은 `.venv\Scripts\Activate.ps1`로 켠다.
 - `S2_MODEL_ID`는 꼭 지정해야 한다. 빠뜨리면 코드가 개발 초기에 쓰던 다른 모델(B/16)로 동작한다.
 
 ### 9.2 벤치마크 실행 명령
@@ -413,6 +414,7 @@ python scripts/cross_latency.py --no-mem-pattern --out out_speed --mem \
 2. 입력은 0~255 픽셀을 /127.5 − 1 한 값(open_clip 기본 전처리)이어야 패치 임베딩의 입력 양자화에 오차가 생기지 않는다.
 3. 지연은 절대값보다 FP32와 같은 실행에서 잰 비율로 본다(충전기 연결, 고성능 모드, 다른 프로그램 없이).
 4. dev 캐시 생성에 1~2시간, test 7종에 약 3시간, 디스크 약 20 GB가 필요하다(처음 한 번 Hugging Face 가중치를 받음). GPU는 필요 없고, 빠른 확인은 9.2 (가)로 충분하다.
+5. 메모리는 스크립트가 MiB로 출력하고(FP32 453.95 → 제출 모델 166.35 MiB) 보고서에는 MB(= MiB × 1.048576, 476.0 → 174.4)로 적었다. 변화율(−63.4%)은 같다.
 
 ## 부록 A. 참고 문헌
 

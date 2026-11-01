@@ -50,7 +50,9 @@ python release/portable_eval.py --data release --out out_quick --threads 4 --no-
 ```bash
 git clone https://github.com/jungminmobile/oslab_mobile.git && cd oslab_mobile
 git checkout prelim-submit                                  # 제출 시점 코드
-python -m venv .venv && source .venv/bin/activate          # Windows: .venv\Scripts\activate
+python -m venv .venv && source .venv/bin/activate          # Windows(Git Bash): source .venv/Scripts/activate
+python -m pip install --upgrade pip                         # Python 3.11 기본 pip 24.0은 한국어 Windows에서 한글 주석을 못 읽음
+export PYTHONUTF8=1                                         # PowerShell: $env:PYTHONUTF8="1"
 python -m pip install -r siglip2/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
 export S2_MODEL_ID=hf-hub:timm/ViT-B-32-SigLIP2-256        # 꼭 지정 (없으면 B/16 224로 동작)
 export SIGLIP2_DATA=/path/to/data SIGLIP2_ARTIFACTS=/path/to/b32_artifacts HF_HOME=/path/to/hf_cache OPENBLAS_NUM_THREADS=1
