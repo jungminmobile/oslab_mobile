@@ -1,6 +1,6 @@
 # SigLIP2 ViT-B/32 이미지 인코더 양자화 — 재현 방법
 
-대회 안내 4.2절 "재현용 코드 및 실행 환경"과 예선 결과보고서 9장에 해당하는 문서다 (v6, 2026-10-29 — 제출 모델 B/32 P2, D-048·D-052, 보고서 `siglip2/docs/report_prelim_v11.md`).
+대회 안내 4.2절 "재현용 코드 및 실행 환경"과 예선 결과보고서 9장에 해당하는 문서다 (v7, 2026-11-01 — 제출 모델 B/32 P2, D-048·D-052, 최종 보고서 원문 `siglip2/docs/report_prelim_v13.md`, Word 판 `siglip2/docs/report_prelim_final.docx`. 그 밖의 `report_prelim_v*.md`는 작성 과정 기록).
 실험 기록·결정은 `ROADMAP.md`, `DECISIONS.md`, `PROGRESS.md`, 결과는 루트 `results/siglip2/`에 있다.
 
 > **제출 모델 = SigLIP2 B/32 P2** (D-048·D-052): 레지스터 캐시 M2 + 회전 + O-A(MatMul 출력 재반올림 생략) + O-B(SkipLayerNorm 융합) + F2(GELU → FastGelu) + 패치 임베딩 정수화(정민 E14). 패치 임베딩을 포함한 행렬곱 80개 전부 INT8. 바로 전 단계 모델은 O-AB(`7a01044c…`, D-049)다. B/32의 test는 ORT 2회(그때의 최종 후보 O-AB 10/22 `results/siglip2/G8_candidates/b32/test`, 최종 모델 P2 10/27 `b32/test_p2`), 본선 HEF로 Hailo 1회(준용 `B32_hef_test`) 썼다. O-AB 대신 P2를 쓰기로 한 결정은 test 전에 dev·지연·메모리로 했다(`b32/p2/README.md`). 개발 초기 B/16 단계의 test 이력은 보고서 6.2.
