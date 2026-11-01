@@ -204,7 +204,8 @@ def table(rows, total=9000, vmerge_first=False):
             tc += CELLMAR + '<w:vAlign w:val="center"/>'
             short = dispw(c) <= 26
             jc = "center" if (hdr or (ci == 0 and n == 2) or short) else "left"
-            x.append(f"<w:tc><w:tcPr>{tc}</w:tcPr>" + para(c, sz=sz, jc=jc, after=0, line=264, b=hdr) + "</w:tc>")
+            # 칸 안 "<br>"은 문단 나눔 (없으면 이전과 같음)
+            x.append(f"<w:tc><w:tcPr>{tc}</w:tcPr>" + "".join(para(cc, sz=sz, jc=jc, after=0, line=264, b=hdr) for cc in c.split("<br>")) + "</w:tc>")
         x.append("</w:tr>")
     x.append("</w:tbl>")
     return "".join(x)
